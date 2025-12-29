@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MergeShip, FloatingText, MergeUpgradeState, Particle } from '../types';
 import { formatNumber } from '../utils';
@@ -366,7 +367,22 @@ const MergeShips: React.FC = () => {
         setDragOver(null);
     };
 
-    // Save/Load
+    // --- SAVE SYSTEM FIX ---
+    const saveStateRef = useRef({ credits, hangar, orbit, tech, shipsPurchased, highestLevel });
+
+    // Keep ref updated
+    useEffect(() => {
+        saveStateRef.current = { credits, hangar, orbit, tech, shipsPurchased, highestLevel };
+    }, [credits, hangar, orbit, tech, shipsPurchased, highestLevel]);
+
+    const saveGame = useCallback(() => {
+        localStorage.setItem(MERGE_SAVE_KEY, JSON.stringify({ 
+            ...saveStateRef.current,
+            lastSaveTime: Date.now() 
+        }));
+    }, []);
+
+    // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(MERGE_SAVE_KEY);
         if (saved) {
@@ -400,15 +416,23 @@ const MergeShips: React.FC = () => {
         }
     }, []);
 
+    // Auto Save & Event Listeners
     useEffect(() => {
-        const t = setInterval(() => {
-            localStorage.setItem(MERGE_SAVE_KEY, JSON.stringify({ 
-                credits, hangar, orbit, tech, shipsPurchased, highestLevel,
-                lastSaveTime: Date.now() 
-            }));
-        }, 5000);
-        return () => clearInterval(t);
-    }, [credits, hangar, orbit, tech, shipsPurchased, highestLevel]);
+        const t = setInterval(saveGame, 5000);
+        
+        const handleForceSave = () => saveGame();
+        const handleBeforeUnload = () => saveGame();
+
+        window.addEventListener('game-save-trigger', handleForceSave);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(t);
+            window.removeEventListener('game-save-trigger', handleForceSave);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveGame();
+        };
+    }, [saveGame]);
 
     const renderShip = (level: number) => {
         const color = SHIP_COLORS[(level - 1) % SHIP_COLORS.length];

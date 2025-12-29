@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DeepSignalSaveData, SignalMessage } from '../types';
 import { generateAlienMessage } from '../services/geminiService';
 import { playSound } from '../services/audioService';
@@ -272,7 +273,42 @@ const DeepSpaceSignal: React.FC = () => {
         playSound('click');
     };
 
-    // --- PERSISTENCE ---
+    // --- SAVE SYSTEM FIX ---
+    const saveStateRef = useRef({ dataBytes, energy, upgrades, messages, factions });
+
+    // Keep ref updated
+    useEffect(() => {
+        saveStateRef.current = { dataBytes, energy, upgrades, messages, factions };
+    }, [dataBytes, energy, upgrades, messages, factions]);
+
+    const saveGame = useCallback(() => {
+        // Only save last 50 messages to prevent storage bloat
+        const stateToSave = { ...saveStateRef.current, messages: saveStateRef.current.messages.slice(-50) };
+        localStorage.setItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({ 
+            ...stateToSave,
+            lastSaveTime: Date.now() 
+        }));
+    }, []);
+
+    // Auto Save & Event Listeners
+    useEffect(() => {
+        const t = setInterval(saveGame, 5000);
+        
+        const handleForceSave = () => saveGame();
+        const handleBeforeUnload = () => saveGame();
+
+        window.addEventListener('game-save-trigger', handleForceSave);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(t);
+            window.removeEventListener('game-save-trigger', handleForceSave);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveGame();
+        };
+    }, [saveGame]);
+
+    // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(DEEP_SIGNAL_SAVE_KEY);
         if (saved) {
@@ -286,16 +322,6 @@ const DeepSpaceSignal: React.FC = () => {
             } catch(e) {}
         }
     }, []);
-
-    useEffect(() => {
-        const t = setInterval(() => {
-            localStorage.setItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({ 
-                dataBytes, energy, upgrades, factions, messages: messages.slice(-50) 
-            }));
-        }, 5000);
-        return () => clearInterval(t);
-    }, [dataBytes, energy, upgrades, messages, factions]);
-
 
     // --- RENDER ---
     return (

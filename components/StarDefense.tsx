@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } from '../types';
 import { formatNumber } from '../utils';
@@ -570,12 +571,40 @@ const StarDefense: React.FC = () => {
         }
     }, []);
 
+    // --- SAVE SYSTEM FIX ---
+    const saveStateRef = useRef({ scraps, wave, upgrades });
+
+    // Keep ref updated
     useEffect(() => {
-        const saveTimer = setInterval(() => {
-            if (!gameOver) localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({ scraps, wave, upgrades }));
-        }, 5000);
-        return () => clearInterval(saveTimer);
-    }, [scraps, wave, upgrades, gameOver]);
+        saveStateRef.current = { scraps, wave, upgrades };
+    }, [scraps, wave, upgrades]);
+
+    const saveGame = useCallback(() => {
+        if (!gameOver) {
+            localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({ 
+                ...saveStateRef.current,
+                lastSaveTime: Date.now() 
+            }));
+        }
+    }, [gameOver]);
+
+    // Auto Save & Event Listeners
+    useEffect(() => {
+        const t = setInterval(saveGame, 5000);
+        
+        const handleForceSave = () => saveGame();
+        const handleBeforeUnload = () => saveGame();
+
+        window.addEventListener('game-save-trigger', handleForceSave);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(t);
+            window.removeEventListener('game-save-trigger', handleForceSave);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveGame();
+        };
+    }, [saveGame]);
 
     return (
         <div className="w-full h-full relative bg-black overflow-hidden flex font-sans select-none text-white">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GravitySaveData } from '../types';
 import { formatNumber } from '../utils';
@@ -544,7 +545,40 @@ const GravityIdle: React.FC = () => {
         };
     }, [gameLoop]);
 
-    // Save/Load
+    // --- SAVE SYSTEM FIX ---
+    const saveStateRef = useRef({ matter, upgrades });
+
+    // Keep ref updated
+    useEffect(() => {
+        saveStateRef.current = { matter, upgrades };
+    }, [matter, upgrades]);
+
+    const saveGame = useCallback(() => {
+        localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({ 
+            ...saveStateRef.current,
+            lastSaveTime: Date.now() 
+        }));
+    }, []);
+
+    // Auto Save & Event Listeners
+    useEffect(() => {
+        const t = setInterval(saveGame, 5000);
+        
+        const handleForceSave = () => saveGame();
+        const handleBeforeUnload = () => saveGame();
+
+        window.addEventListener('game-save-trigger', handleForceSave);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(t);
+            window.removeEventListener('game-save-trigger', handleForceSave);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveGame();
+        };
+    }, [saveGame]);
+
+    // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(GRAVITY_SAVE_KEY);
         if (saved) {
@@ -578,13 +612,6 @@ const GravityIdle: React.FC = () => {
             } catch(e) {}
         }
     }, []);
-
-    useEffect(() => {
-        const t = setInterval(() => {
-            localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({ matter, upgrades, lastSaveTime: Date.now() }));
-        }, 5000);
-        return () => clearInterval(t);
-    }, [matter, upgrades]);
 
     return (
         <div className="w-full h-full relative bg-black flex flex-col font-sans text-white overflow-hidden">
