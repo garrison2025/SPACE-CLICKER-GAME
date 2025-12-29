@@ -334,7 +334,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           </div>
 
           {/* The Planet Container - Centered Vertically */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-80 h-80 md:w-[34rem] md:h-[34rem] max-w-[90vw] max-h-[90vh] aspect-square flex items-center justify-center">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-64 h-64 md:w-[26rem] md:h-[26rem] max-w-[80vw] max-h-[80vh] aspect-square flex items-center justify-center">
             {/* Geodes */}
             {geodes.map(g => (
                 <div 
