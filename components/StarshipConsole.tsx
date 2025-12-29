@@ -14,11 +14,23 @@ interface StarshipConsoleProps {
 const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, children }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
 
   const handleMuteToggle = () => {
       const newState = !isMuted;
       setIsMuted(newState);
       toggleMute(newState);
+  };
+
+  const handleManualSave = () => {
+      setSaveStatus('saving');
+      // Dispatch event for games to listen to
+      window.dispatchEvent(new Event('game-save-trigger'));
+      
+      setTimeout(() => {
+          setSaveStatus('saved');
+          setTimeout(() => setSaveStatus('idle'), 2000);
+      }, 500);
   };
 
   const handleFactoryReset = () => {
@@ -103,6 +115,24 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                           </button>
                       </div>
 
+                      {/* Manual Save */}
+                      <div className="flex items-center justify-between border-t border-white/10 pt-6">
+                          <div>
+                              <div className="font-bold text-white text-sm">MANUAL OVERRIDE</div>
+                              <div className="text-xs text-gray-500">Force save current state</div>
+                          </div>
+                          <button 
+                            onClick={handleManualSave}
+                            disabled={saveStatus !== 'idle'}
+                            className={`px-4 py-2 rounded text-xs font-bold transition-all w-28 text-center
+                                ${saveStatus === 'idle' ? 'bg-neon-blue text-black hover:bg-white' : 
+                                  saveStatus === 'saving' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'}
+                            `}
+                          >
+                              {saveStatus === 'idle' ? 'FORCE SAVE' : saveStatus === 'saving' ? 'SAVING...' : 'SAVED ✓'}
+                          </button>
+                      </div>
+
                       {/* Reset Data */}
                       <div className="border-t border-white/10 pt-6">
                           <div className="font-bold text-red-400 text-sm mb-2">DANGER ZONE</div>
@@ -116,7 +146,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                       </div>
 
                       <div className="text-center text-[10px] text-gray-600 font-mono pt-4">
-                          BUILD VERSION: 3.0.1 (STABLE)
+                          BUILD VERSION: 3.0.2 (PATCHED)
                       </div>
                   </div>
               </div>

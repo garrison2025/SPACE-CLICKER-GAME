@@ -91,6 +91,7 @@ const MarsColony: React.FC = () => {
     });
     
     const [buildings, setBuildings] = useState<MarsBuilding[]>(INITIAL_BUILDINGS);
+    const [lastSaved, setLastSaved] = useState(Date.now());
     
     // Visual State
     const [clicks, setClicks] = useState<FloatingText[]>([]);
@@ -226,7 +227,8 @@ const MarsColony: React.FC = () => {
         }
     };
     
-    // Save/Load Logic
+    // --- PERSISTENCE ---
+    // Init Load
     useEffect(() => {
         const saved = localStorage.getItem(MARS_SAVE_KEY);
         if (saved) {
@@ -238,12 +240,37 @@ const MarsColony: React.FC = () => {
         }
     }, []);
 
+    // Refs for saving logic to avoid closure staleness
+    const stateRef = useRef({ resources, buildings });
+    useEffect(() => { stateRef.current = { resources, buildings }; }, [resources, buildings]);
+
+    const saveGame = useCallback(() => {
+        localStorage.setItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current));
+        setLastSaved(Date.now());
+    }, []);
+
+    // Save Loop & Events
     useEffect(() => {
-        const t = setInterval(() => {
-             localStorage.setItem(MARS_SAVE_KEY, JSON.stringify({ resources, buildings }));
-        }, 5000);
-        return () => clearInterval(t);
-    }, [resources, buildings]);
+        const timer = setInterval(saveGame, 5000);
+        
+        const handleForceSave = () => {
+            saveGame();
+        };
+
+        const handleBeforeUnload = () => {
+            saveGame();
+        };
+
+        window.addEventListener('game-save-trigger', handleForceSave);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(timer);
+            window.removeEventListener('game-save-trigger', handleForceSave);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            saveGame();
+        };
+    }, [saveGame]);
 
     const population = resources.population;
 
@@ -413,8 +440,14 @@ const MarsColony: React.FC = () => {
 
             {/* Sidebar Shop */}
             <div className="w-80 bg-orange-950 border-l border-orange-500/30 flex flex-col z-20">
-                <div className="p-4 border-b border-orange-500/30 bg-black/20">
+                <div className="p-4 border-b border-orange-500/30 bg-black/20 flex justify-between items-center">
                     <h2 className="font-display font-bold text-xl text-orange-400 tracking-wider">CONSTRUCTION</h2>
+                    <button 
+                        onClick={saveGame} 
+                        className="text-[10px] border border-orange-500/50 text-orange-300 px-2 py-1 rounded hover:bg-orange-900 transition-colors"
+                    >
+                        SAVE
+                    </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                     {buildings.map(b => {

@@ -45,16 +45,6 @@ const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-434902
 // Define valid views for strict routing
 const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap'];
 
-// Helper to format duration
-const formatDuration = (ms: number) => {
-  const seconds = Math.floor(ms / 1000);
-  if (seconds < 60) return `${seconds}s`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ${seconds % 60}s`;
-  const hours = Math.floor(minutes / 60);
-  return `${hours}h ${minutes % 60}m`;
-};
-
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
     <div className="w-full h-full flex flex-col items-center justify-center bg-black text-neon-blue font-mono space-y-4">
@@ -63,7 +53,6 @@ const LoadingSimulation = () => (
     </div>
 );
 
-// We need a wrapper component for the game console view to avoid circular dependency issues or large file size
 import StarshipConsole from './components/StarshipConsole';
 
 const App: React.FC = () => {
@@ -74,7 +63,6 @@ const App: React.FC = () => {
       const postParam = params.get('post');
       const idParam = params.get('id');
       
-      // Strict Validation
       let isValidView = true;
       let validView: ViewMode = 'home';
       
@@ -86,7 +74,6 @@ const App: React.FC = () => {
           }
       }
 
-      // Validate Game ID if present
       let validGameId: GameId = 'galaxy_miner';
       let isGameIdValid = true;
       if (validView === 'game' && idParam) {
@@ -97,7 +84,6 @@ const App: React.FC = () => {
           }
       }
 
-      // Validate Post ID if present
       let isPostIdValid = true;
       if (validView === 'blog' && postParam) {
           if (!BLOG_POSTS.some(p => p.slug === postParam || p.id === postParam)) {
@@ -105,7 +91,6 @@ const App: React.FC = () => {
           }
       }
 
-      // Return state, including an 'error' flag if validation failed
       return { 
           view: validView, 
           postId: postParam, 
@@ -138,7 +123,6 @@ const App: React.FC = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [showPrestigeShop, setShowPrestigeShop] = useState(false);
   const [showMobileShop, setShowMobileShop] = useState(false);
-  const [offlineReport, setOfflineReport] = useState<{ time: number; amount: number } | null>(null);
   
   // Mechanics State
   const [heat, setHeat] = useState(0);
@@ -147,17 +131,12 @@ const App: React.FC = () => {
   // Flux State: Heat is in the "Goldilocks Zone" (80-99%)
   const isFlux = heat >= 80 && heat < 100 && !overheated;
 
-  const resourcesRef = useRef(resources);
-  resourcesRef.current = resources;
-
   // --- COMPUTED VALUES (Miner) ---
   const currentPlanet = PLANETS[planetIndex];
-  const nextPlanet = PLANETS[planetIndex + 1];
   const currentGameMeta = GAMES_CATALOG.find(g => g.id === activeGame) || GAMES_CATALOG[0];
 
   const getTechBonus = (id: string, base: number) => (prestigeUpgrades[id] || 0) * base;
   
-  // Crit Logic: Base + Tech + Heat Bonus + Flux Bonus
   const critChance = 0.05 
     + (getTechBonus('crit_chance', 5) / 100) 
     + (heat > 50 ? 0.1 : 0) 
@@ -167,7 +146,6 @@ const App: React.FC = () => {
   const passiveTechBoost = 1 + (getTechBonus('passive_boost', 0.25));
   const prestigeMultiplier = (1 + (resources[ResourceType.DarkMatter] * 0.1));
 
-  // --- MILESTONE CALCULATION ---
   const getMilestoneMultiplier = (count: number) => {
     let mult = 1;
     if (count >= 25) mult *= 2;
@@ -182,12 +160,10 @@ const App: React.FC = () => {
     let rate = 0;
     Object.values(upgrades).forEach((u: Upgrade) => {
       if (u.type === 'auto') {
-          // Apply milestone multiplier per unit
           const milestoneMult = getMilestoneMultiplier(u.count);
           rate += u.baseProduction * u.count * milestoneMult;
       }
     });
-    // Flux doubles automated production too if sustained!
     const fluxBonus = isFlux ? 2 : 1;
     return rate * currentPlanet.productionMultiplier * prestigeMultiplier * passiveTechBoost * fluxBonus;
   }, [upgrades, currentPlanet, prestigeMultiplier, passiveTechBoost, isFlux]);
@@ -213,16 +189,14 @@ const App: React.FC = () => {
     let desc = "The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.";
     let url = "https://spaceclickergame.com";
     let image = DEFAULT_OG_IMAGE;
-    let keywords = "space clicker game, idle mining, incremental game, browser games, galaxy miner, free online games";
-
+    
     if (viewMode === 'game') {
         const game = GAMES_CATALOG.find(g => g.id === activeGame);
         if (game) {
             title = `${game.title} - Free Online Space Clicker Game`;
-            desc = `${game.description} Play ${game.title} online for free. ${game.tags.join(', ')}.`;
+            desc = `${game.description}`;
             url = `https://spaceclickergame.com?view=game&id=${game.id}`;
             image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
-            keywords = `${game.title}, ${game.tags.join(', ')}, space game, idle strategy, play free`;
         }
     } else if (viewMode === 'blog' && activePostId) {
         const post = BLOG_POSTS.find(p => p.slug === activePostId || p.id === activePostId);
@@ -231,19 +205,11 @@ const App: React.FC = () => {
             desc = post.excerpt;
             url = `https://spaceclickergame.com?view=blog&post=${post.slug}`;
             if (post.image) image = post.image;
-            keywords = post.tags.join(', ') + ", space clicker blog";
         }
-    } else if (viewMode === 'about') {
-        title = "About Us - Space Clicker Game Developers";
-        desc = "Learn about the team behind Void Expanse and the Space Clicker Game universe.";
-    } else if (viewMode === 'sitemap') {
-        title = "Sitemap - Space Clicker Game";
-        desc = "HTML Sitemap for Space Clicker Game. Find all games, blog posts, and resources.";
     }
 
     document.title = title;
     
-    // Update Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
         metaDesc = document.createElement('meta');
@@ -252,16 +218,6 @@ const App: React.FC = () => {
     }
     metaDesc.setAttribute('content', desc);
 
-    // Update Meta Keywords
-    let metaKeys = document.querySelector('meta[name="keywords"]');
-    if (!metaKeys) {
-        metaKeys = document.createElement('meta');
-        metaKeys.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKeys);
-    }
-    metaKeys.setAttribute('content', keywords);
-
-    // Update Canonical
     let linkCanon = document.querySelector('link[rel="canonical"]');
     if (!linkCanon) {
         linkCanon = document.createElement('link');
@@ -269,24 +225,6 @@ const App: React.FC = () => {
         document.head.appendChild(linkCanon);
     }
     linkCanon.setAttribute('href', url);
-
-    // Update OG Tags
-    const updateMeta = (property: string, content: string) => {
-        let tag = document.querySelector(`meta[property="${property}"]`);
-        if (!tag) {
-            tag = document.createElement('meta');
-            tag.setAttribute('property', property);
-            document.head.appendChild(tag);
-        }
-        tag.setAttribute('content', content);
-    };
-    
-    updateMeta('og:title', title);
-    updateMeta('og:description', desc);
-    updateMeta('og:url', url);
-    updateMeta('og:image', image);
-    updateMeta('twitter:card', 'summary_large_image');
-    updateMeta('twitter:image', image);
 
   }, [viewMode, activeGame, activePostId, is404]);
 
@@ -303,7 +241,6 @@ const App: React.FC = () => {
   const handleMine = (x: number, y: number, multiplier: number = 1, isGeode: boolean = false): { amount: number, isCrit: boolean } => {
     if (overheated && !isGeode) return { amount: 0, isCrit: false };
 
-    // Heat Logic
     if (isGeode) {
         setHeat(prev => Math.max(0, prev - 20));
         addLog("SYSTEM VENTED: -20% HEAT", "info");
@@ -331,7 +268,6 @@ const App: React.FC = () => {
     return { amount: finalAmount, isCrit };
   };
 
-  // Heat Decay Loop
   useEffect(() => {
     const timer = setInterval(() => {
         if (!overheated && heat > 0) {
@@ -381,8 +317,6 @@ const App: React.FC = () => {
           (upgrade.count < 200 && newCount >= 200)
       ) {
           addLog(`${upgrade.name} MILESTONE: OUTPUT DOUBLED!`, 'success');
-      } else {
-          // addLog(`${upgrade.name} UPGRADED TO LVL ${newCount}`, 'info');
       }
     }
   };
@@ -420,7 +354,6 @@ const App: React.FC = () => {
     setViewMode(target);
     setActivePostId(id || null);
     
-    // Update URL without reload
     const url = new URL(window.location.href);
     url.searchParams.set('view', target);
     if (id) url.searchParams.set('post', id);
@@ -442,7 +375,29 @@ const App: React.FC = () => {
     }
   };
 
-  // --- SAVE/LOAD SYSTEM ---
+  // --- ROBUST SAVE SYSTEM ---
+  // Use Refs to keep track of latest state without triggering re-renders or resetting intervals
+  const gameStateRef = useRef({
+      resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings
+  });
+
+  // Keep refs synced with state
+  useEffect(() => {
+      gameStateRef.current = {
+          resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings
+      };
+  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings]);
+
+  const saveGame = useCallback(() => {
+      const data = gameStateRef.current;
+      const toSave = {
+          ...data,
+          lastSaveTime: Date.now()
+      };
+      localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
+  }, []);
+
+  // Initialize Loading
   useEffect(() => {
       const loadGame = () => {
           const saved = localStorage.getItem(SAVE_KEY);
@@ -451,7 +406,6 @@ const App: React.FC = () => {
                   const data = JSON.parse(saved);
                   if (data.resources) setResources(data.resources);
                   if (data.upgrades) {
-                      // Merge with initial to ensure new upgrades exist
                       const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
                       setUpgrades(merged);
                   }
@@ -467,33 +421,45 @@ const App: React.FC = () => {
       loadGame();
   }, []);
 
+  // Save Interval & Event Listeners
   useEffect(() => {
+      // Auto-save interval
       const timer = setInterval(() => {
-          const toSave = {
-              resources,
-              upgrades,
-              prestigeUpgrades,
-              level,
-              planetIndex,
-              lifetimeEarnings,
-              lastSaveTime: Date.now()
-          };
-          localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
+          saveGame();
       }, AUTO_SAVE_INTERVAL);
-      return () => clearInterval(timer);
-  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings]);
+
+      // Listen for global force save event (from StarshipConsole)
+      const handleForceSave = () => {
+          saveGame();
+          addLog("GAME SAVED MANUALLY", "success");
+      };
+
+      // Browser close/refresh listener
+      const handleBeforeUnload = () => {
+          saveGame();
+      };
+
+      window.addEventListener('game-save-trigger', handleForceSave);
+      window.addEventListener('beforeunload', handleBeforeUnload);
+
+      return () => {
+          clearInterval(timer);
+          window.removeEventListener('game-save-trigger', handleForceSave);
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+          saveGame(); // Save on unmount
+      };
+  }, [saveGame]);
 
   const renderActiveGame = () => {
       switch(activeGame) {
           case 'galaxy_miner':
               return (
                   <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
-                      {/* Left / Top: Visuals & Click Area */}
                       <div className="flex-1 relative h-full">
                           <ClickArea 
                               onMine={handleMine}
                               productionRate={getProductionRate()}
-                              currency={resources[ResourceType.Stardust]} // SAFE ACCESS
+                              currency={resources[ResourceType.Stardust]} 
                               clickPower={getClickPower()}
                               planet={currentPlanet}
                               heat={heat}
@@ -512,7 +478,6 @@ const App: React.FC = () => {
                           </button>
                       </div>
 
-                      {/* Right: Upgrade Shop (Desktop) */}
                       <div className="hidden md:flex flex-col w-96 border-l border-white/10 bg-space-900 z-20 h-full">
                            <UpgradeShop 
                                 upgrades={Object.values(upgrades)} 
@@ -521,7 +486,6 @@ const App: React.FC = () => {
                            />
                       </div>
 
-                      {/* Mobile Shop Drawer */}
                       {showMobileShop && (
                           <div className="absolute inset-0 z-[100] bg-black/90 md:hidden flex flex-col animate-in slide-in-from-bottom">
                               <div className="p-4 flex justify-between items-center bg-space-800">
@@ -550,7 +514,6 @@ const App: React.FC = () => {
 
   if (is404) return <NotFoundPage onNavigate={handleNavigate} />;
 
-  // GAME VIEW MODE
   if (viewMode === 'game') {
       return (
           <StarshipConsole 
@@ -558,9 +521,7 @@ const App: React.FC = () => {
             onSwitchGame={(id) => handleNavigate('game', id)}
             onGoHome={() => handleNavigate('home')}
           >
-              {/* Game Viewport Container - Takes full height of available space minus header */}
               <div className="w-full relative flex flex-col">
-                  {/* Active Game Area - Forced to be at least screen height minus header */}
                   <div className="relative h-[calc(100vh-theme(spacing.16))] min-h-[600px] w-full flex flex-col">
                       <div className="flex-1 relative overflow-hidden">
                           <Suspense fallback={<LoadingSimulation />}>
@@ -570,7 +531,6 @@ const App: React.FC = () => {
                       </div>
                   </div>
                   
-                  {/* SEO Content Injection - Appears below the game when scrolling */}
                   <div className="relative z-10 bg-space-950 border-t border-white/10">
                       <SEOContent game={currentGameMeta} />
                   </div>
@@ -579,14 +539,13 @@ const App: React.FC = () => {
       );
   }
 
-  // WEBSITE VIEW MODE
   return (
     <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
         {viewMode === 'home' && (
             <LandingPage 
                 onStart={(id) => handleNavigate('game', id)}
                 onNavigate={handleNavigate}
-                heroSlot={undefined} // Uses internal HolographicPreview
+                heroSlot={undefined} 
             />
         )}
 
