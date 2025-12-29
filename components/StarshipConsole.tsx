@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { GameId, GameMeta } from '../types';
 import { GAMES_CATALOG } from '../constants';
+import { toggleMute, getMuteState } from '../services/audioService';
 
 interface StarshipConsoleProps {
   activeGame: GameId;
@@ -11,6 +12,22 @@ interface StarshipConsoleProps {
 }
 
 const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, children }) => {
+  const [showSettings, setShowSettings] = useState(false);
+  const [isMuted, setIsMuted] = useState(getMuteState());
+
+  const handleMuteToggle = () => {
+      const newState = !isMuted;
+      setIsMuted(newState);
+      toggleMute(newState);
+  };
+
+  const handleFactoryReset = () => {
+      if (window.confirm("WARNING: ALL DATA WILL BE PURGED.\n\nThis includes progress in Galaxy Miner, Mars Colony, and all other simulations.\n\nAre you sure?")) {
+          localStorage.clear();
+          window.location.reload();
+      }
+  };
+
   return (
     <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
@@ -39,7 +56,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
          </div>
 
          <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" title="Settings">
+            <button 
+                onClick={() => setShowSettings(true)}
+                className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" 
+                title="Settings"
+            >
                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543 .826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             </button>
             <button 
@@ -56,6 +77,51 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             </button>
          </div>
       </header>
+
+      {/* --- SETTINGS MODAL --- */}
+      {showSettings && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in">
+              <div className="bg-space-800 w-full max-w-md border border-white/20 rounded-2xl shadow-2xl overflow-hidden">
+                  <div className="p-6 border-b border-white/10 flex justify-between items-center bg-space-900">
+                      <h2 className="font-display font-bold text-xl text-white tracking-widest">SYSTEM CONFIG</h2>
+                      <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-white">✕</button>
+                  </div>
+                  
+                  <div className="p-6 space-y-6">
+                      
+                      {/* Audio Setting */}
+                      <div className="flex items-center justify-between">
+                          <div>
+                              <div className="font-bold text-white text-sm">AUDIO SYNTHESIS</div>
+                              <div className="text-xs text-gray-500">Enable UI sound effects</div>
+                          </div>
+                          <button 
+                            onClick={handleMuteToggle}
+                            className={`w-12 h-6 rounded-full relative transition-colors ${!isMuted ? 'bg-neon-blue' : 'bg-gray-700'}`}
+                          >
+                              <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${!isMuted ? 'left-7' : 'left-1'}`}></div>
+                          </button>
+                      </div>
+
+                      {/* Reset Data */}
+                      <div className="border-t border-white/10 pt-6">
+                          <div className="font-bold text-red-400 text-sm mb-2">DANGER ZONE</div>
+                          <p className="text-xs text-gray-500 mb-4">Resetting will purge all local saves for all games. This action cannot be undone.</p>
+                          <button 
+                            onClick={handleFactoryReset}
+                            className="w-full py-3 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold rounded transition-colors text-xs tracking-widest"
+                          >
+                              FACTORY RESET PROTOCOL
+                          </button>
+                      </div>
+
+                      <div className="text-center text-[10px] text-gray-600 font-mono pt-4">
+                          BUILD VERSION: 3.0.1 (STABLE)
+                      </div>
+                  </div>
+              </div>
+          </div>
+      )}
 
       {/* --- MAIN CONTENT AREA --- */}
       <main className="flex-1 relative flex overflow-hidden">

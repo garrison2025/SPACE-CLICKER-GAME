@@ -3,13 +3,23 @@
 
 const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
 let ctx: AudioContext | null = null;
+let isMuted = localStorage.getItem('sc_mute') === 'true';
 
 const getCtx = () => {
     if (!ctx) ctx = new AudioContextClass();
     return ctx;
 };
 
+export const toggleMute = (muted: boolean) => {
+    isMuted = muted;
+    localStorage.setItem('sc_mute', muted.toString());
+};
+
+export const getMuteState = () => isMuted;
+
 export const playSound = (type: 'scan' | 'decode' | 'success' | 'click' | 'error' | 'analyze') => {
+    if (isMuted) return;
+
     try {
         const audio = getCtx();
         if (audio.state === 'suspended') audio.resume();
