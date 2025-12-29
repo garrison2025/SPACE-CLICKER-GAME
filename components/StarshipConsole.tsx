@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { GameId, GameMeta } from '../types';
 import { GAMES_CATALOG } from '../constants';
 import { toggleMute, getMuteState } from '../services/audioService';
+import { Logo } from './Logo';
 
 interface StarshipConsoleProps {
   activeGame: GameId;
@@ -47,12 +48,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       <header className="h-16 flex items-center justify-between px-6 border-b border-white/10 bg-space-900/90 backdrop-blur z-50 shrink-0">
          <div className="flex items-center gap-4">
             <div 
-                className="flex items-center gap-2 group cursor-pointer"
+                className="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={onGoHome}
             >
-               <div className="w-8 h-8 rounded bg-gradient-to-br from-neon-blue to-blue-600 flex items-center justify-center font-black text-black text-xs shadow-[0_0_15px_rgba(0,243,255,0.4)] group-hover:shadow-[0_0_25px_rgba(0,243,255,0.6)] transition-shadow">
-                  SC
-               </div>
+               <Logo className="w-8 h-8" />
                <div className="flex flex-col">
                   <span className="font-display font-bold text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
                   <span className="text-[10px] text-neon-blue font-mono tracking-wider">CONSOLE V.3.0.1</span>

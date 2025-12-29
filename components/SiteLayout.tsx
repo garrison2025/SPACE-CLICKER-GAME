@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Logo } from './Logo';
 
 export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap';
 
@@ -32,15 +33,9 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             <a 
                 href="?view=home"
                 onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
-                className="flex items-center gap-3 cursor-pointer group"
+                className="group hover:opacity-90 transition-opacity"
             >
-                <div className="w-8 h-8 bg-gradient-to-tr from-neon-blue to-blue-600 rounded flex items-center justify-center text-black font-black text-xs shadow-[0_0_15px_rgba(0,243,255,0.4)] group-hover:rotate-12 transition-transform">
-                    SC
-                </div>
-                <div className="flex flex-col">
-                    <span className="font-display font-bold text-lg tracking-widest leading-none text-white group-hover:text-neon-blue transition-colors">SPACE CLICKER GAME</span>
-                    <span className="text-[9px] text-gray-400 tracking-[0.2em] font-mono">VOID EXPANSE UNIVERSE</span>
-                </div>
+                <Logo withText={true} className="w-8 h-8 md:w-10 md:h-10" />
             </a>
 
             {/* Desktop Nav */}
@@ -71,8 +66,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
       <footer className="border-t border-white/10 bg-space-950 pt-16 pb-8 text-gray-400 text-sm relative z-10">
          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
              <div className="col-span-1 md:col-span-1">
-                 <div className="font-display font-bold text-xl text-white mb-4 flex items-center gap-2">
-                    <span className="text-neon-blue">SC</span> SPACE CLICKER GAME
+                 <div className="mb-4">
+                    <Logo withText={true} className="w-8 h-8" />
                  </div>
                  <p className="text-xs leading-relaxed mb-4 text-gray-500">
                      The premier destination for the <strong>space clicker game</strong> genre. 
