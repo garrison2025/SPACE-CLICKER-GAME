@@ -1,8 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { MarsBuilding, MarsResourceState } from '../types';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { MarsBuilding, MarsResourceState, FloatingText } from '../types';
 import { formatNumber } from '../utils';
 
 const MARS_SAVE_KEY = 'mars_colony_save_v2';
+
+interface MarsParticle {
+    id: number;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    life: number;
+    color: string;
+    size: number;
+}
 
 const INITIAL_BUILDINGS: MarsBuilding[] = [
     {
@@ -80,7 +92,12 @@ const MarsColony: React.FC = () => {
     
     const [buildings, setBuildings] = useState<MarsBuilding[]>(INITIAL_BUILDINGS);
     
-    // --- LOOP ---
+    // Visual State
+    const [clicks, setClicks] = useState<FloatingText[]>([]);
+    const [particles, setParticles] = useState<MarsParticle[]>([]);
+    const frameRef = useRef<number>();
+
+    // --- GAME LOOP (Logic) ---
     useEffect(() => {
         const timer = setInterval(() => {
             setResources(prev => {
@@ -106,7 +123,6 @@ const MarsColony: React.FC = () => {
                 // Energy Logic
                 next.energy.production = energyProd;
                 next.energy.consumption = energyCons;
-                // If deficit, shut down systems (simplified: just cap production)
                 const efficiency = next.energy.current > 0 || energyProd >= energyCons ? 1 : 0.1;
                 
                 next.energy.current = Math.min(next.energy.max, Math.max(0, next.energy.current + (energyProd - energyCons)));
@@ -121,16 +137,14 @@ const MarsColony: React.FC = () => {
                 next.minerals += mineralProd * efficiency;
 
                 // Population Logic
-                // Grow if resources are abundant (>50%) and housing available
                 if (next.food.current > 50 && next.oxygen.current > 50 && prev.population < housingCap) {
                     if (Math.random() < 0.1) next.population += 1;
                 }
-                // Starve if resources empty
                 if (next.food.current <= 0 || next.oxygen.current <= 0) {
                      if (Math.random() < 0.2 && next.population > 0) next.population -= 1;
                 }
 
-                // Credit Generation (Tax)
+                // Credit Generation
                 next.credits += prev.population * 0.05;
 
                 return next;
@@ -139,9 +153,66 @@ const MarsColony: React.FC = () => {
         return () => clearInterval(timer);
     }, [buildings]);
 
+    // --- PHYSICS LOOP (Visuals) ---
+    const visualLoop = useCallback(() => {
+        setParticles(prev => prev.map(p => ({
+            ...p,
+            x: p.x + p.vx,
+            y: p.y + p.vy,
+            vy: p.vy + 0.5, // Gravity
+            life: p.life - 0.05
+        })).filter(p => p.life > 0));
+
+        setClicks(prev => prev.filter(c => c.opacity > 0).map(c => ({...c, opacity: c.opacity - 0.02, y: c.y - 1})));
+
+        frameRef.current = requestAnimationFrame(visualLoop);
+    }, []);
+
+    useEffect(() => {
+        frameRef.current = requestAnimationFrame(visualLoop);
+        return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current); };
+    }, [visualLoop]);
+
     // --- ACTIONS ---
-    const handleExcavate = () => {
-        setResources(prev => ({ ...prev, minerals: prev.minerals + 1 }));
+    const spawnParticles = (x: number, y: number, color: string, count: number = 8) => {
+        const newParticles: MarsParticle[] = [];
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 4 + 2;
+            newParticles.push({
+                id: Math.random(),
+                x, y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed - 2,
+                life: 1.0,
+                color,
+                size: Math.random() * 4 + 2
+            });
+        }
+        setParticles(prev => [...prev, ...newParticles]);
+    };
+
+    const handleExcavate = (e: React.MouseEvent, bonus: number = 0, color: string = '#fdba74') => {
+        e.stopPropagation(); // Prevent bubbling if clicking internal elements
+        
+        const rect = e.currentTarget.getBoundingClientRect();
+        // Fallback for getting coordinates if triggered from a non-mouse event (rare)
+        const clientX = e.clientX || (rect.left + rect.width/2);
+        const clientY = e.clientY || (rect.top + rect.height/2);
+
+        const amount = 1 + bonus;
+        setResources(prev => ({ ...prev, minerals: prev.minerals + amount }));
+        
+        // Visuals
+        setClicks(prev => [...prev, {
+            id: Math.random(),
+            x: clientX,
+            y: clientY - 20,
+            text: `+${amount} MINERALS`,
+            opacity: 1
+        }]);
+
+        spawnParticles(clientX, clientY, color);
     };
 
     const handleBuy = (id: string) => {
@@ -181,6 +252,36 @@ const MarsColony: React.FC = () => {
             {/* Background */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
             
+            {/* Particles Overlay */}
+            <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
+                {particles.map(p => (
+                    <div 
+                        key={p.id}
+                        className="absolute rounded-sm"
+                        style={{
+                            left: p.x, top: p.y,
+                            width: p.size, height: p.size,
+                            backgroundColor: p.color,
+                            opacity: p.life,
+                            transform: `translate(-50%, -50%) rotate(${p.life * 360}deg)`
+                        }}
+                    />
+                ))}
+                {clicks.map(c => (
+                    <div 
+                        key={c.id}
+                        className="absolute font-display font-bold text-orange-200 text-lg whitespace-nowrap shadow-black drop-shadow-md"
+                        style={{
+                            left: c.x, top: c.y,
+                            opacity: c.opacity,
+                            transform: `translate(-50%, -50%) scale(${0.5 + c.opacity * 0.5})`
+                        }}
+                    >
+                        {c.text}
+                    </div>
+                ))}
+            </div>
+
             {/* Main Content */}
             <div className="flex-1 flex flex-col relative z-10">
                 
@@ -203,51 +304,69 @@ const MarsColony: React.FC = () => {
                 </div>
 
                 {/* Planet Viewport */}
-                <div className="flex-1 flex items-center justify-center relative">
+                <div className="flex-1 flex items-center justify-center relative perspective-1000">
                     
-                    {/* The Planet Logic from Snippet */}
+                    {/* The Interactive Planet */}
                     <div 
-                        onClick={handleExcavate}
+                        onClick={(e) => handleExcavate(e, 0)}
                         className="relative w-56 h-56 md:w-72 md:h-72 rounded-full cursor-pointer group active:scale-95 transition-transform duration-100 z-20"
                     >
                         {/* Planet Surface */}
-                        <div className={`absolute inset-0 rounded-full bg-gradient-to-tr transition-colors duration-1000 ${population > 100 ? 'from-orange-700 to-emerald-900' : 'from-orange-800 to-red-600'} shadow-[0_0_60px_rgba(234,88,12,0.4)] overflow-hidden border-4 border-orange-900/50`}>
+                        <div className={`absolute inset-0 rounded-full bg-gradient-to-tr transition-colors duration-1000 ${population > 100 ? 'from-orange-700 to-emerald-900' : 'from-orange-800 to-red-600'} shadow-[0_0_60px_rgba(234,88,12,0.4)] overflow-hidden border-4 border-orange-900/50 group-hover:border-orange-400/50 transition-colors`}>
                             {/* Craters (CSS Art) */}
-                            <div className="absolute top-[20%] left-[30%] w-8 h-8 bg-black/20 rounded-full shadow-inner"></div>
-                            <div className="absolute bottom-[30%] right-[20%] w-12 h-12 bg-black/20 rounded-full shadow-inner"></div>
-                            <div className="absolute top-[50%] left-[10%] w-4 h-4 bg-black/20 rounded-full shadow-inner"></div>
+                            <div className="absolute top-[20%] left-[30%] w-8 h-8 bg-black/20 rounded-full shadow-inner pointer-events-none"></div>
+                            <div className="absolute bottom-[30%] right-[20%] w-12 h-12 bg-black/20 rounded-full shadow-inner pointer-events-none"></div>
+                            <div className="absolute top-[50%] left-[10%] w-4 h-4 bg-black/20 rounded-full shadow-inner pointer-events-none"></div>
                             
                             {/* Atmosphere Halo */}
-                            {population > 100 && <div className="absolute inset-0 rounded-full shadow-[inset_0_0_40px_rgba(50,200,255,0.3)]"></div>}
+                            {population > 100 && <div className="absolute inset-0 rounded-full shadow-[inset_0_0_40px_rgba(50,200,255,0.3)] pointer-events-none"></div>}
 
                             {/* Terraforming Layers (Visual Evolution) */}
-                            <div className={`absolute inset-0 rounded-full transition-opacity duration-[3000ms] ${population > 50 ? 'opacity-40' : 'opacity-0'}`}
+                            <div className={`absolute inset-0 rounded-full transition-opacity duration-[3000ms] pointer-events-none ${population > 50 ? 'opacity-40' : 'opacity-0'}`}
                                  style={{ background: 'radial-gradient(circle at 30% 70%, #0ea5e9 0%, transparent 60%)' }}></div>
                             
-                            <div className={`absolute inset-0 rounded-full transition-opacity duration-[3000ms] ${population > 150 ? 'opacity-50' : 'opacity-0'}`}
+                            <div className={`absolute inset-0 rounded-full transition-opacity duration-[3000ms] pointer-events-none ${population > 150 ? 'opacity-50' : 'opacity-0'}`}
                                  style={{ background: 'radial-gradient(circle at 70% 40%, #22c55e 0%, transparent 50%)', mixBlendMode: 'overlay' }}></div>
 
-                            {/* Buildings Visual Representation */}
+                            {/* Buildings Visual Representation (Interactive) */}
                             <div className="absolute inset-0 transition-opacity duration-1000">
                                  {/* Auto Miners (Moving dots) */}
                                  {buildings.find(b => b.id === 'miner_bot')?.count! > 0 && Array.from({length: Math.min(5, buildings.find(b => b.id === 'miner_bot')?.count!)}).map((_, i) => (
-                                     <div key={i} className="absolute w-2 h-2 bg-yellow-400 rounded-sm animate-pulse" style={{ top: `${40 + i * 10}%`, left: `${20 + i * 15}%` }}></div>
+                                     <div 
+                                        key={i} 
+                                        onClick={(e) => handleExcavate(e, 2, '#fbbf24')}
+                                        className="absolute w-3 h-3 bg-yellow-400 rounded-sm animate-pulse cursor-pointer hover:scale-150 transition-transform hover:bg-white shadow-[0_0_5px_gold]" 
+                                        style={{ top: `${40 + i * 10}%`, left: `${20 + i * 15}%` }}
+                                        title="Auto-Miner (Click for bonus)"
+                                     ></div>
                                  ))}
                                  {/* Solar Panels Ring */}
                                  {buildings.find(b => b.id === 'solar_panel')?.count! > 0 && (
-                                     <div className="absolute top-[10%] left-[50%] -translate-x-1/2 w-4 h-4 bg-blue-400 border border-white shadow-[0_0_10px_cyan]"></div>
+                                     <div 
+                                        onClick={(e) => handleExcavate(e, 1, '#60a5fa')}
+                                        className="absolute top-[10%] left-[50%] -translate-x-1/2 w-6 h-6 bg-blue-400 border-2 border-white shadow-[0_0_15px_cyan] cursor-pointer hover:scale-125 transition-transform"
+                                        title="Solar Array"
+                                     ></div>
                                  )}
                                  {/* Reactor Glow */}
                                  {buildings.find(b => b.id === 'reactor')?.count! > 0 && (
-                                     <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-500/20 blur-xl animate-pulse"></div>
+                                     <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-blue-500/20 blur-xl animate-pulse pointer-events-none"></div>
                                  )}
                                  {/* Habs */}
                                  {buildings.find(b => b.id === 'habitat')?.count! > 0 && (
-                                     <div className="absolute bottom-[40%] left-[50%] -translate-x-1/2 w-8 h-8 bg-white/80 rounded-t-full border-2 border-gray-400"></div>
+                                     <div 
+                                        onClick={(e) => handleExcavate(e, 1, '#ffffff')}
+                                        className="absolute bottom-[40%] left-[50%] -translate-x-1/2 w-10 h-10 bg-white/80 rounded-t-full border-2 border-gray-400 cursor-pointer hover:bg-white hover:shadow-[0_0_20px_white] transition-all"
+                                        title="Colony Habitat"
+                                     ></div>
                                  )}
                                  {/* Greenhouse */}
                                  {buildings.find(b => b.id === 'greenhouse')?.count! > 0 && (
-                                     <div className="absolute bottom-[35%] right-[25%] w-6 h-4 bg-green-500/50 border border-green-300 rounded-sm"></div>
+                                     <div 
+                                        onClick={(e) => handleExcavate(e, 1, '#4ade80')}
+                                        className="absolute bottom-[35%] right-[25%] w-8 h-6 bg-green-500/50 border border-green-300 rounded-sm cursor-pointer hover:bg-green-400 hover:shadow-[0_0_15px_lime] transition-all"
+                                        title="Greenhouse"
+                                     ></div>
                                  )}
                             </div>
                         </div>
