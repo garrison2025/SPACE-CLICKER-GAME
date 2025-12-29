@@ -6,17 +6,21 @@ import { GAMES_CATALOG } from '../constants';
 interface StarshipConsoleProps {
   activeGame: GameId;
   onSwitchGame: (id: GameId) => void;
+  onGoHome: () => void;
   children: React.ReactNode;
 }
 
-const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, children }) => {
+const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, children }) => {
   return (
     <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
       {/* --- TOP HUD --- */}
       <header className="h-16 flex items-center justify-between px-6 border-b border-white/10 bg-space-900/90 backdrop-blur z-50 shrink-0">
          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 group cursor-pointer">
+            <div 
+                className="flex items-center gap-2 group cursor-pointer"
+                onClick={onGoHome}
+            >
                <div className="w-8 h-8 rounded bg-gradient-to-br from-neon-blue to-blue-600 flex items-center justify-center font-black text-black text-xs shadow-[0_0_15px_rgba(0,243,255,0.4)] group-hover:shadow-[0_0_25px_rgba(0,243,255,0.6)] transition-shadow">
                   SC
                </div>

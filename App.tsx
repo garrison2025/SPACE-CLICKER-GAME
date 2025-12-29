@@ -553,7 +553,11 @@ const App: React.FC = () => {
   // GAME VIEW MODE
   if (viewMode === 'game') {
       return (
-          <StarshipConsole activeGame={activeGame} onSwitchGame={(id) => handleNavigate('game', id)}>
+          <StarshipConsole 
+            activeGame={activeGame} 
+            onSwitchGame={(id) => handleNavigate('game', id)}
+            onGoHome={() => handleNavigate('home')}
+          >
               {/* Game Viewport Container - Takes full height of available space minus header */}
               <div className="w-full relative flex flex-col">
                   {/* Active Game Area - Forced to be at least screen height minus header */}
