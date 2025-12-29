@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { GameMeta } from '../types';
-import { BLOG_POSTS } from '../constants'; // Import BLOG_POSTS
 
 const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="w-full min-h-screen bg-space-950 text-gray-300 pt-24 pb-12 px-4">
@@ -200,56 +198,18 @@ export const CookiesPage = () => (
     </PageContainer>
 );
 
-export const SitemapPage: React.FC<{ games: GameMeta[] }> = ({ games }) => (
-    <PageContainer title="SYSTEM SITEMAP">
-        <p>Index of all active simulations, strategy guides, and informational terminals on SpaceClickerGame.com.</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-8">
-            <div>
-                <h3>Game Simulations</h3>
-                <ul className="space-y-4 list-none pl-0">
-                    {games.map(game => (
-                        <li key={game.id} className="border-b border-white/10 pb-4">
-                            <a href={`/?game=${game.id}`} className="text-xl font-bold text-neon-blue no-underline hover:underline">
-                                {game.title}
-                            </a>
-                            <p className="text-sm text-gray-400 mt-1 m-0">{game.description}</p>
-                        </li>
-                    ))}
-                </ul>
-
-                <h3 className="mt-8">Galactic Archives (Blog)</h3>
-                <ul className="space-y-2 list-none pl-0">
-                    {BLOG_POSTS.map(post => (
-                        <li key={post.slug} className="mb-2">
-                            <a href={`/?view=blog&post=${post.slug}`} className="text-gray-300 hover:text-neon-blue transition-colors flex justify-between gap-4">
-                                <span>{post.title}</span>
-                                <span className="text-xs text-gray-500 font-mono whitespace-nowrap">{post.date}</span>
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            
-            <div>
-                <h3>Information Terminals</h3>
-                <ul className="space-y-2">
-                    <li><a href="/?view=home">Home Command</a></li>
-                    <li><a href="/?view=blog">Blog Archives</a></li>
-                    <li><a href="/?view=about">About / Mission</a></li>
-                    <li><a href="/?view=contact">Contact Signals</a></li>
-                    <li><a href="/?view=privacy">Data Privacy</a></li>
-                    <li><a href="/?view=terms">Terms of Service</a></li>
-                    <li><a href="/?view=cookies">Storage Settings</a></li>
-                </ul>
-                
-                <h3 className="mt-8">External Uplinks</h3>
-                <ul className="space-y-2">
-                    <li><a href="#" rel="nofollow">Official Discord</a></li>
-                    <li><a href="#" rel="nofollow">Twitter Command</a></li>
-                    <li><a href="#" rel="nofollow">Reddit Frequencies</a></li>
-                </ul>
-            </div>
-        </div>
+export const SitemapPage = () => (
+    <PageContainer title="SITEMAP">
+        <p>Index of all accessible frequencies in the network.</p>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
+            <li><a href="?view=home" className="hover:text-neon-blue transition-colors">Home Base</a></li>
+            <li><a href="?view=game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
+            <li><a href="?view=blog" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>
+            <li><a href="?view=about" className="hover:text-neon-blue transition-colors">About Us</a></li>
+            <li><a href="?view=contact" className="hover:text-neon-blue transition-colors">Contact Command</a></li>
+            <li><a href="?view=privacy" className="hover:text-neon-blue transition-colors">Privacy Policy</a></li>
+            <li><a href="?view=terms" className="hover:text-neon-blue transition-colors">Terms of Service</a></li>
+            <li><a href="?view=cookies" className="hover:text-neon-blue transition-colors">Cookie Settings</a></li>
+        </ul>
     </PageContainer>
 );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GravitySaveData } from '../types';
 import { formatNumber } from '../utils';
@@ -509,7 +508,7 @@ const GravityIdle: React.FC = () => {
             cost = res.cost;
         } else {
             count = buyAmount;
-            cost = calculateCost(key, buyAmount);
+            cost = calculateCost(key, count);
         }
 
         if (matter >= cost && count > 0) {

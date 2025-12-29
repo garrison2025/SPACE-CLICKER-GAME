@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 
 const StarField: React.FC = () => {
@@ -26,7 +27,12 @@ const StarField: React.FC = () => {
       });
     }
 
+    let animId: number;
+    let isRunning = true;
+
     const animate = () => {
+      if (!isRunning) return;
+
       ctx.fillStyle = '#0b0d17';
       ctx.fillRect(0, 0, width, height);
 
@@ -43,10 +49,22 @@ const StarField: React.FC = () => {
         }
       });
 
-      requestAnimationFrame(animate);
+      animId = requestAnimationFrame(animate);
     };
 
-    const animId = requestAnimationFrame(animate);
+    // Optimization: Pause animation when tab is not visible
+    const handleVisibilityChange = () => {
+        if (document.hidden) {
+            isRunning = false;
+            cancelAnimationFrame(animId);
+        } else {
+            isRunning = true;
+            animate();
+        }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    animId = requestAnimationFrame(animate);
 
     const handleResize = () => {
       width = window.innerWidth;
@@ -60,6 +78,7 @@ const StarField: React.FC = () => {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 

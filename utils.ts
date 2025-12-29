@@ -30,25 +30,3 @@ export const deserializeSave = (str: string): any => {
     return null;
   }
 };
-
-export const getAllGameSaves = () => {
-    const keys = [
-        'cosmic-miner-save-v2',
-        'mars_colony_save_v2',
-        'star_defense_save_v4',
-        'merge_ships_save_v3',
-        'gravity_idle_save_v2',
-        'deep_signal_save_v3'
-    ];
-    
-    const saves: {[key: string]: any} = {};
-    keys.forEach(k => {
-        try {
-            const raw = localStorage.getItem(k);
-            if (raw) saves[k] = JSON.parse(raw);
-        } catch(e) {
-            console.error("Failed to parse save", k);
-        }
-    });
-    return saves;
-};

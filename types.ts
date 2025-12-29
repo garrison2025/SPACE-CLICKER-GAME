@@ -6,53 +6,52 @@ export enum ResourceType {
 
 export type GameId = 'galaxy_miner' | 'mars_colony' | 'star_defense' | 'merge_ships' | 'gravity_idle' | 'deep_signal';
 
-export interface BlogPost {
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string; // HTML string for rich text
-  author: string;
-  date: string;
-  lastUpdated?: string; // For SEO dateModified
-  readTime: string;
-  tags: string[];
-  relatedGameId?: GameId; // To show a "Play Now" CTA for specific games
-  image?: string; // Optional hero image URL
-}
-
 export interface GameMeta {
   id: GameId;
   title: string;
   subtitle: string;
   description: string;
-  metaDescription: string;
-  keywords: string;
-  status: 'LIVE' | 'BETA' | 'ALPHA';
-  color: string;
   icon: string;
+  color: string;
+  status: 'LIVE' | 'DEV' | 'PLANNED';
+  tags: string[];
+  // SEO Content
   briefing: string;
   manual: string;
   changelog: string[];
+}
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
   tags: string[];
-  image?: string; // Social Share Image
+  readTime: string;
+  image?: string;
 }
 
 export interface Upgrade {
   id: string;
   name: string;
-  type: 'manual' | 'auto';
+  description: string;
   baseCost: number;
-  baseProduction: number;
+  baseProduction: number; // Stardust per second
   costMultiplier: number;
   count: number;
   icon: string;
-  description: string;
+  type: 'manual' | 'auto';
 }
 
 export interface Planet {
+  id: number;
   name: string;
-  threshold: number;
-  productionMultiplier: number;
+  description: string;
+  threshold: number; // Stardust needed to unlock
+  productionMultiplier: number; // Global multiplier
   colors: {
     primary: string;
     secondary: string;
@@ -64,69 +63,34 @@ export interface PrestigeUpgrade {
   id: string;
   name: string;
   description: string;
-  cost: number;
-  maxLevel: number;
+  cost: number; // Dark Matter
+  maxLevel: number; // -1 for infinite
   effectDescription: (level: number) => string;
 }
 
-export interface Achievement {
-  id: string;
-  gameId: GameId;
-  title: string;
-  description: string;
-  xp: number;
-  condition: (saves: any) => boolean;
-}
-
 export interface GameState {
-    resources: { [key in ResourceType]: number };
-    upgrades: { [id: string]: Upgrade };
-    prestigeUpgrades: { [id: string]: number };
-    level: number;
-    planetIndex: number;
-    lifetimeEarnings: number;
+  resources: {
+    [key in ResourceType]: number;
+  };
+  totalMined: number;
+  lifetimeEarnings: number;
+  upgrades: { [id: string]: Upgrade };
+  prestigeUpgrades: { [id: string]: number }; // id -> level
+  planetIndex: number;
+  lastSaveTime: number;
+  level: number;
+  heat: number; // 0 to 100
+  overheated: boolean;
 }
 
-export interface LogEntry {
-    id: string;
-    timestamp: Date;
-    message: string;
-    type: 'info' | 'success' | 'alert';
-}
-
-export interface GlobalSettings {
-    audioMuted: boolean;
-    lowPerformance: boolean;
-}
-
-export interface FloatingText {
-    id: number;
-    x: number;
-    y: number;
-    text: string;
-    opacity: number;
-    isCrit?: boolean;
-    isDamage?: boolean;
-}
-
-export interface Particle {
-    id: number;
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    life: number;
-    color: string;
-}
-
-// Mars Colony Types
+// --- MARS COLONY TYPES ---
 export interface MarsBuilding {
     id: string;
     name: string;
     description: string;
-    cost: number;
-    energyCost: number;
-    production: { type: 'minerals' | 'energy' | 'food' | 'oxygen' | 'housing'; amount: number };
+    cost: number; // Minerals
+    energyCost: number; // Consumption per tick
+    production: { type: 'energy' | 'food' | 'oxygen' | 'housing' | 'minerals'; amount: number };
     count: number;
     icon: string;
 }
@@ -135,12 +99,12 @@ export interface MarsResourceState {
     minerals: number;
     credits: number;
     population: number;
-    energy: number;
-    food: number;
-    oxygen: number;
+    energy: { current: number; max: number; production: number; consumption: number };
+    food: { current: number; max: number; production: number };
+    oxygen: { current: number; max: number; production: number };
 }
 
-// Star Defense Types
+// --- STAR DEFENSE TYPES ---
 export interface DefenseUpgrade {
     id: string;
     name: string;
@@ -148,8 +112,8 @@ export interface DefenseUpgrade {
     cost: number;
     costMult: number;
     level: number;
-    value: number;
-    type: 'click' | 'turret' | 'shield' | 'hp' | 'utility';
+    value: number; // Damage or HP amount
+    type: 'click' | 'turret' | 'utility' | 'shield' | 'hp';
     icon: string;
 }
 
@@ -157,23 +121,23 @@ export interface Enemy {
     id: number;
     x: number;
     y: number;
-    spawnX: number;
+    spawnX: number; // Original X for movement patterns
     hp: number;
     maxHp: number;
     speed: number;
     type: 'scout' | 'fighter' | 'tank' | 'boss';
     scoreValue: number;
-    shootRate: number;
-    bossCD?: number;
-    lastShot?: number;
+    lastShot?: number; // timestamp
+    shootRate?: number; // ms
     isStunned?: boolean;
+    bossCD?: number; // Cooldown for boss abilities (frames)
 }
 
 export interface Projectile {
     id: number;
     x: number;
     y: number;
-    targetId: number | null;
+    targetId: number | null; // Null if manual click shot (straight up)
     damage: number;
     color: string;
     source: 'player' | 'enemy';
@@ -189,60 +153,87 @@ export interface PowerUp {
     life: number;
 }
 
-// Merge Ships Types
+export interface FloatingText {
+  id: number;
+  x: number;
+  y: number;
+  text: string;
+  opacity: number;
+  isCrit?: boolean;
+  isDamage?: boolean; // Small, fast fade for damage numbers
+}
+
+// --- MERGE SHIPS TYPES ---
 export interface MergeShip {
-    id: string;
-    level: number;
-    isCrate?: boolean;
+  id: string;
+  level: number;
+  isCrate?: boolean; // True if it's a mystery crate
 }
 
 export interface MergeUpgradeState {
-    orbitSlots: number;
-    shipLevel: number;
-    crateSpeed: number;
+    orbitSlots: number; // Level
+    shipLevel: number; // Level
+    crateSpeed: number; // Level
 }
 
-// Gravity Idle Types
+// --- GRAVITY IDLE TYPES ---
 export interface GravitySaveData {
     matter: number;
     upgrades: {
-        gravity: number;
-        launchers: number;
-        fireRate: number;
-        power: number;
-        pierce: number;
+        gravity: number; // Pull strength
+        launchers: number; // Number of launchers
+        fireRate: number; // Shots per second
+        power: number; // Damage
+        pierce: number; // Penetration
     };
-    lastSaveTime?: number;
+    highScore: number;
 }
 
-// Deep Signal Types
-export interface DeepSignalSaveData {
-    dataBytes: number;
-    energy: number;
-    upgrades: {
-        antenna: number;
-        processor: number;
-        battery: number;
-        solar: number;
-        ai: number;
-    };
-    factions: {
-        BIO: number;
-        TECH: number;
-        MIL: number;
-        VOID: number;
-    };
-    messages: SignalMessage[];
+export interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  color: string;
 }
 
+// --- DEEP SIGNAL TYPES ---
 export interface SignalMessage {
-    id: string;
-    timestamp: string;
-    sender: string;
-    content: string;
-    isDecoded: boolean;
-    encryptionLevel: number;
-    rewardData: number;
-    type?: 'BIO' | 'TECH' | 'MIL' | 'VOID' | 'UNKNOWN';
-    analyzed?: boolean;
+  id: string;
+  timestamp: string;
+  sender: string;
+  content: string;
+  isDecoded: boolean;
+  encryptionLevel: number; // 0-100
+  rewardData: number;
+  type?: 'BIO' | 'TECH' | 'VOID' | 'MIL';
+  analyzed?: boolean;
+}
+
+export interface DeepSignalSaveData {
+  dataBytes: number; // Currency
+  energy: number;
+  messages: SignalMessage[];
+  upgrades: {
+    antenna: number; // Range/Frequency
+    processor: number; // Decryption speed
+    battery: number; // Max energy
+    solar: number; // Energy regen
+    ai: number; // Auto scan
+  };
+  factions: {
+    BIO: number;
+    TECH: number;
+    VOID: number;
+    MIL: number;
+  };
+}
+
+export interface LogEntry {
+  id: string;
+  timestamp: Date;
+  message: string;
+  type: 'info' | 'event' | 'alert' | 'success' | 'warning';
 }

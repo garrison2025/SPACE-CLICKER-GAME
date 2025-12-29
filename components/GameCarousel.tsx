@@ -17,12 +17,11 @@ const GameCarousel: React.FC<GameCarouselProps> = ({ onSelect, activeId }) => {
           
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
              {GAMES_CATALOG.map(game => (
-                <a 
+                <div 
                    key={game.id}
-                   href={`/?game=${game.id}`}
-                   onClick={(e) => { e.preventDefault(); onSelect(game.id); }}
+                   onClick={() => onSelect(game.id)}
                    className={`
-                      flex-shrink-0 w-64 h-32 rounded-lg border relative overflow-hidden cursor-pointer group snap-start transition-all block
+                      flex-shrink-0 w-64 h-32 rounded-lg border relative overflow-hidden cursor-pointer group snap-start transition-all
                       ${activeId === game.id ? 'border-neon-blue ring-2 ring-neon-blue/20' : 'border-white/10 hover:border-white/30'}
                    `}
                 >
@@ -39,7 +38,7 @@ const GameCarousel: React.FC<GameCarouselProps> = ({ onSelect, activeId }) => {
                          <p className="text-[10px] text-gray-400 uppercase tracking-wider">{game.subtitle}</p>
                       </div>
                    </div>
-                </a>
+                </div>
              ))}
           </div>
        </div>

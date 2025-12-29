@@ -1,15 +1,75 @@
 
 import React, { useState, useEffect } from 'react';
-import { GAMES_CATALOG, BLOG_POSTS } from '../constants';
+import { GAMES_CATALOG } from '../constants';
 import { GameId } from '../types';
 import { formatNumber } from '../utils';
 
 interface LandingPageProps {
   onStart: (gameId: GameId) => void;
-  onNavigate: (view: 'blog', postId?: string) => void;
+  onNavigate: (view: any, id?: string) => void;
   hasSave?: boolean;
   heroSlot?: React.ReactNode; 
 }
+
+// --- LIGHTWEIGHT HERO PREVIEW (CSS ONLY, NO LOGIC) ---
+const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
+    return (
+        <div 
+            onClick={onStart}
+            className="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-2xl group cursor-pointer select-none"
+        >
+            {/* Background Atmosphere */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e1b4b_0%,#000_100%)]"></div>
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+            
+            {/* Animated Stars (CSS) */}
+            <div className="absolute inset-0 animate-[pulse_4s_infinite]">
+                <div className="absolute top-[20%] left-[20%] w-1 h-1 bg-white rounded-full opacity-50"></div>
+                <div className="absolute top-[70%] left-[80%] w-1 h-1 bg-white rounded-full opacity-30"></div>
+                <div className="absolute top-[40%] right-[10%] w-2 h-2 bg-blue-400 blur-sm rounded-full opacity-60"></div>
+            </div>
+
+            {/* Central Planet (CSS Animation) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64">
+                {/* Planet Body */}
+                <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-900 to-cyan-500 shadow-[0_0_50px_rgba(6,182,212,0.3)] relative overflow-hidden group-hover:scale-105 transition-transform duration-700">
+                    <div className="absolute inset-0 opacity-40 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+                    {/* Fake rotation effect */}
+                    <div className="absolute top-0 -left-[100%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 animate-[shimmer_8s_infinite_linear]"></div>
+                </div>
+                {/* Orbital Ring 1 */}
+                <div className="absolute inset-[-20%] border border-white/10 rounded-full animate-[spin_10s_linear_infinite] border-t-cyan-500/50"></div>
+                {/* Orbital Ring 2 */}
+                <div className="absolute inset-[-40%] border border-white/5 rounded-full animate-[spin_15s_linear_infinite_reverse] border-b-purple-500/50"></div>
+            </div>
+
+            {/* Floating UI Elements (Fake HUD) */}
+            <div className="absolute top-4 left-4 flex flex-col gap-1 opacity-80">
+                <div className="text-[10px] text-cyan-500 font-bold tracking-widest animate-pulse">LIVE FEED</div>
+                <div className="text-2xl font-mono text-white font-black">4,829,102 <span className="text-xs text-gray-500">SD</span></div>
+                <div className="text-xs text-green-400 font-mono">+12,400/s</div>
+            </div>
+
+            <div className="absolute bottom-4 right-4 text-right opacity-80">
+                <div className="text-[10px] text-purple-500 font-bold tracking-widest">DRONE FLEET</div>
+                <div className="text-xl font-mono text-white">ACTIVE</div>
+            </div>
+
+            {/* Central CTA Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20 group-hover:backdrop-blur-none">
+                <div className="relative">
+                    <div className="absolute inset-0 bg-neon-blue blur-xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse"></div>
+                    <button className="relative bg-space-900/90 border border-neon-blue text-neon-blue px-8 py-3 rounded text-sm md:text-base font-display font-black tracking-[0.2em] shadow-[0_0_20px_rgba(0,243,255,0.2)] group-hover:bg-neon-blue group-hover:text-black transition-all transform group-hover:scale-110">
+                        RESUME MINING
+                    </button>
+                </div>
+            </div>
+
+            {/* Scanlines */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
+        </div>
+    );
+};
 
 // --- SUB-COMPONENTS ---
 
@@ -45,7 +105,7 @@ const BrandHero = () => {
     };
 
     return (
-        <div className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-space-950">
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-space-950">
             {/* Dynamic Background */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black pointer-events-none"></div>
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
@@ -60,15 +120,16 @@ const BrandHero = () => {
                     <span className="text-xs font-mono text-neon-green tracking-widest">V.3.0 SYSTEM ONLINE</span>
                 </div>
 
-                {/* Main Title (H1) - UPDATED FOR SEO */}
-                <h1 className="text-5xl md:text-8xl lg:text-9xl font-display font-black text-white tracking-tighter leading-none drop-shadow-[0_0_50px_rgba(0,243,255,0.3)] animate-in zoom-in-50 duration-1000">
+                {/* Main Title (H1) - LCP OPTIMIZED (Removed animations) */}
+                <h1 className="text-5xl md:text-7xl lg:text-9xl font-display font-black text-white tracking-tighter leading-none drop-shadow-[0_0_50px_rgba(0,243,255,0.3)]">
                     SPACE <span className="text-transparent bg-clip-text bg-gradient-to-br from-neon-blue via-blue-500 to-purple-600">CLICKER GAME</span>
                 </h1>
 
                 {/* Subtitle - SEO OPTIMIZED */}
                 <p className="text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-                    Enter the <strong>Void Expanse</strong> Universe. <br className="hidden md:block"/>
-                    Mine resources, build colonies, and command fleets directly in your browser. <br/>
+                    Enter the <strong>Void Expanse</strong>. <br className="hidden md:block"/>
+                    Build your fleet, manage colonies, and dominate the galaxy in the ultimate browser-based idle strategy experience.
+                    <br/>
                     <span className="text-sm text-neon-blue mt-4 inline-block font-mono tracking-widest border border-neon-blue/30 px-3 py-1 rounded bg-neon-blue/5">NO DOWNLOAD • FREE TO PLAY</span>
                 </p>
 
@@ -78,7 +139,7 @@ const BrandHero = () => {
                         { label: 'Universes', val: '6+' },
                         { label: 'Active Players', val: '14k' },
                         { label: 'Price', val: 'Free' },
-                        { label: 'Platform', val: 'Web' },
+                        { label: 'Genre', val: 'Idle RPG' },
                     ].map((stat, i) => (
                         <div key={i}>
                             <div className="text-2xl md:text-3xl font-display font-bold text-white">{stat.val}</div>
@@ -104,17 +165,16 @@ const BrandHero = () => {
             
             {/* Decorative Planet */}
             <div className="absolute -bottom-64 -right-64 w-[800px] h-[800px] bg-gradient-to-tr from-purple-900/20 to-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
-        </div>
+        </section>
     );
 };
 
-// --- NEW SEO SECTION 1: Why Choose Us ---
 const WhyChooseUs = () => (
-    <div className="max-w-6xl mx-auto py-16 px-4">
+    <section className="max-w-6xl mx-auto py-16 px-4">
         <div className="text-center mb-12">
-            <h2 className="text-3xl font-display font-bold text-white mb-4">Why this is the Best <span className="text-neon-blue">Space Clicker Game</span></h2>
+            <h2 className="text-3xl font-display font-bold text-white mb-4">Why This is the Best <span className="text-neon-blue">Space Clicker Game</span></h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-                Unlike a generic <strong>space clicker game</strong> that only offers repetitive tapping, our Void Expanse engine delivers a deep, interconnected universe with strategy, automation, and discovery.
+                Unlike a generic <strong>space clicker game</strong> that only offers repetitive tapping, we deliver a deep, interconnected universe with strategy, automation, and discovery.
             </p>
         </div>
         
@@ -131,12 +191,11 @@ const WhyChooseUs = () => (
                 </div>
             ))}
         </div>
-    </div>
+    </section>
 );
 
-// --- NEW SEO SECTION 2: How to Play ---
 const HowToPlay = () => (
-    <div className="bg-space-950 border-y border-white/5 py-16 px-4">
+    <section className="bg-space-950 border-y border-white/5 py-16 px-4">
         <div className="max-w-5xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
                 <div className="w-1 h-8 bg-neon-green"></div>
@@ -175,49 +234,7 @@ const HowToPlay = () => (
                 </div>
             </div>
         </div>
-    </div>
-);
-
-// --- NEW SEO SECTION 3: Latest Intel (Blog) ---
-const LatestIntel = ({ onNavigate }: { onNavigate: (view: 'blog', postId?: string) => void }) => (
-    <div className="max-w-6xl mx-auto py-16 px-4">
-        <div className="flex items-center justify-between mb-8">
-            <div>
-                <h2 className="text-2xl font-display font-bold text-white tracking-widest uppercase">Latest Intel</h2>
-                <p className="text-gray-500 text-sm mt-1">Updates from Void Command</p>
-            </div>
-            <button 
-                onClick={() => onNavigate('blog')}
-                className="text-neon-blue hover:text-white text-sm font-bold uppercase tracking-wider flex items-center gap-2"
-            >
-                View Archive <span>→</span>
-            </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {BLOG_POSTS.slice(0, 3).map((post) => (
-                <article key={post.slug} className="group cursor-pointer" onClick={() => onNavigate('blog', post.slug)}>
-                    <div className="relative h-48 rounded-xl overflow-hidden mb-4 border border-white/10 group-hover:border-neon-blue/50 transition-colors">
-                        {post.image ? (
-                            <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-                        ) : (
-                            <div className="w-full h-full bg-space-800 flex items-center justify-center text-4xl">🚀</div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                        <div className="absolute bottom-3 left-3">
-                            <span className="text-[10px] font-bold bg-neon-blue text-black px-2 py-0.5 rounded uppercase">{post.tags[0]}</span>
-                        </div>
-                    </div>
-                    <h3 className="text-lg font-bold text-white leading-tight mb-2 group-hover:text-neon-blue transition-colors line-clamp-2">
-                        {post.title}
-                    </h3>
-                    <p className="text-sm text-gray-500 line-clamp-2">
-                        {post.excerpt}
-                    </p>
-                </article>
-            ))}
-        </div>
-    </div>
+    </section>
 );
 
 const NewsletterSection = () => {
@@ -231,7 +248,7 @@ const NewsletterSection = () => {
     };
 
     return (
-        <div className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-4xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
+        <section className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-4xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-blue to-transparent"></div>
             <div className="relative z-10">
                 <div className="text-4xl mb-4">📡</div>
@@ -261,7 +278,7 @@ const NewsletterSection = () => {
                 )}
                 <p className="text-xs text-gray-600 mt-4">No spam. Only high-priority intel.</p>
             </div>
-        </div>
+        </section>
     );
 };
 
@@ -289,9 +306,8 @@ const CommunitySection = () => (
     </div>
 );
 
-// --- UPDATED SEO ENCYCLOPEDIA SECTION ---
 const GalacticArchives = () => (
-    <div className="max-w-7xl mx-auto mt-24 border-t border-white/10 pt-16">
+    <section className="max-w-7xl mx-auto mt-24 border-t border-white/10 pt-16">
         <div className="flex items-center gap-4 mb-8">
              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
              <h2 className="text-sm font-display font-bold text-gray-400 tracking-[0.2em] uppercase">Galactic Archives // Data Logs</h2>
@@ -304,7 +320,7 @@ const GalacticArchives = () => (
                     A <strong>space clicker game</strong> (often referred to as an incremental space game) is a genre of simulation where players start with a simple manual mining laser and progressively build a galactic empire. The core appeal of a <strong>space clicker game</strong> lies in the satisfaction of watching numbers grow exponentially through strategic upgrades.
                 </p>
                 <p>
-                    Void Expanse elevates the standard <strong>space clicker game</strong> formula by integrating real-time physics, active combat modules, and a complex economy. It is not just about clicking; it is about managing a starfleet.
+                    We elevate the standard <strong>space clicker game</strong> formula by integrating real-time physics, active combat modules, and a complex economy. It is not just about clicking; it is about managing a starfleet.
                 </p>
             </div>
             <div>
@@ -327,18 +343,18 @@ const GalacticArchives = () => (
                 ))}
             </div>
         </div>
-    </div>
+    </section>
 );
 
 const TacticalDatabank = () => (
-    <div className="max-w-4xl mx-auto my-16">
+    <section className="max-w-4xl mx-auto my-16">
         <div className="text-center mb-12">
             <h2 className="text-2xl font-display font-bold text-white tracking-widest">TACTICAL DATABANK</h2>
             <p className="text-xs text-gray-500 mt-2 font-mono">FREQUENTLY REQUESTED INTEL</p>
         </div>
         <div className="grid gap-4">
             {[
-                { q: "Is this space clicker game free to play?", a: "Yes. Void Expanse is a 100% free space clicker game with no paywalls blocking your galactic progression." },
+                { q: "Is this space clicker game free to play?", a: "Yes. Our Space Clicker Game is 100% free with no paywalls blocking your galactic progression." },
                 { q: "Does the game save my progress?", a: "The system auto-saves to your local browser storage every 10 seconds, ensuring your space clicker game empire is always safe." },
                 { q: "How do I unlock new games?", a: "Currently all simulations are open for testing. Future updates to our space clicker game platform may lock them behind Galaxy Miner prestige levels." },
                 { q: "What happens when I Prestige?", a: "You reset your mining progress but gain Dark Matter, a core mechanic of any deep space clicker game that boosts production permanently." }
@@ -353,78 +369,83 @@ const TacticalDatabank = () => (
                 </div>
             ))}
         </div>
-    </div>
+    </section>
 );
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave, heroSlot }) => {
   const featuredGame = GAMES_CATALOG.find(g => g.id === 'galaxy_miner');
 
-  // Inject WebSite & FAQ Schema
+  // Inject Structured Data (Schema.org)
   useEffect(() => {
-      const scriptId = 'landing-schema';
-      if (document.getElementById(scriptId)) return;
-
-      const websiteData = {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Space Clicker Game",
-        "url": "https://spaceclickergame.com",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://spaceclickergame.com/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      };
-
-      const faqData = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "Is this space clicker game free to play?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Void Expanse is a 100% free space clicker game with no paywalls blocking your galactic progression." }
-            },
-            {
-                "@type": "Question",
-                "name": "Does the game save my progress?",
-                "acceptedAnswer": { "@type": "Answer", "text": "The system auto-saves to your local browser storage every 10 seconds, ensuring your space clicker game empire is always safe." }
-            },
-            {
-                "@type": "Question",
-                "name": "How do I unlock new games?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Currently all simulations are open for testing. Future updates to our space clicker game platform may lock them behind Galaxy Miner prestige levels." }
-            },
-            {
-                "@type": "Question",
-                "name": "What happens when I Prestige?",
-                "acceptedAnswer": { "@type": "Answer", "text": "You reset your mining progress but gain Dark Matter, a core mechanic of any deep space clicker game that boosts production permanently." }
-            }
-        ]
-      };
-
       const script = document.createElement('script');
-      script.id = scriptId;
       script.type = 'application/ld+json';
-      script.text = JSON.stringify([websiteData, faqData]);
+      
+      const structuredData = {
+          "@context": "https://schema.org",
+          "@graph": [
+              {
+                  "@type": "WebSite",
+                  "name": "Space Clicker Game",
+                  "url": "https://spaceclickergame.com",
+                  "potentialAction": {
+                      "@type": "SearchAction",
+                      "target": "https://spaceclickergame.com?search={search_term_string}",
+                      "query-input": "required name=search_term_string"
+                  }
+              },
+              {
+                  "@type": "Organization",
+                  "name": "Void Expanse Games",
+                  "url": "https://spaceclickergame.com",
+                  "logo": "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=200",
+                  "sameAs": [
+                      "https://twitter.com/spaceclicker",
+                      "https://discord.gg/spaceclicker"
+                  ]
+              },
+              {
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                      {
+                          "@type": "Question",
+                          "name": "Is this space clicker game free to play?",
+                          "acceptedAnswer": {
+                              "@type": "Answer",
+                              "text": "Yes. Our Space Clicker Game is 100% free with no paywalls blocking your galactic progression."
+                          }
+                      },
+                      {
+                          "@type": "Question",
+                          "name": "Does the game save my progress?",
+                          "acceptedAnswer": {
+                              "@type": "Answer",
+                              "text": "The system auto-saves to your local browser storage every 10 seconds, ensuring your space clicker game empire is always safe."
+                          }
+                      }
+                  ]
+              }
+          ]
+      };
+
+      script.text = JSON.stringify(structuredData);
       document.head.appendChild(script);
 
       return () => {
-          document.getElementById(scriptId)?.remove();
+          document.head.removeChild(script);
       };
   }, []);
 
   return (
     <div className="w-full flex flex-col bg-space-900 overflow-x-hidden">
       
-      {/* 1. BRAND HERO (New Top Section) */}
+      {/* 1. BRAND HERO */}
       <BrandHero />
       
       {/* 2. STATS TICKER */}
       <LiveStatsTicker />
 
-      {/* 3. ACTIVE TERMINAL (Game Console) - Moved down */}
-      <div id="console-anchor" className="w-full relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black py-24 px-4 scroll-mt-16">
+      {/* 3. ACTIVE TERMINAL */}
+      <section id="console-anchor" className="w-full relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black py-24 px-4 scroll-mt-16">
          
          <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-display font-bold text-white tracking-widest flex items-center justify-center gap-3">
@@ -438,10 +459,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
          <div className="relative z-10 w-full flex flex-col items-center">
              
              {heroSlot ? (
-                // --- EMBEDDED GAME WRAPPER (The "Console") ---
+                // If heroSlot is provided externally, render it
                 <div className="w-full animate-in fade-in zoom-in duration-700 px-4">
-                    
-                    {/* Console Header */}
+                    {heroSlot}
+                </div>
+             ) : (
+                // Default Internal Hero
+                <div className="w-full animate-in fade-in zoom-in duration-700 px-4">
                     <header className="max-w-7xl mx-auto flex justify-between items-end mb-2 px-2 opacity-80">
                          <div className="flex items-center gap-2">
                              <div className="w-1 h-4 bg-neon-blue"></div>
@@ -454,23 +478,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                          <div className="text-[10px] font-mono text-neon-blue animate-pulse">Connection: STABLE (12ms)</div>
                     </header>
 
-                    {/* The "Screen" Frame */}
                     <div className="relative max-w-[1400px] mx-auto bg-black rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10">
-                        {/* Decorative corners */}
                         <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-neon-blue"></div>
                         <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-neon-blue"></div>
                         <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-neon-blue"></div>
                         <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-neon-blue"></div>
                         
-                        {/* The Game Slot */}
                         <div className="relative overflow-hidden rounded-lg">
-                           {heroSlot}
-                           {/* Scanline Overlay */}
+                           <HolographicPreview onStart={() => onStart('galaxy_miner')} />
                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[60] bg-[length:100%_2px,3px_100%] opacity-10"></div>
                         </div>
                     </div>
                     
-                    {/* Under-Console Stats */}
                     <div className="max-w-7xl mx-auto mt-4 grid grid-cols-3 border-t border-white/10 pt-4 gap-4 text-center md:text-left">
                         <div>
                             <div className="text-[10px] text-gray-500 uppercase tracking-widest">Current Operation</div>
@@ -488,22 +507,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                         </div>
                     </div>
                 </div>
-             ) : (
-                // --- FALLBACK STATIC HERO ---
-                <div className="text-center">
-                    <button 
-                        onClick={() => onStart('galaxy_miner')}
-                        className="px-8 py-4 bg-neon-blue text-black font-bold rounded hover:bg-white transition-colors"
-                    >
-                        RETRY CONNECTION
-                    </button>
-                </div>
              )}
          </div>
-      </div>
+      </section>
 
       {/* 4. GAME CATALOG (Holographic Grid) */}
-      <div id="games-section" className="relative py-24 px-4 bg-black/40 backdrop-blur-md border-b border-white/5">
+      <section id="games-section" className="relative py-24 px-4 bg-black/40 backdrop-blur-md border-b border-white/5">
          <div className="max-w-7xl mx-auto relative z-10">
             <div className="flex items-center gap-4 mb-12">
                <div className="w-2 h-2 bg-neon-purple rounded-full shadow-[0_0_10px_purple]"></div>
@@ -517,13 +526,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                {GAMES_CATALOG.filter(g => g.id !== 'galaxy_miner').map((game) => (
                   <a 
                     key={game.id}
-                    href={`/?game=${game.id}`}
+                    href={`?view=game&id=${game.id}`}
+                    className="group relative h-64 perspective-1000 cursor-pointer block"
                     onClick={(e) => {
                         e.preventDefault();
                         if (game.status === 'LIVE') onStart(game.id);
                         else alert("Simulation constructing...");
                     }}
-                    className="group relative h-64 perspective-1000 cursor-pointer block"
                   >
                      <div className="relative h-full w-full bg-space-800/40 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 rounded-xl overflow-hidden hover:shadow-[0_0_30px_rgba(0,243,255,0.1)] hover:-translate-y-1">
                         
@@ -558,32 +567,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                ))}
             </div>
          </div>
-      </div>
+      </section>
 
-      {/* 5. LORE & SEO TEXT (Rich Layout) */}
+      {/* 5. LORE & SEO TEXT */}
       <div className="w-full bg-space-950 py-24 px-4 relative overflow-hidden">
-        {/* Background Decorative Planets */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-neon-blue/5 rounded-full blur-[80px] pointer-events-none"></div>
 
         <div className="max-w-6xl mx-auto space-y-24 relative z-10">
-            
-            {/* Why Choose Us (SEO) */}
-            <section>
-                <WhyChooseUs />
-            </section>
-
-            {/* How To Play (SEO) */}
-            <section>
-                <HowToPlay />
-            </section>
-
-            {/* Latest Intel (Blog) - SEO Internal Linking */}
-            <section>
-                <LatestIntel onNavigate={onNavigate} />
-            </section>
-
-            {/* Community & Social Proof */}
+            <WhyChooseUs />
+            <HowToPlay />
             <section>
                 <div className="flex items-center gap-4 mb-8">
                      <h2 className="text-xl font-display font-bold text-white tracking-widest">GALACTIC FEDERATION</h2>
@@ -591,21 +584,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                 </div>
                 <CommunitySection />
             </section>
-            
-            {/* Tactical Databank (FAQ) */}
-            <section>
-                <TacticalDatabank />
-            </section>
-
-            {/* Newsletter */}
-            <section>
-                <NewsletterSection />
-            </section>
-
-             {/* SEO: Galactic Archives */}
-             <section>
-                <GalacticArchives />
-            </section>
+            <TacticalDatabank />
+            <NewsletterSection />
+            <GalacticArchives />
 
             {/* Bottom CTA */}
             <section className="relative rounded-3xl overflow-hidden border border-neon-blue/30 mt-12">
@@ -624,7 +605,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                     </button>
                 </div>
             </section>
-
         </div>
       </div>
     </div>
