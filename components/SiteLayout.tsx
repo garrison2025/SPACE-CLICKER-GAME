@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Logo } from './Logo';
 
@@ -13,15 +12,21 @@ interface SiteLayoutProps {
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView }) => {
   
   // Helper to create SPA-friendly links that bots can also follow
-  const NavLink = ({ view, label, className = "" }: { view: ViewMode, label: string, className?: string }) => (
-    <a 
-      href={`?view=${view}`}
-      onClick={(e) => { e.preventDefault(); onNavigate(view); }}
-      className={`transition-colors font-bold tracking-wide text-sm ${currentView === view ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
-    >
-      {label}
-    </a>
-  );
+  const NavLink = ({ view, label, className = "" }: { view: ViewMode, label: string, className?: string }) => {
+    // Determine path based on view
+    let path = '/';
+    if (view !== 'home') path = `/${view}`;
+    
+    return (
+        <a 
+          href={path}
+          onClick={(e) => { e.preventDefault(); onNavigate(view); }}
+          className={`transition-colors font-bold tracking-wide text-sm ${currentView === view ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
+        >
+          {label}
+        </a>
+    );
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative bg-space-900 selection:bg-neon-blue selection:text-black font-sans text-gray-200">
@@ -31,7 +36,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             {/* Logo */}
             <a 
-                href="?view=home"
+                href="/"
                 onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
                 className="group hover:opacity-90 transition-opacity"
             >
@@ -94,9 +99,9 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
              <div>
                  <h4 className="font-bold text-white mb-4 tracking-wider text-xs">FEATURED GAMES</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
-                     <li><a href="?view=game&id=galaxy_miner" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
-                     <li><a href="?view=game&id=mars_colony" onClick={(e) => { e.preventDefault(); onNavigate('game', 'mars_colony'); }} className="hover:text-neon-blue transition-colors">Mars Colony Idle</a></li>
-                     <li><a href="?view=game&id=deep_signal" onClick={(e) => { e.preventDefault(); onNavigate('game', 'deep_signal'); }} className="hover:text-neon-blue transition-colors">Deep Space Signal</a></li>
+                     <li><a href="/game/galaxy_miner" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
+                     <li><a href="/game/mars_colony" onClick={(e) => { e.preventDefault(); onNavigate('game', 'mars_colony'); }} className="hover:text-neon-blue transition-colors">Mars Colony Idle</a></li>
+                     <li><a href="/game/deep_signal" onClick={(e) => { e.preventDefault(); onNavigate('game', 'deep_signal'); }} className="hover:text-neon-blue transition-colors">Deep Space Signal</a></li>
                  </ul>
              </div>
 

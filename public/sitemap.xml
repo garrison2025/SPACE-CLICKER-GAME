@@ -7,101 +7,101 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game</loc>
+    <loc>https://spaceclickergame.com/game</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog</loc>
+    <loc>https://spaceclickergame.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=about</loc>
+    <loc>https://spaceclickergame.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <!-- Games -->
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=galaxy_miner</loc>
+    <loc>https://spaceclickergame.com/game/galaxy_miner</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=mars_colony</loc>
+    <loc>https://spaceclickergame.com/game/mars_colony</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=star_defense</loc>
+    <loc>https://spaceclickergame.com/game/star_defense</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=merge_ships</loc>
+    <loc>https://spaceclickergame.com/game/merge_ships</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=gravity_idle</loc>
+    <loc>https://spaceclickergame.com/game/gravity_idle</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=game&amp;id=deep_signal</loc>
+    <loc>https://spaceclickergame.com/game/deep_signal</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Blog Posts -->
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=evolution-of-space-clicker-game-genre</loc>
+    <loc>https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=psychology-of-space-clicking-games</loc>
+    <loc>https://spaceclickergame.com/blog/psychology-of-space-clicking-games</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=mastering-the-space-bar-clicking-game</loc>
+    <loc>https://spaceclickergame.com/blog/mastering-the-space-bar-clicking-game</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=top-10-space-clicking-games-features-2025</loc>
+    <loc>https://spaceclickergame.com/blog/top-10-space-clicking-games-features-2025</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=mechanics-of-space-bar-clicking-game-physics</loc>
+    <loc>https://spaceclickergame.com/blog/mechanics-of-space-bar-clicking-game-physics</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=strategy-guide-clicker-game-space-empire</loc>
+    <loc>https://spaceclickergame.com/blog/strategy-guide-clicker-game-space-empire</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=educational-value-of-space-clicker-games</loc>
+    <loc>https://spaceclickergame.com/blog/educational-value-of-space-clicker-games</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=active-vs-passive-space-click-game-styles</loc>
+    <loc>https://spaceclickergame.com/blog/active-vs-passive-space-click-game-styles</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=narrative-design-clicker-game-space-adventure</loc>
+    <loc>https://spaceclickergame.com/blog/narrative-design-clicker-game-space-adventure</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://spaceclickergame.com/?view=blog&amp;post=ultimate-hardware-guide-space-bar-click-game</loc>
+    <loc>https://spaceclickergame.com/blog/ultimate-hardware-guide-space-bar-click-game</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

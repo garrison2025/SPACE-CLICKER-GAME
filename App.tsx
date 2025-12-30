@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, GEMINI_EVENT_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
 import StarField from './components/StarField';
@@ -55,56 +56,70 @@ const LoadingSimulation = () => (
 import StarshipConsole from './components/StarshipConsole';
 
 const App: React.FC = () => {
-  // --- ROUTING ---
-  const getInitialState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const viewParam = params.get('view');
-      const postParam = params.get('post');
-      const idParam = params.get('id');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // --- ROUTING LOGIC (Using useLocation) ---
+  const parsePath = () => {
+      const path = location.pathname;
       
-      let isValidView = true;
-      let validView: ViewMode = 'home';
-      
-      if (viewParam) {
-          if (VALID_VIEWS.includes(viewParam as ViewMode)) {
-              validView = viewParam as ViewMode;
+      let view: ViewMode = 'home';
+      let gameId: GameId = 'galaxy_miner';
+      let postId: string | null = null;
+      let error = false;
+
+      if (path === '/') {
+          view = 'home';
+      } else if (path.startsWith('/game')) {
+          view = 'game';
+          const parts = path.split('/');
+          const id = parts[2];
+          if (id && GAMES_CATALOG.some(g => g.id === id)) {
+              gameId = id as GameId;
+          } else if (id) {
+              error = true; // Invalid game ID
+          }
+      } else if (path.startsWith('/blog')) {
+          view = 'blog';
+          const parts = path.split('/');
+          const id = parts[2];
+          if (id) {
+              if (BLOG_POSTS.some(p => p.slug === id || p.id === id)) {
+                  postId = id;
+              } else {
+                  error = true;
+              }
+          }
+      } else {
+          // Check static pages
+          const cleanPath = path.substring(1) as ViewMode;
+          if (VALID_VIEWS.includes(cleanPath)) {
+              view = cleanPath;
           } else {
-              isValidView = false;
+              error = true;
           }
       }
 
-      let validGameId: GameId = 'galaxy_miner';
-      let isGameIdValid = true;
-      if (validView === 'game' && idParam) {
-          if (GAMES_CATALOG.some(g => g.id === idParam)) {
-              validGameId = idParam as GameId;
-          } else {
-              isGameIdValid = false;
-          }
-      }
-
-      let isPostIdValid = true;
-      if (validView === 'blog' && postParam) {
-          if (!BLOG_POSTS.some(p => p.slug === postParam || p.id === postParam)) {
-              isPostIdValid = false;
-          }
-      }
-
-      return { 
-          view: validView, 
-          postId: postParam, 
-          gameId: validGameId, 
-          hasError: !isValidView || !isGameIdValid || !isPostIdValid 
-      };
+      return { view, gameId, postId, error };
   };
 
-  const initialState = getInitialState();
+  const currentRoute = parsePath();
 
   // --- STATE ---
-  const [activeGame, setActiveGame] = useState<GameId>(initialState.gameId);
-  const [viewMode, setViewMode] = useState<ViewMode>(initialState.view); 
-  const [activePostId, setActivePostId] = useState<string | null>(initialState.postId);
-  const [is404, setIs404] = useState(initialState.hasError);
+  // We sync internal state with route result to avoid breaking existing logic
+  const [activeGame, setActiveGame] = useState<GameId>(currentRoute.gameId);
+  const [viewMode, setViewMode] = useState<ViewMode>(currentRoute.view); 
+  const [activePostId, setActivePostId] = useState<string | null>(currentRoute.postId);
+  const [is404, setIs404] = useState(currentRoute.error);
+
+  // Update state when URL changes
+  useEffect(() => {
+      const route = parsePath();
+      setViewMode(route.view);
+      setActiveGame(route.gameId);
+      setActivePostId(route.postId);
+      setIs404(route.error);
+  }, [location.pathname]);
   
   // Galaxy Miner State
   const [resources, setResources] = useState<{ [key in ResourceType]: number }>({
@@ -178,7 +193,6 @@ const App: React.FC = () => {
   }, [upgrades, currentPlanet, prestigeMultiplier]);
 
   // --- PASSIVE PRODUCTION LOOP ---
-  // This was missing! We need to add resources automatically based on production rate.
   useEffect(() => {
     const rate = getProductionRate();
     if (rate <= 0) return;
@@ -216,7 +230,7 @@ const App: React.FC = () => {
         if (game) {
             title = `${game.title} - Free Online Space Clicker Game`;
             desc = `${game.description}`;
-            url = `https://spaceclickergame.com?view=game&id=${game.id}`;
+            url = `https://spaceclickergame.com/game/${game.id}`;
             image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
         }
     } else if (viewMode === 'blog' && activePostId) {
@@ -224,9 +238,11 @@ const App: React.FC = () => {
         if (post) {
             title = `${post.title} | Space Clicker Game Blog`;
             desc = post.excerpt;
-            url = `https://spaceclickergame.com?view=blog&post=${post.slug}`;
+            url = `https://spaceclickergame.com/blog/${post.slug}`;
             if (post.image) image = post.image;
         }
+    } else if (viewMode !== 'home') {
+        url = `https://spaceclickergame.com/${viewMode}`;
     }
 
     document.title = title;
@@ -370,29 +386,21 @@ const App: React.FC = () => {
     }
   };
 
+  // Modern Navigation Handler (Replaces handleNavigate)
   const handleNavigate = (target: ViewMode, id?: string) => {
     setIs404(false);
-    setViewMode(target);
-    setActivePostId(id || null);
+    window.scrollTo(0, 0);
     
-    const url = new URL(window.location.href);
-    url.searchParams.set('view', target);
-    if (id) url.searchParams.set('post', id);
-    else url.searchParams.delete('post');
-    if (target === 'game') {
-        const gameId = id || activeGame;
-        url.searchParams.set('id', gameId);
-        setActiveGame(gameId as GameId); 
-    } else {
-        url.searchParams.delete('id');
-    }
-    
-    window.history.pushState({}, '', url);
-
     if (target === 'home') {
-        if (activeGame !== 'galaxy_miner') {
-            setActiveGame('galaxy_miner');
-        }
+        navigate('/');
+    } else if (target === 'game') {
+        if (id) navigate(`/game/${id}`);
+        else navigate('/game/galaxy_miner'); // Default
+    } else if (target === 'blog') {
+        if (id) navigate(`/blog/${id}`);
+        else navigate('/blog');
+    } else {
+        navigate(`/${target}`);
     }
   };
 
