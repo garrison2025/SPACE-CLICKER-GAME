@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, GEMINI_EVENT_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
@@ -177,6 +176,28 @@ const App: React.FC = () => {
     }
     return power * currentPlanet.productionMultiplier * prestigeMultiplier;
   }, [upgrades, currentPlanet, prestigeMultiplier]);
+
+  // --- PASSIVE PRODUCTION LOOP ---
+  // This was missing! We need to add resources automatically based on production rate.
+  useEffect(() => {
+    const rate = getProductionRate();
+    if (rate <= 0) return;
+
+    // Run 10 times a second for smooth number updates
+    const ticksPerSecond = 10;
+    const intervalTime = 1000 / ticksPerSecond;
+    const amountPerTick = rate / ticksPerSecond;
+
+    const timer = setInterval(() => {
+        setResources(prev => ({
+            ...prev,
+            [ResourceType.Stardust]: prev[ResourceType.Stardust] + amountPerTick
+        }));
+        setLifetimeEarnings(prev => prev + amountPerTick);
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  }, [getProductionRate]);
 
   // --- SEO DYNAMIC UPDATE ---
   useEffect(() => {
