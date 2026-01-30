@@ -16,6 +16,7 @@ import InterstellarComms from './components/InterstellarComms';
 import LandingPage from './components/LandingPage';
 import BlogPage from './components/BlogPage';
 import NotFoundPage from './components/NotFoundPage';
+import SEOHead from './components/SEOHead';
 import { AboutPage, ContactPage, PrivacyPage, TermsPage, CookiesPage, SitemapPage } from './components/InfoPages';
 import { generateSpaceEvent } from './services/geminiService';
 import { formatNumber } from './utils';
@@ -58,6 +59,29 @@ import StarshipConsole from './components/StarshipConsole';
 const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // --- LEGACY ROUTE GUARD & REDIRECTS ---
+  // This cleans up old URLs indexed by Google (e.g. /?view=game&id=...)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const legacyView = params.get('view');
+    
+    if (legacyView) {
+        let newPath = '/';
+        if (legacyView === 'game') {
+            const id = params.get('id');
+            newPath = id ? `/game/${id}` : '/game';
+        } else if (legacyView === 'blog') {
+            const post = params.get('post');
+            newPath = post ? `/blog/${post}` : '/blog';
+        } else if (VALID_VIEWS.includes(legacyView as ViewMode)) {
+            newPath = `/${legacyView}`;
+        }
+        
+        // Perform replacement redirect
+        navigate(newPath, { replace: true });
+    }
+  }, [location, navigate]);
 
   // --- ROUTING LOGIC (Using useLocation) ---
   const parsePath = () => {
@@ -106,7 +130,6 @@ const App: React.FC = () => {
   const currentRoute = parsePath();
 
   // --- STATE ---
-  // We sync internal state with route result to avoid breaking existing logic
   const [activeGame, setActiveGame] = useState<GameId>(currentRoute.gameId);
   const [viewMode, setViewMode] = useState<ViewMode>(currentRoute.view); 
   const [activePostId, setActivePostId] = useState<string | null>(currentRoute.postId);
@@ -213,57 +236,41 @@ const App: React.FC = () => {
     return () => clearInterval(timer);
   }, [getProductionRate]);
 
-  // --- SEO DYNAMIC UPDATE ---
-  useEffect(() => {
-    if (is404) {
-        document.title = "404 - Signal Lost | Space Clicker Game";
-        return;
-    }
+  // --- SEO METADATA CALCULATION ---
+  const getSEOProps = () => {
+      if (is404) {
+          return { title: "404 - Signal Lost | Space Clicker Game", desc: "Page not found.", path: location.pathname };
+      }
+      
+      let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
+      let desc = "The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.";
+      let image = DEFAULT_OG_IMAGE;
+      let type: 'website' | 'game' | 'article' = 'website';
 
-    let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
-    let desc = "The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.";
-    let url = "https://spaceclickergame.com";
-    let image = DEFAULT_OG_IMAGE;
-    
-    if (viewMode === 'game') {
-        const game = GAMES_CATALOG.find(g => g.id === activeGame);
-        if (game) {
-            title = `${game.title} - Free Online Space Clicker Game`;
-            desc = `${game.description}`;
-            url = `https://spaceclickergame.com/game/${game.id}`;
-            image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
-        }
-    } else if (viewMode === 'blog' && activePostId) {
-        const post = BLOG_POSTS.find(p => p.slug === activePostId || p.id === activePostId);
-        if (post) {
-            title = `${post.title} | Space Clicker Game Blog`;
-            desc = post.excerpt;
-            url = `https://spaceclickergame.com/blog/${post.slug}`;
-            if (post.image) image = post.image;
-        }
-    } else if (viewMode !== 'home') {
-        url = `https://spaceclickergame.com/${viewMode}`;
-    }
+      if (viewMode === 'game') {
+          const game = GAMES_CATALOG.find(g => g.id === activeGame);
+          if (game) {
+              title = `${game.title} - Free Online Space Clicker Game`;
+              desc = game.description;
+              image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
+              type = 'game';
+          }
+      } else if (viewMode === 'blog' && activePostId) {
+          const post = BLOG_POSTS.find(p => p.slug === activePostId || p.id === activePostId);
+          if (post) {
+              title = `${post.title} | Space Clicker Game Blog`;
+              desc = post.excerpt;
+              if (post.image) image = post.image;
+              type = 'article';
+          }
+      } else if (viewMode !== 'home') {
+          title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
+      }
 
-    document.title = title;
-    
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', desc);
+      return { title, description: desc, path: location.pathname, image, type };
+  };
 
-    let linkCanon = document.querySelector('link[rel="canonical"]');
-    if (!linkCanon) {
-        linkCanon = document.createElement('link');
-        linkCanon.setAttribute('rel', 'canonical');
-        document.head.appendChild(linkCanon);
-    }
-    linkCanon.setAttribute('href', url);
-
-  }, [viewMode, activeGame, activePostId, is404]);
+  const seoData = getSEOProps();
 
   // --- ACTIONS ---
   const addLog = (message: string, type: LogEntry['type'] = 'info') => {
@@ -541,51 +548,60 @@ const App: React.FC = () => {
       }
   };
 
-  if (is404) return <NotFoundPage onNavigate={handleNavigate} />;
-
-  if (viewMode === 'game') {
-      return (
-          <StarshipConsole 
-            activeGame={activeGame} 
-            onSwitchGame={(id) => handleNavigate('game', id)}
-            onGoHome={() => handleNavigate('home')}
-          >
-              <div className="w-full relative flex flex-col">
-                  <div className="relative h-[calc(100vh-theme(spacing.16))] min-h-[600px] w-full flex flex-col">
-                      <div className="flex-1 relative overflow-hidden">
-                          <Suspense fallback={<LoadingSimulation />}>
-                              {renderActiveGame()}
-                          </Suspense>
-                          <InterstellarComms activeGame={activeGame} onSwitchGame={(id) => handleNavigate('game', id)} />
-                      </div>
-                  </div>
-                  
-                  <div className="relative z-10 bg-space-950 border-t border-white/10">
-                      <SEOContent game={currentGameMeta} />
-                  </div>
-              </div>
-          </StarshipConsole>
-      );
-  }
-
+  // --- RENDER ---
   return (
-    <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
-        {viewMode === 'home' && (
-            <LandingPage 
-                onStart={(id) => handleNavigate('game', id)}
-                onNavigate={handleNavigate}
-                heroSlot={undefined} 
-            />
-        )}
+    <>
+        <SEOHead 
+            title={seoData.title}
+            description={seoData.description}
+            path={seoData.path}
+            image={seoData.image}
+            type={seoData.type}
+        />
 
-        {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
-        {viewMode === 'about' && <AboutPage />}
-        {viewMode === 'contact' && <ContactPage />}
-        {viewMode === 'privacy' && <PrivacyPage />}
-        {viewMode === 'terms' && <TermsPage />}
-        {viewMode === 'cookies' && <CookiesPage />}
-        {viewMode === 'sitemap' && <SitemapPage />}
-    </SiteLayout>
+        {is404 ? (
+            <NotFoundPage onNavigate={handleNavigate} />
+        ) : viewMode === 'game' ? (
+            <StarshipConsole 
+                activeGame={activeGame} 
+                onSwitchGame={(id) => handleNavigate('game', id)}
+                onGoHome={() => handleNavigate('home')}
+            >
+                <div className="w-full relative flex flex-col">
+                    <div className="relative h-[calc(100vh-theme(spacing.16))] min-h-[600px] w-full flex flex-col">
+                        <div className="flex-1 relative overflow-hidden">
+                            <Suspense fallback={<LoadingSimulation />}>
+                                {renderActiveGame()}
+                            </Suspense>
+                            <InterstellarComms activeGame={activeGame} onSwitchGame={(id) => handleNavigate('game', id)} />
+                        </div>
+                    </div>
+                    
+                    <div className="relative z-10 bg-space-950 border-t border-white/10">
+                        <SEOContent game={currentGameMeta} />
+                    </div>
+                </div>
+            </StarshipConsole>
+        ) : (
+            <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
+                {viewMode === 'home' && (
+                    <LandingPage 
+                        onStart={(id) => handleNavigate('game', id)}
+                        onNavigate={handleNavigate}
+                        heroSlot={undefined} 
+                    />
+                )}
+
+                {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
+                {viewMode === 'about' && <AboutPage />}
+                {viewMode === 'contact' && <ContactPage />}
+                {viewMode === 'privacy' && <PrivacyPage />}
+                {viewMode === 'terms' && <TermsPage />}
+                {viewMode === 'cookies' && <CookiesPage />}
+                {viewMode === 'sitemap' && <SitemapPage />}
+            </SiteLayout>
+        )}
+    </>
   );
 };
 

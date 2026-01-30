@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="lV7IW7WTmzZejq70aHBky0eNsr1DXKdaMXEwsRCViEY" />
     
-    <!-- SEO Optimization -->
+    <!-- SEO Optimization Fallbacks (Managed by React Helmet) -->
     <title>Space Clicker Game - Play Free Idle Mining & Strategy Online</title>
     <meta name="description" content="The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.">
     <meta name="keywords" content="space clicker game, idle mining, incremental game, browser games, galaxy miner, strategy simulation, free online games, sci-fi idle">
-    <link rel="canonical" href="https://spaceclickergame.com" />
     
     <!-- Favicon & Icons (Custom SVG Base64) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InBnIiB4MT0iMTAiIHkxPSIxMCIgeDI9IjkwIiB5Mj0iOTAiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMGYzZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxZTNhOGEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNSIgZmlsbD0idXJsKCNwZykiLz48cGF0aCBkPSJNMTUgNjUgUSA1MCA4NSA4NSA2NSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9IjAuMyIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDUwIDUwKSIvPjxwYXRoIGQ9Ik04NSA2NSBRIDUwIDQ1IDE1IDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDUwIDUwKSIvPjwvc3ZnPg==" />
@@ -26,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://images.unsplash.com">
     
-    <!-- Open Graph / Social -->
+    <!-- Open Graph / Social (Will be overwritten by Helmet) -->
     <meta property="og:title" content="Space Clicker Game - Infinite Mining Strategy" />
     <meta property="og:description" content="Start your galactic empire today. The best free to play space clicker and strategy game." />
     <meta property="og:type" content="website" />
@@ -44,6 +42,7 @@
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react-router-dom": "https://esm.sh/react-router-dom@6.22.3?external=react,react-dom",
+    "react-helmet-async": "https://esm.sh/react-helmet-async@2.0.5?external=react,react-dom",
     "@remix-run/router": "https://esm.sh/@remix-run/router@1.15.1"
   }
 }
