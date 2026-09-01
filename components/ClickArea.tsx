@@ -13,6 +13,8 @@ interface ClickAreaProps {
   overheated: boolean;
   upgrades: Upgrade[]; 
   isFlux: boolean;
+  hapticEnabled?: boolean;
+  screenShakeEnabled?: boolean;
 }
 
 interface Geode {
@@ -35,7 +37,8 @@ interface Debris {
 }
 
 const ClickArea: React.FC<ClickAreaProps> = ({ 
-  onMine, productionRate, currency, clickPower, planet, heat, overheated, upgrades, isFlux 
+  onMine, productionRate, currency, clickPower, planet, heat, overheated, upgrades, isFlux,
+  hapticEnabled = true, screenShakeEnabled = true
 }) => {
   const [clicks, setClicks] = useState<FloatingText[]>([]);
   const [debris, setDebris] = useState<Debris[]>([]); 
@@ -127,9 +130,18 @@ const ClickArea: React.FC<ClickAreaProps> = ({
     // 1. Logic Call
     const { amount, isCrit } = onMine(clientX, clientY, multiplier, isGeode);
 
+    // Haptic Feedback for Mobile Devices
+    if (hapticEnabled && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        try {
+            navigator.vibrate(isCrit || isGeode ? 25 : 8);
+        } catch {}
+    }
+
     // Shake Calculation
-    const impact = isFlux ? 10 : (isCrit ? 5 : 2);
-    setShake(prev => Math.min(prev + impact, 20));
+    if (screenShakeEnabled) {
+      const impact = isFlux ? 10 : (isCrit ? 5 : 2);
+      setShake(prev => Math.min(prev + impact, 20));
+    }
 
     // 2. Visual: Dynamic Plasma Beam
     let beamColor = '#3b82f6'; 

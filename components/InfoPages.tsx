@@ -202,14 +202,16 @@ export const SitemapPage = () => (
     <PageContainer title="SITEMAP">
         <p>Index of all accessible frequencies in the network.</p>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
-            <li><a href="?view=home" className="hover:text-neon-blue transition-colors">Home Base</a></li>
-            <li><a href="?view=game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
-            <li><a href="?view=blog" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>
-            <li><a href="?view=about" className="hover:text-neon-blue transition-colors">About Us</a></li>
-            <li><a href="?view=contact" className="hover:text-neon-blue transition-colors">Contact Command</a></li>
-            <li><a href="?view=privacy" className="hover:text-neon-blue transition-colors">Privacy Policy</a></li>
-            <li><a href="?view=terms" className="hover:text-neon-blue transition-colors">Terms of Service</a></li>
-            <li><a href="?view=cookies" className="hover:text-neon-blue transition-colors">Cookie Settings</a></li>
+            <li><a href="/" className="hover:text-neon-blue transition-colors">Home Base</a></li>
+            <li><a href="/game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
+            <li><a href="/compare" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Game Comparisons (vs Cookie Clicker)</a></li>
+            <li><a href="/achievements" className="hover:text-neon-blue transition-colors font-bold text-neon-green">Achievements & Trophy Guide</a></li>
+            <li><a href="/blog" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>
+            <li><a href="/about" className="hover:text-neon-blue transition-colors">About Us</a></li>
+            <li><a href="/contact" className="hover:text-neon-blue transition-colors">Contact Command</a></li>
+            <li><a href="/privacy" className="hover:text-neon-blue transition-colors">Privacy Policy</a></li>
+            <li><a href="/terms" className="hover:text-neon-blue transition-colors">Terms of Service</a></li>
+            <li><a href="/cookies" className="hover:text-neon-blue transition-colors">Cookie Settings</a></li>
         </ul>
     </PageContainer>
 );

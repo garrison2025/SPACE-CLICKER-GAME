@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from './Logo';
 
-export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap';
+export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements';
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -44,9 +44,11 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             </a>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
                 <NavLink view="home" label="HOME" />
                 <NavLink view="game" label="GAMES" />
+                <NavLink view="compare" label="COMPARE" />
+                <NavLink view="achievements" label="ACHIEVEMENTS" />
                 <NavLink view="blog" label="BLOG" />
                 <NavLink view="about" label="ABOUT" />
             </nav>
@@ -57,7 +59,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                     <span className="text-gray-500 text-xs">🔍</span>
                     <input type="text" placeholder="Search..." className="bg-transparent text-xs text-white focus:outline-none w-20 placeholder-gray-600" />
                 </div>
-                <button className="md:hidden text-2xl text-white">☰</button>
+                <button 
+                  onClick={() => onNavigate('compare')}
+                  className="px-3.5 py-1.5 bg-neon-blue/10 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-all rounded-full font-mono text-xs font-bold"
+                >
+                  VS IDLE GAMES
+                </button>
             </div>
         </div>
       </header>
@@ -90,6 +97,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
                      <li><NavLink view="home" label="Home Base" className="font-normal text-xs" /></li>
                      <li><NavLink view="game" label="Game Catalog" className="font-normal text-xs" /></li>
+                     <li><NavLink view="compare" label="Game Comparisons vs Cookie Clicker" className="font-normal text-xs" /></li>
+                     <li><NavLink view="achievements" label="Achievements & Trophy Guide" className="font-normal text-xs" /></li>
                      <li><NavLink view="blog" label="Mission Logs (Blog)" className="font-normal text-xs" /></li>
                      <li><NavLink view="about" label="About Us" className="font-normal text-xs" /></li>
                      <li><NavLink view="contact" label="Contact Command" className="font-normal text-xs" /></li>
@@ -99,24 +108,27 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
              <div>
                  <h4 className="font-bold text-white mb-4 tracking-wider text-xs">FEATURED GAMES</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
-                     <li><a href="/game/galaxy_miner" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
+                     <li><a href="/game/galaxy_miner" onClick={(e) => { e.preventDefault(); onNavigate('game', 'galaxy_miner'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
                      <li><a href="/game/mars_colony" onClick={(e) => { e.preventDefault(); onNavigate('game', 'mars_colony'); }} className="hover:text-neon-blue transition-colors">Mars Colony Idle</a></li>
+                     <li><a href="/game/star_defense" onClick={(e) => { e.preventDefault(); onNavigate('game', 'star_defense'); }} className="hover:text-neon-blue transition-colors">Star Defense Force</a></li>
+                     <li><a href="/game/merge_ships" onClick={(e) => { e.preventDefault(); onNavigate('game', 'merge_ships'); }} className="hover:text-neon-blue transition-colors">Merge Ships Orbit</a></li>
+                     <li><a href="/game/gravity_idle" onClick={(e) => { e.preventDefault(); onNavigate('game', 'gravity_idle'); }} className="hover:text-neon-blue transition-colors">Gravity Well Idle</a></li>
                      <li><a href="/game/deep_signal" onClick={(e) => { e.preventDefault(); onNavigate('game', 'deep_signal'); }} className="hover:text-neon-blue transition-colors">Deep Space Signal</a></li>
                  </ul>
              </div>
 
              <div>
-                 <h4 className="font-bold text-white mb-4 tracking-wider text-xs">LEGAL</h4>
+                 <h4 className="font-bold text-white mb-4 tracking-wider text-xs">LEGAL & RESOURCES</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
                      <li><NavLink view="privacy" label="Privacy Policy" className="font-normal text-xs" /></li>
                      <li><NavLink view="terms" label="Terms of Service" className="font-normal text-xs" /></li>
                      <li><NavLink view="cookies" label="Cookie Settings" className="font-normal text-xs" /></li>
-                     <li><NavLink view="sitemap" label="Sitemap" className="font-normal text-xs" /></li>
+                     <li><NavLink view="sitemap" label="HTML Sitemap" className="font-normal text-xs" /></li>
                  </ul>
              </div>
          </div>
          <div className="border-t border-white/5 pt-8 text-center text-[10px] text-gray-600 font-mono uppercase tracking-widest">
-             &copy; 2025 Space Clicker Game Network. All systems nominal.
+             &copy; 2026 Space Clicker Game Network. All systems nominal.
          </div>
       </footer>
     </div>

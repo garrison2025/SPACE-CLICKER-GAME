@@ -9,10 +9,11 @@ interface StarshipConsoleProps {
   activeGame: GameId;
   onSwitchGame: (id: GameId) => void;
   onGoHome: () => void;
+  onOpenStats?: () => void;
   children: React.ReactNode;
 }
 
-const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, children }) => {
+const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, onOpenStats, children }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
@@ -54,7 +55,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                <Logo className="w-8 h-8" />
                <div className="flex flex-col">
                   <span className="font-display font-bold text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
-                  <span className="text-[10px] text-neon-blue font-mono tracking-wider">CONSOLE V.3.0.1</span>
+                  <span className="text-[10px] text-neon-blue font-mono tracking-wider">CONSOLE V.3.1.0</span>
                </div>
             </div>
             
@@ -66,7 +67,19 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             </div>
          </div>
 
-         <div className="flex items-center gap-4">
+         <div className="flex items-center gap-3">
+            {onOpenStats && (
+              <button 
+                onClick={onOpenStats}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-neon-blue/20 border border-white/10 hover:border-neon-blue text-xs font-mono text-gray-300 hover:text-white transition-all shadow-sm"
+                title="Fleet Telemetry & Backup [S]"
+              >
+                <span>📊</span>
+                <span className="font-bold">STATS</span>
+                <span className="text-[9px] text-neon-blue hidden sm:inline">[S]</span>
+              </button>
+            )}
+
             <button 
                 onClick={() => setShowSettings(true)}
                 className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" 

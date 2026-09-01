@@ -17,8 +17,14 @@ import LandingPage from './components/LandingPage';
 import BlogPage from './components/BlogPage';
 import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
+import ComparisonPage from './components/ComparisonPage';
+import AchievementsPage from './components/AchievementsPage';
+import StatsAndSaveModal from './components/StatsAndSaveModal';
+import OfflineEarningsModal from './components/OfflineEarningsModal';
+import HotkeyOverlay from './components/HotkeyOverlay';
 import { AboutPage, ContactPage, PrivacyPage, TermsPage, CookiesPage, SitemapPage } from './components/InfoPages';
 import { generateSpaceEvent } from './services/geminiService';
+import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
 
 // --- LAZY LOAD GAMES (Code Splitting for SEO Performance) ---
@@ -44,7 +50,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap'];
+const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -165,6 +171,45 @@ const App: React.FC = () => {
   const [heat, setHeat] = useState(0);
   const [overheated, setOverheated] = useState(false);
   
+  // Telemetry & Stats State
+  const [totalClicks, setTotalClicks] = useState(0);
+  const [totalCrits, setTotalCrits] = useState(0);
+  const [cometsCaught, setCometsCaught] = useState(0);
+  const [crisesResolved, setCrisesResolved] = useState(0);
+  
+  // Modals & Settings State
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showHotkeysOverlay, setShowHotkeysOverlay] = useState(false);
+  const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => localStorage.getItem('space_haptic') !== 'false');
+  const [screenShakeEnabled, setScreenShakeEnabled] = useState<boolean>(() => localStorage.getItem('space_screenshake') !== 'false');
+  const [offlineEarnings, setOfflineEarnings] = useState<{
+    isOpen: boolean;
+    awayTimeSeconds: number;
+    earnedStardust: number;
+    productionRate: number;
+  }>({
+    isOpen: false,
+    awayTimeSeconds: 0,
+    earnedStardust: 0,
+    productionRate: 0,
+  });
+
+  const toggleHaptic = () => {
+    setHapticEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('space_haptic', String(next));
+      return next;
+    });
+  };
+
+  const toggleScreenShake = () => {
+    setScreenShakeEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('space_screenshake', String(next));
+      return next;
+    });
+  };
+
   // Flux State: Heat is in the "Goldilocks Zone" (80-99%)
   const isFlux = heat >= 80 && heat < 100 && !overheated;
 
@@ -246,6 +291,7 @@ const App: React.FC = () => {
       let desc = "The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.";
       let image = DEFAULT_OG_IMAGE;
       let type: 'website' | 'game' | 'article' = 'website';
+      let schema: any = undefined;
 
       if (viewMode === 'game') {
           const game = GAMES_CATALOG.find(g => g.id === activeGame);
@@ -254,6 +300,22 @@ const App: React.FC = () => {
               desc = game.description;
               image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
               type = 'game';
+              schema = {
+                "@context": "https://schema.org",
+                "@type": "VideoGame",
+                "name": game.title,
+                "description": game.description,
+                "genre": ["Idle", "Incremental", "Strategy", "Sci-Fi"],
+                "playMode": "SinglePlayer",
+                "applicationCategory": "Game",
+                "operatingSystem": "Any modern web browser",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD",
+                  "availability": "https://schema.org/InStock"
+                }
+              };
           }
       } else if (viewMode === 'blog' && activePostId) {
           const post = BLOG_POSTS.find(p => p.slug === activePostId || p.id === activePostId);
@@ -263,11 +325,47 @@ const App: React.FC = () => {
               if (post.image) image = post.image;
               type = 'article';
           }
-      } else if (viewMode !== 'home') {
+      } else if (viewMode === 'home') {
+          schema = {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebSite",
+                "@id": "https://spaceclickergame.com/#website",
+                "url": "https://spaceclickergame.com/",
+                "name": "Space Clicker Game",
+                "description": "Play the best space clicker and sci-fi idle incremental games online for free in your browser.",
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "Space Clicker Game Network",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://spaceclickergame.com/icon.svg"
+                  }
+                }
+              },
+              {
+                "@type": "VideoGame",
+                "@id": "https://spaceclickergame.com/#game",
+                "name": "Space Clicker Game (Cosmic Miner)",
+                "description": "The premier free-to-play space clicker game with deep prestige loops, heat flux multipliers, and Gemini AI subspace anomalies.",
+                "genre": ["Clicker", "Incremental", "Sci-Fi", "Strategy"],
+                "playMode": "SinglePlayer",
+                "applicationCategory": "Game",
+                "operatingSystem": "Browser",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                }
+              }
+            ]
+          };
+      } else if (viewMode !== 'compare' && viewMode !== 'achievements') {
           title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
       }
 
-      return { title, description: desc, path: location.pathname, image, type };
+      return { title, description: desc, path: location.pathname, image, type, schema };
   };
 
   const seoData = getSEOProps();
@@ -284,6 +382,8 @@ const App: React.FC = () => {
 
   const handleMine = (x: number, y: number, multiplier: number = 1, isGeode: boolean = false): { amount: number, isCrit: boolean } => {
     if (overheated && !isGeode) return { amount: 0, isCrit: false };
+
+    setTotalClicks(prev => prev + 1);
 
     if (isGeode) {
         setHeat(prev => Math.max(0, prev - 20));
@@ -307,6 +407,8 @@ const App: React.FC = () => {
     const fluxBonus = isFlux ? 2 : 1;
     const base = getClickPower() * multiplier * fluxBonus;
     const isCrit = Math.random() < critChance;
+    if (isCrit) setTotalCrits(prev => prev + 1);
+
     const finalAmount = isCrit ? base * critMultiplier : base;
     addResources(finalAmount);
     return { amount: finalAmount, isCrit };
@@ -322,6 +424,7 @@ const App: React.FC = () => {
   }, [heat, overheated]);
 
   const handleCometCatch = () => {
+    setCometsCaught(prev => prev + 1);
     const reward = Math.max(getProductionRate() * 300, getClickPower() * 50);
     addResources(reward);
     addLog(`COMET CAPTURED! +${formatNumber(reward)} SD`, 'success');
@@ -329,6 +432,7 @@ const App: React.FC = () => {
 
   const handleCrisisResolve = (success: boolean) => {
      if (success) {
+         setCrisesResolved(prev => prev + 1);
          const reward = getClickPower() * 200;
          addResources(reward);
          addLog(`DEFENSE SUCCESS! +${formatNumber(reward)} SD`, 'success');
@@ -337,6 +441,14 @@ const App: React.FC = () => {
          setResources(prev => ({ ...prev, [ResourceType.Stardust]: Math.max(0, prev[ResourceType.Stardust] - penalty) }));
          addLog(`DEFENSE FAILED! -${formatNumber(penalty)} SD`, 'alert');
      }
+  };
+
+  const handleClaimOfflineEarnings = () => {
+    if (offlineEarnings.earnedStardust > 0) {
+      addResources(offlineEarnings.earnedStardust);
+      addLog(`OFFLINE PROGRESS CLAIMED: +${formatNumber(offlineEarnings.earnedStardust)} SD`, 'success');
+    }
+    setOfflineEarnings(prev => ({ ...prev, isOpen: false }));
   };
 
   const handleBuyUpgrade = (id: string, amountToBuy: number = 1) => {
@@ -414,15 +526,17 @@ const App: React.FC = () => {
   // --- ROBUST SAVE SYSTEM ---
   // Use Refs to keep track of latest state without triggering re-renders or resetting intervals
   const gameStateRef = useRef({
-      resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings
+      resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
+      totalClicks, totalCrits, cometsCaught, crisesResolved
   });
 
   // Keep refs synced with state
   useEffect(() => {
       gameStateRef.current = {
-          resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings
+          resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
+          totalClicks, totalCrits, cometsCaught, crisesResolved
       };
-  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings]);
+  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings, totalClicks, totalCrits, cometsCaught, crisesResolved]);
 
   const saveGame = useCallback(() => {
       const data = gameStateRef.current;
@@ -433,7 +547,26 @@ const App: React.FC = () => {
       localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
-  // Initialize Loading
+  const handleImportSave = (data: any) => {
+      if (data.resources) setResources(data.resources);
+      if (data.upgrades) {
+          const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
+          setUpgrades(merged);
+      }
+      if (data.prestigeUpgrades) setPrestigeUpgrades(data.prestigeUpgrades);
+      if (data.level) setLevel(data.level);
+      if (data.planetIndex !== undefined) setPlanetIndex(data.planetIndex);
+      if (data.lifetimeEarnings !== undefined) setLifetimeEarnings(data.lifetimeEarnings);
+      if (data.totalClicks !== undefined) setTotalClicks(data.totalClicks);
+      if (data.totalCrits !== undefined) setTotalCrits(data.totalCrits);
+      if (data.cometsCaught !== undefined) setCometsCaught(data.cometsCaught);
+      if (data.crisesResolved !== undefined) setCrisesResolved(data.crisesResolved);
+      
+      addLog("TELEMETRY BACKUP RESTORED SUCCESSFULLY", "success");
+      saveGame();
+  };
+
+  // Initialize Loading & Offline Progress
   useEffect(() => {
       const loadGame = () => {
           const saved = localStorage.getItem(SAVE_KEY);
@@ -447,8 +580,53 @@ const App: React.FC = () => {
                   }
                   if (data.prestigeUpgrades) setPrestigeUpgrades(data.prestigeUpgrades);
                   if (data.level) setLevel(data.level);
-                  if (data.planetIndex) setPlanetIndex(data.planetIndex);
-                  if (data.lifetimeEarnings) setLifetimeEarnings(data.lifetimeEarnings);
+                  if (data.planetIndex !== undefined) setPlanetIndex(data.planetIndex);
+                  if (data.lifetimeEarnings !== undefined) setLifetimeEarnings(data.lifetimeEarnings);
+                  if (data.totalClicks !== undefined) setTotalClicks(data.totalClicks);
+                  if (data.totalCrits !== undefined) setTotalCrits(data.totalCrits);
+                  if (data.cometsCaught !== undefined) setCometsCaught(data.cometsCaught);
+                  if (data.crisesResolved !== undefined) setCrisesResolved(data.crisesResolved);
+
+                  // Calculate Offline Autonomous Progress
+                  if (data.lastSaveTime) {
+                      const now = Date.now();
+                      const elapsedSeconds = Math.floor((now - data.lastSaveTime) / 1000);
+
+                      // If offline for more than 60 seconds
+                      if (elapsedSeconds >= 60) {
+                          const cappedSecs = Math.min(elapsedSeconds, 86400); // 24hr max
+                          
+                          let baseRate = 0;
+                          const loadedUpgrades = data.upgrades || INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {});
+                          Object.values(loadedUpgrades).forEach((u: any) => {
+                            if (u.type === 'auto') {
+                               let mult = 1;
+                               if (u.count >= 25) mult *= 2;
+                               if (u.count >= 50) mult *= 2;
+                               if (u.count >= 100) mult *= 2;
+                               if (u.count >= 200) mult *= 2;
+                               if (u.count >= 500) mult *= 4;
+                               baseRate += u.baseProduction * u.count * mult;
+                            }
+                          });
+
+                          const pIndex = data.planetIndex || 0;
+                          const planetMult = PLANETS[pIndex]?.productionMultiplier || 1;
+                          const pMult = 1 + ((data.resources?.[ResourceType.DarkMatter] || 0) * 0.1);
+                          const tBoost = 1 + ((data.prestigeUpgrades?.['passive_boost'] || 0) * 0.25);
+                          const effectiveRate = baseRate * planetMult * pMult * tBoost;
+                          const totalEarned = Math.floor(cappedSecs * effectiveRate);
+
+                          if (totalEarned > 0) {
+                              setOfflineEarnings({
+                                  isOpen: true,
+                                  awayTimeSeconds: cappedSecs,
+                                  earnedStardust: totalEarned,
+                                  productionRate: effectiveRate
+                              });
+                          }
+                      }
+                  }
               } catch (e) {
                   console.error("Failed to load save", e);
               }
@@ -456,6 +634,48 @@ const App: React.FC = () => {
       };
       loadGame();
   }, []);
+
+  // Keyboard Shortcuts Listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+          const cx = window.innerWidth / 2;
+          const cy = window.innerHeight / 2;
+          handleMine(cx, cy);
+        }
+      } else if (e.key >= '1' && e.key <= '8') {
+        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+          const index = parseInt(e.key) - 1;
+          const upgradeList = Object.values(upgrades);
+          if (upgradeList[index]) {
+            handleBuyUpgrade(upgradeList[index].id, 1);
+          }
+        }
+      } else if (e.key === 'm' || e.key === 'M') {
+        const nextMute = !getMuteState();
+        toggleMute(nextMute);
+        addLog(`AUDIO ${nextMute ? 'MUTED' : 'UNMUTED'}`, 'info');
+      } else if (e.key === 'p' || e.key === 'P') {
+        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+          setShowPrestigeShop(prev => !prev);
+        }
+      } else if (e.key === 's' || e.key === 'S') {
+        setShowStatsModal(prev => !prev);
+      } else if (e.key === 'h' || e.key === 'H' || e.key === '?') {
+        setShowHotkeysOverlay(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [viewMode, activeGame, upgrades]);
 
   // Save Interval & Event Listeners
   useEffect(() => {
@@ -502,6 +722,8 @@ const App: React.FC = () => {
                               overheated={overheated}
                               upgrades={Object.values(upgrades)}
                               isFlux={isFlux}
+                              hapticEnabled={hapticEnabled}
+                              screenShakeEnabled={screenShakeEnabled}
                           />
                           <GoldenComet onCatch={handleCometCatch} />
                           <CrisisEvent onResolve={handleCrisisResolve} />
@@ -557,6 +779,49 @@ const App: React.FC = () => {
             path={seoData.path}
             image={seoData.image}
             type={seoData.type}
+            schema={seoData.schema}
+        />
+
+        {/* Global Hotkey Overlay Trigger & Modal */}
+        <HotkeyOverlay 
+            isOpen={showHotkeysOverlay}
+            onClose={() => setShowHotkeysOverlay(false)}
+            onToggle={() => setShowHotkeysOverlay(prev => !prev)}
+        />
+
+        {/* Global Player Telemetry & Save Management Modal */}
+        <StatsAndSaveModal
+            isOpen={showStatsModal}
+            onClose={() => setShowStatsModal(false)}
+            resources={resources}
+            lifetimeEarnings={lifetimeEarnings}
+            totalClicks={totalClicks}
+            totalCrits={totalCrits}
+            cometsCaught={cometsCaught}
+            crisesResolved={crisesResolved}
+            productionRate={getProductionRate()}
+            clickPower={getClickPower()}
+            currentPlanet={currentPlanet}
+            upgrades={upgrades}
+            prestigeUpgrades={prestigeUpgrades}
+            hapticEnabled={hapticEnabled}
+            onToggleHaptic={toggleHaptic}
+            screenShakeEnabled={screenShakeEnabled}
+            onToggleScreenShake={toggleScreenShake}
+            onImportSave={handleImportSave}
+            onResetGame={() => {
+                localStorage.removeItem(SAVE_KEY);
+                window.location.reload();
+            }}
+        />
+
+        {/* Offline Earnings Welcome Back Modal */}
+        <OfflineEarningsModal 
+            isOpen={offlineEarnings.isOpen}
+            awayTimeSeconds={offlineEarnings.awayTimeSeconds}
+            earnedStardust={offlineEarnings.earnedStardust}
+            productionRate={offlineEarnings.productionRate}
+            onClaim={handleClaimOfflineEarnings}
         />
 
         {is404 ? (
@@ -566,6 +831,7 @@ const App: React.FC = () => {
                 activeGame={activeGame} 
                 onSwitchGame={(id) => handleNavigate('game', id)}
                 onGoHome={() => handleNavigate('home')}
+                onOpenStats={() => setShowStatsModal(true)}
             >
                 <div className="w-full relative flex flex-col">
                     <div className="relative h-[calc(100vh-theme(spacing.16))] min-h-[600px] w-full flex flex-col">
@@ -592,6 +858,8 @@ const App: React.FC = () => {
                     />
                 )}
 
+                {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
+                {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
                 {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
                 {viewMode === 'about' && <AboutPage />}
                 {viewMode === 'contact' && <ContactPage />}
