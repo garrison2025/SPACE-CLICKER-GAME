@@ -25,7 +25,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
             {/* Background Glitch Effect */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(239,68,68,0.08)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none"></div>
             <div className="absolute inset-0 bg-red-900/10 animate-pulse pointer-events-none"></div>
 
             <div className="relative z-10 max-w-lg">

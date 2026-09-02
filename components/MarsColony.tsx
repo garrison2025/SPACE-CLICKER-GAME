@@ -277,7 +277,7 @@ const MarsColony: React.FC = () => {
     return (
         <div className="w-full h-full bg-orange-950 relative overflow-hidden flex font-sans select-none text-white">
             {/* Background */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(249,115,22,0.06)_1px,transparent_1px)] bg-[size:16px_16px] opacity-20 pointer-events-none"></div>
             
             {/* Particles Overlay */}
             <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">

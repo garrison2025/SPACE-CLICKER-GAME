@@ -464,7 +464,7 @@ const MergeShips: React.FC = () => {
              
              {/* --- SPACE VIEW --- */}
              <div className="flex-1 relative bg-black overflow-hidden border-b-2 border-neon-blue/50 group">
-                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                 <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:24px_24px] opacity-20"></div>
                  
                  {/* Boss Warning */}
                  {bossWarning && (

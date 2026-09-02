@@ -97,7 +97,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
         }}
       >
         <div className="w-full h-full bg-stone-800 rounded-full border-4 border-red-500 relative overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.8)]">
-            <div className="absolute inset-0 opacity-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+            <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_40%_40%,rgba(239,68,68,0.3),transparent)]"></div>
             <div className="absolute top-2 left-4 w-4 h-4 bg-black/40 rounded-full"></div>
             
             {/* Health Bar */}

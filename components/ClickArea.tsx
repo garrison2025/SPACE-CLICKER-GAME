@@ -385,7 +385,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
                     boxShadow: isFlux ? `0 0 100px ${planet.colors.atmosphere}, inset -10px -10px 40px rgba(0,0,0,0.8)` : `0 0 60px ${planet.colors.atmosphere}, inset -10px -10px 40px rgba(0,0,0,0.8)`
                 }}
             >
-                <div className="absolute inset-0 rounded-full opacity-60 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                <div className="absolute inset-0 rounded-full opacity-40 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent_70%)] mix-blend-overlay"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border-[2px] border-white/10 rounded-full animate-spin-slow pointer-events-none"></div>
                 
                 {/* Glow on hover/active */}

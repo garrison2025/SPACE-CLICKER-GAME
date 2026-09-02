@@ -44,7 +44,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ children, title }) => {
          className="relative w-full aspect-[4/3] md:aspect-video bg-black rounded-xl overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] group"
        >
           {/* Scanline Overlay (Visual Polish) */}
-          <div className="absolute inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-[5]"></div>
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:16px_16px] opacity-10 mix-blend-overlay z-[5]"></div>
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 via-transparent to-black/20 z-[5] rounded-xl ring-1 ring-inset ring-white/10"></div>
           
           {/* Game Content */}

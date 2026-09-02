@@ -20,7 +20,7 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
         >
             {/* Background Atmosphere */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e1b4b_0%,#000_100%)]"></div>
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(0,243,255,0.08)_1px,transparent_1px)] bg-[size:16px_16px] opacity-40 mix-blend-overlay"></div>
             
             {/* Animated Stars (CSS) */}
             <div className="absolute inset-0 animate-[pulse_4s_infinite]">
@@ -33,7 +33,7 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64">
                 {/* Planet Body */}
                 <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-900 to-cyan-500 shadow-[0_0_50px_rgba(6,182,212,0.3)] relative overflow-hidden group-hover:scale-105 transition-transform duration-700">
-                    <div className="absolute inset-0 opacity-40 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+                    <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_center,rgba(0,243,255,0.15),transparent)]"></div>
                     {/* Fake rotation effect */}
                     <div className="absolute top-0 -left-[100%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 animate-[shimmer_8s_infinite_linear]"></div>
                 </div>
@@ -108,7 +108,7 @@ const BrandHero = () => {
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-space-950">
             {/* Dynamic Background */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black pointer-events-none"></div>
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(0,243,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30 mix-blend-overlay pointer-events-none"></div>
             
             {/* Animated Grid Floor */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(0,243,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,243,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [transform:perspective(1000px)_rotateX(60deg)_translateY(-100px)_scale(2)] opacity-30 pointer-events-none"></div>
