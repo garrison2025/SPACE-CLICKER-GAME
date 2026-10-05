@@ -49,6 +49,59 @@ const routes = [
 const escapeHtml = (value) =>
   value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
+const staticRouteContent = {
+  '/': `
+    <section>
+      <h2>How to play Space Clicker</h2>
+      <ol>
+        <li>Mine Stardust manually to start the run.</li>
+        <li>Buy Mining Drones, Rovers, Bases, Orbital Stations and Dyson Swarms for automatic production.</li>
+        <li>Keep active mining between 80% and 99% Heat to use the 2x Heat Flux bonus without overheating.</li>
+        <li>Reach 1 trillion Stardust to unlock Galactic Reset and permanent Dark Matter upgrades.</li>
+      </ol>
+      <h2>Play instantly in your browser</h2>
+      <p>No account or download is required. Galaxy Miner stores supported progress locally in the current browser.</p>
+    </section>`,
+  '/game/galaxy_miner': `
+    <section>
+      <h2>Galaxy Miner gameplay</h2>
+      <p>Galaxy Miner is a browser-based space mining idle clicker. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, respond to crisis events, and reset large runs for Dark Matter.</p>
+      <h2>Permanent progression</h2>
+      <p>Galactic Reset becomes available from 1 trillion Stardust. Stardust and standard upgrades reset while Dark Matter and permanent Void Technology remain.</p>
+    </section>`,
+  '/spacebar-games': `
+    <section>
+      <h2>Choose a Spacebar mode</h2>
+      <p>Use Spacebar Clicker for an idle upgrade game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges including 1, 5, 10, 30 and 60 seconds plus a 100-click sprint.</p>
+    </section>`,
+  '/spacebar-clicker': `
+    <section>
+      <h2>Spacebar Clicker idle game</h2>
+      <p>Press Space to earn points, buy manual and automatic upgrades, watch live CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
+      <p>Holding Space does not create valid repeated presses because browser-generated key-repeat events are ignored.</p>
+    </section>`,
+  '/spacebar-clicker-2': `
+    <section>
+      <h2>Spacebar Clicker 2</h2>
+      <p>This separate enhanced mode adds Overdrive, automatic production, offline earnings, upgrades and Nova Core ascension. Its save is stored locally and separately from the classic Spacebar Clicker.</p>
+    </section>`,
+  '/spacebar-counter': `
+    <section>
+      <h2>What is a Spacebar Counter?</h2>
+      <p>This page records deliberate Space key presses without a fixed timer. It shows total presses, current CPS, average CPS, peak CPS and a local best count.</p>
+    </section>`,
+  '/spacebar-clicker-test': `
+    <section>
+      <h2>Spacebar CPS speed test</h2>
+      <p>Choose a 1, 5, 10, 30 or 60 second test, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
+    </section>`,
+  '/spacebar-clicker-unblocked': `
+    <section>
+      <h2>Instant browser Spacebar Clicker</h2>
+      <p>This page opens the Spacebar Clicker game directly with no download, launcher or account. “Unblocked” here does not mean bypassing school, workplace, parental-control, firewall or network-administrator restrictions.</p>
+    </section>`
+};
+
 const renderHtml = (route, title, description, h1) => {
   const canonical = site + (route === '/' ? '/' : route + '/');
   const isArticle = route.startsWith('/blog/');
@@ -79,7 +132,7 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p><nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-clicker-2/" style="color:#00f3ff">Spacebar Clicker 2</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
+    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${staticRouteContent[route] || ''}<nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
   );
   return html;
 };
