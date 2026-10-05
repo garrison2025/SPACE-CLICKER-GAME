@@ -70,6 +70,53 @@ if (Object.keys(blogStaticContent).length !== 10) {
   throw new Error(`Expected 10 blog posts for prerender, found ${Object.keys(blogStaticContent).length}`);
 }
 
+// Keep the lightweight runtime blog catalog in sync with the full article source
+// without importing all article bodies into the main application bundle.
+const blogMetaSourcePath = path.resolve('content/blogMeta.ts');
+if (!fs.existsSync(blogMetaSourcePath)) {
+  throw new Error('content/blogMeta.ts not found. Lightweight blog metadata cannot be verified.');
+}
+const blogMetaSourceText = fs.readFileSync(blogMetaSourcePath, 'utf8');
+const lightweightSlugMatches = [...blogMetaSourceText.matchAll(/"slug":\s*"([^"]+)"/g)]
+  .map((match) => ({ slug: match[1], index: match.index }));
+
+if (lightweightSlugMatches.length !== Object.keys(blogStaticMeta).length) {
+  throw new Error(
+    `blogMeta.ts count mismatch: expected ${Object.keys(blogStaticMeta).length}, found ${lightweightSlugMatches.length}`
+  );
+}
+
+for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
+  const { slug, index: start } = lightweightSlugMatches[index];
+  const end = index + 1 < lightweightSlugMatches.length
+    ? lightweightSlugMatches[index + 1].index
+    : blogMetaSourceText.length;
+  const chunk = blogMetaSourceText.slice(start, end);
+  const canonical = blogStaticMeta[`/blog/${slug}`];
+
+  if (!canonical) throw new Error(`blogMeta.ts contains unknown slug: ${slug}`);
+
+  const readJsonField = (field) => {
+    const match = chunk.match(new RegExp(`"${field}":\\s*"((?:\\\\"|[^"])*)"`));
+    if (!match) throw new Error(`blogMeta.ts is missing ${field} for ${slug}`);
+    return JSON.parse(`"${match[1]}"`);
+  };
+
+  const lightweight = {
+    title: readJsonField('title'),
+    description: readJsonField('excerpt'),
+    image: readJsonField('image')
+  };
+
+  for (const field of ['title', 'description', 'image']) {
+    if (lightweight[field] !== canonical[field]) {
+      throw new Error(
+        `blogMeta.ts drift for ${slug}: ${field} does not match content/blogPosts.ts`
+      );
+    }
+  }
+}
+
 const routes = [
   ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
   ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
