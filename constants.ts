@@ -137,7 +137,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>Never save up for an upgrade for more than 10-15 minutes. If an upgrade takes an hour to afford, you are playing inefficiently. You should probably Prestige (reset) instead to gain a multiplier.</p>
 
             <h4>2. Prioritize Production Multipliers</h4>
-            <p>In games like <a href="https://spaceclickergame.com">Void Expanse</a>, upgrades that say "x2 Production" are mathematically superior to linear upgrades like "+10 production" in the long run. Always hunt for the multipliers.</p>
+            <p>In games like <a href="https://spaceclickergame.com">Space Clicker Game</a>, upgrades that say "x2 Production" are mathematically superior to linear upgrades like "+10 production" in the long run. Always hunt for the multipliers.</p>
 
             <h4>3. Don't Neglect the "Click"</h4>
             <p>In a <strong>space click game</strong>, active play (using abilities, clicking golden comets) often yields 100x more resources than idling. If you have 5 minutes, play actively. If you have 5 hours, let it idle.</p>
@@ -338,7 +338,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>The Limits of Human Performance</h2>
             <p>The average human can click a mouse about 6-8 times per second (CPS). With two hands on a space bar, playing a <strong>space bar clicking game</strong>, that number can jump to 12-15 CPS.</p>
-            <p>However, sustaining this speed is exhausting. This is where the game design of <a href="https://spaceclickergame.com">Void Expanse</a> shines. We use the <strong>space bar click game</strong> mechanic as a "starter motor." You use your physical energy to jumpstart the economy, then use the resources to build automation that takes over the burden.</p>
+            <p>However, sustaining this speed is exhausting. This is where the game design of <a href="https://spaceclickergame.com">Space Clicker Game</a> shines. We use the <strong>space bar click game</strong> mechanic as a "starter motor." You use your physical energy to jumpstart the economy, then use the resources to build automation that takes over the burden.</p>
 
             <h3>Technique: The Alternating Tap</h3>
             <p>To maximize input in a <strong>space clicking game</strong> without injury, players use the "Alternating Tap" method. Place both index fingers (or index and middle of one hand) on the space bar and rock your wrist back and forth.</p>
@@ -389,7 +389,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>The rule of thumb for most <a href="https://spaceclickergame.com">Space Clicker Games</a> is to prestige when you can double your current lifetime earnings, or when the next major upgrade takes more than 4 hours to acquire.</p>
 
             <h2>Active vs. Passive Builds</h2>
-            <p>In <em>Void Expanse</em>, we offer different tech trees depending on your playstyle:</p>
+            <p>In <em>Space Clicker Game</em>, we offer different tech trees depending on your playstyle:</p>
             <ol>
                 <li><strong>The Active Tree:</strong> Focuses on "Critical Click Chance" and "Click Multipliers." This turns the title into a <strong>space bar clicking game</strong> where your interaction is the primary income source. Best for short bursts of play.</li>
                 <li><strong>The Idle Tree:</strong> Focuses on "Offline Production" and "Drone Synergy." This turns it into a true management sim. Best for players who check in once a day.</li>
