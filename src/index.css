@@ -84,3 +84,13 @@ body {
         transition-duration: 0.001ms !important;
     }
 }
+
+
+/* Mobile browser safe areas for full-screen game controls. */
+.safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-panel-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
