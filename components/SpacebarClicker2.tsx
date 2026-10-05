@@ -65,7 +65,12 @@ const sanitize = (raw: unknown): SaveData => {
   const incoming = data.upgrades && typeof data.upgrades === 'object' ? data.upgrades : {};
   const upgrades = emptyUpgrades();
   (Object.keys(upgrades) as UpgradeId[]).forEach((id) => {
-    upgrades[id] = Math.max(0, Math.floor(num((incoming as Record<string, unknown>)[id])));
+    const def = defs.find((item) => item.id === id);
+    const maxLevel = def?.max ?? 1000;
+    upgrades[id] = Math.min(
+      maxLevel,
+      Math.max(0, Math.floor(num((incoming as Record<string, unknown>)[id])))
+    );
   });
   return {
     version: SAVE_VERSION,
