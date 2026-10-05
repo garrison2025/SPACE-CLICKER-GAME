@@ -113,6 +113,7 @@ const MergeShips: React.FC = () => {
     const spawnTimerRef = useRef<number>(0);
     const fireTimersRef = useRef<number[]>([]);
     const lastUiRenderRef = useRef<number>(0);
+    const animationFrameRef = useRef<number>();
     
     const [_, setRenderTrigger] = useState(0); 
 
@@ -232,7 +233,7 @@ const MergeShips: React.FC = () => {
             life: p.life - 2 * dt
         })).filter(p => p.life > 0);
 
-        requestAnimationFrame(gameLoop);
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
         if (timestamp - lastUiRenderRef.current >= 33) {
             lastUiRenderRef.current = timestamp;
             setRenderTrigger(prev => prev + 1);
@@ -240,8 +241,14 @@ const MergeShips: React.FC = () => {
     }, [highestLevel]);
 
     useEffect(() => {
-        const frame = requestAnimationFrame(gameLoop);
-        return () => cancelAnimationFrame(frame);
+        lastTimeRef.current = 0;
+        animationFrameRef.current = requestAnimationFrame(gameLoop);
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+                animationFrameRef.current = undefined;
+            }
+        };
     }, [gameLoop]);
 
     // Crate Drop Effect
