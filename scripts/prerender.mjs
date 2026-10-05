@@ -679,6 +679,48 @@ const staticRouteContent = {
       <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
       <p>Site and policy review date: October 5, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
     </section>`,
+  '/contact': `
+    <section>
+      <h2>Contact Space Clicker Game</h2>
+      <p>Use <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a> for player support, bug reports, general feedback, advertising, sponsorship, press, or business inquiries related to SpaceClickerGame.com.</p>
+      <h2>What to include in a bug report</h2>
+      <p>For gameplay or save problems, include the game or tool name, browser, device type, the action that triggered the issue, and what you expected to happen. If the issue is reproducible, include the shortest sequence of steps that causes it.</p>
+      <h2>Privacy when contacting support</h2>
+      <p>Do not send passwords, authentication credentials, payment details, or other sensitive secrets. Current game saves are primarily stored in the local browser, so support may ask for non-sensitive information about the affected browser or exported save only when relevant.</p>
+    </section>`,
+  '/privacy': `
+    <section>
+      <h2>Local game data</h2>
+      <p>SpaceClickerGame.com is primarily a client-side browser experience. Supported games store progress, settings, local records, upgrades, and offline-progression timestamps in browser localStorage. This game-state data is not sent to a site analytics database by the current build.</p>
+      <h2>Analytics, advertising, and network requests</h2>
+      <p>The current production build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests can still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.</p>
+      <h2>Saving, exporting, and clearing data</h2>
+      <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save strings are portable text and should be treated as a backup rather than an encrypted secret.</p>
+      <h2>Security and contact</h2>
+      <p>The production site is served over HTTPS. Questions about privacy can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>. Effective date: October 5, 2026.</p>
+    </section>`,
+  '/terms': `
+    <section>
+      <h2>Use of the site</h2>
+      <p>By using SpaceClickerGame.com, you agree to use its browser games, tools, and site materials lawfully and without intentionally degrading the service for other visitors. Access is provided for personal browser use unless a separate permission or agreement applies.</p>
+      <h2>Software and content restrictions</h2>
+      <p>The site license does not transfer ownership of the games or site materials. Do not commercially redistribute game assets, attempt malicious exploitation, or operate scripts or bots designed to disrupt availability or other users' access.</p>
+      <h2>Local saves and availability</h2>
+      <p>The service is provided on an as-is basis. Browser storage can be cleared by the user, browser, device, or privacy tools, and local save loss can occur. Availability, compatibility, and uninterrupted operation are not guaranteed.</p>
+      <h2>Limitations and applicable law</h2>
+      <p>To the extent permitted by applicable law, Space Clicker Game is not responsible for indirect losses caused by use of or inability to use the site. Non-waivable consumer rights and governing law depend on the jurisdiction that legally applies. Last updated: October 5, 2026.</p>
+    </section>`,
+  '/cookies': `
+    <section>
+      <h2>LocalStorage is the main game storage</h2>
+      <p>SpaceClickerGame.com primarily uses browser localStorage for game progress, settings, offline timestamps, and local records. localStorage is different from an HTTP cookie and is used so supported games can restore progress after the tab is closed.</p>
+      <h2>Examples of functional storage</h2>
+      <p>Current game modes use local storage keys for Galaxy Miner, Spacebar Clicker, Spacebar Clicker 2, Spacebar Counter, CPS Test records, and other simulations. The exact key list can change as games are updated.</p>
+      <h2>Analytics and advertising</h2>
+      <p>The current build does not include Google Analytics, Google Tag Manager, or Google AdSense scripts. If third-party analytics or advertising services are introduced later, this notice should be updated before those services are enabled.</p>
+      <h2>Clearing site data</h2>
+      <p>Browser controls can clear cookies and local storage. Clearing local storage will remove supported local game progress unless you kept an available exported backup. Use the in-site reset controls only when you intend to remove saved progress.</p>
+    </section>`,
   '/sitemap': `
     <section>
       <h2>Games</h2>
