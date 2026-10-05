@@ -283,7 +283,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   return (
     <div 
       ref={containerRef}
-      className={`relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible touch-manipulation ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
+      className={`mining-click-area relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible touch-manipulation ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
       onPointerDown={(e) => {
         if (e.button !== 0 && e.pointerType === 'mouse') return;
         handleInteraction(e.clientX, e.clientY);
@@ -453,7 +453,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
         <div
           role="status"
           aria-live="polite"
-          className="absolute bottom-20 sm:bottom-24 z-40 pointer-events-none px-3 w-full flex justify-center"
+          className="first-run-guide absolute bottom-20 sm:bottom-24 z-40 pointer-events-none px-3 w-full flex justify-center"
         >
           <div className="max-w-md rounded-xl border border-neon-blue/35 bg-space-950/90 px-4 py-3 text-center shadow-xl backdrop-blur-sm">
             <div className="text-[10px] font-mono tracking-[0.2em] text-neon-blue">FIRST OBJECTIVE</div>
