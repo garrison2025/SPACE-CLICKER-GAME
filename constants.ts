@@ -13,7 +13,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Incremental', 'Upgrades', 'Infinite'],
     briefing: "Commander, your directive is simple: Harvest entropy. We have deployed you to Sector Zero with a standard-issue Mining Beam. Extract Stardust from local asteroids to fund the construction of automated Drone Fleets. The ultimate goal is to reach the Galactic Core, where resource density is theoretically infinite.",
     manual: "1. CLICK the central asteroid to mine Stardust.\n2. OPEN the Fabricator to purchase automated drills and drones.\n3. WARP to new sectors when you reach resource thresholds.\n4. WATCH for Golden Comets and Crisis Events.",
-    changelog: ["v2.1: Added Dark Matter tech tree.", "v2.0: Integrated Gemini AI for dynamic events.", "v1.5: Fixed warp drive visuals."]
+    changelog: ["v2.1: Added Dark Matter tech tree.", "v2.0: Added local dynamic anomaly events.", "v1.5: Fixed warp drive visuals."]
   },
   {
     id: 'mars_colony',
@@ -116,7 +116,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Why "Space" Fits the Clicker Genre Perfectly</h2>
             <p>Why are there so many <strong>space clicker games</strong> compared to, say, farming clickers? The answer lies in <em>scale</em>.</p>
-            <p>In a farming game, having 1,000,000 cows is absurd. But in a <strong>space click game</strong>, having 1,000,000 stars is just the beginning. The universe is infinite, which matches the infinite scaling of incremental numbers. When you play <a href="https://spaceclickergame.com?game=galaxy_miner">Galaxy Miner</a>, you aren't just watching a number go up; you are visualizing the conquest of the void.</p>
+            <p>In a farming game, having 1,000,000 cows is absurd. But in a <strong>space click game</strong>, having 1,000,000 stars is just the beginning. The universe is infinite, which matches the infinite scaling of incremental numbers. When you play <a href="https://spaceclickergame.com/game/galaxy_miner">Galaxy Miner</a>, you aren't just watching a number go up; you are visualizing the conquest of the void.</p>
             <p>According to <a href="https://www.nasa.gov/universe" target="_blank" rel="noopener noreferrer">NASA's universe exploration data</a>, the observable universe contains billions of galaxies. This provides endless content for developers. We can add nebulae, black holes, quasars, and alien artifacts without ever breaking immersion.</p>
 
             <h2>The Rise of the Space Bar Clicking Game</h2>
@@ -179,7 +179,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Immersion through Minimalism</h2>
             <p>Why do we prefer a <strong>space clicking game</strong> over a realistic flight simulator? Sometimes, realistic graphics add friction. In a clicker, the abstraction allows players to project their own imagination onto the numbers.</p>
-            <p>When you see "1.5 Undecillion Stardust," your brain visualizes a galactic empire more grand than any graphics card could render. This is similar to reading a book versus watching a movie. The text-based adventures in <a href="https://spaceclickergame.com?game=deep_signal">Deep Space Signal</a> rely entirely on this principle.</p>
+            <p>When you see "1.5 Undecillion Stardust," your brain visualizes a galactic empire more grand than any graphics card could render. This is similar to reading a book versus watching a movie. The text-based adventures in <a href="https://spaceclickergame.com/game/deep_signal">Deep Space Signal</a> rely entirely on this principle.</p>
 
             <h2>The "Space Bar" Phenomenon</h2>
             <p>There is a tactile satisfaction to the input. While many play with a mouse, the <strong>space bar clicking game</strong> variant appeals to our desire for physical feedback. Hitting the biggest key on the keyboard feels powerful. It mimics the "Launch" button of a rocket.</p>
@@ -192,7 +192,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>Even though most <strong>space clicking games</strong> are single-player, the community aspect is huge. Players share optimal strategies, math spreadsheets, and prestige timings.</p>
             <p>In our own community, we see commanders discussing:</p>
             <ul>
-                <li>Optimal layouts for <a href="https://spaceclickergame.com?game=mars_colony">Mars Colony</a>.</li>
+                <li>Optimal layouts for <a href="https://spaceclickergame.com/game/mars_colony">Mars Colony</a>.</li>
                 <li>The exact math behind the Dark Matter multiplier.</li>
                 <li>Speedrun strategies for the <strong>space bar click game</strong> challenges.</li>
             </ul>
@@ -282,7 +282,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Visual Fidelity in Browser Games</h2>
             <p>Gone are the days of static HTML tables. Modern <strong>space clicker games</strong> utilize WebGL and Canvas rendering to create stunning visuals.</p>
-            <p>In our flagship title, <a href="https://spaceclickergame.com?game=galaxy_miner">Galaxy Miner</a>, we use dynamic particle systems to represent every unit of Stardust collected. This visual feedback loop reinforces the mathematical gain. According to <a href="https://en.wikipedia.org/wiki/Flow_(psychology)" target="_blank" rel="noopener noreferrer">Flow Theory</a>, immediate feedback is essential for player immersion.</p>
+            <p>In our flagship title, <a href="https://spaceclickergame.com/game/galaxy_miner">Galaxy Miner</a>, we use dynamic particle systems to represent every unit of Stardust collected. This visual feedback loop reinforces the mathematical gain. According to <a href="https://en.wikipedia.org/wiki/Flow_(psychology)" target="_blank" rel="noopener noreferrer">Flow Theory</a>, immediate feedback is essential for player immersion.</p>
 
             <h3>Key Feature 2: Offline Progression (True Idle)</h3>
             <p>A defining trait of a quality <strong>space click game</strong> is respect for the player's time. We all have jobs, families, and sleep schedules. Your empire shouldn't crumble because you logged off.</p>
