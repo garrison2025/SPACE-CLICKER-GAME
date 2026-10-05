@@ -530,7 +530,7 @@ const SpacebarClickerTest: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Personal bests and recent results</h2>
             <p>
-              Each mode keeps a local personal best, and the table above stores the last 10 completed runs in this browser with clicks, elapsed time, average CPS, peak CPS, and completion time. You can clear that history whenever you want; it is not uploaded to a public leaderboard.
+              Each mode keeps a local personal best, and the table above stores the last 10 completed runs in this browser with clicks, elapsed time, average CPS, peak CPS, and completion time. You can clear that history whenever you want; it is not uploaded to a public leaderboard. Completed results can also be saved as a locally generated PNG result card.
             </p>
           </section>
 
