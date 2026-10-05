@@ -29,6 +29,17 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       });
   }, [activeGame]);
 
+  useEffect(() => {
+      if (!showSettings) return;
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === 'Escape') setShowSettings(false);
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showSettings]);
+
   const handleMuteToggle = () => {
       const newState = !isMuted;
       setIsMuted(newState);
@@ -59,8 +70,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       {/* --- TOP HUD --- */}
       <header className="h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
          <div className="flex items-center gap-4">
-            <div 
-                className="min-w-11 min-h-11 flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity"
+            <button
+                type="button"
+                aria-label="Return to Space Clicker Game home"
+                className="min-w-11 min-h-11 flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity text-left"
                 onClick={onGoHome}
             >
                <Logo className="w-8 h-8" />
@@ -72,7 +85,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                   <div className="text-[9px] text-neon-blue font-mono tracking-wider">ACTIVE SIM</div>
                   <div className="text-xs font-bold text-white truncate">{activeGameMeta?.title || 'Space Game'}</div>
                </div>
-            </div>
+            </button>
             
             <div className="hidden sm:block h-8 w-px bg-white/10 mx-2"></div>
             
@@ -84,7 +97,9 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
 
          <div className="flex items-center gap-3">
             {onOpenStats && (
-              <button 
+              <button
+                type="button"
+                aria-label="Open fleet telemetry and save tools"
                 onClick={onOpenStats}
                 className="flex items-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-neon-blue/20 border border-white/10 hover:border-neon-blue text-xs font-mono text-gray-300 hover:text-white transition-all shadow-sm"
                 title="Fleet Telemetry & Backup [S]"
@@ -95,7 +110,9 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
               </button>
             )}
 
-            <button 
+            <button
+                type="button"
+                aria-label="Open game settings"
                 onClick={() => setShowSettings(true)}
                 className="min-w-11 min-h-11 p-2 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" 
                 title="Settings"
@@ -123,10 +140,15 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       {/* --- SETTINGS MODAL --- */}
       {showSettings && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 md:backdrop-blur-sm animate-in fade-in p-3">
-              <div className="bg-space-800 w-full max-w-md max-h-[calc(100dvh-1.5rem)] border border-white/20 rounded-2xl shadow-2xl overflow-y-auto">
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="system-config-title"
+                className="bg-space-800 w-full max-w-md max-h-[calc(100dvh-1.5rem)] border border-white/20 rounded-2xl shadow-2xl overflow-y-auto"
+              >
                   <div className="p-6 border-b border-white/10 flex justify-between items-center bg-space-900">
-                      <h2 className="font-display font-bold text-xl text-white tracking-widest">SYSTEM CONFIG</h2>
-                      <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-white">✕</button>
+                      <h2 id="system-config-title" className="font-display font-bold text-xl text-white tracking-widest">SYSTEM CONFIG</h2>
+                      <button type="button" aria-label="Close game settings" onClick={() => setShowSettings(false)} className="min-w-11 min-h-11 text-gray-400 hover:text-white">✕</button>
                   </div>
                   
                   <div className="p-6 space-y-6">
@@ -137,7 +159,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                               <div className="font-bold text-white text-sm">AUDIO SYNTHESIS</div>
                               <div className="text-xs text-gray-500">Enable UI sound effects</div>
                           </div>
-                          <button 
+                          <button
+                            type="button"
+                            aria-pressed={!isMuted}
+                            aria-label={isMuted ? 'Enable game audio' : 'Mute game audio'}
                             onClick={handleMuteToggle}
                             className={`w-12 h-6 rounded-full relative transition-colors ${!isMuted ? 'bg-neon-blue' : 'bg-gray-700'}`}
                           >
