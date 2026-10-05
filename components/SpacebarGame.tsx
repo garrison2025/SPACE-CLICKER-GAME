@@ -386,6 +386,18 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
         ? window.atob(code.slice(5))
         : code;
       const parsed = JSON.parse(json);
+      const validShape =
+        parsed &&
+        typeof parsed === 'object' &&
+        parsed.upgrades &&
+        typeof parsed.upgrades === 'object' &&
+        !Array.isArray(parsed.upgrades) &&
+        Object.prototype.hasOwnProperty.call(parsed, 'quantumKeys') &&
+        Object.prototype.hasOwnProperty.call(parsed, 'lifetimePresses') &&
+        !Object.prototype.hasOwnProperty.call(parsed, 'novaCores');
+      if (!validShape) {
+        throw new Error('Wrong game or corrupted format');
+      }
       const imported = sanitizeSave(parsed);
 
       if (!window.confirm('Replace the current Spacebar Clicker save with this imported backup?')) {
