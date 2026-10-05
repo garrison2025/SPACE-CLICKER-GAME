@@ -55,7 +55,7 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(description)}" />`);
   html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" content="${isArticle ? 'article' : 'website'}" />`);
   if (isArticle) {
-    html = html.replace('</head>', '  <meta name="author" content="Space Clicker Game Editorial" />\n</head>');
+    html = html.replace('</head>', '  <meta name="author" content="SpaceClickerGame.com Editorial" />\n  <meta property="article:modified_time" content="2026-10-05T00:00:00Z" />\n</head>');
   }
   if (/<meta property="og:url"[^>]*>/i.test(html)) {
     html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${canonical}" />`);
