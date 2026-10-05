@@ -60,7 +60,7 @@ const SpacebarCounter: React.FC = () => {
       setCurrentCps(cps);
       setPeakCps((value) => Math.max(value, cps));
       if (startedAt.current !== null) setElapsedMs(now - startedAt.current);
-    }, 100);
+    }, 200);
     return () => window.clearInterval(timer);
   }, [running]);
 
