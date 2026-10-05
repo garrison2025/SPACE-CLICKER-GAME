@@ -121,8 +121,17 @@ for (const file of htmlFiles) {
 
   if (gameRoutes.has(route)) {
     const gameH2Count = (html.match(/<h2\b/gi) || []).length;
-    if (gameH2Count < 2) {
-      throw new Error(route + ': expected at least two static gameplay sections, found ' + gameH2Count);
+    const visibleText = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (gameH2Count < 4) {
+      throw new Error(route + ': expected at least four static gameplay sections, found ' + gameH2Count);
+    }
+    if (visibleText.length < 900) {
+      throw new Error(route + ': static gameplay copy is too thin (' + visibleText.length + ' chars)');
     }
   }
 
@@ -283,4 +292,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone/blog/about hubs, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone/blog/about hubs, 6 deep game summaries, 10 full blog articles.');
