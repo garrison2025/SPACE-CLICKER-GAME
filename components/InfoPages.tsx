@@ -51,7 +51,7 @@ export const AboutPage = () => (
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
-                <li>Policy / site review: October 5, 2026</li>
+                <li>Policy / site review: October 6, 2026</li>
                 <li>Game simulations in the main catalog: 6</li>
                 <li>Required paid API for gameplay: None</li>
             </ul>
