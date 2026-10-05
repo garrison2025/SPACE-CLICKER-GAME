@@ -52,9 +52,35 @@ const legacyBlog = await run('https://spaceclickergame.com/?view=blog&post=evolu
 expect(legacyBlog.status === 301, 'Legacy blog URL should redirect');
 expect(legacyBlog.headers.get('location') === 'https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/', 'Legacy blog redirect target is wrong');
 
+const supportRoutes = ['/about/', '/contact/', '/privacy/', '/terms/', '/cookies/', '/sitemap/', '/compare/', '/achievements/'];
+for (const route of supportRoutes) {
+  const response = await run('https://spaceclickergame.com' + route);
+  expect(response.status === 200, 'Known support route should pass through: ' + route);
+}
+
+const robots = await run('https://spaceclickergame.com/robots.txt');
+expect(robots.status === 200, 'robots.txt should pass through');
+
+const sitemap = await run('https://spaceclickergame.com/sitemap.xml');
+expect(sitemap.status === 200, 'sitemap.xml should pass through');
+
+const trackedHome = await run('https://spaceclickergame.com/?utm_source=test&utm_medium=qa');
+expect(trackedHome.status === 200, 'Normal tracking parameters must not break the homepage');
+
+const trackedGame = await run('https://spaceclickergame.com/game/galaxy_miner/?utm_source=test');
+expect(trackedGame.status === 200, 'Tracking parameters must not break known game routes');
+
+const invalidLegacyGame = await run('https://spaceclickergame.com/?game=not-a-real-game');
+expect(invalidLegacyGame.status === 404, 'Unknown legacy ?game URL must return HTTP 404');
+
+const invalidLegacyPost = await run('https://spaceclickergame.com/?post=not-a-real-post');
+expect(invalidLegacyPost.status === 404, 'Unknown legacy ?post URL must return HTTP 404');
+
 const missing = await run('https://spaceclickergame.com/not-a-real-route/');
 expect(missing.status === 404, 'Unknown route must return HTTP 404');
-expect((await missing.text()).includes('noindex,nofollow'), '404 HTML must include noindex');
+const missingHtml = await missing.text();
+expect(missingHtml.includes('noindex,nofollow'), '404 HTML must include noindex');
+expect(!missingHtml.includes('rel="canonical"'), '404 HTML must not canonicalize to the homepage');
 
 const invalidGame = await run('https://spaceclickergame.com/game/not-a-real-game/');
 expect(invalidGame.status === 404, 'Unknown game route must return HTTP 404');
