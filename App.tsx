@@ -734,15 +734,53 @@ const App: React.FC = () => {
     }
   };
 
+  // --- ROBUST SAVE STATE ---
+  // Keep a synchronous snapshot so critical permanent-currency actions can be persisted atomically.
+  const gameStateRef = useRef({
+      resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
+      totalClicks, totalCrits, cometsCaught, crisesResolved
+  });
+
+  useEffect(() => {
+      gameStateRef.current = {
+          resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
+          totalClicks, totalCrits, cometsCaught, crisesResolved
+      };
+  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings, totalClicks, totalCrits, cometsCaught, crisesResolved]);
+
   const handleBuyPrestige = (id: string) => {
     const u = PRESTIGE_UPGRADES.find(p => p.id === id);
-    if(!u) return;
-    const level = prestigeUpgrades[id] || 0;
-    const cost = Math.floor(u.cost * Math.pow(1.5, level));
-    if (resources[ResourceType.DarkMatter] >= cost) {
-        setResources(prev => ({...prev, [ResourceType.DarkMatter]: prev[ResourceType.DarkMatter] - cost}));
-        setPrestigeUpgrades(prev => ({...prev, [id]: level + 1}));
-    }
+    if (!u) return;
+
+    const currentLevel = prestigeUpgrades[id] || 0;
+    if (u.maxLevel !== -1 && currentLevel >= u.maxLevel) return;
+
+    const cost = Math.floor(u.cost * Math.pow(1.5, currentLevel));
+    if (resources[ResourceType.DarkMatter] < cost) return;
+
+    const nextResources = {
+      ...resources,
+      [ResourceType.DarkMatter]: resources[ResourceType.DarkMatter] - cost
+    };
+    const nextPrestigeUpgrades = {
+      ...prestigeUpgrades,
+      [id]: currentLevel + 1
+    };
+    const nextSnapshot = {
+      ...gameStateRef.current,
+      resources: nextResources,
+      prestigeUpgrades: nextPrestigeUpgrades
+    };
+
+    gameStateRef.current = nextSnapshot;
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      ...nextSnapshot,
+      version: SAVE_VERSION,
+      lastSaveTime: Date.now()
+    }));
+
+    setResources(nextResources);
+    setPrestigeUpgrades(nextPrestigeUpgrades);
   };
 
   const handlePrestigeReset = () => {
@@ -757,10 +795,28 @@ const App: React.FC = () => {
       [upgrade.id]: { ...upgrade, count: 0 }
     }), {} as { [id: string]: Upgrade });
 
-    setResources(prev => ({
+    const nextResources = {
       [ResourceType.Stardust]: 0,
-      [ResourceType.DarkMatter]: prev[ResourceType.DarkMatter] + prestigeGain
+      [ResourceType.DarkMatter]: resources[ResourceType.DarkMatter] + prestigeGain
+    };
+    const nextSnapshot = {
+      ...gameStateRef.current,
+      resources: nextResources,
+      upgrades: resetUpgrades,
+      level: 1,
+      planetIndex: 0
+    };
+
+    // Persist the permanent-currency transaction before the UI update so an immediate tab close
+    // cannot restore the pre-reset save and duplicate Dark Matter.
+    gameStateRef.current = nextSnapshot;
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      ...nextSnapshot,
+      version: SAVE_VERSION,
+      lastSaveTime: Date.now()
     }));
+
+    setResources(nextResources);
     setUpgrades(resetUpgrades);
     setLevel(1);
     setPlanetIndex(0);
@@ -806,20 +862,6 @@ const App: React.FC = () => {
   };
 
   // --- ROBUST SAVE SYSTEM ---
-  // Use Refs to keep track of latest state without triggering re-renders or resetting intervals
-  const gameStateRef = useRef({
-      resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
-      totalClicks, totalCrits, cometsCaught, crisesResolved
-  });
-
-  // Keep refs synced with state
-  useEffect(() => {
-      gameStateRef.current = {
-          resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
-          totalClicks, totalCrits, cometsCaught, crisesResolved
-      };
-  }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings, totalClicks, totalCrits, cometsCaught, crisesResolved]);
-
   const saveGame = useCallback(() => {
       const data = gameStateRef.current;
       const toSave = {
