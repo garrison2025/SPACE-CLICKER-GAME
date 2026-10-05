@@ -292,6 +292,9 @@ const staticRouteContent = {
       </ol>
       <h2>Play instantly in your browser</h2>
       <p>No account or download is required. Galaxy Miner stores supported progress locally in the current browser.</p>
+      <h2>Idle progression and mobile play</h2>
+      <p>Galaxy Miner begins with manual mining and shifts toward automated production. Returning after time away can credit up to 24 hours of saved automatic production. Touch controls work in modern mobile browsers.</p>
+      <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning.</p>
     </section>`,
   '/game/galaxy_miner': `
     <section>
