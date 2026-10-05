@@ -47,10 +47,17 @@ const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
 const MAX_SAFE_UPGRADE_COUNT = 1000;
 const MAX_SAFE_UNBOUNDED_TECH_LEVEL = 1000;
+const MAX_SAFE_RESOURCE_VALUE = 1e300;
+const MAX_SAFE_DARK_MATTER = 1e280;
+const MAX_SAFE_OFFLINE_RATE = 1e295;
 
-const finiteNonNegative = (value: unknown, fallback = 0) => {
+const finiteNonNegative = (
+    value: unknown,
+    fallback = 0,
+    max = MAX_SAFE_RESOURCE_VALUE
+) => {
     const parsed = Number(value);
-    return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
+    return Number.isFinite(parsed) ? Math.min(max, Math.max(0, parsed)) : fallback;
 };
 
 const safeNonNegativeInt = (value: unknown, fallback = 0, max = Number.MAX_SAFE_INTEGER) => {
@@ -1259,7 +1266,11 @@ const App: React.FC = () => {
 
       const nextResources = {
           [ResourceType.Stardust]: finiteNonNegative(data.resources?.[ResourceType.Stardust]),
-          [ResourceType.DarkMatter]: finiteNonNegative(data.resources?.[ResourceType.DarkMatter])
+          [ResourceType.DarkMatter]: finiteNonNegative(
+              data.resources?.[ResourceType.DarkMatter],
+              0,
+              MAX_SAFE_DARK_MATTER
+          )
       };
 
       const nextPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
@@ -1315,7 +1326,11 @@ const App: React.FC = () => {
 
           const loadedResources = {
               [ResourceType.Stardust]: finiteNonNegative(data.resources?.[ResourceType.Stardust]),
-              [ResourceType.DarkMatter]: finiteNonNegative(data.resources?.[ResourceType.DarkMatter])
+              [ResourceType.DarkMatter]: finiteNonNegative(
+                  data.resources?.[ResourceType.DarkMatter],
+                  0,
+                  MAX_SAFE_DARK_MATTER
+              )
           };
 
           const loadedUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => {
@@ -1359,8 +1374,15 @@ const App: React.FC = () => {
               const planetMult = PLANETS[nextPlanetIndex]?.productionMultiplier || 1;
               const darkMatterMult = 1 + (loadedResources[ResourceType.DarkMatter] * 0.1);
               const passiveBoost = 1 + ((loadedPrestige['passive_boost'] || 0) * 0.25);
-              effectiveRate = baseRate * planetMult * darkMatterMult * passiveBoost;
-              totalEarned = Math.floor(cappedSecs * effectiveRate);
+              effectiveRate = Math.min(
+                  MAX_SAFE_OFFLINE_RATE,
+                  baseRate * planetMult * darkMatterMult * passiveBoost
+              );
+              totalEarned = finiteNonNegative(
+                  Math.floor(cappedSecs * effectiveRate),
+                  0,
+                  MAX_SAFE_RESOURCE_VALUE
+              );
           }
 
           // Credit offline production before showing the modal. The save is written
@@ -1368,9 +1390,17 @@ const App: React.FC = () => {
           // lose the reward or award it twice.
           const creditedResources = {
               ...loadedResources,
-              [ResourceType.Stardust]: loadedResources[ResourceType.Stardust] + totalEarned
+              [ResourceType.Stardust]: finiteNonNegative(
+                  loadedResources[ResourceType.Stardust] + totalEarned,
+                  0,
+                  MAX_SAFE_RESOURCE_VALUE
+              )
           };
-          const creditedLifetime = savedLifetime + totalEarned;
+          const creditedLifetime = finiteNonNegative(
+              savedLifetime + totalEarned,
+              0,
+              MAX_SAFE_RESOURCE_VALUE
+          );
 
           const normalized = {
               resources: creditedResources,
