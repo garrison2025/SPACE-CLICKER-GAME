@@ -1425,7 +1425,7 @@ const App: React.FC = () => {
                       </div>
 
                       {showMobileShop && (
-                          <div className="absolute inset-0 z-[100] bg-black/90 md:hidden flex flex-col animate-in slide-in-from-bottom">
+                          <div className="absolute inset-0 z-[100] bg-black/90 md:hidden flex flex-col animate-in slide-in-from-bottom safe-area-panel-bottom">
                               <div className="p-4 flex justify-between items-center bg-space-800">
                                   <h2 className="font-display font-bold text-white">FABRICATOR</h2>
                                   <button onClick={() => setShowMobileShop(false)} className="text-gray-400 text-2xl">✕</button>
