@@ -573,7 +573,10 @@ const MergeShips: React.FC = () => {
                      {orbit.map((ship, i) => (
                          <div 
                             key={`orbit-${i}`}
-                            onClick={() => ship && handleShipClick(ship, i, 'orbit')}
+                            onClick={() => {
+                                if (dragging) handleDrop('orbit', i);
+                                else if (ship) handleShipClick(ship, i, 'orbit');
+                            }}
                             onDragOver={(e) => { e.preventDefault(); setDragOver({ target: 'orbit', index: i }); }}
                             onDrop={() => handleDrop('orbit', i)}
                             onDragEnter={() => setDragOver({ target: 'orbit', index: i })}
@@ -632,11 +635,26 @@ const MergeShips: React.FC = () => {
 
              {/* --- HANGAR GRID --- */}
              <div className="flex-1 bg-slate-950 p-4 relative z-10 overflow-y-auto">
+                 {dragging && (
+                     <div className="max-w-2xl mx-auto mb-3 rounded-lg border border-neon-blue/40 bg-neon-blue/10 px-3 py-2 text-xs text-neon-blue font-mono flex items-center justify-between gap-3">
+                         <span>MOVE MODE: TAP A DESTINATION SLOT</span>
+                         <button
+                             type="button"
+                             onClick={() => { setDragging(null); setDragOver(null); }}
+                             className="shrink-0 min-h-9 px-3 rounded border border-neon-blue/40 hover:bg-neon-blue hover:text-black transition-colors"
+                         >
+                             CANCEL
+                         </button>
+                     </div>
+                 )}
                  <div className="grid grid-cols-4 gap-2 md:gap-4 max-w-2xl mx-auto">
                      {hangar.map((ship, i) => (
                          <div 
                             key={`hangar-${i}`}
-                            onClick={() => ship && handleShipClick(ship, i, 'hangar')}
+                            onClick={() => {
+                                if (dragging) handleDrop('hangar', i);
+                                else if (ship) handleShipClick(ship, i, 'hangar');
+                            }}
                             onDragOver={(e) => { e.preventDefault(); setDragOver({ target: 'hangar', index: i }); }}
                             onDrop={() => handleDrop('hangar', i)}
                             onDragEnter={() => setDragOver({ target: 'hangar', index: i })}
@@ -724,16 +742,28 @@ const MergeShips: React.FC = () => {
                                  <span className="text-white">2.0/s</span>
                              </div>
                          </div>
+                         <button
+                             type="button"
+                             onClick={() => {
+                                 setDragging({ origin: selectedShip.region, index: selectedShip.index });
+                                 setSelectedShip(null);
+                                 setDragOver(null);
+                             }}
+                             className="w-full mb-3 min-h-11 py-2.5 rounded border border-neon-blue text-neon-blue font-bold hover:bg-neon-blue hover:text-black transition-colors"
+                         >
+                             MOVE / MERGE
+                         </button>
+                         <p className="text-[10px] text-gray-500 mb-3">On touch screens, choose MOVE / MERGE and then tap the destination slot.</p>
                          <div className="flex gap-2">
                              <button 
                                 onClick={() => setSelectedShip(null)}
-                                className="flex-1 py-2 bg-slate-700 text-white rounded font-bold hover:bg-slate-600"
+                                className="flex-1 min-h-11 py-2 bg-slate-700 text-white rounded font-bold hover:bg-slate-600"
                              >
                                 CLOSE
                              </button>
                              <button 
                                 onClick={sellShip}
-                                className="flex-1 py-2 bg-red-900/50 text-red-400 border border-red-900 rounded font-bold hover:bg-red-900 hover:text-white"
+                                className="flex-1 min-h-11 py-2 bg-red-900/50 text-red-400 border border-red-900 rounded font-bold hover:bg-red-900 hover:text-white"
                              >
                                 SELL (${formatNumber(Math.floor(BASE_SHIP_COST * Math.pow(2, selectedShip.ship.level - 1) * 0.5))})
                              </button>
