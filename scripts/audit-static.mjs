@@ -62,11 +62,26 @@ for (const file of htmlFiles) {
   const description = getOne(html, /<meta\s+name="description"\s+content="([^"]*)"/gi, 'meta description', route).trim();
   const canonical = getOne(html, /<link\s+rel="canonical"\s+href="([^"]+)"/gi, 'canonical', route).trim();
   const h1Count = (html.match(/<h1\b/gi) || []).length;
+  const robotsMatches = [...html.matchAll(/<meta\s+name="robots"[^>]*content="([^"]*)"/gi)];
+  const hreflangMatches = [...html.matchAll(/<link\s+rel="alternate"[^>]*href="([^"]+)"[^>]*hreflang="([^"]+)"/gi)];
 
   if (!title) throw new Error(route + ': empty title');
   if (!description) throw new Error(route + ': empty meta description');
   if (canonical !== site + route) {
     throw new Error(route + ': canonical mismatch; expected ' + site + route + ', found ' + canonical);
+  }
+  if (!/<link\s+rel="canonical"\s+data-rh="true"/i.test(html)) {
+    throw new Error(route + ': canonical is not marked for Helmet handoff');
+  }
+  if (!/<meta\s+name="description"\s+data-rh="true"/i.test(html)) {
+    throw new Error(route + ': description is not marked for Helmet handoff');
+  }
+  if (robotsMatches.length !== 1 || !/\bindex\b/i.test(robotsMatches[0][1]) || !/\bfollow\b/i.test(robotsMatches[0][1])) {
+    throw new Error(route + ': expected one index,follow robots directive');
+  }
+  const hreflangs = new Map(hreflangMatches.map((match) => [match[2].toLowerCase(), match[1]]));
+  if (hreflangs.get('en') !== canonical || hreflangs.get('x-default') !== canonical) {
+    throw new Error(route + ': en/x-default hreflang links must match canonical');
   }
   if (h1Count !== 1) {
     throw new Error(route + ': expected one prerendered H1, found ' + h1Count);
@@ -150,4 +165,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, canonical/robots/hreflang handoff, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
