@@ -37,6 +37,82 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             .map(match => match.post);
     }, [post]);
 
+    const interactiveDestinations = useMemo(() => {
+        if (!post) return [];
+
+        const defaultLinks = [
+            ['/game/galaxy_miner/', 'Galaxy Miner', 'Space idle game'],
+            ['/spacebar-games/', 'Spacebar Games', 'Choose a mode'],
+            ['/spacebar-clicker-test/', 'CPS Test', 'Measure speed'],
+            ['/compare/', 'Feature Comparison', 'Compare systems']
+        ];
+
+        const bySlug: Record<string, string[][]> = {
+            'evolution-of-space-clicker-game-genre': [
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Mining + prestige'],
+                ['/spacebar-games/', 'Spacebar Games', 'Keyboard modes'],
+                ['/compare/', 'Feature Comparison', 'Compare progression'],
+                ['/blog/strategy-guide-clicker-game-space-empire/', 'Strategy Guide', 'Upgrade math']
+            ],
+            'psychology-of-space-clicking-games': [
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Feedback loop'],
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Press + upgrade'],
+                ['/spacebar-clicker-test/', 'CPS Test', 'Short benchmark'],
+                ['/compare/', 'Feature Comparison', 'Different designs']
+            ],
+            'mastering-the-space-bar-clicking-game': [
+                ['/spacebar-clicker-test/', 'CPS Test', 'Timed speed'],
+                ['/spacebar-counter/', 'Spacebar Counter', 'Untimed total'],
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Idle progression'],
+                ['/spacebar-clicker-2/', 'Spacebar Clicker 2', 'Enhanced mode']
+            ],
+            'top-10-space-clicking-games-features-2025': [
+                ['/compare/', 'Feature Comparison', 'Compare systems'],
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Full idle loop'],
+                ['/spacebar-games/', 'Spacebar Games', 'Tool cluster'],
+                ['/blog/active-vs-passive-space-click-game-styles/', 'Active vs Passive', 'Playstyle guide']
+            ],
+            'mechanics-of-space-bar-clicking-game-physics': [
+                ['/spacebar-clicker-test/', 'CPS Test', 'Measure input'],
+                ['/spacebar-counter/', 'Spacebar Counter', 'Track presses'],
+                ['/game/gravity_idle/', 'Gravity Idle', 'Physics simulation'],
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Input + upgrades']
+            ],
+            'strategy-guide-clicker-game-space-empire': [
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Apply strategy'],
+                ['/achievements/', 'Milestones', 'Track thresholds'],
+                ['/compare/', 'Feature Comparison', 'Compare reset systems'],
+                ['/blog/active-vs-passive-space-click-game-styles/', 'Active vs Passive', 'Build styles']
+            ],
+            'educational-value-of-space-clicker-games': [
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Growth model'],
+                ['/game/gravity_idle/', 'Gravity Idle', 'Physics model'],
+                ['/game/mars_colony/', 'Mars Colony', 'Resource balance'],
+                ['/blog/strategy-guide-clicker-game-space-empire/', 'Strategy Guide', 'Payback math']
+            ],
+            'active-vs-passive-space-click-game-styles': [
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Active to idle'],
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Hybrid progression'],
+                ['/spacebar-clicker-2/', 'Spacebar Clicker 2', 'Offline + ascension'],
+                ['/achievements/', 'Milestones', 'Progress targets']
+            ],
+            'narrative-design-clicker-game-space-adventure': [
+                ['/game/deep_signal/', 'Deep Space Signal', 'Text-first game'],
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'System-driven game'],
+                ['/blog/evolution-of-space-clicker-game-genre/', 'Genre Evolution', 'Design context'],
+                ['/compare/', 'Feature Comparison', 'Compare formats']
+            ],
+            'ultimate-hardware-guide-space-bar-click-game': [
+                ['/spacebar-clicker-test/', 'CPS Test', 'Timed benchmark'],
+                ['/spacebar-counter/', 'Spacebar Counter', 'Untimed counter'],
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Progression game'],
+                ['/spacebar-games/', 'Spacebar Games', 'All modes']
+            ]
+        };
+
+        return bySlug[post.slug] || defaultLinks;
+    }, [post]);
+
     // Inject JSON-LD Structure for Article
     useEffect(() => {
         if (post) {
@@ -247,12 +323,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                     <div className="text-[10px] font-mono tracking-[0.25em] text-neon-blue mb-2">TRY THE TOOLS</div>
                                     <h3 className="text-xl font-display font-bold text-white mb-5">Continue with an interactive page</h3>
                                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                        {[
-                                            ['/spacebar-games/', 'Spacebar Games', 'Choose a mode'],
-                                            ['/spacebar-clicker/', 'Spacebar Clicker', 'Idle progression'],
-                                            ['/spacebar-clicker-test/', 'CPS Test', 'Measure speed'],
-                                            ['/game/galaxy_miner/', 'Galaxy Miner', 'Space idle game']
-                                        ].map(([href, title, detail]) => (
+                                        {interactiveDestinations.map(([href, title, detail]) => (
                                             <a
                                                 key={href}
                                                 href={href}
