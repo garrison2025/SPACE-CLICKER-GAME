@@ -20,6 +20,9 @@ expect(hub.status === 200, 'Known Spacebar games hub should pass through');
 const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
 
+const sequel = await run('https://spaceclickergame.com/spacebar-clicker-2/');
+expect(sequel.status === 200, 'Known Spacebar Clicker 2 route should pass through');
+
 const knownGame = await run('https://spaceclickergame.com/game/galaxy_miner/');
 expect(knownGame.status === 200, 'Known game route should pass through');
 
