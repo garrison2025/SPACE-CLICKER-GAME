@@ -35,7 +35,8 @@ const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
 const SpacebarGame = React.lazy(() => import('./components/SpacebarGame'));
 const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'));
-const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));\nconst SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
+const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
+const SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -1018,7 +1019,8 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
-                {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}\n                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
+                {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}
+                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
                 {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
                 {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
                 {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
