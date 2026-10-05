@@ -525,6 +525,22 @@ if (
   throw new Error('RSS items must be ordered newest publication first');
 }
 
+const headersPath = path.join(distDir, '_headers');
+if (!fs.existsSync(headersPath)) throw new Error('dist/_headers is missing');
+const headers = fs.readFileSync(headersPath, 'utf8');
+for (const required of [
+  '/assets/*',
+  'Cache-Control: public, max-age=31536000, immutable',
+  '/sitemap.xml',
+  '/feed.xml',
+  '/llms.txt',
+  '/robots.txt',
+  'Cache-Control: public, max-age=900, stale-while-revalidate=3600',
+  'Cache-Control: public, max-age=3600, stale-while-revalidate=86400'
+]) {
+  if (!headers.includes(required)) throw new Error('dist/_headers is missing required cache policy: ' + required);
+}
+
 const llmsPath = path.join(distDir, 'llms.txt');
 if (!fs.existsSync(llmsPath)) throw new Error('dist/llms.txt is missing');
 const llms = fs.readFileSync(llmsPath, 'utf8');
