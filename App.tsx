@@ -618,7 +618,7 @@ const App: React.FC = () => {
                 }
               ]
           };
-      } else if (viewMode !== 'compare' && viewMode !== 'achievements') {
+      } else {
           title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
       }
 
