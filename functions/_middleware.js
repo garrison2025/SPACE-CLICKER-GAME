@@ -93,6 +93,15 @@ const html404 = (url) => `<!doctype html>
 </body>
 </html>`;
 
+const notFoundResponse = (url) => new Response(html404(url), {
+  status: 404,
+  headers: {
+    'content-type': 'text/html; charset=UTF-8',
+    'cache-control': 'public, max-age=60',
+    'x-robots-tag': 'noindex, nofollow'
+  }
+});
+
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname;
@@ -104,26 +113,14 @@ export async function onRequest(context) {
     if (GAME_ROUTES.has(legacyGame)) {
       return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
     }
-    return new Response(html404(url), {
-      status: 404,
-      headers: {
-        'content-type': 'text/html; charset=UTF-8',
-        'cache-control': 'public, max-age=60'
-      }
-    });
+    return notFoundResponse(url);
   }
 
   if (!legacyView && legacyPost) {
     if (BLOG_ROUTES.has(legacyPost)) {
       return Response.redirect(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
     }
-    return new Response(html404(url), {
-      status: 404,
-      headers: {
-        'content-type': 'text/html; charset=UTF-8',
-        'cache-control': 'public, max-age=60'
-      }
-    });
+    return notFoundResponse(url);
   }
 
   if (legacyView) {
@@ -161,11 +158,5 @@ export async function onRequest(context) {
     return context.next();
   }
 
-  return new Response(html404(url), {
-    status: 404,
-    headers: {
-      'content-type': 'text/html; charset=UTF-8',
-      'cache-control': 'public, max-age=60'
-    }
-  });
+  return notFoundResponse(url);
 }
