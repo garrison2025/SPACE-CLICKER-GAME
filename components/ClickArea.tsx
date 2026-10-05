@@ -47,6 +47,9 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const [shake, setShake] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const planetRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const hasAnyUpgrade = upgrades.some((upgrade) => upgrade.count > 0);
+  const showFirstRunGuide = currency < 15 && productionRate <= 0 && !hasAnyUpgrade;
 
   // Safety check to prevent crash if planet data is missing
   if (!planet) return <div className="w-full h-full flex items-center justify-center text-red-500 font-mono">PLANET DATA CORRUPTED</div>;
@@ -73,9 +76,9 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
   // Passive Visuals (Automated Production)
   useEffect(() => {
-      if (productionRate <= 0) return;
+      if (productionRate <= 0 || reduceMotion) return;
       const timer = setInterval(() => {
-          if (!planetRef.current) return;
+          if (document.hidden || !planetRef.current) return;
           const rect = planetRef.current.getBoundingClientRect();
           const containerRect = containerRef.current?.getBoundingClientRect();
           // Fallback if the game viewport is hidden or not laid out yet.
@@ -106,7 +109,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
       }, 500); 
       return () => clearInterval(timer);
-  }, [productionRate, planet]);
+  }, [productionRate, planet, reduceMotion]);
 
   // Geode Spawner
   useEffect(() => {
@@ -144,7 +147,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
     }
 
     // Shake Calculation
-    if (screenShakeEnabled) {
+    if (screenShakeEnabled && !reduceMotion) {
       const impact = isFlux ? 10 : (isCrit ? 5 : 2);
       setShake(prev => Math.min(prev + impact, 20));
     }
@@ -159,15 +162,17 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
     const beamWidth = Math.max(2, (heat / 10) + (isCrit ? 10 : 0));
 
-    const newBeam = { 
-        id: Date.now() + Math.random(), 
-        x: localX, 
-        y: localY, 
-        color: beamColor,
-        width: beamWidth
-    };
-    setBeams(prev => [...prev, newBeam]);
-    setTimeout(() => setBeams(prev => prev.filter(b => b.id !== newBeam.id)), 150); 
+    if (!reduceMotion) {
+      const newBeam = { 
+          id: Date.now() + Math.random(), 
+          x: localX, 
+          y: localY, 
+          color: beamColor,
+          width: beamWidth
+      };
+      setBeams(prev => [...prev, newBeam]);
+      setTimeout(() => setBeams(prev => prev.filter(b => b.id !== newBeam.id)), 150);
+    }
 
     // 3. Visual: Floating Text
     const newClick: FloatingText = {
@@ -181,28 +186,30 @@ const ClickArea: React.FC<ClickAreaProps> = ({
     addFloatingText(newClick);
 
     // 4. Visual: Physics Debris (Gravity based)
-    const newDebris: Debris[] = [];
-    const count = isCrit || isGeode || isFlux ? 8 : 3;
-    
-    for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 5 + 2;
-      const pColor = Math.random() > 0.5 ? planet.colors.primary : beamColor;
+    if (!reduceMotion) {
+      const newDebris: Debris[] = [];
+      const count = isCrit || isGeode || isFlux ? 8 : 3;
       
-      newDebris.push({
-        id: Date.now() + Math.random() + i,
-        x: localX,
-        y: localY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 5,
-        rotation: Math.random() * 360,
-        vRot: Math.random() * 20 - 10,
-        color: pColor,
-        size: Math.random() * 6 + 2,
-        life: 1.0
-      });
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 5 + 2;
+        const pColor = Math.random() > 0.5 ? planet.colors.primary : beamColor;
+        
+        newDebris.push({
+          id: Date.now() + Math.random() + i,
+          x: localX,
+          y: localY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 5,
+          rotation: Math.random() * 360,
+          vRot: Math.random() * 20 - 10,
+          color: pColor,
+          size: Math.random() * 6 + 2,
+          life: 1.0
+        });
+      }
+      setDebris(prev => [...prev, ...newDebris]);
     }
-    setDebris(prev => [...prev, ...newDebris]);
 
      // 5. Visual: Planet Impact Flash
     if (planetRef.current) {
@@ -223,16 +230,26 @@ const ClickArea: React.FC<ClickAreaProps> = ({
       handleInteraction(e.clientX, e.clientY, 50, true);
   };
 
-  // Physics Loop for Debris
+  // Run the debris animation only while particles actually exist.
+  // This avoids a permanent 60fps requestAnimationFrame loop while the game is idle.
+  const hasDebris = debris.length > 0;
   useEffect(() => {
-    let frameId: number;
+    if (!hasDebris || reduceMotion) return;
+
+    let frameId = 0;
     const gravity = 0.5;
     const friction = 0.98;
 
     const update = () => {
+        if (document.hidden) {
+            frameId = requestAnimationFrame(update);
+            return;
+        }
+
+        let particlesRemain = false;
         setDebris(prev => {
             if (prev.length === 0) return prev;
-            return prev.map(p => ({
+            const next = prev.map(p => ({
                 ...p,
                 x: p.x + p.vx,
                 y: p.y + p.vy,
@@ -241,12 +258,16 @@ const ClickArea: React.FC<ClickAreaProps> = ({
                 rotation: p.rotation + p.vRot,
                 life: p.life - 0.02
             })).filter(p => p.life > 0);
+            particlesRemain = next.length > 0;
+            return next;
         });
-        frameId = requestAnimationFrame(update);
+
+        if (particlesRemain) frameId = requestAnimationFrame(update);
     };
-    update();
+
+    frameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(frameId);
-  }, []);
+  }, [hasDebris, reduceMotion]);
 
   // Orbiters Logic
   const droneCount = Math.min(upgrades.find(u => u.id === 'drone')?.count || 0, 8);
@@ -427,6 +448,20 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             />
           ))}
       </div>
+
+      {showFirstRunGuide && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="absolute bottom-20 sm:bottom-24 z-40 pointer-events-none px-3 w-full flex justify-center"
+        >
+          <div className="max-w-md rounded-xl border border-neon-blue/35 bg-space-950/90 px-4 py-3 text-center shadow-xl backdrop-blur-sm">
+            <div className="text-[10px] font-mono tracking-[0.2em] text-neon-blue">FIRST OBJECTIVE</div>
+            <div className="mt-1 text-sm font-bold text-white">Tap the mining field or press Space to mine Stardust.</div>
+            <div className="mt-1 text-[11px] text-gray-400">Reach 15 SD for your first Laser Drill. Heat from 80–99% activates 2× Flux.</div>
+          </div>
+        </div>
+      )}
 
       {/* Floating Text - Rendered OUTSIDE shake container to ensure fixed positioning works */}
       {clicks.map(click => (
