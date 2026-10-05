@@ -3,6 +3,13 @@ import React from 'react';
 const SpacebarGamesPage: React.FC = () => {
   const games = [
     {
+      href: '/spacebar-clicker-2/',
+      title: 'Spacebar Clicker 2',
+      badge: 'OVERDRIVE EDITION',
+      description: 'A separate enhanced edition with Overdrive surges, stronger automation, offline earnings and Nova Core ascension.',
+      bestFor: 'A deeper second progression loop'
+    },
+    {
       href: '/spacebar-clicker/',
       title: 'Spacebar Clicker',
       badge: 'IDLE / INCREMENTAL',
