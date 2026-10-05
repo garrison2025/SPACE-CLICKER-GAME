@@ -44,7 +44,10 @@ const StarDefense: React.FC = () => {
     const [comboTimer, setComboTimer] = useState(0); // For UI bar
     
     const [skillCooldowns, setSkillCooldowns] = useState<{[key:string]: number}>({});
-    const [activeEffects, setActiveEffects] = useState<{[key:string]: number}>({}); 
+    const [activeEffects, setActiveEffects] = useState<{[key:string]: number}>({});
+    const skillCooldownsRef = useRef<{[key:string]: number}>({});
+    const activeEffectsRef = useRef<{[key:string]: number}>({});
+    const lastStatusSyncRef = useRef(0); 
     
     const [upgrades, setUpgrades] = useState<DefenseUpgrade[]>(INITIAL_UPGRADES);
     const saveStateRef = useRef({ scraps, wave, upgrades });
@@ -75,7 +78,6 @@ const StarDefense: React.FC = () => {
     const maxShield = (upgrades.find(u => u.id === 'shield_gen')?.level || 0) * (upgrades.find(u => u.id === 'shield_gen')?.value || 50);
     const baseClickDamage = (upgrades.find(u => u.id === 'blaster')?.value || 10) * (1 + (upgrades.find(u => u.id === 'blaster')?.level || 1) * 0.2);
     
-    const clickDamage = activeEffects['rapid'] > 0 ? baseClickDamage * 2 : activeEffects['double_damage'] > 0 ? baseClickDamage * 2 : baseClickDamage;
     const comboMultiplier = 1 + (combo * 0.1);
 
     // --- GAME LOOP ---
@@ -105,29 +107,25 @@ const StarDefense: React.FC = () => {
         }
 
         // 3. Cooldowns
-        setSkillCooldowns(prev => {
-            const next = { ...prev };
-            let changed = false;
-            Object.keys(next).forEach(k => {
-                if (next[k] > 0) {
-                    next[k] = Math.max(0, next[k] - (deltaTime * 16.66));
-                    changed = true;
-                }
-            });
-            return changed ? next : prev;
+        // Gameplay timers stay frame-accurate in refs. React state is synchronized
+        // at 10Hz so the HUD remains responsive without forcing a full render every frame.
+        Object.keys(skillCooldownsRef.current).forEach(k => {
+            if (skillCooldownsRef.current[k] > 0) {
+                skillCooldownsRef.current[k] = Math.max(0, skillCooldownsRef.current[k] - (deltaTime * 16.66));
+            }
         });
 
-        setActiveEffects(prev => {
-             const next = { ...prev };
-             let changed = false;
-             Object.keys(next).forEach(k => {
-                 if (next[k] > 0) {
-                     next[k] = Math.max(0, next[k] - (deltaTime * 16.66));
-                     changed = true;
-                 }
-             });
-             return changed ? next : prev;
+        Object.keys(activeEffectsRef.current).forEach(k => {
+            if (activeEffectsRef.current[k] > 0) {
+                activeEffectsRef.current[k] = Math.max(0, activeEffectsRef.current[k] - (deltaTime * 16.66));
+            }
         });
+
+        if (timestamp - lastStatusSyncRef.current >= 100) {
+            lastStatusSyncRef.current = timestamp;
+            setSkillCooldowns({ ...skillCooldownsRef.current });
+            setActiveEffects({ ...activeEffectsRef.current });
+        }
 
         // 4. Spawning
         spawnTimerRef.current -= deltaTime;
@@ -221,7 +219,7 @@ const StarDefense: React.FC = () => {
             if (u.type === 'turret' && u.level > 0) {
                 const cdKey = u.id;
                 turretCooldownsRef.current[cdKey] = (turretCooldownsRef.current[cdKey] || 0) - deltaTime;
-                const speedMod = activeEffects['rapid'] > 0 ? 2 : 1;
+                const speedMod = activeEffectsRef.current['rapid'] > 0 ? 2 : 1;
 
                 if (enemiesRef.current.length > 0) {
                     const target = enemiesRef.current.reduce((prev, curr) => {
@@ -325,7 +323,7 @@ const StarDefense: React.FC = () => {
             }
         }
 
-        const stunActive = activeEffects['emp'] > 0;
+        const stunActive = activeEffectsRef.current['emp'] > 0;
         enemiesRef.current.forEach(e => e.isStunned = stunActive);
 
         if (timestamp - lastUiRenderRef.current >= 33) {
@@ -333,7 +331,7 @@ const StarDefense: React.FC = () => {
             setRenderTrigger(prev => prev + 1);
         }
         animationFrameRef.current = requestAnimationFrame(gameLoop);
-    }, [gameOver, upgrades, wave, maxHp, maxShield, activeEffects]);
+    }, [gameOver, upgrades, wave, maxHp, maxShield]);
 
     // --- HELPERS ---
     const spawnEnemy = (forceType?: string, forceX?: number, forceY?: number) => {
@@ -457,17 +455,20 @@ const StarDefense: React.FC = () => {
     };
 
     const activateSkill = (skillId: string) => {
-        if (skillCooldowns[skillId] > 0) return;
+        if (skillCooldownsRef.current[skillId] > 0) return;
         const skill = SKILLS.find(s => s.id === skillId);
         if (!skill) return;
 
-        setSkillCooldowns(prev => ({ ...prev, [skillId]: skill.cooldown * 1000 }));
+        skillCooldownsRef.current = { ...skillCooldownsRef.current, [skillId]: skill.cooldown * 1000 };
+        setSkillCooldowns({ ...skillCooldownsRef.current });
         
         if (skillId === 'emp') {
-            setActiveEffects(prev => ({ ...prev, emp: skill.duration }));
+            activeEffectsRef.current = { ...activeEffectsRef.current, emp: skill.duration };
+            setActiveEffects({ ...activeEffectsRef.current });
             addFloatingText(50, 50, "EMP BLAST!", "#00f3ff", true);
         } else if (skillId === 'rapid') {
-            setActiveEffects(prev => ({ ...prev, rapid: skill.duration }));
+            activeEffectsRef.current = { ...activeEffectsRef.current, rapid: skill.duration };
+            setActiveEffects({ ...activeEffectsRef.current });
             addFloatingText(50, 50, "RAPID FIRE!", "#facc15", true);
         } else if (skillId === 'nuke') {
             enemiesRef.current.forEach(e => damageEnemy(e, 5000));
@@ -490,8 +491,8 @@ const StarDefense: React.FC = () => {
             x: x,
             y: 90,
             targetId: null,
-            damage: clickDamage,
-            color: activeEffects['rapid'] > 0 ? '#facc15' : '#00f3ff',
+            damage: baseClickDamage * ((activeEffectsRef.current['rapid'] > 0 || activeEffectsRef.current['double_damage'] > 0) ? 2 : 1),
+            color: activeEffectsRef.current['rapid'] > 0 ? '#facc15' : '#00f3ff',
             source: 'player'
         });
     };
@@ -508,7 +509,8 @@ const StarDefense: React.FC = () => {
             setScraps(prev => prev + amount);
             addFloatingText(p.x, p.y, `+${amount} SCRAP`, "#fbbf24", true);
         } else if (p.type === 'double_damage') {
-             setActiveEffects(prev => ({ ...prev, double_damage: 10000 })); 
+             activeEffectsRef.current = { ...activeEffectsRef.current, double_damage: 10000 };
+             setActiveEffects({ ...activeEffectsRef.current }); 
              addFloatingText(p.x, p.y, "DAMAGE BOOST!", "#ef4444", true);
         }
     };
@@ -548,6 +550,8 @@ const StarDefense: React.FC = () => {
         setWave(1);
         setScraps(0);
         setCombo(0);
+        skillCooldownsRef.current = {};
+        activeEffectsRef.current = {};
         setSkillCooldowns({});
         setActiveEffects({});
         enemiesRef.current = [];
@@ -570,7 +574,7 @@ const StarDefense: React.FC = () => {
         };
         window.addEventListener('keydown', handleKey);
         return () => window.removeEventListener('keydown', handleKey);
-    }, [gameOver, skillCooldowns]);
+    }, [gameOver]);
 
     // --- LIFECYCLE ---
     useEffect(() => {
