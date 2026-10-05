@@ -120,6 +120,9 @@ const SpacebarClicker2: React.FC = () => {
   const [overdriveUntil, setOverdriveUntil] = useState(0);
   const [clock, setClock] = useState(Date.now());
   const [offlineEarned, setOfflineEarned] = useState(0);
+  const [saveTransferStatus, setSaveTransferStatus] = useState('');
+  const [showSaveImport, setShowSaveImport] = useState(false);
+  const [saveImportText, setSaveImportText] = useState('');
   const pressTimes = useRef<number[]>([]);
 
   const isOverdrive = overdriveUntil > clock;
@@ -324,9 +327,158 @@ const SpacebarClicker2: React.FC = () => {
     setOverdriveUntil(0);
   };
 
+  const buildExportCode = () => {
+    const payload: SaveData = {
+      version: SAVE_VERSION,
+      ...saveRef.current,
+      lastSaveTime: Date.now(),
+    };
+    return 'SCG2.' + window.btoa(JSON.stringify(payload));
+  };
+
+  const applyImportedSaveCode = (rawCode: string) => {
+    const code = rawCode.trim();
+    if (!code) {
+      setSaveTransferStatus('No save data was provided.');
+      return false;
+    }
+    if (code.length > 50_000) {
+      setSaveTransferStatus('Save code is too large.');
+      return false;
+    }
+
+    try {
+      const json = code.startsWith('SCG2.')
+        ? window.atob(code.slice(5))
+        : code;
+      const parsed = JSON.parse(json);
+      const imported = sanitize(parsed);
+
+      if (!window.confirm('Replace the current Spacebar Clicker 2 save with this imported backup?')) {
+        setSaveTransferStatus('Restore cancelled.');
+        return false;
+      }
+
+      const next: SaveData = {
+        ...imported,
+        version: SAVE_VERSION,
+        lastSaveTime: Date.now(),
+      };
+
+      saveRef.current = {
+        points: next.points,
+        lifetimePoints: next.lifetimePoints,
+        presses: next.presses,
+        novaCores: next.novaCores,
+        upgrades: next.upgrades,
+        bestCps: next.bestCps,
+      };
+
+      localStorage.setItem(SAVE_KEY, JSON.stringify(next));
+      setPoints(next.points);
+      setLifetimePoints(next.lifetimePoints);
+      setPresses(next.presses);
+      setNovaCores(next.novaCores);
+      setUpgrades(next.upgrades);
+      setBestCps(next.bestCps);
+      setCurrentCps(0);
+      setEnergy(0);
+      setOverdriveUntil(0);
+      setOfflineEarned(0);
+      pressTimes.current = [];
+      setSaveTransferStatus('Save imported successfully.');
+      return true;
+    } catch {
+      setSaveTransferStatus('That Spacebar Clicker 2 backup could not be read.');
+      return false;
+    }
+  };
+
+  const copySaveCode = async () => {
+    const code = buildExportCode();
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(code);
+        setSaveTransferStatus('Save code copied to clipboard.');
+      } else {
+        setSaveImportText(code);
+        setShowSaveImport(true);
+        setSaveTransferStatus('Clipboard access is unavailable. The save code is shown below for manual copying.');
+      }
+    } catch {
+      setSaveImportText(code);
+      setShowSaveImport(true);
+      setSaveTransferStatus('Clipboard access was blocked. The save code is shown below for manual copying.');
+    }
+  };
+
+  const downloadSave = () => {
+    try {
+      const code = buildExportCode();
+      const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download = `spacebar-clicker-2-save-${new Date().toISOString().slice(0, 10)}.scg`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+      setSaveTransferStatus('Backup file downloaded.');
+    } catch {
+      setSaveTransferStatus('Could not create the backup file.');
+    }
+  };
+
+  const restorePastedSave = () => {
+    if (!saveImportText.trim()) {
+      setSaveTransferStatus('Paste a save code or choose a backup file first.');
+      return;
+    }
+
+    if (applyImportedSaveCode(saveImportText)) {
+      setSaveImportText('');
+      setShowSaveImport(false);
+    }
+  };
+
+  const importSaveFile = () => {
+    const picker = document.createElement('input');
+    picker.type = 'file';
+    picker.accept = '.scg,.txt,text/plain,application/json';
+    picker.onchange = async () => {
+      const selected = picker.files?.[0];
+      if (!selected) return;
+      if (selected.size > 100_000) {
+        setSaveTransferStatus('Backup file is too large.');
+        return;
+      }
+
+      try {
+        const code = await selected.text();
+        if (applyImportedSaveCode(code)) {
+          setSaveImportText('');
+          setShowSaveImport(false);
+        }
+      } catch {
+        setSaveTransferStatus('Could not read that backup file.');
+      }
+    };
+    picker.click();
+  };
+
   const resetAll = () => {
     if (!window.confirm('Erase all Spacebar Clicker 2 progress from this browser?')) return;
     localStorage.removeItem(SAVE_KEY);
+    saveRef.current = {
+      points: 0,
+      lifetimePoints: 0,
+      presses: 0,
+      novaCores: 0,
+      upgrades: emptyUpgrades(),
+      bestCps: 0,
+    };
     setPoints(0);
     setLifetimePoints(0);
     setPresses(0);
@@ -337,6 +489,9 @@ const SpacebarClicker2: React.FC = () => {
     setEnergy(0);
     setOverdriveUntil(0);
     setOfflineEarned(0);
+    setSaveImportText('');
+    setShowSaveImport(false);
+    setSaveTransferStatus('Local Spacebar Clicker 2 progress was reset.');
   };
 
   const achievements = [
@@ -503,12 +658,80 @@ const SpacebarClicker2: React.FC = () => {
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-3 mb-12">
+        <div className="flex flex-wrap gap-3 mb-6">
           <a href="/spacebar-clicker/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple">Classic Spacebar Clicker</a>
           <a href="/spacebar-games/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple">All Spacebar Games</a>
           <a href="/spacebar-clicker-test/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple">CPS Test</a>
+          <button type="button" onClick={copySaveCode} className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple">Copy save code</button>
+          <button type="button" onClick={downloadSave} className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple">Download backup</button>
+          <button
+            type="button"
+            aria-expanded={showSaveImport}
+            onClick={() => {
+              setShowSaveImport((open) => !open);
+              setSaveTransferStatus('');
+            }}
+            className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple"
+          >
+            {showSaveImport ? 'Close restore' : 'Restore save'}
+          </button>
           <button type="button" onClick={resetAll} className="px-4 py-2 rounded border border-red-500/20 text-red-300 hover:border-red-500/60">Reset Edition 2</button>
         </div>
+
+        {showSaveImport && (
+          <div className="mb-6 rounded-xl border border-neon-purple/30 bg-space-900/70 p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div>
+                <h3 className="font-display font-bold text-white">Restore Spacebar Clicker 2 save</h3>
+                <p className="mt-1 text-xs text-gray-500">
+                  Paste an SCG2 save code below, or choose a .scg backup file. Imported values are validated before replacing this browser's current Edition 2 save.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={importSaveFile}
+                className="min-h-11 shrink-0 px-4 py-2 rounded border border-white/15 text-sm text-white hover:border-neon-purple"
+              >
+                Choose backup file
+              </button>
+            </div>
+            <label htmlFor="spacebar-2-save-import" className="sr-only">Spacebar Clicker 2 save code</label>
+            <textarea
+              id="spacebar-2-save-import"
+              value={saveImportText}
+              onChange={(event) => setSaveImportText(event.target.value)}
+              placeholder="Paste SCG2 save code here..."
+              spellCheck={false}
+              className="mt-4 h-28 w-full resize-y rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-xs text-gray-200 outline-none focus:border-neon-purple"
+            />
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={restorePastedSave}
+                className="min-h-11 px-4 py-2 rounded bg-neon-purple text-black text-sm font-bold hover:bg-white"
+              >
+                Restore pasted code
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSaveImportText('');
+                  setShowSaveImport(false);
+                  setSaveTransferStatus('Restore cancelled.');
+                }}
+                className="min-h-11 px-4 py-2 rounded border border-white/10 text-sm text-gray-300 hover:border-white/30"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {saveTransferStatus && (
+          <p role="status" aria-live="polite" className="mb-10 text-sm text-gray-400">
+            {saveTransferStatus}
+          </p>
+        )}
 
         <article className="rounded-2xl border border-white/10 bg-black/20 p-6 md:p-9 space-y-8 text-gray-400 leading-relaxed">
           <section>
@@ -539,6 +762,7 @@ const SpacebarClicker2: React.FC = () => {
               <div><h3 className="text-lg text-white">Does Spacebar Clicker 2 have auto-clickers?</h3><p>Yes. Micro Bots generate passive points and Reactor Banks multiply automatic production.</p></div>
               <div><h3 className="text-lg text-white">What does Nova Ascension reset?</h3><p>It resets current points and standard upgrades. Nova Cores, lifetime records and the permanent Nova bonus remain.</p></div>
               <div><h3 className="text-lg text-white">Does it work on mobile?</h3><p>Yes. Mobile players can use the large on-screen Space button, while desktop players can press the physical Space key.</p></div>
+              <div><h3 className="text-lg text-white">Can I move my Edition 2 save to another browser?</h3><p>Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save.</p></div>
             </div>
           </section>
         </article>
