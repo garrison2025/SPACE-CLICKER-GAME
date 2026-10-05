@@ -109,6 +109,11 @@ export async function onRequest(context) {
   const legacyGame = url.searchParams.get('game');
   const legacyPost = url.searchParams.get('post');
 
+  if (pathname === '/index.html') {
+    const homeUrl = new URL('/', url.origin);
+    return Response.redirect(homeUrl.toString(), 301);
+  }
+
   if (!legacyView && legacyGame) {
     if (GAME_ROUTES.has(legacyGame)) {
       return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
@@ -158,8 +163,22 @@ export async function onRequest(context) {
     }
   }
 
-  if (isStaticAssetRequest(pathname) || isKnownRoute(pathname)) {
+  if (isKnownRoute(pathname)) {
     return context.next();
+  }
+
+  if (isStaticAssetRequest(pathname)) {
+    const response = await context.next();
+    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+
+    // Cloudflare Pages' SPA fallback can turn a missing .html/.js/.css/etc.
+    // request into index.html with HTTP 200. Convert that HTML fallback into a
+    // real 404 while still allowing existing static assets through unchanged.
+    if (response.status === 404 || contentType.includes('text/html')) {
+      return notFoundResponse(url);
+    }
+
+    return response;
   }
 
   return notFoundResponse(url);
