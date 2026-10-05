@@ -21,7 +21,7 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
       {/* Floating Trigger Button (Bottom Left) */}
       <button
         onClick={onToggle}
-        className="fixed bottom-4 left-4 z-40 bg-space-900/80 hover:bg-space-800 border border-white/20 hover:border-neon-blue text-gray-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono backdrop-blur-sm transition-all shadow-lg flex items-center gap-1.5 group select-none"
+        className="hidden md:flex fixed bottom-4 left-4 z-40 bg-space-900/80 hover:bg-space-800 border border-white/20 hover:border-neon-blue text-gray-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono backdrop-blur-sm transition-all shadow-lg items-center gap-1.5 group select-none"
         title="Keyboard Shortcuts"
       >
         <span className="text-sm">⌨️</span>
