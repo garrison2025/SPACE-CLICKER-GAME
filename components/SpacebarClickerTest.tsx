@@ -30,6 +30,7 @@ const SpacebarClickerTest: React.FC = () => {
   const [shareStatus, setShareStatus] = useState('');
 
   const startedAt = useRef<number | null>(null);
+  const deadlineAt = useRef<number | null>(null);
   const pressTimes = useRef<number[]>([]);
   const clicksRef = useRef(0);
   const finishedRef = useRef(false);
@@ -52,6 +53,7 @@ const SpacebarClickerTest: React.FC = () => {
     setFinalElapsed(0);
     setShareStatus('');
     startedAt.current = null;
+    deadlineAt.current = null;
     pressTimes.current = [];
   };
 
@@ -74,8 +76,18 @@ const SpacebarClickerTest: React.FC = () => {
   const press = () => {
     if (finishedRef.current) return;
     const now = performance.now();
+
+    if (mode.type === 'time' && startedAt.current !== null) {
+      const deadline = deadlineAt.current ?? (startedAt.current + mode.seconds * 1000);
+      if (now >= deadline) {
+        finish(mode.seconds);
+        return;
+      }
+    }
+
     if (!running) {
       startedAt.current = now;
+      deadlineAt.current = mode.type === 'time' ? now + mode.seconds * 1000 : null;
       setRunning(true);
       setFinished(false);
     }
@@ -114,9 +126,10 @@ const SpacebarClickerTest: React.FC = () => {
       setPeakCps((value) => Math.max(value, cps));
 
       if (mode.type === 'time') {
-        const remaining = Math.max(0, mode.seconds - elapsed);
+        const deadline = deadlineAt.current ?? ((startedAt.current || now) + mode.seconds * 1000);
+        const remaining = Math.max(0, (deadline - now) / 1000);
         setTimeLeft(remaining);
-        if (remaining <= 0) finish(mode.seconds);
+        if (now >= deadline) finish(mode.seconds);
       }
     }, 50);
     return () => window.clearInterval(timer);
