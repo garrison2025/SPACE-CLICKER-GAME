@@ -19,9 +19,6 @@ import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
 import ComparisonPage from './components/ComparisonPage';
 import AchievementsPage from './components/AchievementsPage';
-import SpacebarGame from './components/SpacebarGame';
-import SpacebarCounter from './components/SpacebarCounter';
-import SpacebarClickerTest from './components/SpacebarClickerTest';
 import StatsAndSaveModal from './components/StatsAndSaveModal';
 import OfflineEarningsModal from './components/OfflineEarningsModal';
 import HotkeyOverlay from './components/HotkeyOverlay';
@@ -36,6 +33,9 @@ const StarDefense = React.lazy(() => import('./components/StarDefense'));
 const MergeShips = React.lazy(() => import('./components/MergeShips'));
 const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
+const SpacebarGame = React.lazy(() => import('./components/SpacebarGame'));
+const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'));
+const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -349,11 +349,7 @@ const App: React.FC = () => {
                 "description": "Play the best space clicker and sci-fi idle incremental games online for free in your browser.",
                 "publisher": {
                   "@type": "Organization",
-                  "name": "Space Clicker Game Network",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://spaceclickergame.com/icon.svg"
-                  }
+                  "name": "Space Clicker Game"
                 }
               },
               {
@@ -998,10 +994,10 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
-                {viewMode === 'spacebar-clicker' && <SpacebarGame />}
-                {viewMode === 'spacebar-counter' && <SpacebarCounter />}
-                {viewMode === 'spacebar-clicker-test' && <SpacebarClickerTest />}
-                {viewMode === 'spacebar-clicker-unblocked' && <SpacebarGame mode="unblocked" />}
+                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
+                {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
+                {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
+                {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
                 {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
                 {viewMode === 'about' && <AboutPage />}
                 {viewMode === 'contact' && <ContactPage />}
