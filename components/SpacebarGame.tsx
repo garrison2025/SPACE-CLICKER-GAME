@@ -82,7 +82,12 @@ const sanitizeSave = (raw: unknown): SpacebarSave => {
   const upgrades = emptyUpgrades();
 
   (Object.keys(upgrades) as UpgradeId[]).forEach((id) => {
-    upgrades[id] = Math.max(0, Math.floor(safeNumber((incoming as Record<string, unknown>)[id])));
+    const def = UPGRADE_DEFS.find((item) => item.id === id);
+    const maxLevel = def?.maxLevel ?? 1000;
+    upgrades[id] = Math.min(
+      maxLevel,
+      Math.max(0, Math.floor(safeNumber((incoming as Record<string, unknown>)[id])))
+    );
   });
 
   return {
