@@ -32,8 +32,8 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in zoom-in-95 duration-300">
-      <div className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg rounded-3xl p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-hidden">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 md:backdrop-blur-md p-3 sm:p-4 animate-in fade-in zoom-in-95 duration-300">
+      <div className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg max-h-[calc(100dvh-1.5rem)] rounded-3xl p-5 sm:p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-y-auto">
         
         {/* Glow ambient background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-yellow-500/20 blur-3xl rounded-full pointer-events-none" />
@@ -80,7 +80,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
         {/* Claim Button */}
         <button
           onClick={onClaim}
-          className="w-full py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-display font-black text-lg rounded-2xl shadow-[0_0_30px_rgba(234,179,8,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all tracking-wider flex items-center justify-center gap-2"
+          className="w-full min-h-11 py-3.5 sm:py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-display font-black text-lg rounded-2xl shadow-[0_0_30px_rgba(234,179,8,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all tracking-wider flex items-center justify-center gap-2"
         >
           <span>⚡</span>
           <span>CLAIM STARDUST HARVEST</span>
