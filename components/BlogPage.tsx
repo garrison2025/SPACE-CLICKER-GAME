@@ -214,13 +214,13 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         "dateModified": new Date(post.updatedDate || post.date).toISOString(),
                         "author": [{
                             "@type": "Organization",
+                            "@id": "https://spaceclickergame.com/#editorial",
                             "name": post.author,
-                            "url": "https://spaceclickergame.com/about/"
+                            "url": "https://spaceclickergame.com/about/",
+                            "parentOrganization": { "@id": "https://spaceclickergame.com/#organization" }
                         }],
                         "publisher": {
-                            "@type": "Organization",
-                            "name": "Space Clicker Game",
-                            "url": "https://spaceclickergame.com/"
+                            "@id": "https://spaceclickergame.com/#organization"
                         },
                         "description": post.excerpt,
                         "mainEntityOfPage": {
