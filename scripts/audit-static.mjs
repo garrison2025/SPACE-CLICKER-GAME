@@ -83,6 +83,13 @@ const deepSpacebarContentRoutes = new Set([
   '/spacebar-clicker-test/'
 ]);
 
+const trustContentRoutes = new Set([
+  '/contact/',
+  '/privacy/',
+  '/terms/',
+  '/cookies/'
+]);
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -192,6 +199,22 @@ for (const file of htmlFiles) {
     }
     if (visibleText.length < 900) {
       throw new Error(route + ': high-value Spacebar prerender is too thin (' + visibleText.length + ' chars)');
+    }
+  }
+
+  if (trustContentRoutes.has(route)) {
+    const h2Count = (html.match(/<h2\b/gi) || []).length;
+    const visibleText = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (h2Count < 3) {
+      throw new Error(route + ': trust/policy prerender needs at least three static sections');
+    }
+    if (visibleText.length < 650) {
+      throw new Error(route + ': trust/policy prerender is too thin (' + visibleText.length + ' chars)');
     }
   }
 
@@ -325,4 +348,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs, 6 deep game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles.');
