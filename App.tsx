@@ -1255,8 +1255,20 @@ const App: React.FC = () => {
   }, []);
 
   const handleImportSave = (data: any) => {
-      if (!data || typeof data !== 'object') {
-          addLog("IMPORT FAILED: INVALID SAVE DATA", "alert");
+      const validShape =
+          data &&
+          typeof data === 'object' &&
+          data.resources &&
+          typeof data.resources === 'object' &&
+          !Array.isArray(data.resources) &&
+          data.upgrades &&
+          typeof data.upgrades === 'object' &&
+          !Array.isArray(data.upgrades) &&
+          Object.prototype.hasOwnProperty.call(data, 'planetIndex') &&
+          Object.prototype.hasOwnProperty.call(data, 'lifetimeEarnings');
+
+      if (!validShape) {
+          addLog("IMPORT FAILED: INVALID OR WRONG-GAME SAVE DATA", "alert");
           return;
       }
 
