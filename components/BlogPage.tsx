@@ -44,13 +44,19 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 "image": [post.image],
                 "datePublished": new Date(post.date).toISOString(), 
                 "author": [{
-                    "@type": "Person",
-                    "name": post.author
+                    "@type": "Organization",
+                    "name": post.author,
+                    "url": "https://spaceclickergame.com/about/"
                 }],
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Space Clicker Game",
+                    "url": "https://spaceclickergame.com/"
+                },
                 "description": post.excerpt,
                 "mainEntityOfPage": {
                     "@type": "WebPage",
-                    "@id": `https://spaceclickergame.com/blog/${post.slug}`
+                    "@id": `https://spaceclickergame.com/blog/${post.slug}/`
                 }
             });
             document.head.appendChild(script);
@@ -201,6 +207,29 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 {/* Social Share Widget */}
                                 <SocialShare title={post.title} />
 
+                                {/* Useful interactive destinations */}
+                                <div className="mt-12 rounded-2xl border border-neon-blue/20 bg-neon-blue/5 p-6">
+                                    <div className="text-[10px] font-mono tracking-[0.25em] text-neon-blue mb-2">TRY THE TOOLS</div>
+                                    <h3 className="text-xl font-display font-bold text-white mb-5">Continue with an interactive page</h3>
+                                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                        {[
+                                            ['/spacebar-games/', 'Spacebar Games', 'Choose a mode'],
+                                            ['/spacebar-clicker/', 'Spacebar Clicker', 'Idle progression'],
+                                            ['/spacebar-clicker-test/', 'CPS Test', 'Measure speed'],
+                                            ['/game/galaxy_miner/', 'Galaxy Miner', 'Space idle game']
+                                        ].map(([href, title, detail]) => (
+                                            <a
+                                                key={href}
+                                                href={href}
+                                                className="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-neon-blue/50 transition-colors"
+                                            >
+                                                <div className="font-bold text-white">{title}</div>
+                                                <div className="mt-1 text-xs text-gray-500">{detail}</div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 {/* Related Posts (Topic Cluster) */}
                                 {relatedPosts.length > 0 && (
                                     <div className="mt-16 pt-8 border-t border-white/10">
@@ -252,7 +281,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         MISSION <span className="text-neon-blue">LOGS</span>
                     </h1>
                     <p className="text-gray-400 font-mono text-sm max-w-2xl mx-auto">
-                        DECODED TRANSMISSIONS REGARDING STRATEGY, HISTORY, AND THE EVOLUTION OF THE SPACE CLICKER GAME GENRE.
+                        Guides to clicker mechanics, Spacebar tests, idle strategy, browser performance, and the design of incremental space games.
                     </p>
                 </header>
 
