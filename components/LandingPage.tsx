@@ -467,7 +467,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                {GAMES_CATALOG.filter(g => g.id !== 'galaxy_miner').map((game) => (
                   <a 
                     key={game.id}
-                    href={`/game/${game.id}`}
+                    href={`/game/${game.id}/`}
                     className="group relative h-64 perspective-1000 cursor-pointer block"
                     onClick={(e) => {
                         e.preventDefault();
