@@ -702,8 +702,7 @@ const App: React.FC = () => {
 
   const handleClaimOfflineEarnings = () => {
     if (offlineEarnings.earnedStardust > 0) {
-      addResources(offlineEarnings.earnedStardust);
-      addLog(`OFFLINE PROGRESS CLAIMED: +${formatNumber(offlineEarnings.earnedStardust)} SD`, 'success');
+      addLog(`OFFLINE PROGRESS CREDITED: +${formatNumber(offlineEarnings.earnedStardust)} SD`, 'success');
     }
     setOfflineEarnings(prev => ({ ...prev, isOpen: false }));
   };
@@ -923,75 +922,114 @@ const App: React.FC = () => {
 
   // Initialize Loading & Offline Progress
   useEffect(() => {
-      const loadGame = () => {
-          const saved = localStorage.getItem(SAVE_KEY);
-          if (saved) {
-              try {
-                  const data = JSON.parse(saved);
-                  if (!data || typeof data !== 'object') throw new Error('Invalid save payload');
-                  if (data.resources) setResources({
-                      [ResourceType.Stardust]: Math.max(0, Number(data.resources[ResourceType.Stardust]) || 0),
-                      [ResourceType.DarkMatter]: Math.max(0, Number(data.resources[ResourceType.DarkMatter]) || 0)
-                  });
-                  if (data.upgrades) {
-                      const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
-                      setUpgrades(merged);
-                  }
-                  if (data.prestigeUpgrades) setPrestigeUpgrades(data.prestigeUpgrades);
-                  if (data.level) setLevel(data.level);
-                  if (data.planetIndex !== undefined) setPlanetIndex(data.planetIndex);
-                  if (data.lifetimeEarnings !== undefined) setLifetimeEarnings(data.lifetimeEarnings);
-                  if (data.totalClicks !== undefined) setTotalClicks(data.totalClicks);
-                  if (data.totalCrits !== undefined) setTotalCrits(data.totalCrits);
-                  if (data.cometsCaught !== undefined) setCometsCaught(data.cometsCaught);
-                  if (data.crisesResolved !== undefined) setCrisesResolved(data.crisesResolved);
+      const saved = localStorage.getItem(SAVE_KEY);
+      if (!saved) return;
 
-                  // Calculate Offline Autonomous Progress
-                  if (data.lastSaveTime) {
-                      const now = Date.now();
-                      const elapsedSeconds = Math.floor((now - data.lastSaveTime) / 1000);
+      try {
+          const data = JSON.parse(saved);
+          if (!data || typeof data !== 'object') throw new Error('Invalid save payload');
 
-                      // If offline for more than 60 seconds
-                      if (elapsedSeconds >= 60) {
-                          const cappedSecs = Math.min(elapsedSeconds, 86400); // 24hr max
-                          
-                          let baseRate = 0;
-                          const loadedUpgrades = data.upgrades || INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {});
-                          Object.values(loadedUpgrades).forEach((u: any) => {
-                            if (u.type === 'auto') {
-                               let mult = 1;
-                               if (u.count >= 25) mult *= 2;
-                               if (u.count >= 50) mult *= 2;
-                               if (u.count >= 100) mult *= 2;
-                               if (u.count >= 200) mult *= 2;
-                               if (u.count >= 500) mult *= 4;
-                               baseRate += u.baseProduction * u.count * mult;
-                            }
-                          });
+          const loadedResources = {
+              [ResourceType.Stardust]: Math.max(0, Number(data.resources?.[ResourceType.Stardust]) || 0),
+              [ResourceType.DarkMatter]: Math.max(0, Number(data.resources?.[ResourceType.DarkMatter]) || 0)
+          };
 
-                          const pIndex = data.planetIndex || 0;
-                          const planetMult = PLANETS[pIndex]?.productionMultiplier || 1;
-                          const pMult = 1 + ((data.resources?.[ResourceType.DarkMatter] || 0) * 0.1);
-                          const tBoost = 1 + ((data.prestigeUpgrades?.['passive_boost'] || 0) * 0.25);
-                          const effectiveRate = baseRate * planetMult * pMult * tBoost;
-                          const totalEarned = Math.floor(cappedSecs * effectiveRate);
+          const loadedUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => {
+              const savedUpgrade = data.upgrades?.[upgrade.id];
+              const count = Math.max(0, Math.floor(Number(savedUpgrade?.count) || 0));
+              acc[upgrade.id] = { ...upgrade, count };
+              return acc;
+          }, {} as { [id: string]: Upgrade });
 
-                          if (totalEarned > 0) {
-                              setOfflineEarnings({
-                                  isOpen: true,
-                                  awayTimeSeconds: cappedSecs,
-                                  earnedStardust: totalEarned,
-                                  productionRate: effectiveRate
-                              });
-                          }
-                      }
-                  }
-              } catch (e) {
-                  console.error("Failed to load save", e);
-              }
+          const loadedPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
+              const rawLevel = Math.max(0, Math.floor(Number(data.prestigeUpgrades?.[tech.id]) || 0));
+              acc[tech.id] = tech.maxLevel === -1 ? rawLevel : Math.min(rawLevel, tech.maxLevel);
+              return acc;
+          }, {} as { [id: string]: number });
+
+          const nextLevel = Math.max(1, Math.floor(Number(data.level) || 1));
+          const nextPlanetIndex = Math.min(PLANETS.length - 1, Math.max(0, Math.floor(Number(data.planetIndex) || 0)));
+          const nextClicks = Math.max(0, Math.floor(Number(data.totalClicks) || 0));
+          const nextCrits = Math.max(0, Math.floor(Number(data.totalCrits) || 0));
+          const nextComets = Math.max(0, Math.floor(Number(data.cometsCaught) || 0));
+          const nextCrises = Math.max(0, Math.floor(Number(data.crisesResolved) || 0));
+          const savedLifetime = Math.max(0, Number(data.lifetimeEarnings) || 0);
+
+          const now = Date.now();
+          const elapsedSeconds = data.lastSaveTime
+              ? Math.max(0, Math.floor((now - Number(data.lastSaveTime)) / 1000))
+              : 0;
+          const cappedSecs = Math.min(elapsedSeconds, 86400);
+
+          let effectiveRate = 0;
+          let totalEarned = 0;
+
+          if (cappedSecs >= 60) {
+              let baseRate = 0;
+              Object.values(loadedUpgrades).forEach((upgrade) => {
+                  if (upgrade.type !== 'auto') return;
+                  const milestoneMult = getMilestoneMultiplier(upgrade.count);
+                  baseRate += upgrade.baseProduction * upgrade.count * milestoneMult;
+              });
+
+              const planetMult = PLANETS[nextPlanetIndex]?.productionMultiplier || 1;
+              const darkMatterMult = 1 + (loadedResources[ResourceType.DarkMatter] * 0.1);
+              const passiveBoost = 1 + ((loadedPrestige['passive_boost'] || 0) * 0.25);
+              effectiveRate = baseRate * planetMult * darkMatterMult * passiveBoost;
+              totalEarned = Math.floor(cappedSecs * effectiveRate);
           }
-      };
-      loadGame();
+
+          // Credit offline production before showing the modal. The save is written
+          // immediately so closing or refreshing before dismissing the modal cannot
+          // lose the reward or award it twice.
+          const creditedResources = {
+              ...loadedResources,
+              [ResourceType.Stardust]: loadedResources[ResourceType.Stardust] + totalEarned
+          };
+          const creditedLifetime = savedLifetime + totalEarned;
+
+          const normalized = {
+              resources: creditedResources,
+              upgrades: loadedUpgrades,
+              prestigeUpgrades: loadedPrestige,
+              level: nextLevel,
+              planetIndex: nextPlanetIndex,
+              lifetimeEarnings: creditedLifetime,
+              totalClicks: nextClicks,
+              totalCrits: nextCrits,
+              cometsCaught: nextComets,
+              crisesResolved: nextCrises
+          };
+
+          gameStateRef.current = normalized;
+          localStorage.setItem(SAVE_KEY, JSON.stringify({
+              ...normalized,
+              version: SAVE_VERSION,
+              lastSaveTime: now
+          }));
+
+          setResources(creditedResources);
+          setUpgrades(loadedUpgrades);
+          setPrestigeUpgrades(loadedPrestige);
+          setLevel(nextLevel);
+          setPlanetIndex(nextPlanetIndex);
+          setLifetimeEarnings(creditedLifetime);
+          setTotalClicks(nextClicks);
+          setTotalCrits(nextCrits);
+          setCometsCaught(nextComets);
+          setCrisesResolved(nextCrises);
+
+          if (totalEarned > 0) {
+              setOfflineEarnings({
+                  isOpen: true,
+                  awayTimeSeconds: cappedSecs,
+                  earnedStardust: totalEarned,
+                  productionRate: effectiveRate
+              });
+          }
+      } catch (error) {
+          console.error("Failed to load save", error);
+      }
   }, []);
 
   // Keyboard Shortcuts Listener
