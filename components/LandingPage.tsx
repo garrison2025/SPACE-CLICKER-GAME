@@ -114,6 +114,9 @@ const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
         <button onClick={onPlay} className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">
           PLAY GALAXY MINER
         </button>
+        <a href="/blog/strategy-guide-clicker-game-space-empire/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">
+          SPACE CLICKER STRATEGY GUIDE
+        </a>
         <a href="/spacebar-games/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">
           SPACEBAR GAMES & CPS TOOLS
         </a>
@@ -356,6 +359,8 @@ const TacticalDatabank = () => (
         <div className="grid gap-4">
             {[
                 { q: "Is this space clicker game free to play?", a: "Yes. The current browser games and Spacebar tools can be played without purchasing a paid account or upgrade." },
+                { q: "Is Space Clicker an idle game?", a: "Yes. Galaxy Miner starts with manual Stardust mining, then shifts toward automated production through Mining Drones and later upgrade tiers. Returning after time away can credit up to 24 hours of saved automatic production." },
+                { q: "Can I play Space Clicker on mobile?", a: "Yes. Galaxy Miner supports touch input in a modern mobile browser. The Spacebar games also provide large on-screen controls for devices without a physical keyboard." },
                 { q: "Does Galaxy Miner save my progress?", a: "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save." },
                 { q: "How do I access the other games?", a: "The six current simulations are available from the Games catalog. The Spacebar games and tools have their own dedicated pages." },
                 { q: "What happens when I use Galactic Reset?", a: "Galaxy Miner resets Stardust and standard upgrades, then awards Dark Matter based on the size of the run. Dark Matter and permanent technology remain for future runs." }
