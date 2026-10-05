@@ -670,8 +670,8 @@ const StarDefense: React.FC = () => {
                  {skillCooldowns['nuke'] > 59000 && <div className="absolute inset-0 bg-white pointer-events-none z-[60] animate-ping opacity-50"></div>}
 
                  {/* Top HUD */}
-                 <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
-                     <div className="flex flex-col gap-2 w-40 sm:w-48 md:w-56">
+                 <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 z-20 grid grid-cols-[minmax(0,1fr)_auto] gap-3 items-start pointer-events-none">
+                     <div className="min-w-0 max-w-40 sm:max-w-48 md:max-w-56 flex flex-col gap-2">
                          {/* Shield Bar */}
                          {maxShield > 0 && (
                             <div className="flex flex-col gap-0.5">
@@ -702,9 +702,9 @@ const StarDefense: React.FC = () => {
                              </div>
                          </div>
                      </div>
-                     <div className="text-right">
-                         <div className="text-3xl font-black text-white tracking-widest">WAVE {wave}</div>
-                         <div className="text-xs text-neon-blue font-mono">THREAT LEVEL: {Math.min(100, wave * 5)}%</div>
+                     <div className="text-right shrink-0">
+                         <div className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-wide sm:tracking-widest">WAVE {wave}</div>
+                         <div className="text-[9px] sm:text-xs text-neon-blue font-mono whitespace-nowrap">THREAT {Math.min(100, wave * 5)}%</div>
                      </div>
                  </div>
 
