@@ -10,6 +10,8 @@ if (!fs.existsSync(basePath)) {
 
 const baseHtml = fs.readFileSync(basePath, 'utf8');
 const site = 'https://spaceclickergame.com';
+const ORGANIZATION_ID = site + '/#organization';
+const EDITORIAL_ID = site + '/#editorial';
 const SITE_CONTENT_UPDATED = '2026-10-05';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
@@ -228,9 +230,14 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
           "dateModified": SITE_CONTENT_UPDATED,
           "publisher": {
-            "@type": "Organization",
-            "name": "Space Clicker Game"
+            "@id": ORGANIZATION_ID
           }
+        },
+        {
+          "@type": "Organization",
+          "@id": ORGANIZATION_ID,
+          "name": "Space Clicker Game",
+          "url": site + "/"
         },
         {
           "@type": "VideoGame",
@@ -541,7 +548,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "dateModified": SITE_CONTENT_UPDATED,
           "about": {
             "@type": "Organization",
-            "@id": site + "/#organization",
+            "@id": ORGANIZATION_ID,
             "name": "Space Clicker Game",
             "url": site + "/"
           },
@@ -1039,13 +1046,13 @@ const renderHtml = (route, title, description, h1) => {
             "dateModified": articleMeta.dateModified,
             "author": [{
               "@type": "Organization",
+              "@id": EDITORIAL_ID,
               "name": articleMeta.author,
-              "url": "https://spaceclickergame.com/about/"
+              "url": site + "/about/",
+              "parentOrganization": { "@id": ORGANIZATION_ID }
             }],
             "publisher": {
-              "@type": "Organization",
-              "name": "Space Clicker Game",
-              "url": "https://spaceclickergame.com/"
+              "@id": ORGANIZATION_ID
             },
             "description": articleMeta.description,
             "mainEntityOfPage": {
