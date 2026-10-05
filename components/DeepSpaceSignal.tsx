@@ -69,57 +69,63 @@ const DeepSpaceSignal: React.FC = () => {
     const scanCost = Math.max(5, 20 * (1 - (factions.MIL * 0.01)));
 
     // --- VISUALIZER LOOP ---
+    // The spectrum is decorative, so it does not need a permanent 60fps loop.
+    // Use a bounded timer instead: faster while scanning, slower while idle,
+    // and much slower for users who prefer reduced motion.
     useEffect(() => {
         const canvas = spectrumCanvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let animationId: number;
         const bars = 64;
         const barWidth = canvas.width / bars;
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
         const draw = () => {
+            if (document.hidden) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Random glitch line
             if (Math.random() < 0.1) {
                 ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
                 ctx.fillRect(0, Math.random() * canvas.height, canvas.width, 2);
             }
 
             for (let i = 0; i < bars; i++) {
-                // Height depends on scanning state + randomness
-                const baseHeight = isScanning ? Math.random() * canvas.height : Math.random() * (canvas.height * 0.2);
+                const baseHeight = isScanning
+                    ? Math.random() * canvas.height
+                    : Math.random() * (canvas.height * 0.2);
                 const x = i * barWidth;
-                const y = (canvas.height - baseHeight) / 2; // Center it vertically-ish
+                const y = (canvas.height - baseHeight) / 2;
                 
-                // Color based on activity
                 ctx.fillStyle = isScanning ? '#22c55e' : '#14532d';
-                if (isScanning && Math.random() > 0.9) ctx.fillStyle = '#4ade80'; // Highlights
+                if (isScanning && Math.random() > 0.9) ctx.fillStyle = '#4ade80';
 
                 ctx.fillRect(x, y, barWidth - 1, baseHeight);
             }
-            animationId = requestAnimationFrame(draw);
         };
+
         draw();
-        return () => cancelAnimationFrame(animationId);
+        const intervalMs = reduceMotion ? 400 : isScanning ? 50 : 150;
+        const interval = window.setInterval(draw, intervalMs);
+        return () => window.clearInterval(interval);
     }, [isScanning]);
 
     // --- HEX RAIN LOOP ---
     useEffect(() => {
-        const interval = setInterval(() => {
+        const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        const interval = window.setInterval(() => {
+            if (document.hidden) return;
             setHexLines(prev => {
                 const next = [...prev];
-                // Generate random hex string
                 let line = "";
                 for(let i=0; i<8; i++) line += Math.floor(Math.random()*16).toString(16).toUpperCase() + " ";
                 next.push(line);
                 if (next.length > 20) next.shift();
                 return next;
             });
-        }, 100); // Fast update
-        return () => clearInterval(interval);
+        }, reduceMotion ? 800 : 350);
+        return () => window.clearInterval(interval);
     }, []);
 
     // --- GAME LOOP ---
