@@ -12,6 +12,40 @@ const PRESETS: TestMode[] = [
 ];
 
 const BEST_PREFIX = 'spacebar_test_best_';
+const HISTORY_KEY = 'spacebar_test_history_v1';
+
+type TestHistoryEntry = {
+  id: string;
+  mode: string;
+  clicks: number;
+  elapsed: number;
+  averageCps: number;
+  peakCps: number;
+  completedAt: number;
+};
+
+const loadHistory = (): TestHistoryEntry[] => {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((entry) =>
+        entry &&
+        typeof entry.id === 'string' &&
+        typeof entry.mode === 'string' &&
+        Number.isFinite(entry.clicks) &&
+        Number.isFinite(entry.elapsed) &&
+        Number.isFinite(entry.averageCps) &&
+        Number.isFinite(entry.peakCps) &&
+        Number.isFinite(entry.completedAt)
+      )
+      .slice(0, 10);
+  } catch {
+    return [];
+  }
+};
 
 const modeKey = (mode: TestMode) =>
   mode.type === 'time' ? `time_${mode.seconds}` : `clicks_${mode.clicks}`;
@@ -28,6 +62,7 @@ const SpacebarClickerTest: React.FC = () => {
   const [finalElapsed, setFinalElapsed] = useState(0);
   const [bestCps, setBestCps] = useState(() => Number(localStorage.getItem(BEST_PREFIX + modeKey(PRESETS[2])) || 0));
   const [shareStatus, setShareStatus] = useState('');
+  const [history, setHistory] = useState<TestHistoryEntry[]>(loadHistory);
 
   const startedAt = useRef<number | null>(null);
   const deadlineAt = useRef<number | null>(null);
@@ -62,6 +97,8 @@ const SpacebarClickerTest: React.FC = () => {
     finishedRef.current = true;
     const safeElapsed = Math.max(0.001, elapsedSeconds);
     const average = clicksRef.current / safeElapsed;
+    const peak = peakCps;
+
     setRunning(false);
     setFinished(true);
     setFinalElapsed(safeElapsed);
@@ -69,6 +106,22 @@ const SpacebarClickerTest: React.FC = () => {
     setBestCps((best) => {
       const next = Math.max(best, average);
       localStorage.setItem(BEST_PREFIX + modeKey(mode), String(next));
+      return next;
+    });
+
+    const entry: TestHistoryEntry = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      mode: mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`,
+      clicks: clicksRef.current,
+      elapsed: safeElapsed,
+      averageCps: average,
+      peakCps: peak,
+      completedAt: Date.now(),
+    };
+
+    setHistory((previous) => {
+      const next = [entry, ...previous].slice(0, 10);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
       return next;
     });
   };
@@ -154,6 +207,11 @@ const SpacebarClickerTest: React.FC = () => {
     'READY';
 
   const targetLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
+
+  const clearHistory = () => {
+    localStorage.removeItem(HISTORY_KEY);
+    setHistory([]);
+  };
 
   const shareResult = async () => {
     if (!finished) return;
@@ -289,6 +347,58 @@ const SpacebarClickerTest: React.FC = () => {
             <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Game</a>
           </div>
         </div>
+
+        <section className="mt-10 rounded-2xl border border-white/10 bg-space-900/60 p-5 md:p-7">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+            <div>
+              <div className="text-[10px] font-mono tracking-[0.25em] text-neon-blue">LOCAL HISTORY</div>
+              <h2 className="mt-1 text-xl font-display font-bold text-white">Recent Spacebar Test Results</h2>
+              <p className="mt-1 text-xs text-gray-500">The last 10 completed runs are stored only in this browser.</p>
+            </div>
+            {history.length > 0 && (
+              <button
+                type="button"
+                onClick={clearHistory}
+                className="px-4 py-2 rounded border border-white/10 text-xs text-gray-400 hover:border-red-400/50 hover:text-red-300"
+              >
+                Clear history
+              </button>
+            )}
+          </div>
+
+          {history.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-gray-500">
+              Complete a test to start your local result history.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[620px] text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 text-left text-[10px] uppercase tracking-wider text-gray-500">
+                    <th className="py-3 pr-4">Mode</th>
+                    <th className="py-3 pr-4">Clicks</th>
+                    <th className="py-3 pr-4">Elapsed</th>
+                    <th className="py-3 pr-4">Average CPS</th>
+                    <th className="py-3 pr-4">Peak CPS</th>
+                    <th className="py-3">Completed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {history.map((entry) => (
+                    <tr key={entry.id} className="border-b border-white/5 text-gray-300">
+                      <td className="py-3 pr-4 font-bold text-white">{entry.mode}</td>
+                      <td className="py-3 pr-4 font-mono">{entry.clicks}</td>
+                      <td className="py-3 pr-4 font-mono">{entry.elapsed.toFixed(2)}s</td>
+                      <td className="py-3 pr-4 font-mono text-neon-blue">{entry.averageCps.toFixed(2)}</td>
+                      <td className="py-3 pr-4 font-mono">{entry.peakCps.toFixed(1)}</td>
+                      <td className="py-3 text-xs text-gray-500">{new Date(entry.completedAt).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
 
         <article className="mt-14 space-y-8 text-gray-400 leading-relaxed">
           <section>
