@@ -24,9 +24,9 @@ export const GAMES_CATALOG: GameMeta[] = [
     color: 'from-red-600 to-orange-500',
     status: 'LIVE',
     tags: ['Management', 'Strategy', 'Simulation'],
-    briefing: "Welcome to Ares Prime. The atmosphere is thin, and radiation is high. Your mission is to establish a self-sustaining colony. You must manage three critical resources: Oxygen, Food, and Energy. Failure to balance these will result in population collapse. Beware of the Dust Storms.",
+    briefing: "Welcome to Ares Prime. Your mission is to establish a self-sustaining colony by balancing Oxygen, Food, Energy, Minerals, housing, and population. Energy shortages reduce production efficiency, while depleted life-support reserves can reverse population growth.",
     manual: "1. CLICK 'EXCAVATE' to mine Minerals for construction.\n2. BUILD Solar Panels first to generate Energy.\n3. CONSTRUCT Hydroponics and Oxygenators to support life.\n4. POPULATION grows automatically when resources are surplus.\n5. COLONISTS generate Credits for advanced upgrades.",
-    changelog: ["v1.0: Full Colony Simulation Release.", "v0.9: Alpha testing Multi-Resource logic.", "v0.8: Added dust storm disasters."]
+    changelog: ["v1.0: Full colony simulation release.", "v0.9: Multi-resource production and population balancing."]
   },
   {
     id: 'star_defense',
@@ -38,7 +38,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Combat', 'Defense', 'Action'],
     briefing: "Alert! Long-range scanners detect a Xeno fleet on intercept course. You are the last line of defense for the Mothership. Man the point-defense cannons and hold the line until the jump drive charges.",
-    manual: "1. CLICK enemy ships to deal direct damage.\n2. UPGRADE auto-turrets to handle swarms.\n3. DEFEAT Bosses every 10 waves to secure safe passage.\n4. USE shielding abilities in emergencies.",
+    manual: "1. CLICK enemy ships to deal direct damage.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss encounters during every fifth-wave cycle.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
     changelog: ["v1.0: Systems Online. Weapons free."]
   },
   {
@@ -51,7 +51,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Merge', 'Casual', 'Collection'],
     briefing: "Our engineers have developed a new modular hull technology. By combining two identical chassis, we can fuse them into a superior vessel. Build the ultimate armada.",
-    manual: "1. DRAG a Lv.1 ship onto another Lv.1 ship to create a Lv.2 ship.\n2. PLACE high-level ships in the Orbit Track to earn passive Credits.\n3. UNLOCK rare flagships.",
+    manual: "1. DRAG matching ships together to merge them into the next level.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.",
     changelog: ["v1.0: Hangar bays open. Merge logic active."]
   },
   {
@@ -77,7 +77,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Text-Based', 'Mystery', 'Story'],
     briefing: "You are sitting in front of a terminal. The screen is black. A single green cursor blinks. There is a button labeled 'SEND SIGNAL'. Do you dare press it?",
-    manual: "1. INTERACT with text prompts.\n2. MANAGE energy for signal strength.\n3. DECODE alien languages to trade or fight.",
+    manual: "1. SCAN frequencies to receive encrypted transmissions.\n2. MANAGE Energy while upgrading scan and decryption systems.\n3. DECODE and analyze messages to build BIO, TECH, MIL, and VOID bonuses.",
     changelog: ["v1.0: Signal receiver active. Connection established."]
   }
 ];
