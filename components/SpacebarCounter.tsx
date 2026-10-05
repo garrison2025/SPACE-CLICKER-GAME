@@ -133,7 +133,7 @@ const SpacebarCounter: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">What is a Spacebar Counter?</h2>
             <p>
-              A spacebar counter is a simple keyboard tool that records intentional Space key presses. This page keeps the interface minimal:
+              A spacebar counter is a simple keyboard tool for spacebar counting: it records intentional Space key presses while showing a running total and live CPS. This page keeps the interface minimal:
               no upgrades, no idle economy, and no game progression. It is useful when the only goal is to count presses and watch current,
               average, and peak CPS.
             </p>
