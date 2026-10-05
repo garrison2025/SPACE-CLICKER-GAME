@@ -946,6 +946,35 @@ const App: React.FC = () => {
     setLifetimeEarnings(prev => prev + amount);
   };
 
+  // Restore the intended per-run planet progression defined in PLANETS.
+  // Progress only moves forward during a run, so spending Stardust after an
+  // unlock never sends the player backward. Galactic Reset explicitly returns
+  // planetIndex to 0 and starts this progression again.
+  useEffect(() => {
+    if (viewMode !== 'game' || activeGame !== 'galaxy_miner') return;
+    if (planetIndex >= PLANETS.length - 1) return;
+
+    const stardust = resources[ResourceType.Stardust];
+    let nextIndex = planetIndex;
+
+    while (
+      nextIndex + 1 < PLANETS.length &&
+      stardust >= PLANETS[nextIndex + 1].threshold
+    ) {
+      nextIndex += 1;
+    }
+
+    if (nextIndex > planetIndex) {
+      setPlanetIndex(nextIndex);
+      setLevel(nextIndex + 1);
+      const destination = PLANETS[nextIndex];
+      addLog(
+        `WARP COMPLETE: ${destination.name.toUpperCase()} • x${destination.productionMultiplier} PRODUCTION`,
+        'success'
+      );
+    }
+  }, [viewMode, activeGame, resources, planetIndex]);
+
   const handleMine = (x: number, y: number, multiplier: number = 1, isGeode: boolean = false): { amount: number, isCrit: boolean } => {
     if (overheated && !isGeode) return { amount: 0, isCrit: false };
 
