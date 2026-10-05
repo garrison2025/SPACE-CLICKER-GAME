@@ -48,3 +48,39 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+
+/* Defer expensive below-the-fold marketing paint until it approaches the viewport. */
+.defer-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 800px;
+}
+
+/* Keep the sci-fi presentation while reducing mobile GPU work and respecting
+   the user's motion preference. Gameplay canvases are intentionally excluded. */
+@media (max-width: 767px) {
+    .marketing-motion,
+    .marketing-motion * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+
+    .marketing-motion,
+    .marketing-motion *,
+    .animate-pulse,
+    .animate-spin,
+    .animate-bounce {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
