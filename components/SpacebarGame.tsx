@@ -501,16 +501,30 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   const hardReset = () => {
     if (!window.confirm('Erase all Spacebar Clicker progress on this browser?')) return;
+
+    const nextUpgrades = emptyUpgrades();
+    saveStateRef.current = {
+      points: 0,
+      lifetimePoints: 0,
+      lifetimePresses: 0,
+      quantumKeys: 0,
+      upgrades: nextUpgrades,
+      bestCps: 0,
+    };
+
     localStorage.removeItem(SAVE_KEY);
     setPoints(0);
     setLifetimePoints(0);
     setLifetimePresses(0);
     setQuantumKeys(0);
-    setUpgrades(emptyUpgrades());
+    setUpgrades(nextUpgrades);
     setBestCps(0);
     setCurrentCps(0);
     setCombo(0);
     setOfflineEarned(0);
+    setSaveImportText('');
+    setShowSaveImport(false);
+    setSaveTransferStatus('Local Spacebar Clicker progress was reset.');
   };
 
   const achievements = [
