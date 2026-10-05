@@ -731,7 +731,7 @@ const GravityIdle: React.FC = () => {
                                   role="button"
                                   tabIndex={canAfford ? 0 : -1}
                                   aria-disabled={!canAfford}
-                                  aria-label={`${cfg.name}, level ${lvl}, ${isMax ? 'maxed' : `cost ${formatNumber(cost)} dark matter`}`}
+                                  aria-label={`${cfg.name}, level ${lvl}, ${isMax ? 'maxed' : `cost ${formatNumber(cost)} matter`}`}
                                   className={`p-4 rounded-xl border transition-all select-none group relative overflow-hidden touch-manipulation focus:outline-none focus:ring-2 focus:ring-neon-purple/60 ${canAfford ? 'border-neon-purple/40 bg-neon-purple/5 cursor-pointer hover:bg-neon-purple/10 hover:border-neon-purple' : 'border-white/5 bg-black/40 opacity-60'}`}
                                   onKeyDown={(event) => {
                                       if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
@@ -752,7 +752,7 @@ const GravityIdle: React.FC = () => {
                                      <p className="text-[10px] text-gray-500 mb-3 group-hover:text-gray-400">{cfg.desc}</p>
                                      <div className="flex justify-between items-end">
                                         <div className={`text-sm font-mono font-bold ${isMax ? 'text-green-400' : canAfford ? 'text-neon-purple' : 'text-red-400'}`}>
-                                            {isMax ? 'MAXED' : `${formatNumber(cost)} DM`}
+                                            {isMax ? 'MAXED' : `${formatNumber(cost)} MAT`}
                                         </div>
                                         {!isMax && (
                                             <div className="text-[10px] text-gray-500 font-mono">
