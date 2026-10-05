@@ -10,6 +10,11 @@ interface BlogPageProps {
     onNavigate: (view: ViewMode, id?: string) => void;
 }
 
+const optimizeUnsplash = (url: string, width: number) =>
+    url.includes('images.unsplash.com')
+        ? url.replace(/([?&])w=\d+/, `$1w=${width}`)
+        : url;
+
 const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
     const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([]);
 
@@ -152,9 +157,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <div className="w-full aspect-video relative overflow-hidden bg-space-800">
                                     <div className="absolute inset-0 bg-gradient-to-t from-space-900 via-transparent to-transparent z-10"></div>
                                     <img 
-                                        src={post.image} 
-                                        alt={post.title} 
+                                        src={optimizeUnsplash(post.image, 1200)}
+                                        alt={post.title}
                                         loading="eager"
+                                        fetchPriority="high"
+                                        decoding="async"
                                         className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700 opacity-80"
                                     />
                                 </div>
@@ -310,9 +317,10 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <div className="aspect-[16/9] overflow-hidden relative bg-space-800">
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
                                     <img 
-                                        src={post.image} 
-                                        alt={post.title} 
-                                        loading="lazy" 
+                                        src={optimizeUnsplash(post.image, 720)}
+                                        alt={post.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
                                     />
                                 </div>
