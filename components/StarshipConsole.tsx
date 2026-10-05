@@ -104,8 +104,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
 
       {/* --- SETTINGS MODAL --- */}
       {showSettings && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in">
-              <div className="bg-space-800 w-full max-w-md border border-white/20 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 md:backdrop-blur-sm animate-in fade-in p-3">
+              <div className="bg-space-800 w-full max-w-md max-h-[calc(100dvh-1.5rem)] border border-white/20 rounded-2xl shadow-2xl overflow-y-auto">
                   <div className="p-6 border-b border-white/10 flex justify-between items-center bg-space-900">
                       <h2 className="font-display font-bold text-xl text-white tracking-widest">SYSTEM CONFIG</h2>
                       <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-white">✕</button>
@@ -202,8 +202,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
          {/* Center Viewport - SCROLLABLE FOR SEO CONTENT */}
          <div className="flex-1 relative bg-black/40 shadow-inner overflow-y-auto custom-scrollbar scroll-smooth">
              {/* Scanlines Effect */}
-             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 mix-blend-overlay z-[5] fixed"></div>
-             <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/30 z-[5] fixed"></div>
+             <div className="hidden md:block absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 mix-blend-overlay z-[5] fixed"></div>
+             <div className="hidden md:block absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/30 z-[5] fixed"></div>
              
              {children}
          </div>
@@ -211,32 +211,36 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       </main>
 
       {/* --- BOTTOM DOCK --- */}
-      <footer className="h-24 flex justify-center items-end pb-4 bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
-          <div className="pointer-events-auto flex items-end gap-2 p-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl transform translate-y-2 hover:translate-y-0 transition-transform duration-300">
-              {GAMES_CATALOG.map(game => (
-                  <button
-                    key={game.id}
-                    onClick={() => onSwitchGame(game.id)}
-                    className={`group relative w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-2xl transition-all duration-200 hover:-translate-y-4 hover:scale-110
-                        ${activeGame === game.id 
-                            ? 'bg-gradient-to-br from-neon-blue to-blue-600 text-white shadow-[0_0_20px_rgba(0,243,255,0.5)] scale-110 -translate-y-2' 
-                            : 'bg-space-800 text-gray-400 hover:bg-space-700 hover:text-white'
-                        }
-                    `}
-                  >
-                      {game.icon}
-                      
-                      {/* Tooltip */}
-                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                          {game.title}
-                      </div>
+      <footer className="h-24 flex items-end pb-4 bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
+          <div className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
+              <div className="min-w-max flex items-end justify-start sm:justify-center gap-2 p-2">
+                  {GAMES_CATALOG.map(game => (
+                      <button
+                        key={game.id}
+                        onClick={() => onSwitchGame(game.id)}
+                        aria-label={`Switch to ${game.title}`}
+                        aria-current={activeGame === game.id ? 'page' : undefined}
+                        className={`group relative shrink-0 w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center text-xl md:text-2xl transition-all duration-200 md:hover:-translate-y-4 md:hover:scale-110
+                            ${activeGame === game.id 
+                                ? 'bg-gradient-to-br from-neon-blue to-blue-600 text-white shadow-[0_0_20px_rgba(0,243,255,0.5)] md:scale-110 md:-translate-y-2' 
+                                : 'bg-space-800 text-gray-400 hover:bg-space-700 hover:text-white'
+                            }
+                        `}
+                      >
+                          {game.icon}
+                          
+                          {/* Tooltip: desktop pointer devices only */}
+                          <div className="hidden md:block absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                              {game.title}
+                          </div>
 
-                      {/* Active Indicator */}
-                      {activeGame === game.id && (
-                          <div className="absolute -bottom-2 w-1 h-1 bg-white rounded-full shadow-[0_0_5px_white]"></div>
-                      )}
-                  </button>
-              ))}
+                          {/* Active Indicator */}
+                          {activeGame === game.id && (
+                              <div className="absolute -bottom-1.5 w-1 h-1 bg-white rounded-full shadow-[0_0_5px_white]"></div>
+                          )}
+                      </button>
+                  ))}
+              </div>
           </div>
       </footer>
 
