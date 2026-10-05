@@ -128,7 +128,7 @@ for (const file of htmlFiles) {
     if (!html.includes('id="prerender-article-jsonld"')) {
       throw new Error(route + ': static Article JSON-LD is missing');
     }
-    if (!/<meta\s+property="og:type"\s+content="article"/i.test(html)) {
+    if (!/<meta\s+[^>]*property="og:type"[^>]*content="article"[^>]*>/i.test(html)) {
       throw new Error(route + ': article Open Graph type is missing');
     }
   }
