@@ -10,13 +10,27 @@ interface BlogPageProps {
     onNavigate: (view: ViewMode, id?: string) => void;
 }
 
-const optimizeUnsplash = (url: string, width: number) =>
-    url.includes('images.unsplash.com')
-        ? url.replace(/([?&])w=\d+/, `$1w=${width}`)
-        : url;
+const optimizeUnsplash = (url: string, width: number, height?: number) => {
+    if (!url.includes('images.unsplash.com')) return url;
+    try {
+        const parsed = new URL(url);
+        parsed.searchParams.set('w', String(width));
+        if (height) parsed.searchParams.set('h', String(height));
+        parsed.searchParams.set('fit', 'crop');
+        parsed.searchParams.set('q', '80');
+        return parsed.toString();
+    } catch {
+        return url;
+    }
+};
 
 const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
     const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([]);
+
+    const sortedBlogPosts = useMemo(
+        () => [...BLOG_POSTS].sort((a, b) => Date.parse(b.date) - Date.parse(a.date)),
+        []
+    );
 
     const post = useMemo(() => 
         postId ? BLOG_POSTS.find(p => p.slug === postId || p.id === postId) : null, 
@@ -248,7 +262,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <div className="w-full aspect-video relative overflow-hidden bg-space-800">
                                     <div className="absolute inset-0 bg-gradient-to-t from-space-900 via-transparent to-transparent z-10"></div>
                                     <img 
-                                        src={optimizeUnsplash(post.image, 1200)}
+                                        src={optimizeUnsplash(post.image, 1200, 675)}
+                                        srcSet={`${optimizeUnsplash(post.image, 720, 405)} 720w, ${optimizeUnsplash(post.image, 960, 540)} 960w, ${optimizeUnsplash(post.image, 1200, 675)} 1200w`}
+                                        sizes="(max-width: 1023px) 100vw, 75vw"
+                                        width={1200}
+                                        height={675}
                                         alt={post.title}
                                         loading="eager"
                                         fetchPriority="high"
@@ -392,7 +410,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {BLOG_POSTS.map(post => (
+                    {sortedBlogPosts.map(post => (
                         <a 
                             key={post.id}
                             href={`/blog/${post.slug}/`}
@@ -403,7 +421,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <div className="aspect-[16/9] overflow-hidden relative bg-space-800">
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
                                     <img 
-                                        src={optimizeUnsplash(post.image, 720)}
+                                        src={optimizeUnsplash(post.image, 720, 405)}
+                                        srcSet={`${optimizeUnsplash(post.image, 480, 270)} 480w, ${optimizeUnsplash(post.image, 720, 405)} 720w`}
+                                        sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                                        width={720}
+                                        height={405}
                                         alt={post.title}
                                         loading="lazy"
                                         decoding="async"
