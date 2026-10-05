@@ -874,7 +874,7 @@ const staticRouteContent = {
       <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
       <h2>Technology and local saves</h2>
       <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
-      <p>Site and policy review date: October 5, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
+      <p>Site and policy review date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
     </section>`,
   '/contact': `
     <section>
