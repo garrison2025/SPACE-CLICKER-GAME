@@ -26,6 +26,10 @@ expect(sequel.status === 200, 'Known Spacebar Clicker 2 route should pass throug
 const knownGame = await run('https://spaceclickergame.com/game/galaxy_miner/');
 expect(knownGame.status === 200, 'Known game route should pass through');
 
+const gameRoot = await run('https://spaceclickergame.com/game/');
+expect(gameRoot.status === 301, 'Duplicate game root should redirect');
+expect(gameRoot.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Game root redirect target is wrong');
+
 const knownBlog = await run('https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/');
 expect(knownBlog.status === 200, 'Known blog route should pass through');
 
