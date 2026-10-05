@@ -359,36 +359,24 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     pressTimes.current = [];
   };
 
-  const exportSave = async () => {
+  const buildExportCode = () => {
     const payload: SpacebarSave = {
       version: SAVE_VERSION,
       ...saveStateRef.current,
       lastSaveTime: Date.now(),
     };
-    const code = 'SCG1.' + window.btoa(JSON.stringify(payload));
-
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(code);
-        setSaveTransferStatus('Save code copied to clipboard.');
-      } else {
-        window.prompt('Copy this Spacebar Clicker save code:', code);
-        setSaveTransferStatus('Save code ready to copy.');
-      }
-    } catch {
-      window.prompt('Copy this Spacebar Clicker save code:', code);
-      setSaveTransferStatus('Save code ready to copy.');
-    }
+    return 'SCG1.' + window.btoa(JSON.stringify(payload));
   };
 
-  const importSave = () => {
-    const entered = window.prompt('Paste a Spacebar Clicker save code:');
-    if (!entered) return;
-
-    const code = entered.trim();
+  const applyImportedSaveCode = (rawCode: string) => {
+    const code = rawCode.trim();
+    if (!code) {
+      setSaveTransferStatus('No save data was provided.');
+      return false;
+    }
     if (code.length > 50_000) {
       setSaveTransferStatus('Save code is too large.');
-      return;
+      return false;
     }
 
     try {
@@ -398,7 +386,10 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       const parsed = JSON.parse(json);
       const imported = sanitizeSave(parsed);
 
-      if (!window.confirm('Replace the current Spacebar Clicker save with this imported backup?')) return;
+      if (!window.confirm('Replace the current Spacebar Clicker save with this imported backup?')) {
+        setSaveTransferStatus('Import cancelled.');
+        return false;
+      }
 
       const next: SpacebarSave = {
         ...imported,
@@ -427,9 +418,74 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       setOfflineEarned(0);
       pressTimes.current = [];
       setSaveTransferStatus('Save imported successfully.');
+      return true;
     } catch {
-      setSaveTransferStatus('That save code could not be read.');
+      setSaveTransferStatus('That save backup could not be read.');
+      return false;
     }
+  };
+
+  const exportSave = async () => {
+    const code = buildExportCode();
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(code);
+        setSaveTransferStatus('Save code copied to clipboard.');
+      } else {
+        window.prompt('Copy this Spacebar Clicker save code:', code);
+        setSaveTransferStatus('Save code ready to copy.');
+      }
+    } catch {
+      window.prompt('Copy this Spacebar Clicker save code:', code);
+      setSaveTransferStatus('Save code ready to copy.');
+    }
+  };
+
+  const downloadSave = () => {
+    try {
+      const code = buildExportCode();
+      const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download = `spacebar-clicker-save-${new Date().toISOString().slice(0, 10)}.scg`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+      setSaveTransferStatus('Backup file downloaded.');
+    } catch {
+      setSaveTransferStatus('Could not create the backup file.');
+    }
+  };
+
+  const importSave = () => {
+    const entered = window.prompt('Paste a Spacebar Clicker save code:');
+    if (!entered) return;
+    applyImportedSaveCode(entered);
+  };
+
+  const importSaveFile = () => {
+    const picker = document.createElement('input');
+    picker.type = 'file';
+    picker.accept = '.scg,.txt,text/plain,application/json';
+    picker.onchange = async () => {
+      const selected = picker.files?.[0];
+      if (!selected) return;
+      if (selected.size > 100_000) {
+        setSaveTransferStatus('Backup file is too large.');
+        return;
+      }
+
+      try {
+        const code = await selected.text();
+        applyImportedSaveCode(code);
+      } catch {
+        setSaveTransferStatus('Could not read that backup file.');
+      }
+    };
+    picker.click();
   };
 
   const hardReset = () => {
@@ -699,14 +755,28 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
             onClick={exportSave}
             className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
           >
-            Export save
+            Copy save code
+          </button>
+          <button
+            type="button"
+            onClick={downloadSave}
+            className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
+          >
+            Download backup
           </button>
           <button
             type="button"
             onClick={importSave}
             className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
           >
-            Import save
+            Paste save code
+          </button>
+          <button
+            type="button"
+            onClick={importSaveFile}
+            className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
+          >
+            Import backup file
           </button>
           <button
             type="button"
@@ -806,7 +876,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   <div><h3 className="text-lg text-white">Does holding Space increase CPS?</h3><p>No. Repeated keyboard events generated by holding the key are ignored.</p></div>
                   <div><h3 className="text-lg text-white">Does progress sync between devices?</h3><p>No. Progress is saved locally in the current browser.</p></div>
                   <div><h3 className="text-lg text-white">What survives a prestige reset?</h3><p>Quantum Keys, lifetime presses, best CPS and achievement progress remain.</p></div>
-                  <div><h3 className="text-lg text-white">Can I move my Spacebar Clicker save to another browser?</h3><p>Yes. Export a save code, copy it to the other browser or device, then use Import save. Imported data is validated before it replaces the local save.</p></div>
+                  <div><h3 className="text-lg text-white">Can I move my Spacebar Clicker save to another browser?</h3><p>Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported data is validated before it replaces the local save.</p></div>
                 </div>
               </section>
             </>
