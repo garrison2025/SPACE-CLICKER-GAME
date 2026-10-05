@@ -81,6 +81,7 @@ expect(missing.status === 404, 'Unknown route must return HTTP 404');
 const missingHtml = await missing.text();
 expect(missingHtml.includes('noindex,nofollow'), '404 HTML must include noindex');
 expect(!missingHtml.includes('rel="canonical"'), '404 HTML must not canonicalize to the homepage');
+expect(missing.headers.get('x-robots-tag') === 'noindex, nofollow', '404 response must send X-Robots-Tag noindex');
 
 const invalidGame = await run('https://spaceclickergame.com/game/not-a-real-game/');
 expect(invalidGame.status === 404, 'Unknown game route must return HTTP 404');
