@@ -11,6 +11,45 @@ if (!fs.existsSync(basePath)) {
 const baseHtml = fs.readFileSync(basePath, 'utf8');
 const site = 'https://spaceclickergame.com';
 
+const blogSourcePath = path.resolve('content/blogPosts.ts');
+const blogStaticContent = {};
+
+if (!fs.existsSync(blogSourcePath)) {
+  throw new Error('content/blogPosts.ts not found. Blog prerender content cannot be generated.');
+}
+
+const blogSource = fs.readFileSync(blogSourcePath, 'utf8');
+const blogSlugMatches = [...blogSource.matchAll(/slug:\s*'([^']+)'/g)]
+  .map((match) => ({ slug: match[1], index: match.index }));
+
+for (let index = 0; index < blogSlugMatches.length; index += 1) {
+  const { slug, index: start } = blogSlugMatches[index];
+  const end = index + 1 < blogSlugMatches.length ? blogSlugMatches[index + 1].index : blogSource.length;
+  const chunk = blogSource.slice(start, end);
+  const contentMarker = 'content: `';
+  const contentStart = chunk.indexOf(contentMarker);
+  const contentEnd = chunk.lastIndexOf('`');
+
+  if (contentStart < 0 || contentEnd <= contentStart) {
+    throw new Error(`Could not extract static blog content for ${slug}`);
+  }
+
+  const content = chunk.slice(contentStart + contentMarker.length, contentEnd).trim();
+
+  if (content.length < 500) {
+    throw new Error(`Static blog content for ${slug} is unexpectedly short`);
+  }
+  if (/<script\b/i.test(content) || content.includes('${')) {
+    throw new Error(`Unsafe or unsupported template content found in blog post ${slug}`);
+  }
+
+  blogStaticContent[`/blog/${slug}`] = `<article class="static-blog-content">${content}</article>`;
+}
+
+if (Object.keys(blogStaticContent).length !== 10) {
+  throw new Error(`Expected 10 blog posts for prerender, found ${Object.keys(blogStaticContent).length}`);
+}
+
 const routes = [
   ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
   ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
@@ -132,7 +171,7 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${staticRouteContent[route] || ''}<nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
+    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
   );
   return html;
 };
@@ -152,4 +191,4 @@ const sitemapRoutes = routes.map(([route]) => route).filter((route) => !excluded
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
-console.log(`Prerendered ${routes.length} routes; generated sitemap.xml with ${sitemapRoutes.length} core URLs`);
+console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml with ${sitemapRoutes.length} core URLs`);
