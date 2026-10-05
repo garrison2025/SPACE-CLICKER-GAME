@@ -630,7 +630,34 @@ const App: React.FC = () => {
           };
           schema = unblocked ? {
               "@context": "https://schema.org",
-              ...clickerGameSchema
+              "@graph": [
+                clickerGameSchema,
+                {
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    {
+                      "@type": "Question",
+                      "name": "What does “unblocked” mean on this page?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "It means the game opens directly in a browser with no installation, launcher, extension, or account step. It does not bypass network restrictions." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Can a school or workplace network still block the game?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Access depends on the rules applied by the network, device, firewall, parental controls, or administrator." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Does the instant-play version save progress?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Progress is stored locally in the current browser. There is no cloud or cross-device sync." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Is this the same Spacebar Clicker game?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page." }
+                    }
+                  ]
+                }
+              ]
           } : {
               "@context": "https://schema.org",
               "@graph": [
