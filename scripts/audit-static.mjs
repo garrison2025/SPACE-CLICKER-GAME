@@ -286,7 +286,9 @@ if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
 const sitemap = fs.readFileSync(sitemapPath, 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((match) => match[1]);
-if (locs.length !== 27) throw new Error('Expected 27 core sitemap URLs, found ' + locs.length);
+if (locs.length !== auditedRoutes.length) {
+  throw new Error('Expected sitemap coverage for all ' + auditedRoutes.length + ' indexable prerendered routes, found ' + locs.length);
+}
 if (lastmods.length !== locs.length) throw new Error('Every sitemap URL must include one lastmod date');
 for (const lastmod of lastmods) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod)) {
@@ -305,6 +307,13 @@ for (const loc of locs) {
   const pathname = new URL(loc).pathname;
   if (!auditedRoutes.includes(pathname)) {
     throw new Error('Sitemap URL has no prerendered route: ' + loc);
+  }
+}
+
+const sitemapPathnames = new Set(locs.map((loc) => new URL(loc).pathname));
+for (const route of auditedRoutes) {
+  if (!sitemapPathnames.has(route)) {
+    throw new Error('Indexable prerendered route is missing from sitemap.xml: ' + route);
   }
 }
 
