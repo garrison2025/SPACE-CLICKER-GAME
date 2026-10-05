@@ -6,11 +6,15 @@ import { formatNumber } from '../utils';
 interface PrestigeShopProps {
   darkMatter: number;
   upgrades: { [id: string]: number };
+  prestigeGain: number;
+  canPrestige: boolean;
+  thresholdLabel: string;
+  onPrestige: () => void;
   onBuy: (id: string) => void;
   onClose: () => void;
 }
 
-const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, onBuy, onClose }) => {
+const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prestigeGain, canPrestige, thresholdLabel, onPrestige, onBuy, onClose }) => {
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in">
       <div className="bg-space-800 w-full max-w-4xl h-[80vh] rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden">
@@ -23,6 +27,25 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, onBuy
           </div>
           <div className="text-right">
              <div className="text-2xl font-bold text-white">{formatNumber(darkMatter)} <span className="text-neon-purple text-sm">DM</span></div>
+          </div>
+        </div>
+
+        <div className="px-6 py-5 border-b border-space-600 bg-neon-purple/5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-white font-display text-xl">GALACTIC RESET</h3>
+              <p className="text-sm text-gray-400 mt-1">
+                Reach {thresholdLabel} Stardust, then reset Stardust and standard upgrades for permanent Dark Matter.
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled={!canPrestige}
+              onClick={onPrestige}
+              className="px-5 py-3 rounded font-bold bg-neon-purple text-black disabled:bg-space-700 disabled:text-gray-500 disabled:cursor-not-allowed"
+            >
+              {canPrestige ? `PRESTIGE +${prestigeGain} DM` : 'PRESTIGE LOCKED'}
+            </button>
           </div>
         </div>
 
