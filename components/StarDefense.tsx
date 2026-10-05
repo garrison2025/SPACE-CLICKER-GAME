@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } from '../types';
 import { formatNumber } from '../utils';
 
@@ -100,6 +100,16 @@ const StarDefense: React.FC = () => {
     
     // Force Render for UI
     const [_, setRenderTrigger] = useState(0);
+
+    const backgroundStars = useMemo(
+        () => Array.from({ length: 30 }, (_, index) => ({
+            id: index,
+            left: Math.random() * 100,
+            duration: Math.random() * 3 + 1,
+            opacity: Math.random(),
+        })),
+        []
+    );
 
     // Derived Stats
     const maxHp = 100 + ((upgrades.find(u => u.id === 'hull')?.level || 0) * (upgrades.find(u => u.id === 'hull')?.value || 20));
@@ -720,9 +730,17 @@ const StarDefense: React.FC = () => {
                  {/* Moving Starfield Background */}
                  <div className="absolute inset-0 opacity-40">
                       <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
-                      {Array.from({length: 30}).map((_, i) => (
-                          <div key={i} className="hidden sm:block absolute w-1 h-1 bg-white rounded-full animate-[float_3s_linear_infinite]" 
-                               style={{ left: `${Math.random()*100}%`, top: '-10px', animationDuration: `${Math.random()*3+1}s`, opacity: Math.random() }}></div>
+                      {backgroundStars.map((star) => (
+                          <div
+                            key={star.id}
+                            className="hidden sm:block absolute w-1 h-1 bg-white rounded-full animate-[float_3s_linear_infinite]"
+                            style={{
+                                left: `${star.left}%`,
+                                top: '-10px',
+                                animationDuration: `${star.duration}s`,
+                                opacity: star.opacity
+                            }}
+                          />
                       ))}
                  </div>
                  
