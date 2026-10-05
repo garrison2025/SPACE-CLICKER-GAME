@@ -148,8 +148,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
 
             <h2>Transitioning to Automation</h2>
-            <p>A useful transition point in a <strong>clicker game space</strong> adventure is when passive generation becomes more important than another burst of manual input.</p>
-            <p>In an incremental game, that transition happens when the production added by automation becomes more important than another burst of manual input. The exact point depends on the current upgrades, multipliers, and how actively the player is pressing.</p>
+            <p>A useful transition point in a <strong>clicker game space</strong> adventure is when passive generation becomes more important than another burst of manual input. The exact point depends on current upgrades, multipliers, and how actively the player is pressing.</p>
             
             <h3>Math Breakdown: Click vs. Idle</h3>
             <p>Let's look at the math found in a typical <strong>space clicking game</strong>:</p>
