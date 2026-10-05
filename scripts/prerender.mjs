@@ -756,7 +756,7 @@ const staticRouteContent = {
       <h2>Key-repeat protection</h2>
       <p>Holding the Space key does not generate a valid stream of clicks because browser-generated repeat events are ignored. The test is designed around repeated deliberate presses or intentional taps on the on-screen control.</p>
       <h2>Personal bests, recent results, and sharing</h2>
-      <p>The best result for each selected mode is stored locally in the current browser. The page also keeps the last 10 completed runs locally with mode, clicks, elapsed time, average CPS, peak CPS, and completion time. The history can be cleared at any time. After a completed test, supported devices can use the share sheet; otherwise the result can be copied where clipboard access is available.</p>
+      <p>The best result for each selected mode is stored locally in the current browser. The page also keeps the last 10 completed runs locally with mode, clicks, elapsed time, average CPS, peak CPS, and completion time. The history can be cleared at any time. After a completed test, supported devices can use the share sheet, copy the result where clipboard access is available, or save a locally generated 1200×630 PNG result card.</p>
       <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
       <p>For technique and hardware context, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> and <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">Keyboard Factors for Space Bar Click Games</a>.</p>
     </section>`,
