@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface SEOHeadProps {
@@ -7,7 +7,6 @@ interface SEOHeadProps {
   path: string;
   image?: string;
   type?: 'website' | 'article' | 'game';
-  keywords?: string;
   schema?: Record<string, any> | Record<string, any>[];
   noindex?: boolean;
 }
@@ -18,12 +17,17 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   path, 
   image = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200',
   type = 'website',
-  keywords = 'space clicker game, idle mining, incremental game, browser games, galaxy miner, strategy simulation, free online games, sci-fi idle',
   schema,
   noindex = false
 }) => {
   const normalizedPath = path === '/' ? '/' : '/' + path.split('/').filter(Boolean).join('/') + '/';
   const fullUrl = `https://spaceclickergame.com${normalizedPath}`;
+
+  // Prerendered HTML exposes route schema to no-JS crawlers. Once React owns
+  // the document, remove that static copy so Helmet remains the single runtime source.
+  useEffect(() => {
+    document.getElementById('prerender-route-jsonld')?.remove();
+  }, [path]);
 
   return (
     <Helmet>
@@ -59,7 +63,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
 
       {/* JSON-LD Structured Data */}
       {schema && (
-        <script type="application/ld+json">
+        <script id="runtime-route-jsonld" type="application/ld+json">
           {JSON.stringify(schema)}
         </script>
       )}
