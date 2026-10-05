@@ -33,8 +33,15 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
 
       {/* Modal View */}
       {isOpen && (
-        <div className="fixed inset-0 z-[140] flex items-center justify-center bg-black/85 md:backdrop-blur-sm p-3 sm:p-4 animate-in fade-in">
-          <div role="dialog" aria-modal="true" aria-labelledby="hotkey-dialog-title" className="bg-space-850 border border-white/20 w-full max-w-md max-h-[calc(100dvh-1.5rem)] rounded-2xl p-4 sm:p-6 shadow-2xl overflow-y-auto">
+        <div className="safe-screen-overlay fixed inset-0 z-[140] flex items-center justify-center bg-black/85 md:backdrop-blur-sm animate-in fade-in">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hotkey-dialog-title"
+            tabIndex={-1}
+            autoFocus
+            className="bg-space-850 border border-white/20 w-full max-w-md max-h-full rounded-2xl p-4 sm:p-6 shadow-2xl overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+          >
             <div className="flex justify-between items-center mb-5 pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <span className="text-xl">⌨️</span>
@@ -43,6 +50,8 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
                 </h3>
               </div>
               <button
+                type="button"
+                aria-label="Close keyboard shortcuts"
                 onClick={onClose}
                 className="w-11 h-11 shrink-0 text-gray-400 hover:text-white text-sm bg-white/5 hover:bg-white/10 rounded transition-colors"
               >
