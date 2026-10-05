@@ -33,7 +33,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
     <div className="min-h-screen flex flex-col relative bg-space-900 selection:bg-neon-blue selection:text-black font-sans text-gray-200">
       
       {/* Navigation */}
-      <header className="sticky top-0 z-[100] w-full bg-space-950/80 backdrop-blur-md border-b border-white/10">
+      <header className="sticky top-0 z-[100] w-full bg-space-950 md:bg-space-950/80 md:backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             {/* Logo */}
             <a 
@@ -47,7 +47,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6 lg:gap-8">
                 <NavLink view="home" label="HOME" />
-                <NavLink view="game" label="GAMES" />
+                <NavLink view="game" label="GALAXY MINER" />
                 <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" />
                 <NavLink view="compare" label="COMPARE" />
                 <NavLink view="achievements" label="ACHIEVEMENTS" />
@@ -74,12 +74,16 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                   <summary className="list-none cursor-pointer px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white">
                     MENU
                   </summary>
-                  <nav className="absolute right-0 mt-2 w-56 rounded-xl border border-white/10 bg-space-950/95 backdrop-blur-xl shadow-2xl p-2 z-[120]">
+                  <nav className="absolute right-0 mt-2 w-64 max-h-[72vh] overflow-y-auto rounded-xl border border-white/10 bg-space-950 shadow-2xl p-2 z-[120]">
                     {[
                       ['home', 'Home'],
-                      ['game', 'Games'],
+                      ['game', 'Galaxy Miner'],
                       ['spacebar-games', 'Spacebar Games'],
                       ['spacebar-clicker', 'Spacebar Clicker'],
+                      ['spacebar-clicker-test', 'CPS Test'],
+                      ['spacebar-counter', 'Spacebar Counter'],
+                      ['compare', 'Feature Comparison'],
+                      ['achievements', 'Milestones'],
                       ['blog', 'Blog'],
                       ['about', 'About']
                     ].map(([view, label]) => (
@@ -92,7 +96,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                           const details = event.currentTarget.closest('details');
                           if (details) details.removeAttribute('open');
                         }}
-                        className="block rounded-lg px-3 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
+                        className="block rounded-lg px-3 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
                       >
                         {label}
                       </a>
@@ -131,8 +135,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                      <li><NavLink view="spacebar-clicker-2" label="Spacebar Clicker 2" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-counter" label="Spacebar Counter" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-clicker-test" label="Spacebar Clicker Test" className="font-normal text-xs" /></li>
-                     <li><NavLink view="compare" label="Game Comparisons vs Cookie Clicker" className="font-normal text-xs" /></li>
-                     <li><NavLink view="achievements" label="Achievements & Trophy Guide" className="font-normal text-xs" /></li>
+                     <li><NavLink view="compare" label="Feature Comparison" className="font-normal text-xs" /></li>
+                     <li><NavLink view="achievements" label="Galaxy Miner Milestones" className="font-normal text-xs" /></li>
                      <li><NavLink view="blog" label="Mission Logs (Blog)" className="font-normal text-xs" /></li>
                      <li><NavLink view="about" label="About Us" className="font-normal text-xs" /></li>
                      <li><NavLink view="contact" label="Contact Command" className="font-normal text-xs" /></li>
