@@ -586,6 +586,14 @@ const buildStaticRouteSchema = (route, description, canonical) => {
 const escapeHtml = (value) =>
   value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
+const escapeXml = (value) =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+
 const staticRouteContent = {
   '/': `
     <section>
@@ -1006,4 +1014,73 @@ const coreLastModified = '2026-10-05';
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc><lastmod>${coreLastModified}</lastmod></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
-console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml with ${sitemapRoutes.length} indexable URLs`);
+const rssItems = Object.entries(blogStaticMeta).map(([route, meta]) => {
+  const url = site + route + '/';
+  return [
+    '    <item>',
+    `      <title>${escapeXml(meta.title)}</title>`,
+    `      <link>${escapeXml(url)}</link>`,
+    `      <guid isPermaLink="true">${escapeXml(url)}</guid>`,
+    `      <pubDate>${new Date(meta.datePublished).toUTCString()}</pubDate>`,
+    `      <description>${escapeXml(meta.description)}</description>`,
+    '    </item>'
+  ].join('\n');
+}).join('\n');
+
+const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Space Clicker Game Blog</title>
+    <link>${site}/blog/</link>
+    <description>Guides, mechanics explainers and strategy articles for space clicker, incremental browser games and Spacebar tools.</description>
+    <language>en</language>
+    <lastBuildDate>${new Date(SITE_CONTENT_UPDATED + 'T00:00:00Z').toUTCString()}</lastBuildDate>
+    <ttl>1440</ttl>
+${rssItems}
+  </channel>
+</rss>
+`;
+fs.writeFileSync(path.join(distDir, 'feed.xml'), rss);
+
+const coreRouteRows = routes
+  .filter(([route]) => !route.startsWith('/blog/') || route === '/blog')
+  .map(([route, title, description]) => {
+    const url = site + (route === '/' ? '/' : route + '/');
+    return `- [${title}](${url}): ${description}`;
+  })
+  .join('\n');
+
+const guideRows = Object.entries(blogStaticMeta)
+  .map(([route, meta]) => `- [${meta.title}](${site + route + '/'}): ${meta.description}`)
+  .join('\n');
+
+const llms = `# Space Clicker Game
+
+> Free browser-based space clicker, idle and strategy simulations plus dedicated Spacebar clicker, counter and CPS tools. Current game saves and test records are stored locally in the browser; no account is required for the current tools.
+
+Last reviewed: ${SITE_CONTENT_UPDATED}
+
+## Core pages
+
+${coreRouteRows}
+
+## Guides
+
+${guideRows}
+
+## Site facts
+
+- Canonical origin: ${site}/
+- Primary game: Galaxy Miner
+- Current simulation count: 6
+- Spacebar tools include an incremental clicker, an untimed counter, timed CPS tests, a 100-click sprint and a separate Spacebar Clicker 2 progression mode.
+- Supported saves and personal records use local browser storage rather than cloud sync.
+- Privacy: ${site}/privacy/
+- About: ${site}/about/
+- HTML sitemap: ${site}/sitemap/
+- XML sitemap: ${site}/sitemap.xml
+- RSS feed: ${site}/feed.xml
+`;
+fs.writeFileSync(path.join(distDir, 'llms.txt'), llms);
+
+console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml, feed.xml and llms.txt`);
