@@ -332,10 +332,34 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   };
 
   const buyUpgrade = (def: UpgradeDef) => {
-    const plan = getPurchasePlan(def);
-    if (plan.count < 1) return;
-    setPoints((value) => value - plan.totalCost);
-    setUpgrades((value) => ({ ...value, [def.id]: value[def.id] + plan.count }));
+    const snapshot = saveStateRef.current;
+    const level = snapshot.upgrades[def.id];
+    const remainingLevels = def.maxLevel === undefined ? 1000 : Math.max(0, def.maxLevel - level);
+    const targetCount = buyMode === 'max' ? remainingLevels : Math.min(buyMode, remainingLevels);
+
+    let totalCost = 0;
+    let count = 0;
+    for (let index = 0; index < targetCount; index++) {
+      const nextCost = Math.floor(def.baseCost * Math.pow(def.costMultiplier, level + index));
+      if (totalCost + nextCost > snapshot.points) break;
+      totalCost += nextCost;
+      count += 1;
+    }
+    if (count < 1) return;
+
+    const nextPoints = snapshot.points - totalCost;
+    const nextUpgrades = {
+      ...snapshot.upgrades,
+      [def.id]: level + count,
+    };
+
+    saveStateRef.current = {
+      ...snapshot,
+      points: nextPoints,
+      upgrades: nextUpgrades,
+    };
+    setPoints(nextPoints);
+    setUpgrades(nextUpgrades);
   };
 
   const prestige = () => {
