@@ -531,7 +531,7 @@ const MarsColony: React.FC = () => {
                     <h2 className="font-display font-bold text-xl text-orange-400 tracking-wider">CONSTRUCTION</h2>
                     <button 
                         onClick={saveGame} 
-                        className="text-[10px] border border-orange-500/50 text-orange-300 px-2 py-1 rounded hover:bg-orange-900 transition-colors"
+                        className="min-h-11 px-3 py-2 text-[10px] border border-orange-500/50 text-orange-300 rounded hover:bg-orange-900 transition-colors"
                     >
                         SAVE
                     </button>
