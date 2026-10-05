@@ -447,12 +447,14 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
         await navigator.clipboard.writeText(code);
         setSaveTransferStatus('Save code copied to clipboard.');
       } else {
-        window.prompt('Copy this Spacebar Clicker save code:', code);
-        setSaveTransferStatus('Save code ready to copy.');
+        setSaveImportText(code);
+        setShowSaveImport(true);
+        setSaveTransferStatus('Clipboard access is unavailable. The save code is shown below for manual copying.');
       }
     } catch {
-      window.prompt('Copy this Spacebar Clicker save code:', code);
-      setSaveTransferStatus('Save code ready to copy.');
+      setSaveImportText(code);
+      setShowSaveImport(true);
+      setSaveTransferStatus('Clipboard access was blocked. The save code is shown below for manual copying.');
     }
   };
 
