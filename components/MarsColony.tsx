@@ -294,14 +294,24 @@ const MarsColony: React.FC = () => {
     };
 
     const handleBuy = (id: string) => {
-        const building = buildings.find(b => b.id === id);
+        const snapshot = stateRef.current;
+        const building = snapshot.buildings.find(b => b.id === id);
         if (!building) return;
-        
+
         const cost = Math.floor(building.cost * Math.pow(1.15, building.count));
-        if (resources.minerals >= cost) {
-            setResources(prev => ({ ...prev, minerals: prev.minerals - cost }));
-            setBuildings(prev => prev.map(b => b.id === id ? { ...b, count: b.count + 1 } : b));
-        }
+        if (snapshot.resources.minerals < cost) return;
+
+        const nextResources = {
+            ...snapshot.resources,
+            minerals: snapshot.resources.minerals - cost
+        };
+        const nextBuildings = snapshot.buildings.map(b =>
+            b.id === id ? { ...b, count: b.count + 1 } : b
+        );
+
+        stateRef.current = { resources: nextResources, buildings: nextBuildings };
+        setResources(nextResources);
+        setBuildings(nextBuildings);
     };
     
     // --- PERSISTENCE ---
