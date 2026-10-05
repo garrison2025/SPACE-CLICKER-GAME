@@ -3,25 +3,11 @@ import React from 'react';
 const SpacebarGamesPage: React.FC = () => {
   const games = [
     {
-      href: '/spacebar-clicker-2/',
-      title: 'Spacebar Clicker 2',
-      badge: 'OVERDRIVE EDITION',
-      description: 'A separate enhanced edition with Overdrive surges, stronger automation, offline earnings and Nova Core ascension.',
-      bestFor: 'A deeper second progression loop'
-    },
-    {
       href: '/spacebar-clicker/',
       title: 'Spacebar Clicker',
       badge: 'IDLE / INCREMENTAL',
       description: 'Press Space for points, buy manual and automatic upgrades, build combos, earn offline progress and prestige for permanent Quantum Keys.',
       bestFor: 'Longer progression sessions'
-    },
-    {
-      href: '/spacebar-counter/',
-      title: 'Spacebar Counter',
-      badge: 'ENDLESS COUNTER',
-      description: 'Count deliberate Space presses with current CPS, average CPS, peak CPS and a best count saved in this browser.',
-      bestFor: 'Untimed counting and practice'
     },
     {
       href: '/spacebar-clicker-test/',
@@ -31,13 +17,27 @@ const SpacebarGamesPage: React.FC = () => {
       bestFor: 'Measuring spacebar speed'
     },
     {
+      href: '/spacebar-counter/',
+      title: 'Spacebar Counter',
+      badge: 'ENDLESS COUNTER',
+      description: 'Count deliberate Space presses with current CPS, average CPS, peak CPS and a best count saved in this browser.',
+      bestFor: 'Untimed counting and practice'
+    },
+    {
+      href: '/spacebar-clicker-2/',
+      title: 'Spacebar Clicker 2',
+      badge: 'OVERDRIVE EDITION',
+      description: 'A separate enhanced edition with Overdrive surges, stronger automation, offline earnings and Nova Core ascension.',
+      bestFor: 'A deeper second progression loop'
+    },
+    {
       href: '/spacebar-clicker-unblocked/',
       title: 'Spacebar Clicker Instant Play',
       badge: 'NO DOWNLOAD',
       description: 'Open the full Spacebar Clicker game directly in a modern browser with keyboard and mobile controls and local browser saves.',
       bestFor: 'Quick browser access'
     }
-  ];
+  ];;
 
   return (
     <div className="min-h-screen bg-space-950 text-gray-200">
