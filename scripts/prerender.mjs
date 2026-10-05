@@ -1140,6 +1140,40 @@ for (const [route, title, description, h1] of routes) {
   fs.writeFileSync(path.join(targetDir, 'index.html'), renderHtml(route, title, description, h1));
 }
 
+// A top-level 404.html prevents Cloudflare Pages from applying SPA fallback to
+// missing static-looking URLs such as /missing.html or /assets/missing.js.
+// Every supported route above already has a prerendered file, so valid direct
+// navigation remains unaffected while unknown paths receive a true 404.
+const notFoundHtml = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#0b0d17">
+  <title>404 - Signal Lost | Space Clicker Game</title>
+  <meta name="description" content="The requested Space Clicker Game page could not be found.">
+  <style>
+    :root{color-scheme:dark}
+    body{margin:0;background:#0b0d17;color:#e5e7eb;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:760px;margin:0 auto;padding:12vh 24px}
+    .code{font:800 clamp(64px,18vw,160px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#00f3ff}
+    h1{font-size:clamp(28px,5vw,48px);margin:12px 0}
+    p{color:#9ca3af;line-height:1.7}
+    a{display:inline-block;margin-top:24px;padding:12px 18px;border:1px solid #00f3ff;border-radius:10px;color:#00f3ff;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="code">404</div>
+    <h1>Signal Lost</h1>
+    <p>The coordinates you entered do not match a known game, Spacebar tool, guide, or site page.</p>
+    <a href="/">Return to Space Clicker Game</a>
+  </main>
+</body>
+</html>`;
+fs.writeFileSync(path.join(distDir, '404.html'), notFoundHtml);
+
 const sitemapRoutes = routes.map(([route]) => route);
 // Update this date only when core non-article pages receive a meaningful
 // content, gameplay, metadata, or routing change. Article dates come from
@@ -1226,4 +1260,4 @@ ${guideRows}
 `;
 fs.writeFileSync(path.join(distDir, 'llms.txt'), llms);
 
-console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml, feed.xml and llms.txt`);
+console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated 404.html, sitemap.xml, feed.xml and llms.txt`);
