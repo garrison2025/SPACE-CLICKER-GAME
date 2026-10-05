@@ -256,13 +256,17 @@ const MarsColony: React.FC = () => {
         setParticles(prev => [...prev, ...newParticles]);
     };
 
-    const handleExcavate = (e: React.MouseEvent, bonus: number = 0, color: string = '#fdba74') => {
-        e.stopPropagation(); // Prevent bubbling if clicking internal elements
+    const handleExcavate = (e: React.MouseEvent | null, bonus: number = 0, color: string = '#fdba74') => {
+        e?.stopPropagation();
         
-        const rect = e.currentTarget.getBoundingClientRect();
-        // Fallback for getting coordinates if triggered from a non-mouse event (rare)
-        const clientX = e.clientX || (rect.left + rect.width/2);
-        const clientY = e.clientY || (rect.top + rect.height/2);
+        let clientX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
+        let clientY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+
+        if (e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            clientX = e.clientX || (rect.left + rect.width / 2);
+            clientY = e.clientY || (rect.top + rect.height / 2);
+        }
 
         const amount = 1 + bonus;
         setResources(prev => ({ ...prev, minerals: prev.minerals + amount }));
@@ -416,8 +420,7 @@ const MarsColony: React.FC = () => {
                         onKeyDown={(event) => {
                             if (event.key === 'Enter' || event.key === ' ') {
                                 event.preventDefault();
-                                const synthetic = { clientX: 0, clientY: 0, stopPropagation() {} } as unknown as React.MouseEvent;
-                                handleExcavate(synthetic, 0);
+                                handleExcavate(null, 0);
                             }
                         }}
                         className="relative w-56 h-56 md:w-72 md:h-72 rounded-full cursor-pointer group active:scale-95 transition-transform duration-100 z-20 touch-manipulation focus:outline-none focus:ring-2 focus:ring-orange-400/70"
