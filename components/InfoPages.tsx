@@ -20,29 +20,29 @@ const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({
 );
 
 export const AboutPage = () => (
-    <PageContainer title="ABOUT VOID EXPANSE">
+    <PageContainer title="ABOUT SPACE CLICKER GAME">
         <p className="lead text-xl text-gray-200">
             Welcome to <strong>SpaceClickerGame.com</strong>, the premier destination for high-fidelity browser-based strategy simulations.
         </p>
         
         <h3>Our Mission</h3>
         <p>
-            Launched in late 2024, Void Expanse was built with a single directive: to redefine the <strong>space clicker game</strong> genre. We believe idle games shouldn't just be about watching numbers go up—they should be about immersion, discovery, and intergalactic scale.
+            SpaceClickerGame.com is built around a simple goal: make browser-based <strong>space clicker games</strong>, idle simulations, and spacebar tools that are fast to start and clear about how they work. No account is required to begin playing.
         </p>
         <p>
-            Whether you are mining stardust in <em>Galaxy Miner</em>, terraforming the Red Planet in <em>Mars Colony</em>, or defending against xeno-threats, our platform offers a persistent, interconnected universe that lives in your browser. No downloads, no paywalls, just pure infinite progression.
+            You can mine Stardust in <em>Galaxy Miner</em>, build a colony on Mars, defend a sector, merge ships, experiment with gravity, decode signals, or use the Spacebar Clicker tools. Each experience runs in the browser, and supported games store progress locally on the current device.
         </p>
 
         <h3>The Technology</h3>
         <p>
-            Void Expanse utilizes cutting-edge web technologies (React 19, TailwindCSS, and hardware-accelerated Canvas API) to deliver console-quality UI and particle effects directly to your screen. We are constantly pushing the boundaries of what a <strong>free online game</strong> can look and feel like.
+            The site uses React 18, Vite, Tailwind CSS, and lightweight browser graphics. The priority is responsive interaction, readable interfaces, and fast loading rather than requiring a game client or paid API.
         </p>
 
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
                 <li>Current Date: 2025-12-29</li>
-                <li>Active Players: 14,000+</li>
+                <li>Playable simulations and tools: 9+</li>
                 <li>Galaxies Explored: 6</li>
             </ul>
         </div>
@@ -74,7 +74,7 @@ export const ContactPage = () => (
 
         <h3>Transmission Protocols</h3>
         <p>
-            When contacting support regarding a save file issue, please include your <strong>User ID</strong> (found in the Settings menu) and a brief description of the anomaly. We aim to respond to all subspace signals within 24 standard hours.
+            When contacting support about a save issue, include the game name, browser, device type, and a brief description of what happened. Do not send passwords or other sensitive account credentials.
         </p>
     </PageContainer>
 );
@@ -89,7 +89,7 @@ export const PrivacyPage = () => (
 
         <h3>1. Information Collection</h3>
         <p>
-            <strong>Local Game Data:</strong> Void Expanse is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly export a save string.
+            <strong>Local Game Data:</strong> Space Clicker Game is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly export a save string.
         </p>
         <p>
             <strong>Analytics:</strong> We use anonymous third-party analytics (such as Google Analytics 4) to understand how commanders interact with the website. This helps us optimize gameplay balance and server performance. We do not collect Personally Identifiable Information (PII) like your name or physical address.
@@ -128,7 +128,7 @@ export const TermsPage = () => (
 
         <h3>2. Use License</h3>
         <p>
-            Permission is granted to temporarily access the materials (games and software) on Void Expanse for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title. You may not:
+            Permission is granted to temporarily access the materials (games and software) on Space Clicker Game for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title. You may not:
         </p>
         <ul>
             <li>Modify or copy the game assets for commercial distribution.</li>
@@ -138,12 +138,12 @@ export const TermsPage = () => (
 
         <h3>3. Disclaimer</h3>
         <p>
-            The materials on Void Expanse are provided on an 'as is' basis. We make no warranties, expressed or implied, regarding the stability of your galactic empire. We are not responsible for save data loss due to browser cache clearing or supernova events.
+            The materials on Space Clicker Game are provided on an 'as is' basis. We make no warranties, expressed or implied, regarding the stability of your galactic empire. We are not responsible for save data loss due to browser cache clearing or supernova events.
         </p>
 
         <h3>4. Limitations</h3>
         <p>
-            In no event shall Void Expanse or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit) arising out of the use or inability to use the materials on the Site.
+            In no event shall Space Clicker Game or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit) arising out of the use or inability to use the materials on the Site.
         </p>
 
         <h3>5. Governing Law</h3>
@@ -185,7 +185,7 @@ export const CookiesPage = () => (
             <p className="text-sm mb-4">If you wish to reset your consent or clear all local game data, you can do so here. This cannot be undone.</p>
             <button 
                 onClick={() => {
-                    if(window.confirm("WARNING: This will wipe all game progress across all Void Expanse games. Are you sure?")) {
+                    if(window.confirm("WARNING: This will wipe all game progress across all Space Clicker Game games. Are you sure?")) {
                         localStorage.clear();
                         window.location.reload();
                     }
@@ -204,6 +204,10 @@ export const SitemapPage = () => (
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
             <li><a href="/" className="hover:text-neon-blue transition-colors">Home Base</a></li>
             <li><a href="/game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
+            <li><a href="/spacebar-clicker" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Clicker</a></li>
+            <li><a href="/spacebar-counter" className="hover:text-neon-blue transition-colors">Spacebar Counter</a></li>
+            <li><a href="/spacebar-clicker-test" className="hover:text-neon-blue transition-colors">Spacebar Clicker Test</a></li>
+            <li><a href="/spacebar-clicker-unblocked" className="hover:text-neon-blue transition-colors">Spacebar Clicker Instant Browser Mode</a></li>
             <li><a href="/compare" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Game Comparisons (vs Cookie Clicker)</a></li>
             <li><a href="/achievements" className="hover:text-neon-blue transition-colors font-bold text-neon-green">Achievements & Trophy Guide</a></li>
             <li><a href="/blog" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>

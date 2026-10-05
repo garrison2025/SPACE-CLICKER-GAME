@@ -40,13 +40,13 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                           "@type": "ListItem",
                           "position": 2,
                           "name": "Games",
-                          "item": "https://spaceclickergame.com?view=game"
+                          "item": "https://spaceclickergame.com/game"
                       },
                       {
                           "@type": "ListItem",
                           "position": 3,
                           "name": game.title,
-                          "item": `https://spaceclickergame.com?view=game&id=${game.id}`
+                          "item": `https://spaceclickergame.com/game/${game.id}`
                       }
                   ]
               },
@@ -74,7 +74,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                   },
                   "author": {
                       "@type": "Organization",
-                      "name": "Void Expanse Games"
+                      "name": "Space Clicker Game"
                   }
               },
               {
@@ -196,7 +196,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                      <ul className="space-y-2">
                          {relatedGuides.map(guide => (
                              <li key={guide.id}>
-                                 <a href={`?view=blog&post=${guide.slug}`} className="text-white hover:text-neon-green transition-colors font-bold underline decoration-neon-blue/50">
+                                 <a href={`/blog/${guide.slug}`} className="text-white hover:text-neon-green transition-colors font-bold underline decoration-neon-blue/50">
                                      📄 {guide.title}
                                  </a>
                              </li>
@@ -226,7 +226,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
              </h3>
              <div className="space-y-4">
                 {[1, 2, 3].map((n) => (
-                    <a href={`?view=game&id=${n === 1 ? 'galaxy_miner' : n === 2 ? 'mars_colony' : 'star_defense'}`} key={n} className="flex items-center gap-3 group cursor-pointer block">
+                    <a href={`/game/${n === 1 ? 'galaxy_miner' : n === 2 ? 'mars_colony' : 'star_defense'}`} key={n} className="flex items-center gap-3 group cursor-pointer block">
                         <div className="w-12 h-12 bg-space-700 rounded-lg flex items-center justify-center text-xl group-hover:bg-neon-blue group-hover:text-black transition-colors">
                             {n === 1 ? '⛏️' : n === 2 ? '🌱' : '🛡️'}
                         </div>

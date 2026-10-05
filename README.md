@@ -1,20 +1,40 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Space Clicker Game
 
-# Run and deploy your AI Studio app
+Browser-based clicker and idle game hub for **SpaceClickerGame.com**.
 
-This contains everything you need to run your app locally.
+## Included experiences
 
-View your app in AI Studio: https://ai.studio/apps/drive/1J_GgHutX6KKeAmFSfDwcsS5xHqwzPf_N
+- Galaxy Miner — space clicker / idle mining game with upgrades, offline progress and Dark Matter prestige
+- Mars Colony Idle
+- Star Defense
+- Merge Spaceships
+- Gravity Idle
+- Deep Space Signal
+- Spacebar Clicker — incremental keyboard game with CPS, upgrades, automation and Quantum Key prestige
+- Spacebar Counter
+- Spacebar Clicker Test
 
-## Run Locally
+## Local development
 
-**Prerequisites:**  Node.js
+Prerequisite: Node.js 20 or newer.
 
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Production build:
+
+```bash
+npm run build
+```
+
+The project does **not** require a Gemini API key or another paid API. Dynamic space events are generated locally in the browser.
+
+## Deployment
+
+The site is designed for Cloudflare Pages. The production domain is:
+
+- https://spaceclickergame.com
+
+Keep canonical URLs, sitemap URLs and internal links on the production domain. Deep routes are handled as SPA routes and important SEO routes are also generated as static entry HTML during the build.

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
-import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, GEMINI_EVENT_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
+import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
 import StarField from './components/StarField';
 import UpgradeShop from './components/UpgradeShop';
 import ClickArea from './components/ClickArea';
@@ -23,7 +23,7 @@ import StatsAndSaveModal from './components/StatsAndSaveModal';
 import OfflineEarningsModal from './components/OfflineEarningsModal';
 import HotkeyOverlay from './components/HotkeyOverlay';
 import { AboutPage, ContactPage, PrivacyPage, TermsPage, CookiesPage, SitemapPage } from './components/InfoPages';
-import { generateSpaceEvent } from './services/geminiService';
+import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
 
@@ -33,9 +33,12 @@ const StarDefense = React.lazy(() => import('./components/StarDefense'));
 const MergeShips = React.lazy(() => import('./components/MergeShips'));
 const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
+const SpacebarGame = React.lazy(() => import('./components/SpacebarGame'));
+const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'));
+const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
-const AUTO_SAVE_MS = 10000;
+const SAVE_VERSION = 3;
 
 // High-quality Open Graph images for each game
 const GAME_OG_IMAGES: Record<GameId, string> = {
@@ -50,7 +53,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements'];
+const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -122,7 +125,7 @@ const App: React.FC = () => {
           }
       } else {
           // Check static pages
-          const cleanPath = path.substring(1) as ViewMode;
+          const cleanPath = path.replace(/^\/+|\/+$/g, '') as ViewMode;
           if (VALID_VIEWS.includes(cleanPath)) {
               view = cleanPath;
           } else {
@@ -227,6 +230,8 @@ const App: React.FC = () => {
   const critMultiplier = 10 + getTechBonus('crit_damage', 1);
   const passiveTechBoost = 1 + (getTechBonus('passive_boost', 0.25));
   const prestigeMultiplier = (1 + (resources[ResourceType.DarkMatter] * 0.1));
+  const prestigeGain = Math.floor(5 * Math.sqrt(resources[ResourceType.Stardust] / PRESTIGE_THRESHOLD));
+  const canPrestige = prestigeGain >= 1;
 
   const getMilestoneMultiplier = (count: number) => {
     let mult = 1;
@@ -284,7 +289,14 @@ const App: React.FC = () => {
   // --- SEO METADATA CALCULATION ---
   const getSEOProps = () => {
       if (is404) {
-          return { title: "404 - Signal Lost | Space Clicker Game", desc: "Page not found.", path: location.pathname };
+          return {
+              title: "404 - Signal Lost | Space Clicker Game",
+              description: "The requested page could not be found.",
+              path: location.pathname,
+              image: DEFAULT_OG_IMAGE,
+              type: 'website' as const,
+              schema: undefined
+          };
       }
       
       let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
@@ -337,18 +349,14 @@ const App: React.FC = () => {
                 "description": "Play the best space clicker and sci-fi idle incremental games online for free in your browser.",
                 "publisher": {
                   "@type": "Organization",
-                  "name": "Space Clicker Game Network",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://spaceclickergame.com/icon.svg"
-                  }
+                  "name": "Space Clicker Game"
                 }
               },
               {
                 "@type": "VideoGame",
                 "@id": "https://spaceclickergame.com/#game",
                 "name": "Space Clicker Game (Cosmic Miner)",
-                "description": "The premier free-to-play space clicker game with deep prestige loops, heat flux multipliers, and Gemini AI subspace anomalies.",
+                "description": "A free browser space clicker game with mining, automation, heat flux multipliers, offline progress, and a permanent prestige loop.",
                 "genre": ["Clicker", "Incremental", "Sci-Fi", "Strategy"],
                 "playMode": "SinglePlayer",
                 "applicationCategory": "Game",
@@ -360,6 +368,51 @@ const App: React.FC = () => {
                 }
               }
             ]
+          };
+      } else if (viewMode === 'spacebar-clicker' || viewMode === 'spacebar-clicker-unblocked') {
+          const unblocked = viewMode === 'spacebar-clicker-unblocked';
+          title = unblocked
+              ? "Spacebar Clicker Unblocked - Play Instantly in Your Browser"
+              : "Spacebar Clicker - Space Bar Clicker Game & CPS";
+          desc = unblocked
+              ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
+              : "Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys. Free on desktop and mobile.";
+          type = 'game';
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "VideoGame",
+              "name": unblocked ? "Spacebar Clicker Unblocked" : "Spacebar Clicker",
+              "description": desc,
+              "genre": ["Clicker", "Incremental", "Idle"],
+              "playMode": "SinglePlayer",
+              "applicationCategory": "Game",
+              "operatingSystem": "Any modern web browser",
+              "url": `https://spaceclickergame.com/${viewMode}/`,
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+      } else if (viewMode === 'spacebar-counter') {
+          title = "Spacebar Counter - Count Space Bar Presses & CPS";
+          desc = "Free online Spacebar Counter with total presses, current CPS, average CPS, peak CPS and local best. Works with keyboard and mobile touch.";
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Spacebar Counter",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Any modern web browser",
+              "url": "https://spaceclickergame.com/spacebar-counter/",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+      } else if (viewMode === 'spacebar-clicker-test') {
+          title = "Spacebar Clicker Test - Space Bar CPS & Speed Test";
+          desc = "Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. See clicks, average CPS, peak CPS and your best local score.";
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Spacebar Clicker Test",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Any modern web browser",
+              "url": "https://spaceclickergame.com/spacebar-clicker-test/",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
           };
       } else if (viewMode !== 'compare' && viewMode !== 'achievements') {
           title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
@@ -488,10 +541,35 @@ const App: React.FC = () => {
     }
   };
 
+  const handlePrestigeReset = () => {
+    if (!canPrestige) return;
+    const confirmed = window.confirm(
+      `Reset current Stardust and standard upgrades for +${prestigeGain} Dark Matter? Permanent technology, lifetime stats, and Dark Matter are retained.`
+    );
+    if (!confirmed) return;
+
+    const resetUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => ({
+      ...acc,
+      [upgrade.id]: { ...upgrade, count: 0 }
+    }), {} as { [id: string]: Upgrade });
+
+    setResources(prev => ({
+      [ResourceType.Stardust]: 0,
+      [ResourceType.DarkMatter]: prev[ResourceType.DarkMatter] + prestigeGain
+    }));
+    setUpgrades(resetUpgrades);
+    setLevel(1);
+    setPlanetIndex(0);
+    setHeat(0);
+    setOverheated(false);
+    setShowPrestigeShop(true);
+    addLog(`GALACTIC RESET COMPLETE: +${prestigeGain} DARK MATTER`, 'success');
+  };
+
   const handleScan = async () => {
-    if (resources[ResourceType.Stardust] < GEMINI_EVENT_COST) return;
+    if (resources[ResourceType.Stardust] < EVENT_SCAN_COST) return;
     setIsScanning(true);
-    setResources(prev => ({...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - GEMINI_EVENT_COST}));
+    setResources(prev => ({...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - EVENT_SCAN_COST}));
     const event = await generateSpaceEvent({ 
       resources, upgrades, level, totalMined: resources[ResourceType.Stardust], lifetimeEarnings, lastSaveTime: Date.now(), prestigeUpgrades, planetIndex,
       heat, overheated 
@@ -542,28 +620,59 @@ const App: React.FC = () => {
       const data = gameStateRef.current;
       const toSave = {
           ...data,
+          version: SAVE_VERSION,
           lastSaveTime: Date.now()
       };
       localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
   const handleImportSave = (data: any) => {
-      if (data.resources) setResources(data.resources);
-      if (data.upgrades) {
-          const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
-          setUpgrades(merged);
+      if (!data || typeof data !== 'object') {
+          addLog("IMPORT FAILED: INVALID SAVE DATA", "alert");
+          return;
       }
-      if (data.prestigeUpgrades) setPrestigeUpgrades(data.prestigeUpgrades);
-      if (data.level) setLevel(data.level);
-      if (data.planetIndex !== undefined) setPlanetIndex(data.planetIndex);
-      if (data.lifetimeEarnings !== undefined) setLifetimeEarnings(data.lifetimeEarnings);
-      if (data.totalClicks !== undefined) setTotalClicks(data.totalClicks);
-      if (data.totalCrits !== undefined) setTotalCrits(data.totalCrits);
-      if (data.cometsCaught !== undefined) setCometsCaught(data.cometsCaught);
-      if (data.crisesResolved !== undefined) setCrisesResolved(data.crisesResolved);
-      
+
+      const baseUpgrades = INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: { ...u, count: 0 } }), {} as { [id: string]: Upgrade });
+      const mergedUpgrades = { ...baseUpgrades, ...(data.upgrades || {}) };
+      const nextResources = {
+          [ResourceType.Stardust]: Math.max(0, Number(data.resources?.[ResourceType.Stardust]) || 0),
+          [ResourceType.DarkMatter]: Math.max(0, Number(data.resources?.[ResourceType.DarkMatter]) || 0)
+      };
+      const nextPrestige = data.prestigeUpgrades && typeof data.prestigeUpgrades === 'object' ? data.prestigeUpgrades : {};
+      const nextLevel = Math.max(1, Number(data.level) || 1);
+      const nextPlanetIndex = Math.min(PLANETS.length - 1, Math.max(0, Number(data.planetIndex) || 0));
+      const nextLifetime = Math.max(0, Number(data.lifetimeEarnings) || 0);
+      const nextClicks = Math.max(0, Number(data.totalClicks) || 0);
+      const nextCrits = Math.max(0, Number(data.totalCrits) || 0);
+      const nextComets = Math.max(0, Number(data.cometsCaught) || 0);
+      const nextCrises = Math.max(0, Number(data.crisesResolved) || 0);
+
+      setResources(nextResources);
+      setUpgrades(mergedUpgrades);
+      setPrestigeUpgrades(nextPrestige);
+      setLevel(nextLevel);
+      setPlanetIndex(nextPlanetIndex);
+      setLifetimeEarnings(nextLifetime);
+      setTotalClicks(nextClicks);
+      setTotalCrits(nextCrits);
+      setCometsCaught(nextComets);
+      setCrisesResolved(nextCrises);
+
+      const normalized = {
+          resources: nextResources,
+          upgrades: mergedUpgrades,
+          prestigeUpgrades: nextPrestige,
+          level: nextLevel,
+          planetIndex: nextPlanetIndex,
+          lifetimeEarnings: nextLifetime,
+          totalClicks: nextClicks,
+          totalCrits: nextCrits,
+          cometsCaught: nextComets,
+          crisesResolved: nextCrises
+      };
+      gameStateRef.current = normalized;
+      localStorage.setItem(SAVE_KEY, JSON.stringify({ ...normalized, version: SAVE_VERSION, lastSaveTime: Date.now() }));
       addLog("TELEMETRY BACKUP RESTORED SUCCESSFULLY", "success");
-      saveGame();
   };
 
   // Initialize Loading & Offline Progress
@@ -573,7 +682,11 @@ const App: React.FC = () => {
           if (saved) {
               try {
                   const data = JSON.parse(saved);
-                  if (data.resources) setResources(data.resources);
+                  if (!data || typeof data !== 'object') throw new Error('Invalid save payload');
+                  if (data.resources) setResources({
+                      [ResourceType.Stardust]: Math.max(0, Number(data.resources[ResourceType.Stardust]) || 0),
+                      [ResourceType.DarkMatter]: Math.max(0, Number(data.resources[ResourceType.DarkMatter]) || 0)
+                  });
                   if (data.upgrades) {
                       const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
                       setUpgrades(merged);
@@ -727,6 +840,13 @@ const App: React.FC = () => {
                           />
                           <GoldenComet onCatch={handleCometCatch} />
                           <CrisisEvent onResolve={handleCrisisResolve} />
+                          <button
+                            type="button"
+                            onClick={() => setShowPrestigeShop(true)}
+                            className="absolute top-4 right-4 z-40 rounded-lg border border-neon-purple/50 bg-space-900/90 px-3 py-2 text-xs font-bold text-neon-purple hover:bg-neon-purple hover:text-black transition-colors"
+                          >
+                            VOID TECH {canPrestige ? `• +${prestigeGain} DM READY` : ''}
+                          </button>
                           
                           <button 
                             className="md:hidden absolute bottom-4 right-4 z-50 bg-neon-blue text-black p-3 rounded-full font-bold shadow-lg"
@@ -780,6 +900,7 @@ const App: React.FC = () => {
             image={seoData.image}
             type={seoData.type}
             schema={seoData.schema}
+            noindex={is404}
         />
 
         {/* Global Hotkey Overlay Trigger & Modal */}
@@ -824,6 +945,19 @@ const App: React.FC = () => {
             onClaim={handleClaimOfflineEarnings}
         />
 
+        {showPrestigeShop && (
+            <PrestigeShop
+                darkMatter={resources[ResourceType.DarkMatter]}
+                upgrades={prestigeUpgrades}
+                prestigeGain={prestigeGain}
+                canPrestige={canPrestige}
+                thresholdLabel={formatNumber(PRESTIGE_THRESHOLD)}
+                onPrestige={handlePrestigeReset}
+                onBuy={handleBuyPrestige}
+                onClose={() => setShowPrestigeShop(false)}
+            />
+        )}
+
         {is404 ? (
             <NotFoundPage onNavigate={handleNavigate} />
         ) : viewMode === 'game' ? (
@@ -860,6 +994,10 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
+                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
+                {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
+                {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
+                {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
                 {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
                 {viewMode === 'about' && <AboutPage />}
                 {viewMode === 'contact' && <ContactPage />}

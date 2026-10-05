@@ -1,7 +1,7 @@
 
 import { GameState } from "../types";
 
-// --- LOCAL DATA MOCKS ---
+// Local event tables. No external AI service or API key is required.
 
 const SPACE_EVENTS = [
   { title: "Comms Offline", description: "Long range sensors are offline. Using local backup database.", baseReward: 100 },
@@ -25,7 +25,7 @@ const FACTIONS: ('BIO' | 'TECH' | 'VOID' | 'MIL')[] = ['BIO', 'TECH', 'VOID', 'M
 // --- LOCAL LOGIC FUNCTIONS ---
 
 export const generateSpaceEvent = async (gameState: GameState): Promise<{ title: string; description: string; reward?: number }> => {
-  // Simulate network delay for realism
+  // Small delay keeps event feedback readable.
   await new Promise(resolve => setTimeout(resolve, 800));
 
   const template = SPACE_EVENTS[Math.floor(Math.random() * SPACE_EVENTS.length)];
@@ -41,7 +41,7 @@ export const generateSpaceEvent = async (gameState: GameState): Promise<{ title:
 };
 
 export const generateAlienMessage = async (frequency: number, antennaLevel: number): Promise<{ sender: string; content: string; dataValue: number; encryption: number; type: 'BIO' | 'TECH' | 'VOID' | 'MIL' }> => {
-  // Simulate network delay
+  // Small delay keeps signal feedback readable.
   await new Promise(resolve => setTimeout(resolve, 600));
 
   const faction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];

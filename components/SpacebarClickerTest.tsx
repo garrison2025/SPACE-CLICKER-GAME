@@ -1,0 +1,256 @@
+import React, { useEffect, useRef, useState } from 'react';
+
+type TestMode = { type: 'time'; seconds: number; label: string } | { type: 'clicks'; clicks: number; label: string };
+
+const PRESETS: TestMode[] = [
+  { type: 'time', seconds: 1, label: '1s' },
+  { type: 'time', seconds: 5, label: '5s' },
+  { type: 'time', seconds: 10, label: '10s' },
+  { type: 'time', seconds: 30, label: '30s' },
+  { type: 'time', seconds: 60, label: '60s' },
+  { type: 'clicks', clicks: 100, label: '100 clicks' },
+];
+
+const BEST_PREFIX = 'spacebar_test_best_';
+
+const modeKey = (mode: TestMode) =>
+  mode.type === 'time' ? `time_${mode.seconds}` : `clicks_${mode.clicks}`;
+
+const SpacebarClickerTest: React.FC = () => {
+  const [mode, setMode] = useState<TestMode>(PRESETS[2]);
+  const [customSeconds, setCustomSeconds] = useState(15);
+  const [clicks, setClicks] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(mode.type === 'time' ? mode.seconds : 0);
+  const [currentCps, setCurrentCps] = useState(0);
+  const [peakCps, setPeakCps] = useState(0);
+  const [finalElapsed, setFinalElapsed] = useState(0);
+  const [bestCps, setBestCps] = useState(() => Number(localStorage.getItem(BEST_PREFIX + modeKey(PRESETS[2])) || 0));
+
+  const startedAt = useRef<number | null>(null);
+  const pressTimes = useRef<number[]>([]);
+  const clicksRef = useRef(0);
+  const finishedRef = useRef(false);
+
+  const loadBest = (nextMode: TestMode) => {
+    setBestCps(Number(localStorage.getItem(BEST_PREFIX + modeKey(nextMode)) || 0));
+  };
+
+  const reset = (nextMode: TestMode = mode) => {
+    setMode(nextMode);
+    loadBest(nextMode);
+    setClicks(0);
+    clicksRef.current = 0;
+    setRunning(false);
+    setFinished(false);
+    finishedRef.current = false;
+    setTimeLeft(nextMode.type === 'time' ? nextMode.seconds : 0);
+    setCurrentCps(0);
+    setPeakCps(0);
+    setFinalElapsed(0);
+    startedAt.current = null;
+    pressTimes.current = [];
+  };
+
+  const finish = (elapsedSeconds: number) => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    const safeElapsed = Math.max(0.001, elapsedSeconds);
+    const average = clicksRef.current / safeElapsed;
+    setRunning(false);
+    setFinished(true);
+    setFinalElapsed(safeElapsed);
+    setTimeLeft(0);
+    setBestCps((best) => {
+      const next = Math.max(best, average);
+      localStorage.setItem(BEST_PREFIX + modeKey(mode), String(next));
+      return next;
+    });
+  };
+
+  const press = () => {
+    if (finishedRef.current) return;
+    const now = performance.now();
+    if (!running) {
+      startedAt.current = now;
+      setRunning(true);
+      setFinished(false);
+    }
+
+    pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
+    clicksRef.current += 1;
+    setClicks(clicksRef.current);
+
+    if (mode.type === 'clicks' && clicksRef.current >= mode.clicks) {
+      const elapsed = startedAt.current === null ? 0.001 : (now - startedAt.current) / 1000;
+      finish(elapsed);
+    }
+  };
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (event.code === 'Space' && !event.repeat) {
+        event.preventDefault();
+        press();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
+  useEffect(() => {
+    if (!running || startedAt.current === null) return;
+    const timer = window.setInterval(() => {
+      const now = performance.now();
+      const elapsed = (now - (startedAt.current || now)) / 1000;
+      pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
+      const cps = pressTimes.current.length;
+      setCurrentCps(cps);
+      setPeakCps((value) => Math.max(value, cps));
+
+      if (mode.type === 'time') {
+        const remaining = Math.max(0, mode.seconds - elapsed);
+        setTimeLeft(remaining);
+        if (remaining <= 0) finish(mode.seconds);
+      }
+    }, 50);
+    return () => window.clearInterval(timer);
+  }, [running, mode]);
+
+  const averageCps = finished && finalElapsed > 0
+    ? clicks / finalElapsed
+    : running && startedAt.current
+      ? clicks / Math.max(0.001, (performance.now() - startedAt.current) / 1000)
+      : 0;
+
+  const rating =
+    averageCps >= 12 ? 'ELITE' :
+    averageCps >= 9 ? 'FAST' :
+    averageCps >= 6 ? 'SOLID' :
+    averageCps > 0 ? 'WARMING UP' :
+    'READY';
+
+  const targetLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
+
+  return (
+    <div className="min-h-screen bg-space-950 text-gray-200">
+      <section className="max-w-5xl mx-auto px-4 py-14">
+        <div className="text-center mb-9">
+          <div className="text-xs text-neon-blue font-mono tracking-[0.3em] mb-3">CPS SPEED TEST</div>
+          <h1 className="text-4xl md:text-6xl font-display font-black text-white mb-4">Spacebar Clicker Test</h1>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Measure your space bar click speed with timed challenges or a 100-click sprint. See total presses, average CPS, peak CPS and your best local result.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-space-900/80 p-6 md:p-10">
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {PRESETS.map((preset) => (
+              <button
+                key={modeKey(preset)}
+                type="button"
+                disabled={running}
+                onClick={() => reset(preset)}
+                className={'px-4 py-2 rounded border text-sm ' + (modeKey(mode) === modeKey(preset) ? 'border-neon-blue text-neon-blue bg-neon-blue/5' : 'border-white/10 text-gray-400')}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap justify-center items-center gap-2 mb-7">
+            <label className="text-xs text-gray-500" htmlFor="custom-seconds">Custom seconds</label>
+            <input
+              id="custom-seconds"
+              type="number"
+              min={1}
+              max={300}
+              value={customSeconds}
+              disabled={running}
+              onChange={(event) => setCustomSeconds(Math.min(300, Math.max(1, Number(event.target.value) || 1)))}
+              className="w-24 rounded bg-black/30 border border-white/10 px-3 py-2 text-white"
+            />
+            <button
+              type="button"
+              disabled={running}
+              onClick={() => reset({ type: 'time', seconds: customSeconds, label: `${customSeconds}s custom` })}
+              className="px-4 py-2 rounded border border-white/10 text-sm hover:border-neon-blue"
+            >
+              Use Custom
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-7">
+            <Metric label={mode.type === 'time' ? 'Time Left' : 'Target'} value={mode.type === 'time' ? timeLeft.toFixed(2) + 's' : `${clicks}/${mode.clicks}`} />
+            <Metric label="Clicks" value={String(clicks)} />
+            <Metric label="Current CPS" value={currentCps.toFixed(1)} />
+            <Metric label="Peak CPS" value={peakCps.toFixed(1)} />
+          </div>
+
+          <button
+            type="button"
+            disabled={finished}
+            onPointerDown={(event) => { event.preventDefault(); press(); }}
+            className="w-full min-h-[150px] rounded-2xl border-2 border-neon-blue bg-gradient-to-b from-space-700 to-black shadow-[0_12px_0_#062f38] active:translate-y-2 active:shadow-[0_4px_0_#062f38] disabled:opacity-50 transition-all select-none touch-manipulation"
+          >
+            <span className="block text-4xl md:text-5xl font-display font-black tracking-[0.35em] text-white">SPACE</span>
+            <span className="block mt-2 text-xs text-neon-blue font-mono">
+              {finished ? 'TEST COMPLETE' : running ? 'KEEP PRESSING' : `PRESS TO START • ${targetLabel}`}
+            </span>
+          </button>
+
+          {finished && (
+            <div className="mt-8 rounded-xl border border-neon-green/30 bg-neon-green/5 p-6 text-center">
+              <div className="text-xs tracking-[0.25em] text-neon-green">RESULT</div>
+              <div className="text-4xl font-display font-black text-white mt-2">{averageCps.toFixed(2)} CPS</div>
+              <div className="mt-2 text-neon-blue font-mono">{rating}</div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
+                <Metric label="Clicks" value={String(clicks)} />
+                <Metric label="Elapsed" value={finalElapsed.toFixed(2) + 's'} />
+                <Metric label="Average CPS" value={averageCps.toFixed(2)} />
+                <Metric label="Peak CPS" value={peakCps.toFixed(1)} />
+                <Metric label="Personal Best" value={bestCps.toFixed(2)} />
+              </div>
+              <button type="button" onClick={() => reset()} className="mt-6 px-6 py-2 rounded bg-neon-green text-black font-bold">
+                Try Again
+              </button>
+            </div>
+          )}
+
+          <div className="flex flex-wrap justify-center gap-3 mt-7">
+            {!finished && <button type="button" onClick={() => reset()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>}
+            <a href="/spacebar-counter/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Counter</a>
+            <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Game</a>
+          </div>
+        </div>
+
+        <article className="mt-14 space-y-8 text-gray-400 leading-relaxed">
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">How the Spacebar Clicker Test works</h2>
+            <p>
+              Choose a duration or the 100-click sprint and start with your first intentional Space press. Browser key-repeat is ignored, so holding the key down does not inflate the result. Average CPS is valid presses divided by elapsed time, while peak CPS measures the strongest rolling one-second burst.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">Which test length should you use?</h2>
+            <p>
+              One and five seconds measure burst speed. Ten seconds is a useful general benchmark. Thirty and sixty seconds reward consistency. The 100-click mode measures how quickly you can finish a fixed workload, and Custom lets you choose any duration from 1 to 300 seconds.
+            </p>
+          </section>
+        </article>
+      </section>
+    </div>
+  );
+};
+
+const Metric = ({ label, value }: { label: string; value: string }) => (
+  <div className="rounded-lg border border-white/5 bg-black/20 p-3 text-center">
+    <div className="text-[10px] uppercase tracking-widest text-gray-500">{label}</div>
+    <div className="mt-1 text-xl font-mono text-white">{value}</div>
+  </div>
+);
+
+export default SpacebarClickerTest;
