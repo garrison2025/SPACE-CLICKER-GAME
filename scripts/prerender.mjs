@@ -687,6 +687,7 @@ const staticRouteContent = {
       <h2>Spacebar Clicker 2 and instant browser mode</h2>
       <p><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression mode with Overdrive, offline production, and Nova Core ascension. <a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a> opens the classic game directly with no download or account; it does not bypass school, workplace, firewall, parental-control, or administrator restrictions.</p>
       <p>All current Spacebar modes work in a modern browser. Desktop users can use the physical Space key where supported, while mobile users can use the large on-screen controls.</p>
+      <p>Related guides: <a href="/blog/mastering-the-space-bar-clicking-game/">Mastering the Space Bar</a> explains the transition from manual input to automation, while <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> covers deliberate key input and CPS.</p>
     </section>`,
   '/spacebar-clicker': `
 <section>
@@ -701,6 +702,7 @@ const staticRouteContent = {
       <h2>Local browser save</h2>
       <p>Current progress is stored locally in the browser rather than in a cloud account. Clearing site storage, using private browsing, or moving to another device can separate or remove that save.</p>
       <p>For a pure speed benchmark, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>. For an endless press total without upgrades, use the <a href="/spacebar-counter/">Spacebar Counter</a>. You can also browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
+      <p>For strategy context, read <a href="/blog/mastering-the-space-bar-clicking-game/">Mastering the Space Bar</a> and <a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a>.</p>
     </section>`,
   '/spacebar-clicker-2': `
 <section>
@@ -715,6 +717,7 @@ const staticRouteContent = {
       <h2>Nova Core ascension</h2>
       <p>Nova Ascension resets current points and standard upgrades in exchange for permanent Nova Cores. Nova Cores, lifetime records, and the permanent Nova bonus survive the reset and strengthen future runs.</p>
       <p>Prefer the original progression loop? Open the <a href="/spacebar-clicker/">classic Spacebar Clicker</a>, or compare all available modes on the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
+      <p>Read <a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a> for a deeper look at when manual input gives way to passive production.</p>
     </section>`,
   '/spacebar-counter': `
 <section>
@@ -728,6 +731,7 @@ const staticRouteContent = {
       <p>The best count is stored locally in the current browser. It is not uploaded to a public leaderboard, and clearing site storage can remove the saved local best.</p>
       <h2>Counter vs Spacebar Clicker Test</h2>
       <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige.</p>
+      <p>For more detail on repeated keyboard input, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">keyboard factors guide</a>.</p>
     </section>`,
   '/spacebar-clicker-test': `
 <section>
@@ -742,6 +746,7 @@ const staticRouteContent = {
       <h2>Personal bests and sharing</h2>
       <p>The best result for each selected mode is stored locally in the current browser. After a completed test, supported devices can use the share sheet; otherwise the result can be copied where clipboard access is available.</p>
       <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
+      <p>For technique and hardware context, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> and <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">Keyboard Factors for Space Bar Click Games</a>.</p>
     </section>`,
   '/blog': `
     <section>
@@ -860,6 +865,7 @@ const staticRouteContent = {
       <h3>Is this the same Spacebar Clicker game?</h3>
       <p>Yes. It uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page.</p>
       <p>For speed testing, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for an endless total, use the <a href="/spacebar-counter/">Spacebar Counter</a>; or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
+      <p>For a broader guide to Spacebar input and progression, read <a href="/blog/mastering-the-space-bar-clicking-game/">Mastering the Space Bar</a>.</p>
     </section>`,
   '/compare': `
     <section>
