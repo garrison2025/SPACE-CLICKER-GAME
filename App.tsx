@@ -1423,6 +1423,8 @@ const App: React.FC = () => {
                     productionRate={getProductionRate()}
                     clickPower={getClickPower()}
                     currentPlanet={currentPlanet}
+                    level={level}
+                    planetIndex={planetIndex}
                     upgrades={upgrades}
                     prestigeUpgrades={prestigeUpgrades}
                     hapticEnabled={hapticEnabled}
