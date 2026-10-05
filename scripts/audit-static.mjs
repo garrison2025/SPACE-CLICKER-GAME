@@ -474,6 +474,19 @@ if (orphanedRoutes.length > 0) {
   throw new Error('Orphaned prerendered routes with no cross-page internal links: ' + orphanedRoutes.join(', '));
 }
 
+for (const route of highValueSchemaRoutes) {
+  const incoming = incomingLinkCounts.get(route) || 0;
+  if (incoming < 20) {
+    throw new Error(route + ': core page needs at least 20 cross-page incoming links; found ' + incoming);
+  }
+}
+
+for (const [route, incoming] of incomingLinkCounts) {
+  if (route.startsWith('/blog/') && route !== '/blog/' && incoming < 2) {
+    throw new Error(route + ': article needs at least 2 cross-page incoming links; found ' + incoming);
+  }
+}
+
 console.log(
   'Incoming internal links: ' +
   [...incomingLinkCounts.entries()]
