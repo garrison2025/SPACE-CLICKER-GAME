@@ -638,11 +638,11 @@ const StarDefense: React.FC = () => {
     }, [saveGame]);
 
     return (
-        <div className="w-full h-full relative bg-black overflow-hidden flex font-sans select-none text-white">
+        <div className="w-full h-full relative bg-black overflow-y-auto md:overflow-hidden flex flex-col md:flex-row font-sans select-none text-white">
             
             {/* --- GAME AREA --- */}
             <div 
-                className="flex-1 relative border-r border-white/20 bg-space-950 cursor-crosshair overflow-hidden group"
+                className="flex-1 min-h-[440px] md:min-h-0 relative md:border-r border-b md:border-b-0 border-white/20 bg-space-950 cursor-crosshair overflow-hidden group"
                 onMouseDown={handleFieldClick}
             >
                  {/* Moving Starfield Background */}
@@ -657,7 +657,7 @@ const StarDefense: React.FC = () => {
                  {/* Boss Warning Overlay */}
                  {bossWarning && (
                      <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none bg-red-900/20 animate-pulse">
-                         <div className="text-4xl md:text-6xl font-black text-red-500 tracking-[0.5em] animate-bounce">
+                         <div className="text-2xl sm:text-3xl md:text-6xl font-black text-red-500 tracking-[0.15em] md:tracking-[0.5em] text-center animate-bounce">
                              WARNING: BOSS DETECTED
                          </div>
                      </div>
@@ -671,7 +671,7 @@ const StarDefense: React.FC = () => {
 
                  {/* Top HUD */}
                  <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
-                     <div className="flex flex-col gap-2 w-56">
+                     <div className="flex flex-col gap-2 w-40 sm:w-48 md:w-56">
                          {/* Shield Bar */}
                          {maxShield > 0 && (
                             <div className="flex flex-col gap-0.5">
@@ -872,7 +872,7 @@ const StarDefense: React.FC = () => {
             </div>
 
             {/* --- SIDEBAR (UPGRADES) --- */}
-            <div className="w-80 bg-space-900 flex flex-col border-l border-white/10 z-30">
+            <div className="w-full md:w-80 h-[380px] md:h-auto shrink-0 bg-space-900 flex flex-col border-t md:border-t-0 md:border-l border-white/10 z-30">
                 <div className="p-4 border-b border-white/10 bg-black/20">
                     <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">RESOURCES</div>
                     <div className="text-3xl font-mono text-yellow-400 font-bold flex items-center gap-2">
