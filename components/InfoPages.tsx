@@ -40,6 +40,14 @@ export const AboutPage = () => (
             The site uses React 18, Vite, Tailwind CSS, and lightweight browser graphics. The priority is responsive interaction, readable interfaces, and fast loading rather than requiring a game client or paid API.
         </p>
 
+        <h3>Editorial and Testing Principles</h3>
+        <p>
+            Guides and mechanics articles are written against the current browser implementation wherever the article describes this site&apos;s own games or tools. We avoid presenting unsupported averages, hardware claims, or universal performance thresholds as facts. When a result depends on the player&apos;s device, browser, input rules, or test duration, the article should say so directly.
+        </p>
+        <p>
+            Product behavior such as upgrade costs, prestige thresholds, local save rules, CPS counting, offline progress, and milestone requirements is checked against the current code before publication or revision. External factual references are linked when they materially support a claim.
+        </p>
+
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
