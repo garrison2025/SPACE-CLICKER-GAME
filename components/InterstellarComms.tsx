@@ -29,9 +29,9 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
       const target = others[Math.floor(Math.random() * others.length)];
 
       const scenarios = [
-        { text: `⚠️ SECTOR 7 DISTRESS SIGNAL! Requesting backup in ${target.title}.`, type: 'alert' },
-        { text: `📡 New trade route established in ${target.title}.`, type: 'info' },
-        { text: `💬 Incoming transmission from ${target.title} Command.`, type: 'info' },
+        { text: `Try ${target.title} for a different space-game loop.`, type: 'info' },
+        { text: `Switch simulations: ${target.title} is available from the game dock.`, type: 'info' },
+        { text: `Explore ${target.title} without leaving SpaceClickerGame.com.`, type: 'info' },
       ];
       
       const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
@@ -54,10 +54,10 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
   if (!message) return null;
 
   return (
-    <div className="fixed bottom-28 right-4 z-[90] max-w-sm animate-in slide-in-from-right duration-500">
+    <div className="fixed bottom-28 left-4 right-4 sm:left-auto sm:max-w-sm z-[90] animate-in slide-in-from-right duration-500">
       <div className={`
-        relative p-4 rounded-lg border backdrop-blur-md shadow-2xl cursor-pointer hover:scale-105 transition-transform
-        ${message.type === 'alert' ? 'bg-red-900/80 border-red-500 text-red-100' : 'bg-space-800/80 border-neon-blue text-blue-100'}
+        relative p-4 rounded-lg border bg-space-900/95 md:backdrop-blur-md shadow-2xl cursor-pointer md:hover:scale-105 transition-transform
+        ${message.type === 'alert' ? 'border-red-500 text-red-100' : 'border-neon-blue text-blue-100'}
       `}
       onClick={() => {
         onSwitchGame(message.targetGame);
@@ -67,10 +67,10 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
         <div className="flex items-start gap-3">
            <div className={`mt-1 w-2 h-2 rounded-full animate-pulse ${message.type === 'alert' ? 'bg-red-500' : 'bg-neon-blue'}`}></div>
            <div>
-              <h4 className="font-display font-bold text-sm tracking-wider mb-1">INCOMING TRANSMISSION</h4>
+              <h4 className="font-display font-bold text-sm tracking-wider mb-1">TRY ANOTHER SIMULATION</h4>
               <p className="text-xs leading-relaxed font-mono">{message.text}</p>
               <div className="mt-2 text-[10px] uppercase font-bold opacity-70 flex items-center gap-1">
-                 <span>RESPOND</span>
+                 <span>OPEN GAME</span>
                  <span>&rarr;</span>
               </div>
            </div>
