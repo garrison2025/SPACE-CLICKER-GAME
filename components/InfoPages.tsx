@@ -165,14 +165,14 @@ export const CookiesPage = () => (
         <p>
             We use the browser's <code>localStorage</code> API to save your game state. This is critical for the functionality of our <strong>idle game</strong> mechanics. Without this, your empire would vanish every time you closed the tab.
         </p>
-        <p>Examples of functional localStorage keys include:</p>
+        <p>Examples of functional local storage include:</p>
         <ul>
-            <li><strong>Key:</strong> <code>cosmic-miner-save-v2</code> (Galaxy Miner)</li>
-            <li><strong>Key:</strong> <code>spacebar_clicker_save_v1</code> (Spacebar Clicker)</li>
-            <li><strong>Key:</strong> <code>spacebar_clicker_2_save_v1</code> (Spacebar Clicker 2)</li>
-            <li><strong>Keys / prefixes:</strong> Spacebar Counter and CPS Test local-best records</li>
+            <li>Galaxy Miner progress, upgrades, settings, and save timestamps.</li>
+            <li>Separate Spacebar Clicker and Spacebar Clicker 2 progression saves.</li>
+            <li>Spacebar Counter and CPS Test local-best records.</li>
+            <li>Individual simulation saves for Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal.</li>
         </ul>
-        <p><em>This is an illustrative list rather than a guarantee that no other functional localStorage keys are used by individual simulations.</em></p>
+        <p><em>Internal storage key names are implementation details and may change as save formats are migrated.</em></p>
 
         <h3>2. Analytics and Advertising</h3>
         <p>
