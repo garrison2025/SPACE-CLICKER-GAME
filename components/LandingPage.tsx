@@ -114,7 +114,7 @@ const BrandHero = () => {
                 {/* Subtitle - SEO OPTIMIZED */}
                 <p className="text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
                     Enter a connected universe of browser-based space simulations. <br className="hidden md:block"/>
-                    Build your fleet, manage colonies, and dominate the galaxy in the ultimate browser-based idle strategy experience.
+                    Mine Stardust, automate production, manage colonies, defend sectors, and explore several browser-based space simulations.
                     <br/>
                     <span className="text-sm text-neon-blue mt-4 inline-block font-mono tracking-widest border border-neon-blue/30 px-3 py-1 rounded bg-neon-blue/5">NO DOWNLOAD • FREE TO PLAY</span>
                 </p>
@@ -122,10 +122,10 @@ const BrandHero = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-white/5 bg-black/20 backdrop-blur-sm animate-in fade-in duration-1000 delay-300">
                     {[
-                        { label: 'Universes', val: '6+' },
+                        { label: 'Simulations', val: '6' },
                         { label: 'Save', val: 'Local' },
                         { label: 'Price', val: 'Free' },
-                        { label: 'Genre', val: 'Idle RPG' },
+                        { label: 'Format', val: 'Browser' },
                     ].map((stat, i) => (
                         <div key={i}>
                             <div className="text-2xl md:text-3xl font-display font-bold text-white">{stat.val}</div>
@@ -158,9 +158,9 @@ const BrandHero = () => {
 const WhyChooseUs = () => (
     <section className="max-w-6xl mx-auto py-16 px-4">
         <div className="text-center mb-12">
-            <h2 className="text-3xl font-display font-bold text-white mb-4">Why This is the Best <span className="text-neon-blue">Space Clicker Game</span></h2>
+            <h2 className="text-3xl font-display font-bold text-white mb-4">What This <span className="text-neon-blue">Space Clicker Game</span> Includes</h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-                Unlike a generic <strong>space clicker game</strong> that only offers repetitive tapping, we deliver a deep, interconnected universe with strategy, automation, and discovery.
+                The site combines Galaxy Miner with several separate browser simulations and a dedicated Spacebar tool suite. Each mode has its own mechanics rather than pretending one click loop covers every genre.
             </p>
         </div>
         
@@ -168,7 +168,7 @@ const WhyChooseUs = () => (
             {[
                 { title: 'True Idle Strategy', desc: 'Automation is a core part of Galaxy Miner. Build your drone fleet and earn capped offline progress when you return after time away.' },
                 { title: 'Local Browser Progress', desc: 'Your Galaxy Miner progress auto-saves in this browser. The game works on desktop and mobile without requiring a download or account.' },
-                { title: 'Evolving Universe', desc: 'This is not just a mining simulator. It is a full space clicker game RPG with combat, colonization, and text-based mystery adventures.' }
+                { title: 'Multiple Simulations', desc: 'Galaxy Miner is joined by colony management, defense, merge, gravity, and signal-decoding games, each with a distinct gameplay loop.' }
             ].map((item, i) => (
                 <div key={i} className="bg-space-800/40 p-6 rounded-xl border border-white/10 hover:border-neon-blue/50 transition-colors">
                     <div className="text-4xl mb-4 text-neon-purple opacity-80">0{i+1}</div>
@@ -186,16 +186,16 @@ const HowToPlay = () => (
             <div className="flex items-center gap-4 mb-12">
                 <div className="w-1 h-8 bg-neon-green"></div>
                 <h2 className="text-2xl font-display text-white tracking-widest uppercase">
-                    Mastering the Space Clicker Game Loop
+                    Galaxy Miner Progression Loop
                 </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div className="space-y-8">
                     {[
-                        { step: '01', title: 'Initialize Mining Protocols', text: 'Start your journey in our premier space clicker game by manually extracting Stardust. Every click counts towards your first automated drone.' },
-                        { step: '02', title: 'Automate & Expand', text: 'The core of any top-tier space clicker game is automation. Purchase Rovers and Orbital Stations to harvest resources while you are AFK.' },
-                        { step: '03', title: 'Prestige & Evolve', text: 'Reached the Galactic Core? Reset your progress to gain Dark Matter. This is the ultimate goal of the space clicker game experience.' }
+                        { step: '01', title: 'Mine Stardust', text: 'Start Galaxy Miner with manual extraction, then use the first Stardust to buy production upgrades.' },
+                        { step: '02', title: 'Automate & Expand', text: 'Purchase Mining Drones, Rovers, Bases, Orbital Stations, and later production tiers. Returning after time away can award capped offline progress.' },
+                        { step: '03', title: 'Reset for Dark Matter', text: 'At 1 Trillion Stardust, Galactic Reset becomes available. Reset the current run for permanent Dark Matter and technology bonuses.' }
                     ].map((s, i) => (
                         <div key={i} className="flex gap-4">
                             <div className="text-neon-green font-mono font-bold text-xl">{s.step}</div>
@@ -214,7 +214,7 @@ const HowToPlay = () => (
                         <div className="text-5xl mb-2">🚀</div>
                         <div className="font-display font-bold text-white text-lg">LAUNCH YOUR FLEET</div>
                         <div className="text-xs text-neon-green mt-2 px-4 py-1 bg-neon-green/10 rounded-full inline-block">
-                            PLAY THE BEST SPACE CLICKER GAME
+                            PLAY GALAXY MINER
                         </div>
                     </div>
                 </div>
@@ -264,31 +264,37 @@ const GalacticArchives = () => (
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-gray-500 text-sm leading-relaxed">
             <div>
-                <h3 className="text-white font-bold mb-3 text-lg">What defines a true Space Clicker Game?</h3>
+                <h3 className="text-white font-bold mb-3 text-lg">What is a space clicker game?</h3>
                 <p className="mb-4">
-                    A <strong>space clicker game</strong> (often referred to as an incremental space game) is a genre of simulation where players start with a simple manual mining laser and progressively build a galactic empire. The core appeal of a <strong>space clicker game</strong> lies in the satisfaction of watching numbers grow exponentially through strategic upgrades.
+                    A <strong>space clicker game</strong> is an incremental game built around repeated actions, reinvestment, automation, and increasingly large production milestones. The space theme can support mining, exploration, colony management, or other progression systems without requiring every game to use the same mechanics.
                 </p>
                 <p>
-                    We elevate the standard <strong>space clicker game</strong> formula by integrating real-time physics, active combat modules, and a complex economy. It is not just about clicking; it is about managing a starfleet.
+                    Galaxy Miner focuses on Stardust mining, heat management, automation, random events, and Dark Matter resets. Other simulations on the site cover colony management, defense, merging, gravity, and signal decoding as separate game modes.
                 </p>
             </div>
             <div>
-                <h3 className="text-white font-bold mb-3 text-lg">Why are Browser Space Clicker Games so popular?</h3>
+                <h3 className="text-white font-bold mb-3 text-lg">Why play a browser space clicker?</h3>
                 <ul className="space-y-2 list-disc pl-4">
-                    <li><strong>Instant Access:</strong> Start your <strong>space clicker game</strong> adventure instantly in Chrome, Firefox, or Safari without large downloads.</li>
-                    <li><strong>Passive Progression:</strong> The best <strong>space clicker game</strong> respects your time. Your miners work 24/7, even when you are offline.</li>
-                    <li><strong>Infinite Scale:</strong> From a single asteroid to a Dyson Sphere, the progression is designed to scale across increasingly large resource milestones.</li>
+                    <li><strong>Instant Access:</strong> Start in a modern browser without installing a game client.</li>
+                    <li><strong>Passive Progression:</strong> Galaxy Miner calculates capped offline earnings from your saved production rate when you return.</li>
+                    <li><strong>Growing Scale:</strong> Progression moves from manual extraction to increasingly expensive automated production tiers and permanent reset bonuses.</li>
                 </ul>
             </div>
         </div>
 
         <div className="mt-12 p-6 bg-space-900 rounded-lg border border-white/5">
-            <h3 className="text-white font-bold mb-4">System Keywords</h3>
-            <div className="flex flex-wrap gap-2">
-                {['Space Clicker Game', 'Idle Mining', 'Space Simulation', 'Strategy Game', 'Tower Defense', 'Mars Colonization', 'Text Adventure', 'Incremental Game', 'Web Game', 'Free Online Games'].map(tag => (
-                    <span key={tag} className="text-xs bg-black/40 px-3 py-1 rounded text-gray-400 border border-white/5">
-                        {tag}
-                    </span>
+            <h3 className="text-white font-bold mb-4">Explore the Site</h3>
+            <div className="flex flex-wrap gap-3">
+                {[
+                    ['/game/galaxy_miner/', 'Galaxy Miner'],
+                    ['/spacebar-games/', 'Spacebar Games'],
+                    ['/spacebar-clicker-test/', 'Spacebar CPS Test'],
+                    ['/compare/', 'Feature Comparison'],
+                    ['/blog/', 'Guides']
+                ].map(([href, label]) => (
+                    <a key={href} href={href} className="text-xs bg-black/40 px-3 py-2 rounded text-gray-300 border border-white/10 hover:border-neon-blue/50 hover:text-neon-blue transition-colors">
+                        {label}
+                    </a>
                 ))}
             </div>
         </div>
@@ -303,10 +309,10 @@ const TacticalDatabank = () => (
         </div>
         <div className="grid gap-4">
             {[
-                { q: "Is this space clicker game free to play?", a: "Yes. Our Space Clicker Game is 100% free with no paywalls blocking your galactic progression." },
-                { q: "Does the game save my progress?", a: "The system auto-saves to your local browser storage every 10 seconds, ensuring your space clicker game empire is always safe." },
-                { q: "How do I unlock new games?", a: "Currently all simulations are open for testing. Future updates to our space clicker game platform may lock them behind Galaxy Miner prestige levels." },
-                { q: "What happens when I Prestige?", a: "You reset your mining progress but gain Dark Matter, a core mechanic of any deep space clicker game that boosts production permanently." }
+                { q: "Is this space clicker game free to play?", a: "Yes. The current browser games and Spacebar tools can be played without purchasing a paid account or upgrade." },
+                { q: "Does Galaxy Miner save my progress?", a: "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save." },
+                { q: "How do I access the other games?", a: "The six current simulations are available from the Games catalog. The Spacebar games and tools have their own dedicated pages." },
+                { q: "What happens when I use Galactic Reset?", a: "Galaxy Miner resets Stardust and standard upgrades, then awards Dark Matter based on the size of the run. Dark Matter and permanent technology remain for future runs." }
             ].map((item, i) => (
                 <div key={i} className="bg-space-800/30 border border-white/5 rounded-lg p-6 hover:border-neon-blue/30 transition-colors">
                     <h3 className="text-white font-bold mb-2 flex items-center gap-2">
