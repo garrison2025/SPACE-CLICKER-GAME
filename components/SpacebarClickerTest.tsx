@@ -276,7 +276,7 @@ const SpacebarClickerTest: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">How the Spacebar Clicker Test works</h2>
             <p>
-              Choose a duration or the 100-click sprint and start with your first intentional Space press. Browser key-repeat is ignored, so holding the key down does not inflate the result. Average CPS is valid presses divided by elapsed time, while peak CPS measures the strongest rolling one-second burst.
+              Choose a duration or the 100-click sprint and start with your first intentional Space press. Use the timed modes as a spacebar CPS test, or use the 100-click sprint as a fixed-workload space bar click test. Browser key-repeat is ignored, so holding the key down does not inflate the result. Average CPS is valid presses divided by elapsed time, while peak CPS measures the strongest rolling one-second burst.
             </p>
           </section>
           <section>
