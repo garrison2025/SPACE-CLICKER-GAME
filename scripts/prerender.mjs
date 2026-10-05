@@ -408,13 +408,13 @@ const staticRouteContent = {
   '/spacebar-counter': `
     <section>
       <h2>What is a Spacebar Counter?</h2>
-      <p>This page records deliberate Space key presses without a fixed timer. It shows total presses, current CPS, average CPS, peak CPS and a local best count.</p>
+      <p>This page supports spacebar counting without a fixed timer. It records deliberate Space key presses and shows total presses, current CPS, average CPS, peak CPS and a local best count.</p>
       <p>For a timed benchmark use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for upgrades and prestige use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
     </section>`,
   '/spacebar-clicker-test': `
     <section>
       <h2>Spacebar CPS speed test</h2>
-      <p>Choose a 1, 5, 10, 30 or 60 second test, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
+      <p>Use the timed modes as a spacebar CPS test or a space bar click test: choose 1, 5, 10, 30 or 60 seconds, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
       <p>For untimed counting use the <a href="/spacebar-counter/">Spacebar Counter</a>; for an upgrade-based idle game use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
     </section>`,
   '/spacebar-clicker-unblocked': `
