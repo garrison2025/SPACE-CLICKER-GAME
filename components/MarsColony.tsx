@@ -305,6 +305,15 @@ const MarsColony: React.FC = () => {
     };
     
     // --- PERSISTENCE ---
+    // Keep the latest rendered state available to save callbacks. This effect is
+    // intentionally declared before the hydration effect: on the first mount it
+    // writes the defaults, then hydration replaces the ref with the saved
+    // snapshot in the same effect flush. That prevents the defaults from
+    // overwriting a just-loaded save if the tab closes immediately.
+    useEffect(() => {
+        stateRef.current = { resources, buildings };
+    }, [resources, buildings]);
+
     // Init Load
     useEffect(() => {
         const saved = localStorage.getItem(MARS_SAVE_KEY);
@@ -319,8 +328,6 @@ const MarsColony: React.FC = () => {
                 buildings: loadedBuildings,
             };
 
-            // Keep the persistence ref synchronized in the same turn as hydration
-            // so an immediate close cannot overwrite a valid save with defaults.
             stateRef.current = nextSnapshot;
             setResources(loadedResources);
             setBuildings(loadedBuildings);
@@ -328,9 +335,6 @@ const MarsColony: React.FC = () => {
             console.warn('Could not load Mars Colony save.', error);
         }
     }, []);
-
-    // Refs for saving logic to avoid closure staleness
-    useEffect(() => { stateRef.current = { resources, buildings }; }, [resources, buildings]);
 
     const saveGame = useCallback(() => {
         localStorage.setItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current));
