@@ -226,7 +226,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       </main>
 
       {/* --- BOTTOM DOCK --- */}
-      <footer className="h-24 flex items-end pb-4 bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
+      <footer className="h-24 flex items-end safe-area-bottom bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
           <div className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
               <div className="min-w-max flex items-end justify-start sm:justify-center gap-2 p-2">
                   {GAMES_CATALOG.map(game => (
