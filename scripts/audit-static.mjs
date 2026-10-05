@@ -54,6 +54,23 @@ const highValueSchemaRoutes = new Set([
   '/spacebar-clicker-unblocked/'
 ]);
 
+const spacebarSchemaRoutes = new Set([
+  '/spacebar-games/',
+  '/spacebar-clicker/',
+  '/spacebar-clicker-2/',
+  '/spacebar-counter/',
+  '/spacebar-clicker-test/',
+  '/spacebar-clicker-unblocked/'
+]);
+
+const requiredSpacebarHubLinks = [
+  '/spacebar-clicker/',
+  '/spacebar-clicker-test/',
+  '/spacebar-counter/',
+  '/spacebar-clicker-2/',
+  '/spacebar-clicker-unblocked/'
+];
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -115,11 +132,28 @@ for (const file of htmlFiles) {
       if (parsedSchema['@context'] !== 'https://schema.org') {
         throw new Error('missing schema.org context');
       }
+
+      if (spacebarSchemaRoutes.has(route)) {
+        const schemaNodes = Array.isArray(parsedSchema['@graph'])
+          ? parsedSchema['@graph']
+          : [parsedSchema];
+        if (!schemaNodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
+          throw new Error('Spacebar route schema is missing BreadcrumbList');
+        }
+      }
     } catch (error) {
       throw new Error(route + ': invalid static route JSON-LD: ' + error.message);
     }
   } else if (html.includes('id="prerender-route-jsonld"')) {
     throw new Error(route + ': unexpected static route JSON-LD on a non-core route');
+  }
+
+  if (route === '/spacebar-games/') {
+    for (const href of requiredSpacebarHubLinks) {
+      if (!html.includes('href="' + href + '"')) {
+        throw new Error(route + ': missing static crawl link to ' + href);
+      }
+    }
   }
 
   if (route.startsWith('/blog/') && route !== '/blog/') {
@@ -176,4 +210,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 13 core route schemas, Spacebar breadcrumbs/crawl links, 6 full game summaries, 10 full blog articles.');
