@@ -232,10 +232,10 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   useEffect(() => {
     if (autoRate <= 0) return;
     const timer = window.setInterval(() => {
-      const gain = autoRate / 10;
+      const gain = autoRate / 5;
       setPoints((value) => value + gain);
       setLifetimePoints((value) => value + gain);
-    }, 100);
+    }, 200);
     return () => window.clearInterval(timer);
   }, [autoRate]);
 
