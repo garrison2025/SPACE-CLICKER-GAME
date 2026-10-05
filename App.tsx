@@ -19,6 +19,9 @@ import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
 import ComparisonPage from './components/ComparisonPage';
 import AchievementsPage from './components/AchievementsPage';
+import SpacebarGame from './components/SpacebarGame';
+import SpacebarCounter from './components/SpacebarCounter';
+import SpacebarClickerTest from './components/SpacebarClickerTest';
 import StatsAndSaveModal from './components/StatsAndSaveModal';
 import OfflineEarningsModal from './components/OfflineEarningsModal';
 import HotkeyOverlay from './components/HotkeyOverlay';
@@ -35,7 +38,6 @@ const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
-const AUTO_SAVE_MS = 10000;
 
 // High-quality Open Graph images for each game
 const GAME_OG_IMAGES: Record<GameId, string> = {
@@ -50,7 +52,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements'];
+const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -122,7 +124,7 @@ const App: React.FC = () => {
           }
       } else {
           // Check static pages
-          const cleanPath = path.substring(1) as ViewMode;
+          const cleanPath = path.replace(/^\/+|\/+$/g, '') as ViewMode;
           if (VALID_VIEWS.includes(cleanPath)) {
               view = cleanPath;
           } else {
@@ -284,7 +286,14 @@ const App: React.FC = () => {
   // --- SEO METADATA CALCULATION ---
   const getSEOProps = () => {
       if (is404) {
-          return { title: "404 - Signal Lost | Space Clicker Game", desc: "Page not found.", path: location.pathname };
+          return {
+              title: "404 - Signal Lost | Space Clicker Game",
+              description: "The requested page could not be found.",
+              path: location.pathname,
+              image: DEFAULT_OG_IMAGE,
+              type: 'website' as const,
+              schema: undefined
+          };
       }
       
       let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
@@ -348,7 +357,7 @@ const App: React.FC = () => {
                 "@type": "VideoGame",
                 "@id": "https://spaceclickergame.com/#game",
                 "name": "Space Clicker Game (Cosmic Miner)",
-                "description": "The premier free-to-play space clicker game with deep prestige loops, heat flux multipliers, and Gemini AI subspace anomalies.",
+                "description": "A free browser space clicker game with mining, automation, heat flux multipliers, offline progress, and a permanent prestige loop.",
                 "genre": ["Clicker", "Incremental", "Sci-Fi", "Strategy"],
                 "playMode": "SinglePlayer",
                 "applicationCategory": "Game",
@@ -360,6 +369,51 @@ const App: React.FC = () => {
                 }
               }
             ]
+          };
+      } else if (viewMode === 'spacebar-clicker' || viewMode === 'spacebar-clicker-unblocked') {
+          const unblocked = viewMode === 'spacebar-clicker-unblocked';
+          title = unblocked
+              ? "Spacebar Clicker Unblocked - Play Instantly in Your Browser"
+              : "Spacebar Clicker - Space Bar Clicker Game & CPS";
+          desc = unblocked
+              ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
+              : "Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys. Free on desktop and mobile.";
+          type = 'game';
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "VideoGame",
+              "name": unblocked ? "Spacebar Clicker Unblocked" : "Spacebar Clicker",
+              "description": desc,
+              "genre": ["Clicker", "Incremental", "Idle"],
+              "playMode": "SinglePlayer",
+              "applicationCategory": "Game",
+              "operatingSystem": "Any modern web browser",
+              "url": `https://spaceclickergame.com/${viewMode}/`,
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+      } else if (viewMode === 'spacebar-counter') {
+          title = "Spacebar Counter - Count Space Bar Presses & CPS";
+          desc = "Free online Spacebar Counter with total presses, current CPS, average CPS, peak CPS and local best. Works with keyboard and mobile touch.";
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Spacebar Counter",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Any modern web browser",
+              "url": "https://spaceclickergame.com/spacebar-counter/",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+      } else if (viewMode === 'spacebar-clicker-test') {
+          title = "Spacebar Clicker Test - Space Bar CPS & Speed Test";
+          desc = "Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. See clicks, average CPS, peak CPS and your best local score.";
+          schema = {
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Spacebar Clicker Test",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Any modern web browser",
+              "url": "https://spaceclickergame.com/spacebar-clicker-test/",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
           };
       } else if (viewMode !== 'compare' && viewMode !== 'achievements') {
           title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
@@ -780,6 +834,7 @@ const App: React.FC = () => {
             image={seoData.image}
             type={seoData.type}
             schema={seoData.schema}
+            noindex={is404}
         />
 
         {/* Global Hotkey Overlay Trigger & Modal */}
@@ -860,6 +915,10 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
+                {viewMode === 'spacebar-clicker' && <SpacebarGame />}
+                {viewMode === 'spacebar-counter' && <SpacebarCounter />}
+                {viewMode === 'spacebar-clicker-test' && <SpacebarClickerTest />}
+                {viewMode === 'spacebar-clicker-unblocked' && <SpacebarGame mode="unblocked" />}
                 {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
                 {viewMode === 'about' && <AboutPage />}
                 {viewMode === 'contact' && <ContactPage />}
