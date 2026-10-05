@@ -311,15 +311,59 @@ const DeepSpaceSignal: React.FC = () => {
     // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(DEEP_SIGNAL_SAVE_KEY);
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                if (data.dataBytes) setDataBytes(data.dataBytes);
-                if (data.energy) setEnergy(data.energy);
-                if (data.upgrades) setUpgrades(data.upgrades);
-                if (data.messages) setMessages(data.messages);
-                if (data.factions) setFactions(data.factions);
-            } catch(e) {}
+        if (!saved) return;
+
+        try {
+            const data = JSON.parse(saved);
+            const loadedUpgrades: DeepSignalSaveData['upgrades'] = {
+                antenna: Math.max(1, Math.floor(Number(data.upgrades?.antenna) || 1)),
+                processor: Math.max(1, Math.floor(Number(data.upgrades?.processor) || 1)),
+                battery: Math.max(1, Math.floor(Number(data.upgrades?.battery) || 1)),
+                solar: Math.max(1, Math.floor(Number(data.upgrades?.solar) || 1)),
+                ai: Math.max(0, Math.floor(Number(data.upgrades?.ai) || 0)),
+            };
+            const loadedFactions: DeepSignalSaveData['factions'] = {
+                BIO: Math.max(0, Math.floor(Number(data.factions?.BIO) || 0)),
+                TECH: Math.max(0, Math.floor(Number(data.factions?.TECH) || 0)),
+                MIL: Math.max(0, Math.floor(Number(data.factions?.MIL) || 0)),
+                VOID: Math.max(0, Math.floor(Number(data.factions?.VOID) || 0)),
+            };
+
+            const loadedMaxEnergy =
+                (100 * Math.pow(1.2, loadedUpgrades.battery - 1)) *
+                (1 + loadedFactions.VOID * 0.01);
+            const loadedEnergy = Number.isFinite(Number(data.energy))
+                ? Math.min(loadedMaxEnergy, Math.max(0, Number(data.energy)))
+                : 100;
+            const loadedDataBytes = Number.isFinite(Number(data.dataBytes))
+                ? Math.max(0, Number(data.dataBytes))
+                : 0;
+            const loadedMessages = Array.isArray(data.messages) ? data.messages.slice(-50) : [];
+
+            const nextSnapshot = {
+                dataBytes: loadedDataBytes,
+                energy: loadedEnergy,
+                upgrades: loadedUpgrades,
+                messages: loadedMessages,
+                factions: loadedFactions,
+            };
+
+            // Hydrate the save ref in the same turn as React state. This prevents
+            // an immediate close from writing the component's default values over
+            // a valid loaded save, including a legitimate energy value of zero.
+            saveStateRef.current = nextSnapshot;
+            localStorage.setItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: Date.now(),
+            }));
+
+            setDataBytes(loadedDataBytes);
+            setEnergy(loadedEnergy);
+            setUpgrades(loadedUpgrades);
+            setMessages(loadedMessages);
+            setFactions(loadedFactions);
+        } catch (error) {
+            console.warn('Could not load Deep Space Signal save.', error);
         }
     }, []);
 
