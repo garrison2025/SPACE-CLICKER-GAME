@@ -25,7 +25,7 @@ interface UpgradeDef {
 
 const SAVE_KEY = 'spacebar_clicker_2_save_v1';
 const SAVE_VERSION = 1;
-const ASCENSION_THRESHOLD = 1_000_000_000;
+const ASCENSION_THRESHOLD = 250_000_000;
 
 const defs: UpgradeDef[] = [
   { id: 'carbonKey', name: 'Carbon Key', description: '+2 base points per press.', baseCost: 25, scale: 1.55 },
@@ -138,6 +138,8 @@ const SpacebarClicker2: React.FC = () => {
   );
 
   const ascensionGain = Math.floor(Math.sqrt(points / ASCENSION_THRESHOLD));
+  const ascensionProgress = Math.min(100, (points / ASCENSION_THRESHOLD) * 100);
+  const pointsToAscension = Math.max(0, ASCENSION_THRESHOLD - points);
 
   const saveRef = useRef({
     points,
@@ -360,6 +362,18 @@ const SpacebarClicker2: React.FC = () => {
               <p className="text-sm text-gray-400 mt-1">
                 Reach {formatNumber(ASCENSION_THRESHOLD)} points. Every Nova Core permanently adds +15% to manual and automatic production.
               </p>
+              <div className="mt-4">
+                <div className="flex justify-between text-[11px] font-mono text-gray-500 mb-1">
+                  <span>{ascensionProgress.toFixed(1)}%</span>
+                  <span>{pointsToAscension > 0 ? formatNumber(pointsToAscension) + ' points remaining' : 'Ascension ready'}</span>
+                </div>
+                <div className="h-2 rounded-full bg-black/40 overflow-hidden">
+                  <div
+                    className="h-full bg-neon-blue transition-all duration-300"
+                    style={{ width: `${ascensionProgress}%` }}
+                  />
+                </div>
+              </div>
             </div>
             <button
               type="button"
