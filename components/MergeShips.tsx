@@ -853,10 +853,10 @@ const MergeShips: React.FC = () => {
              {/* Offline Report */}
              {offlineProfit && (
                  <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 animate-in zoom-in-95">
-                     <div className="bg-slate-900 border border-green-500 p-8 rounded-2xl w-full max-w-sm text-center shadow-[0_0_100px_rgba(16,185,129,0.2)]">
+                     <div role="dialog" aria-modal="true" aria-labelledby="merge-offline-title" className="bg-slate-900 border border-green-500 p-8 rounded-2xl w-full max-w-sm text-center shadow-[0_0_100px_rgba(16,185,129,0.2)]">
                          <div className="text-6xl mb-4">💤</div>
-                         <h2 className="text-2xl font-black text-white mb-2">FLEET REPORT</h2>
-                         <p className="text-gray-400 text-sm mb-6">Your orbit ships continued to defend the sector while you were away.</p>
+                         <h2 id="merge-offline-title" className="text-2xl font-black text-white mb-2">FLEET REPORT</h2>
+                         <p className="text-gray-400 text-sm mb-6">Your orbit ships continued to defend the sector while you were away. The earnings below are already credited to this local save.</p>
                          <div className="bg-black/40 p-4 rounded-lg mb-6">
                              <div className="flex justify-between items-center mb-2">
                                  <span className="text-xs text-gray-500 font-bold">TIME AWAY</span>
@@ -871,7 +871,7 @@ const MergeShips: React.FC = () => {
                             onClick={() => setOfflineProfit(null)}
                             className="w-full py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded shadow-lg transition-transform hover:scale-105"
                          >
-                             COLLECT BOUNTY
+                             CONTINUE
                          </button>
                      </div>
                  </div>
