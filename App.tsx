@@ -311,8 +311,8 @@ const App: React.FC = () => {
           };
       }
       
-      let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
-      let desc = "Play Space Clicker Game in your browser. Mine Stardust, automate production, manage heat, explore six space simulations, and reset for Dark Matter progression.";
+      let title = "Space Clicker – Free Space Clicker Game Online";
+      let desc = "Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.";
       let image = DEFAULT_OG_IMAGE;
       let type: 'website' | 'game' | 'article' = 'website';
       let schema: any = undefined;
