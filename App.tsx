@@ -732,6 +732,11 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "Does Spacebar Clicker 2 work on mobile?",
                       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mobile players can use the on-screen Space button, while desktop players can use the physical Space key." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Can I move my Spacebar Clicker 2 save to another browser?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save." }
                     }
                   ]
                 }
