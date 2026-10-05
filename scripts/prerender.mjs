@@ -1061,6 +1061,12 @@ const renderHtml = (route, title, description, h1) => {
             }
           },
           {
+            "@type": "Organization",
+            "@id": ORGANIZATION_ID,
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          },
+          {
             "@type": "BreadcrumbList",
             "@id": canonical + "#breadcrumb",
             "itemListElement": [
