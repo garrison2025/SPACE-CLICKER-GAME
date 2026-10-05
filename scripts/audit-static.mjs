@@ -53,7 +53,9 @@ const highValueSchemaRoutes = new Set([
   '/spacebar-clicker-test/',
   '/spacebar-clicker-unblocked/',
   '/compare/',
-  '/achievements/'
+  '/achievements/',
+  '/blog/',
+  '/about/'
 ]);
 
 const spacebarSchemaRoutes = new Set([
@@ -192,6 +194,41 @@ for (const file of htmlFiles) {
     }
   }
 
+  if (route === '/blog/') {
+    const postLinks = [...html.matchAll(/href="(\/blog\/[^"]+\/)"/g)].map((match) => match[1]);
+    if (new Set(postLinks).size < 10) {
+      throw new Error(route + ': expected crawl links to all 10 blog articles');
+    }
+    if (!html.includes('Space clicker guides and strategy')) {
+      throw new Error(route + ': static blog hub introduction is missing');
+    }
+  }
+
+  if (route === '/about/') {
+    const aboutH2Count = (html.match(/<h2\b/gi) || []).length;
+    if (aboutH2Count < 3 || !html.includes('six simulations')) {
+      throw new Error(route + ': About prerender is missing trust/product detail');
+    }
+  }
+
+  if (route === '/sitemap/') {
+    for (const href of [
+      '/game/galaxy_miner/',
+      '/game/mars_colony/',
+      '/game/star_defense/',
+      '/game/merge_ships/',
+      '/game/gravity_idle/',
+      '/game/deep_signal/',
+      '/spacebar-games/',
+      '/blog/',
+      '/about/'
+    ]) {
+      if (!html.includes('href="' + href + '"')) {
+        throw new Error(route + ': HTML sitemap prerender is missing ' + href);
+      }
+    }
+  }
+
   if (route.startsWith('/blog/') && route !== '/blog/') {
     const h2Count = (html.match(/<h2\b/gi) || []).length;
     if (h2Count < 2) throw new Error(route + ': full static blog body appears missing (H2 count ' + h2Count + ')');
@@ -246,4 +283,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 15 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone summaries, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone/blog/about hubs, 6 full game summaries, 10 full blog articles.');
