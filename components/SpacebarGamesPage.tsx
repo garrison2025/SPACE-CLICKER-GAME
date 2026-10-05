@@ -101,6 +101,13 @@ const SpacebarGamesPage: React.FC = () => {
           </section>
 
           <section>
+            <h2 className="text-2xl font-display text-white mb-3">Related Spacebar guides</h2>
+            <p>
+              Read <a href="/blog/mastering-the-space-bar-clicking-game/" className="text-neon-blue hover:text-white">Mastering the Space Bar</a> for the transition from manual input to automation, or <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Space Bar Clicking Game Mechanics</a> for CPS and deliberate key input.
+            </p>
+          </section>
+
+          <section>
             <h2 className="text-2xl font-display text-white mb-3">Frequently asked questions</h2>
             <div className="space-y-5">
               <div>
