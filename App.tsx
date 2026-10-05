@@ -70,6 +70,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 };
 
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
+const SPACEBAR_OG_IMAGE = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
 const SITE_CONTENT_UPDATED = '2026-10-05';
 
 const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
@@ -360,7 +361,7 @@ const App: React.FC = () => {
       
       let title = "Space Clicker – Free Space Clicker Game Online";
       let desc = "Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.";
-      let image = DEFAULT_OG_IMAGE;
+      let image = viewMode.startsWith('spacebar') ? SPACEBAR_OG_IMAGE : DEFAULT_OG_IMAGE;
       let type: 'website' | 'article' = 'website';
       let schema: any = undefined;
 
