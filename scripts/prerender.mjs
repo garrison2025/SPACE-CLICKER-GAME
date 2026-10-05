@@ -741,6 +741,8 @@ const staticRouteContent = {
       <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
       <h2>How timed tests start and finish</h2>
       <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. In 100-click mode, the test ends on the one-hundredth valid press and records elapsed time.</p>
+      <h2>How to compare CPS results</h2>
+      <p>There is no universal “good CPS” threshold across every keyboard and test. For a meaningful comparison, keep the device, browser, duration, and input rule the same between attempts. Short tests emphasize burst speed, while longer tests put more weight on consistency.</p>
       <h2>Key-repeat protection</h2>
       <p>Holding the Space key does not generate a valid stream of clicks because browser-generated repeat events are ignored. The test is designed around repeated deliberate presses or intentional taps on the on-screen control.</p>
       <h2>Personal bests, recent results, and sharing</h2>
