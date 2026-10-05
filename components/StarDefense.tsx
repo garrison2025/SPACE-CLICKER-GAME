@@ -512,8 +512,10 @@ const StarDefense: React.FC = () => {
     };
 
     // --- INTERACTIONS ---
-    const handleFieldClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleFieldClick = (e: React.PointerEvent<HTMLDivElement>) => {
         if (gameOver) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+
         const rect = e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         
@@ -704,8 +706,8 @@ const StarDefense: React.FC = () => {
             
             {/* --- GAME AREA --- */}
             <div 
-                className="flex-1 min-h-[440px] md:min-h-0 relative md:border-r border-b md:border-b-0 border-white/20 bg-space-950 cursor-crosshair overflow-hidden group"
-                onMouseDown={handleFieldClick}
+                className="flex-1 min-h-[440px] md:min-h-0 relative md:border-r border-b md:border-b-0 border-white/20 bg-space-950 cursor-crosshair overflow-hidden group touch-manipulation"
+                onPointerDown={handleFieldClick}
             >
                  {/* Moving Starfield Background */}
                  <div className="absolute inset-0 opacity-40">
@@ -791,6 +793,7 @@ const StarDefense: React.FC = () => {
                          return (
                              <button
                                 key={skill.id}
+                                onPointerDown={(e) => e.stopPropagation()}
                                 onClick={(e) => { e.stopPropagation(); activateSkill(skill.id); }}
                                 disabled={cd > 0}
                                 className={`relative w-12 h-12 md:w-16 md:h-16 rounded-lg border-2 flex items-center justify-center text-2xl bg-black/80 overflow-hidden transition-transform active:scale-95 ${active ? 'border-white shadow-[0_0_15px_white]' : cd > 0 ? 'border-gray-700 opacity-50' : 'border-gray-500 hover:border-neon-blue'}`}
@@ -809,6 +812,7 @@ const StarDefense: React.FC = () => {
                  {powerupsRef.current.map(p => (
                      <div 
                         key={p.id}
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => handlePowerUpClick(e, p)}
                         className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 z-30 cursor-pointer animate-bounce"
                         style={{ left: `${p.x}%`, top: `${p.y}%` }}
