@@ -522,46 +522,76 @@ const staticRouteContent = {
       <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning.</p>
     </section>`,
   '/game/galaxy_miner': `
-    <section>
+<section>
       <h2>Galaxy Miner gameplay</h2>
-      <p>Galaxy Miner is a browser-based space mining idle clicker. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, respond to crisis events, and reset large runs for Dark Matter.</p>
-      <h2>Permanent progression</h2>
-      <p>Galactic Reset becomes available from 1 trillion Stardust. Stardust and standard upgrades reset while Dark Matter and permanent Void Technology remain.</p>
+      <p>Galaxy Miner is the flagship space mining idle clicker on SpaceClickerGame.com. Start with manual Stardust extraction, then reinvest into Laser Drills, Mining Drones, Rovers, Lunar Bases, Orbital Stations, and Dyson Swarms. The loop shifts from active clicking toward automated production as the run grows.</p>
+      <h2>Heat Flux and active mining</h2>
+      <p>Every manual mining action adds Heat. Keeping Heat between 80% and 99% activates the 2x Heat Flux state, while crossing 100% overheats the mining beam and temporarily disables normal mining. Geodes can vent Heat, so active play rewards timing rather than simply holding the input.</p>
+      <h2>Automation and offline production</h2>
+      <p>Automatic upgrades continue producing Stardust without repeated clicks. Supported saved runs can also credit capped offline production after time away, using the saved automation rate rather than pretending the game ran continuously in the background.</p>
+      <h2>Galactic Reset and Dark Matter</h2>
+      <p>Galactic Reset becomes available from 1 trillion Stardust. A reset removes current Stardust and standard upgrades but keeps Dark Matter, permanent Void Technology, and lifetime progress. Larger runs can award more Dark Matter, so reset timing becomes a long-term efficiency decision.</p>
+      <p>For upgrade planning, see the <a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker strategy guide</a> or track thresholds on the <a href="/achievements/">Galaxy Miner milestones page</a>.</p>
     </section>`,
   '/game/mars_colony': `
-    <section>
+<section>
       <h2>Mars Colony gameplay</h2>
-      <p>Build a browser-based Mars settlement by balancing Minerals, Credits, Colonists, Energy, Food, and Oxygen. Construction choices change production, consumption, storage, and population growth.</p>
-      <h2>Colony management</h2>
-      <p>Expand with miners, power systems, habitats, greenhouses, and later infrastructure while keeping life-support resources from becoming bottlenecks.</p>
+      <p>Mars Colony Idle is a browser management simulation built around six linked resources: Minerals, Credits, Colonists, Energy, Food, and Oxygen. Manual excavation starts the economy, while buildings gradually convert the colony into a self-sustaining production network.</p>
+      <h2>Energy comes first</h2>
+      <p>Solar Panels and later Fusion Reactors supply Energy. Auto-Excavators, Hydroponics, Oxygenators, and Habitat Modules consume part of that capacity, so adding buildings without enough generation reduces how effectively the rest of the colony can operate.</p>
+      <h2>Food, oxygen, and population</h2>
+      <p>Colonists need both Food and Oxygen. Hydroponics raises Food production, Oxygenators replenish breathable reserves, and Habitat Modules raise housing capacity. Population grows only when life-support reserves remain healthy, while shortages can reverse that growth.</p>
+      <h2>Minerals and Credits</h2>
+      <p>Minerals pay for construction and can be generated manually or by Auto-Excavators. Colonists generate Credits over time, creating a second progression layer tied to maintaining a stable population rather than simply buying every building as soon as it appears.</p>
+      <p>Use the simulation switcher to compare this management loop with <a href="/game/galaxy_miner/">Galaxy Miner</a> and <a href="/game/star_defense/">Star Defense</a>.</p>
     </section>`,
   '/game/star_defense': `
-    <section>
+<section>
       <h2>Star Defense gameplay</h2>
-      <p>Defend the mothership from incoming alien waves. Click enemies for direct damage, collect Scrap, purchase upgrades, and combine manual fire with automated turrets and tactical abilities.</p>
-      <h2>Wave progression</h2>
-      <p>Enemy pressure increases across waves, with shield, hull, repair, damage, fire-rate, and other upgrades shaping each run.</p>
+      <p>Star Defense is a browser defense clicker in which enemy ships move toward the mothership while the player combines direct clicks with automated weapons. Destroyed enemies award Scrap, which funds upgrades inside the current run.</p>
+      <h2>Manual damage and auto-turrets</h2>
+      <p>Plasma Cannons improve manual click damage, while Alpha Turrets and Missile Batteries add automatic fire. Manual targeting handles immediate threats and automation reduces the amount of constant clicking needed as waves accelerate.</p>
+      <h2>Hull, shields, and repair</h2>
+      <p>Void Shield generators create a regenerating barrier, Hull Plating increases maximum survivability, and Nanite Repair provides an emergency recovery option. Defensive upgrades become more important as fighters, tanks, and boss-class enemies create sustained pressure.</p>
+      <h2>Tactical abilities and waves</h2>
+      <p>EMP Shock, Rapid Fire, and Nuke abilities provide timed responses to dangerous waves. Enemy speed, health, firing pressure, and boss encounters scale the difficulty, so upgrade timing matters as much as raw click speed.</p>
+      <p>Prefer an economy-first idle loop? Switch to <a href="/game/galaxy_miner/">Galaxy Miner</a>. For non-combat management, try <a href="/game/mars_colony/">Mars Colony Idle</a>.</p>
     </section>`,
   '/game/merge_ships': `
-    <section>
+<section>
       <h2>Merge Spaceships gameplay</h2>
-      <p>Buy or open ships, combine matching levels to create stronger vessels, and place ships in orbit to generate passive combat income.</p>
-      <h2>Hangar and orbit</h2>
-      <p>The hangar is used for collecting and merging ships while orbit slots turn deployed vessels into automatic asteroid damage and Credits.</p>
+      <p>Merge Spaceships combines a merge board with an idle combat layer. Acquire low-level ships, place them in the hangar, and combine two matching levels to create a stronger vessel instead of managing a traditional upgrade list.</p>
+      <h2>Hangar merging</h2>
+      <p>The hangar contains a limited number of slots, so board space is part of the strategy. Matching ships can be fused upward through progressively stronger levels, and fabrication upgrades can improve the level of newly acquired ships as the economy grows.</p>
+      <h2>Orbit combat and passive income</h2>
+      <p>Ships moved into orbit automatically fire on passing asteroids. Stronger vessels deal more damage, and destroyed normal, gold, or boss asteroids award Credits that can be reinvested into more ships and technology.</p>
+      <h2>Technology progression</h2>
+      <p>Orbit Expansion opens additional deployment slots, Advanced Fabrication improves purchased ship quality, and Logistics Net increases the frequency of incoming crates. The main tradeoff is how much value to keep in the hangar for merging versus how much power to deploy for immediate income.</p>
+      <p>For a more traditional incremental economy, open <a href="/game/galaxy_miner/">Galaxy Miner</a>. For direct combat, try <a href="/game/star_defense/">Star Defense</a>.</p>
     </section>`,
   '/game/gravity_idle': `
-    <section>
+<section>
       <h2>Gravity Idle gameplay</h2>
-      <p>Launch projectiles into a gravity field, break apart asteroids and geodes, collect Matter, and improve gravity, launchers, fire rate, impact power, and piercing.</p>
-      <h2>Physics idle progression</h2>
-      <p>Automation increases projectile output while upgrades change how quickly the simulation generates Matter and clears incoming objects.</p>
+      <p>Gravity Idle is a browser physics-idle simulation where orbital cannons fire projectiles through a central gravity well. Asteroids, comets, and geodes enter the field, and successful impacts turn those objects into Matter for the next round of upgrades.</p>
+      <h2>Gravity and projectile paths</h2>
+      <p>The Event Horizon upgrade strengthens the central pull, changing how projectiles curve through the field. Because trajectories are simulated rather than predetermined, stronger gravity changes both hit frequency and the visual shape of each orbit.</p>
+      <h2>Automation upgrades</h2>
+      <p>Orbital Cannons add launch sources, Auto-Loader increases firing speed, Kinetic Mass raises impact damage, and Quantum Drill adds piercing. These upgrades stack into a progressively denser automated system rather than requiring constant manual clicking.</p>
+      <h2>Pulse and Matter progression</h2>
+      <p>A manual gravity pulse provides an active intervention on a cooldown, while automatic launchers keep the simulation moving between inputs. Matter earned from destroyed objects funds the next level of gravity, firing, damage, and piercing upgrades.</p>
+      <p>For a slower management loop, visit <a href="/game/mars_colony/">Mars Colony Idle</a>. For an economy-and-prestige clicker, play <a href="/game/galaxy_miner/">Galaxy Miner</a>.</p>
     </section>`,
   '/game/deep_signal': `
-    <section>
+<section>
       <h2>Deep Space Signal gameplay</h2>
-      <p>Spend Energy to scan for transmissions, decode messages, collect Data, and improve antenna, processor, battery, solar, and automation systems.</p>
-      <h2>Signal factions</h2>
-      <p>Decoded transmissions can interact with BIO, TECH, MIL, and VOID progression, which modifies parts of the signal-decoding economy.</p>
+      <p>Deep Space Signal is a text-focused browser mystery built around scanning radio frequencies, receiving encrypted transmissions, and turning decoded messages into Data. Each scan consumes Energy, so progress is paced by both active decisions and passive regeneration.</p>
+      <h2>Scanning and decryption</h2>
+      <p>The Antenna Array unlocks deeper frequencies, while Crypto Core upgrades increase passive decryption speed. Players can also click undecoded messages to reduce their encryption manually instead of waiting for the processor to finish the work.</p>
+      <h2>Energy and automation</h2>
+      <p>Capacitor Bank raises maximum Energy, Solar Sails improve regeneration, and Auto-Scan AI can automate signal hunting once purchased. This creates a gradual shift from manual scanning toward a more idle signal-processing loop.</p>
+      <h2>BIO, TECH, MIL, and VOID factions</h2>
+      <p>Decoded transmissions can advance BIO, TECH, MIL, and VOID progression. Those factions modify Energy regeneration, decryption speed, scan cost, and maximum Energy, so the message stream also functions as a long-term upgrade path.</p>
+      <p>For another systems-heavy simulation, try <a href="/game/gravity_idle/">Gravity Idle</a>, or return to the main <a href="/game/galaxy_miner/">Galaxy Miner</a> clicker.</p>
     </section>`,
   '/spacebar-games': `
     <section>
