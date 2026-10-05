@@ -177,6 +177,10 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
       if (!parsed.resources && !parsed.upgrades) {
         throw new Error('Corrupted format');
       }
+      if (!window.confirm('Replace the current Galaxy Miner save with this imported backup?')) {
+        setBackupNotice('Restore cancelled.');
+        return;
+      }
       onImportSave(parsed);
       onClose();
     } catch (err) {
@@ -407,6 +411,9 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     <div className="text-xs text-gray-400">Provide subtle vibration pulses on mobile devices when mining or scoring crits.</div>
                   </div>
                   <button
+                    type="button"
+                    aria-label="Toggle haptic vibration feedback"
+                    aria-pressed={hapticEnabled}
                     onClick={onToggleHaptic}
                     className={`w-12 h-6 rounded-full relative transition-colors ${
                       hapticEnabled ? 'bg-neon-blue' : 'bg-gray-700'
@@ -425,6 +432,9 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     <div className="text-xs text-gray-400">Dynamic physics shake during Flux state and critical strikes. (Disable if prone to motion sickness)</div>
                   </div>
                   <button
+                    type="button"
+                    aria-label="Toggle impact screen shake"
+                    aria-pressed={screenShakeEnabled}
                     onClick={onToggleScreenShake}
                     className={`w-12 h-6 rounded-full relative transition-colors ${
                       screenShakeEnabled ? 'bg-neon-blue' : 'bg-gray-700'
@@ -441,10 +451,15 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
               <div className="bg-red-950/20 border border-red-500/30 rounded-xl p-4 space-y-3">
                 <div className="font-bold text-red-400 text-sm">EMERGENCY DATA PURGE</div>
                 <p className="text-xs text-gray-400">
-                  Wipes Galaxy Miner progress stored in this browser and returns the game to a fresh state. Export a save code first if you want a manual backup.
+                  Wipes Galaxy Miner progress stored in this browser and returns the game to a fresh state. Copy a save code or download a backup file first if you want a manual backup.
                 </p>
                 <button
-                  onClick={onResetGame}
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm('Permanently erase Galaxy Miner progress stored in this browser?')) {
+                      onResetGame();
+                    }
+                  }}
                   className="w-full min-h-11 py-2.5 border border-red-500 text-red-400 hover:bg-red-500 hover:text-white font-mono font-bold rounded-lg text-xs transition-colors"
                 >
                   PURGE ALL LOCAL FLEET DATA
