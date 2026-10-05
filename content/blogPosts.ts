@@ -13,15 +13,15 @@ export const BLOG_POSTS: BlogPost[] = [
         tags: ['space clicker game', 'incremental', 'history', 'mechanics'],
         image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">The <strong>space clicker game</strong> genre has transformed from humble beginnings into a dominant force in browser-based gaming. What starts as a single click on a virtual asteroid evolves into managing Dyson spheres, interstellar fleets, and complex economies. This guide explores why we love to click and how these games have captured our imagination.</p>
+            <p class="lead"><strong>Space clicker games</strong> combine repeated input with reinvestment, automation, large-number progression, and sometimes prestige resets. What begins as one manual action can expand into a resource-management system with passive production and permanent upgrades.</p>
 
             <h2>Defining the Space Clicker Game</h2>
-            <p>At its core, a <strong>space clicker game</strong> (or incremental space game) is about growth. It taps into the human desire for progress. You start small—perhaps with a single mining laser in our very own <a href="https://spaceclickergame.com">Galaxy Miner</a>—and through the power of exponential math, you eventually command the resources of entire solar systems.</p>
+            <p>At its core, a <strong>space clicker game</strong> (or incremental space game) is about visible growth. The player starts with a small production rate, reinvests resources into upgrades, and gradually shifts from manual input toward automation and larger multipliers.</p>
             
             <p>Unlike traditional RTS games like <em>StarCraft</em>, a <strong>clicker game space</strong> adventure doesn't demand high APM (actions per minute) forever. Instead, it shifts from active clicking to strategic management. This transition is what separates a shallow "tapper" from a deep strategy simulation.</p>
 
             <h3>The Core Loop of Space Clicking Games</h3>
-            <p>Every successful <strong>space clicking game</strong> follows a specific loop known as the "Prestige Cycle." Here is how it typically works:</p>
+            <p>Many <strong>space clicking games</strong> use a progression loop that moves from active input to automation and, in some games, a prestige reset. A common version looks like this:</p>
             <ul>
                 <li><strong>Phase 1: Active Input.</strong> You use your mouse (or space bar) to generate initial currency. This is the "grind" phase.</li>
                 <li><strong>Phase 2: Automation.</strong> You spend that currency on "Auto-Miners" or "Drones." Now, the game plays itself while you watch.</li>
@@ -29,42 +29,40 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Phase 4: Prestige.</strong> You reset the universe. You lose your buildings but gain a permanent multiplier (like Dark Matter in <a href="https://spaceclickergame.com">Space Clicker Game</a>).</li>
             </ul>
 
-            <blockquote>
-                "The beauty of a space clicker game is not in the clicking, but in the cessation of clicking. It is the joy of building a machine that works for you." – <em>Incremental Game Design Philosophy</em>
-            </blockquote>
+            <p>The interesting design shift happens when manual input stops being the only meaningful source of progress and the player starts optimizing an automated system instead.</p>
 
             <h2>Why "Space" Fits the Clicker Genre Perfectly</h2>
             <p>Why are there so many <strong>space clicker games</strong> compared to, say, farming clickers? The answer lies in <em>scale</em>.</p>
-            <p>In a farming game, having 1,000,000 cows is absurd. But in a <strong>space click game</strong>, having 1,000,000 stars is just the beginning. The universe is infinite, which matches the infinite scaling of incremental numbers. When you play <a href="https://spaceclickergame.com/game/galaxy_miner">Galaxy Miner</a>, you aren't just watching a number go up; you are visualizing the conquest of the void.</p>
+            <p>A space theme makes very large numerical scales easier to represent: progression can move from an asteroid to planets, stations, stellar infrastructure, and other fictional large-scale systems without changing the basic incremental loop.</p>
             <p>Space gives incremental games a natural sense of scale. Designers can move from a single mining action to planets, nebulae, black holes, and large resource economies without changing the basic progression language. For real astronomy background, NASA's <a href="https://www.nasa.gov/universe" target="_blank" rel="noopener noreferrer">Universe</a> resources are a useful reference.</p>
 
             <h2>The Rise of the Space Bar Clicking Game</h2>
             <p>While most modern idle games use the mouse, the <strong>space bar clicking game</strong> sub-genre holds a nostalgic place in history. Early browser tests often asked players to "mash the space bar" to power up a ship.</p>
-            <p>Today, this mechanic survives in mini-games and quick-time events. However, for long-term health, developers prefer the mouse or passive generation to avoid Repetitive Strain Injury (RSI). In our suite of games, we ensure that while you <em>can</em> click rapidly, the strategy always favors building automated systems over smashing your keyboard.</p>
+            <p>Today, rapid keyboard input appears in speed tests, mini-games, and clickers. Repeated input can become tiring, so automation provides an alternative to continuous manual pressing. If repeated input becomes uncomfortable, stop and rest.</p>
 
             <h3>Top Features of a Modern Space Clicker</h3>
             <ol>
                 <li><strong>Visual Feedback:</strong> Seeing the lasers fire (like in our <em>Star Defense</em> module) makes the math feel tangible.</li>
-                <li><strong>Offline Progress:</strong> A good <strong>space clicker game</strong> respects your time. Your empire should grow even when your browser is closed.</li>
-                <li><strong>Unfolding Complexity:</strong> The game should start simple but reveal new layers (like the Tech Tree in <a href="https://spaceclickergame.com">Mars Colony</a>) over time.</li>
+                <li><strong>Offline Progress:</strong> Some idle games calculate capped production while the player is away. Galaxy Miner, for example, can credit up to 24 hours of offline automatic production.</li>
+                <li><strong>Unfolding Complexity:</strong> New systems can appear as progression grows, such as resource balancing in Mars Colony or permanent technology in Galaxy Miner.</li>
             </ol>
 
-            <h2>Strategy Guide: How to Win at Space Clicker Games</h2>
-            <p>Winning an infinite game seems like a paradox, but "winning" usually means reaching the highest efficiency tier. Here are pro tips for dominating any <strong>space clicking game</strong>:</p>
+            <h2>Strategy Questions That Matter</h2>
+            <p>Incremental strategy is mostly about comparing the cost of the next action with the production or permanent progress it adds.</p>
             
-            <h4>1. The 10% Rule</h4>
-            <p>Never save up for an upgrade for more than 10-15 minutes. If an upgrade takes an hour to afford, you are playing inefficiently. You should probably Prestige (reset) instead to gain a multiplier.</p>
+            <h4>1. Compare Payback Time</h4>
+            <p>For an automation upgrade, divide its cost by the production increase it provides. A shorter payback time usually means the purchase starts helping the run sooner.</p>
 
-            <h4>2. Prioritize Production Multipliers</h4>
-            <p>In games like <a href="https://spaceclickergame.com">Space Clicker Game</a>, upgrades that say "x2 Production" are mathematically superior to linear upgrades like "+10 production" in the long run. Always hunt for the multipliers.</p>
+            <h4>2. Recalculate After Multipliers</h4>
+            <p>A multiplier can be valuable, but its value still depends on price, the current production base, and what other upgrades are available. Compare the actual increase rather than assuming one upgrade type is always superior.</p>
 
-            <h4>3. Don't Neglect the "Click"</h4>
-            <p>In a <strong>space click game</strong>, active play (using abilities, clicking golden comets) often yields 100x more resources than idling. If you have 5 minutes, play actively. If you have 5 hours, let it idle.</p>
+            <h4>3. Use Active Events When They Matter</h4>
+            <p>In Galaxy Miner, Heat Flux, Golden Comets, and crisis events can add bursts of active progress, while automation supplies the baseline. The better choice depends on whether you are actively playing or leaving the run unattended.</p>
 
             <h2>The Future of the Genre</h2>
-            <p>With technologies like WebGL and WebAssembly, the browser-based <strong>space clicker game</strong> is entering a golden age. We are moving away from static text and towards rich, 60fps simulations. <a href="https://en.wikipedia.org/wiki/Incremental_game" target="_blank" rel="noopener noreferrer">Incremental games</a> are becoming complex simulations of economy and physics.</p>
+            <p>Modern browser APIs such as Canvas, WebGL, and WebAssembly make it possible to build richer incremental interfaces without requiring a native download. <a href="https://en.wikipedia.org/wiki/Incremental_game" target="_blank" rel="noopener noreferrer">Incremental games</a> can range from simple counters to layered resource simulations.</p>
             
-            <p>At <strong>SpaceClickerGame.com</strong>, we are committed to pushing this boundary. Whether you are here for a quick <strong>space bar clicking game</strong> challenge or a month-long terraforming simulation, the void awaits your command.</p>
+            <p>On SpaceClickerGame.com, that range includes quick Spacebar tests as well as longer browser simulations built around mining, colony management, defense, merging, gravity, and signal decoding.</p>
             
             <p>Ready to start your empire? <a href="https://spaceclickergame.com">Launch the console</a> and begin mining today.</p>
         `
@@ -83,27 +81,27 @@ export const BLOG_POSTS: BlogPost[] = [
         content: `
             <p class="lead">You open the tab. You see a number: 0. You click. It becomes 1. Suddenly, an hour has passed, you have a billion resources, and you feel immensely satisfied. This is the power of the <strong>space clicking game</strong>.</p>
 
-            <h2>The Skinner Box in Space</h2>
+            <h2>Feedback Loops in Incremental Games</h2>
             <p>Incremental games usually combine predictable rewards with occasional bonus events. That mix can make short actions feel meaningful because the player can see both immediate progress and a longer-term target. It is more accurate to describe this as a feedback loop than to equate the game with gambling.</p>
             
             <p>When you play <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a>, upgrades provide immediate visual and numerical feedback. Critical hits, milestone unlocks, and new planets make progress easy to notice without requiring a separate analytics screen.</p>
 
             <h3>The Zeigarnik Effect</h3>
-            <p>The Zeigarnik Effect states that people remember uncompleted or interrupted tasks better than completed tasks. A <strong>space click game</strong> utilizes this by always giving you the <em>next</em> goal.</p>
+            <p>One idea often discussed around unfinished goals is the Zeigarnik effect: incomplete tasks can remain easier to recall than completed ones. Incremental games can create a similar sense of continuity by keeping the next milestone visible.</p>
             <ul>
-                <li>You want the Rover (Cost: 500).</li>
-                <li>You get the Rover. Now you want the Laser Drill (Cost: 2000).</li>
-                <li>You get the Drill. Now you want to unlock Mars.</li>
+                <li>Reach the next affordable upgrade.</li>
+                <li>Hit the next production milestone.</li>
+                <li>Unlock the next sector or permanent upgrade.</li>
             </ul>
             <p>Because there is usually another visible milestone nearby, unfinished goals can encourage one more short session. That helps explain why incremental games are easy to resume after a break.</p>
 
             <h2>Immersion through Minimalism</h2>
             <p>Why do we prefer a <strong>space clicking game</strong> over a realistic flight simulator? Sometimes, realistic graphics add friction. In a clicker, the abstraction allows players to project their own imagination onto the numbers.</p>
-            <p>When you see "1.5 Undecillion Stardust," your brain visualizes a galactic empire more grand than any graphics card could render. This is similar to reading a book versus watching a movie. The text-based adventures in <a href="https://spaceclickergame.com/game/deep_signal">Deep Space Signal</a> rely entirely on this principle.</p>
+            <p>Large-number notation lets a small interface represent scales that would be impossible to draw literally. Text-based experiences such as <a href="https://spaceclickergame.com/game/deep_signal/">Deep Space Signal</a> use the same kind of abstraction: a short line of text can stand in for a much larger fictional event.</p>
 
             <h2>The "Space Bar" Phenomenon</h2>
             <p>There is a tactile satisfaction to the input. While many play with a mouse, the <strong>space bar clicking game</strong> variant appeals to our desire for physical feedback. Hitting the biggest key on the keyboard feels powerful. It mimics the "Launch" button of a rocket.</p>
-            <p>However, modern game design has moved towards automation to prevent fatigue. The satisfaction shifts from <em>doing</em> the work to <em>managing</em> the workers (or drones, in our case).</p>
+            <p>Automation gives players another way to progress without relying on continuous rapid input. That shifts part of the decision-making from pressing faster to choosing what to upgrade and when.</p>
 
             <h3>Flow State in Idle Games</h3>
             <p>The concept of <a href="https://www.psychologytoday.com/us/basics/flow" target="_blank" rel="noopener noreferrer">flow</a> is often discussed in game design, but an idle game does not automatically create it. What these games can do well is keep goals, feedback, and difficulty readable enough that players know what to do next.</p>
@@ -112,7 +110,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>Even when a <strong>space clicking game</strong> is single-player, players can still compare upgrade math, prestige timing, and different playstyles in forums or friend groups.</p>
             <p>Common discussion topics include:</p>
             <ul>
-                <li>Optimal layouts for <a href="https://spaceclickergame.com/game/mars_colony">Mars Colony</a>.</li>
+                <li>Optimal layouts for <a href="https://spaceclickergame.com/game/mars_colony/">Mars Colony</a>.</li>
                 <li>The exact math behind the Dark Matter multiplier.</li>
                 <li>Speedrun strategies for the <strong>space bar click game</strong> challenges.</li>
             </ul>
@@ -147,7 +145,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>The Butterfly Click:</strong> Using two fingers (index and middle) to alternate strikes on the space bar or mouse button. This is the preferred method for any <strong>space clicking game</strong> veteran.</li>
                 <li><strong>The Drag Click:</strong> Dragging a finger across the surface to create friction-based clicks. Rare, but effective on specific hardware.</li>
             </ul>
-            <p><em>Warning: Always stretch your hands. Prolonged play of a <strong>space bar clicking game</strong> can lead to strain. We recommend automating your fleet as soon as possible in <a href="https://spaceclickergame.com">Galaxy Miner</a> to save your wrists!</em></p>
+            <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
 
             <h2>Transitioning to Automation</h2>
             <p>The defining moment of a <strong>clicker game space</strong> adventure is when your passive generation (stardust per second) exceeds your active generation (stardust per click).</p>
@@ -159,10 +157,10 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Manual:</strong> 5 clicks/sec * 10 resources/click = 50 res/sec.</li>
                 <li><strong>Auto:</strong> 10 Drones * 5 res/sec = 50 res/sec.</li>
             </ul>
-            <p>Once you reach this equilibrium, further clicking yields diminishing returns. Smart players stop treating it like a <strong>space bar clicking game</strong> and start treating it like an investment portfolio.</p>
+            <p>Once automatic production approaches the value of manual input, upgrade selection and payback time become more important than simply pressing faster.</p>
 
             <h2>Hardware for the Dedicated Space Clicker</h2>
-            <p>Believe it or not, hardware matters. Mechanical keyboards with "Linear" switches (like Cherry MX Red) are preferred for <strong>space clicking games</strong> because they have no tactile bump, allowing for faster actuation.</p>
+            <p>Keyboard construction, key travel, stabilizer feel, and actuation distance can change how repeated presses feel, but no switch type guarantees a higher CPS score. Comfort and consistent input matter more than a specific switch label.</p>
             <p>Because <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a> runs in the browser, its input rules are transparent: a deliberate Space keydown counts, while browser-generated repeat events from simply holding the key are ignored. That makes the result easier to interpret.</p>
 
             <h2>The "Space" in Space Bar</h2>
@@ -190,11 +188,11 @@ export const BLOG_POSTS: BlogPost[] = [
             <p class="lead">Modern <strong>space clicking games</strong> can combine idle mechanics, resource management, and visual storytelling. The strongest designs make progression legible: the player should understand what changed, why output increased, and what meaningful goal comes next.</p>
 
             <h2>The Renaissance of the Space Clicking Game</h2>
-            <p>Why has the "clicker" genre persisted for over a decade? The answer lies in the intrinsic satisfaction of <em>growth</em>. In a chaotic real world, a <strong>space clicking game</strong> offers a controlled environment where effort always equals progress.</p>
-            <p>Early iterations were text-heavy and abstract. However, platforms like <a href="https://spaceclickergame.com">SpaceClickerGame.com</a> have pioneered a visual-first approach. We are no longer just imagining the asteroid; we are seeing it shatter under the weight of our kinetic bombardment in <em>Gravity Idle</em>.</p>
+            <p>One reason clicker games remain easy to understand is that their feedback is explicit: an action changes a number, an upgrade changes a rate, and the next milestone is usually visible.</p>
+            <p>Browser clickers can be text-heavy, visual, or a mix of both. On SpaceClickerGame.com, different simulations use separate interfaces rather than forcing every game into the same presentation.</p>
 
             <h3>Key Feature 1: The "Unfolding" Mechanic</h3>
-            <p>The best <strong>space clicking games</strong> start small. You have one button: "Mine." But as you play, the game "unfolds." Suddenly you have an inventory. Then a tech tree. Then a star map.</p>
+            <p>Many <strong>space clicking games</strong> start with a small set of actions and add systems over time. A manual resource button can lead to automation, permanent upgrades, new sectors, or other management layers.</p>
             <ul>
                 <li><strong>Phase 1:</strong> Manual labor (The <strong>space bar click game</strong> phase).</li>
                 <li><strong>Phase 2:</strong> Automation (Drones and Rovers).</li>
@@ -203,29 +201,29 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>This unfolding nature keeps the player engaged. You aren't just playing the same loop forever; the rules of the <strong>clicker game space</strong> are constantly evolving.</p>
 
             <h2>Visual Fidelity in Browser Games</h2>
-            <p>Gone are the days of static HTML tables. Modern <strong>space clicker games</strong> utilize WebGL and Canvas rendering to create stunning visuals.</p>
-            <p>In our flagship title, <a href="https://spaceclickergame.com/game/galaxy_miner">Galaxy Miner</a>, we use dynamic particle systems to represent every unit of Stardust collected. This visual feedback loop reinforces the mathematical gain. According to <a href="https://en.wikipedia.org/wiki/Flow_(psychology)" target="_blank" rel="noopener noreferrer">Flow Theory</a>, immediate feedback is essential for player immersion.</p>
+            <p>Modern <strong>space clicker games</strong> can use standard HTML, Canvas, WebGL, or combinations of browser technologies depending on the experience.</p>
+            <p>In <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a>, the interface uses visual feedback for mining, critical hits, Heat Flux, comets, and other events so players can see when a mechanic has changed the production loop.</p>
 
             <h3>Key Feature 2: Offline Progression (True Idle)</h3>
-            <p>A defining trait of a quality <strong>space click game</strong> is respect for the player's time. We all have jobs, families, and sleep schedules. Your empire shouldn't crumble because you logged off.</p>
-            <p>We implement "Offline Earnings" calculations that simulate your fleet's activity while the browser is closed. When you return to <a href="https://spaceclickergame.com">your console</a>, you are greeted with a "Welcome Back" report detailing the millions of resources harvested in your absence. This creates a positive feedback loop: taking a break is actually rewarding.</p>
+            <p>Offline progression is one common idle-game mechanic. It lets a saved automatic production rate contribute while the game is closed, usually with a cap.</p>
+            <p>Galaxy Miner calculates offline automatic production for up to 24 hours and shows the credited Stardust when the save is loaded again.</p>
 
             <h2>The Economy of the Void</h2>
             <p>Balancing a <strong>space clicking game</strong> economy is an art form. If resources come too easily, the game is boring. If they are too hard to get, it feels like work.</p>
-            <p>We utilize "prestige currencies" (like Dark Matter) to solve this. When progress slows to a crawl—a phenomenon known as "The Wall"—the player is encouraged to reset the universe. They lose their buildings but gain a massive multiplier. This transforms the <strong>space clicker game</strong> from a linear path into a series of faster and faster runs.</p>
+            <p>Prestige currencies such as Dark Matter create a second progression layer. In Galaxy Miner, a Galactic Reset removes current Stardust and standard upgrades, then awards Dark Matter that remains for later runs and permanent technology.</p>
 
             <h3>Key Feature 3: Active vs. Passive Playstyles</h3>
             <p>Great game design caters to both types of players:</p>
             <ol>
-                <li><strong>The Active Clicker:</strong> Wants to use their APM (Actions Per Minute) to force progress. For them, we have the <strong>space bar clicking game</strong> mechanics, critical hits, and active skills like "EMP Blast" in <em>Star Defense</em>.</li>
-                <li><strong>The Idle Strategist:</strong> Wants to optimize ratios and math. For them, we have complex synergy upgrades, such as "Solar Panels boost Drone speed by 10%."</li>
+                <li><strong>The Active Clicker:</strong> Prefers manual input, critical hits, timing windows, or short active events.</li>
+                <li><strong>The Idle Strategist:</strong> Focuses on automatic production, upgrade payback time, and permanent progression.</li>
             </ol>
 
             <h2>Why "Space" is the Ultimate Setting</h2>
-            <p>Fantasy games have a gold cap. You can only carry so much gold in a bag. But space? Space is infinite. In a <strong>clicker game space</strong> setting, numbers like "Undecillion" (10^36) or "Googol" (10^100) make thematic sense. We are dealing with the mass of stars and the energy of black holes.</p>
-            <p>This scale allows for "Big Number" aesthetics that other genres struggle to justify. When you build a Dyson Sphere in <a href="https://spaceclickergame.com">Space Clicker Game</a>, you <em>feel</em> the magnitude of that achievement.</p>
+            <p>A space setting can make very large fictional resource scales feel thematically coherent because the player can move from local mining to planetary and stellar infrastructure.</p>
+            <p>Galaxy Miner eventually unlocks a Dyson Swarm production tier, which fits that progression from small extraction tools to much larger automation.</p>
 
-            <h2>Conclusion: The Golden Age is Now</h2>
+            <h2>Where Browser Clickers Are Going</h2>
             <p>Browser technology now supports richer incremental systems without requiring a download. Whether you prefer active input or passive optimization, the useful question is the same: does each new system create a clear decision rather than simply another number?</p>
             
             <p>Start your journey today at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a> - No download required.</p>
@@ -295,8 +293,8 @@ export const BLOG_POSTS: BlogPost[] = [
             <p class="lead">Behind the flashy particle effects and retro UI of any <strong>clicker game space</strong> title lies a cold, hard engine of mathematics. To master the void, one must master the numbers.</p>
 
             <h2>The Power of Exponentials</h2>
-            <p>Human brains are wired to understand linear growth (1, 2, 3, 4). But a <strong>clicker game space</strong> simulation runs on exponential growth (2, 4, 8, 16). This creates a dizzying sense of scale.</p>
-            <p>In <a href="https://spaceclickergame.com">Galaxy Miner</a>, the cost of buildings usually scales by a factor of 1.15x (Cost = Base * 1.15^Count). This means the cost doubles roughly every 5 purchases. To keep up, your production must also double.</p>
+            <p>Incremental games often combine linear production with multiplicative cost growth and milestone multipliers, which is why the best purchase can change as a run develops.</p>
+            <p>Galaxy Miner does not use one universal cost factor: each upgrade tier has its own multiplier. Mining Drones scale by 1.2x per level, Rovers by 1.25x, Lunar Bases by 1.3x, Orbital Stations by 1.4x, while Laser Drills and Dyson Swarms use 1.5x.</p>
             
             <h3>The "Break-Even" Point</h3>
             <p>A common mistake in any <strong>space click game</strong> is buying the cheapest upgrade available. Strategy dictates you should buy the upgrade with the best "Cost to Production" ratio.</p>
@@ -310,13 +308,14 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Too Early:</strong> You haven't earned enough Dark Matter to make the next run significantly faster.</li>
                 <li><strong>Too Late:</strong> You have spent hours grinding for a marginal gain that you could have achieved in minutes on a fresh run.</li>
             </ul>
-            <p>The rule of thumb for most <a href="https://spaceclickergame.com">Space Clicker Games</a> is to prestige when you can double your current lifetime earnings, or when the next major upgrade takes more than 4 hours to acquire.</p>
+            <p>There is no universal prestige timer. In Galaxy Miner, compare the Dark Matter you would receive now with the time needed to reach the next meaningful Dark Matter gain or production milestone.</p>
 
             <h2>Active vs. Passive Builds</h2>
-            <p>In <em>Space Clicker Game</em>, we offer different tech trees depending on your playstyle:</p>
+            <p>Galaxy Miner has three permanent Void Technology lines rather than separate full build trees:</p>
             <ol>
-                <li><strong>The Active Tree:</strong> Focuses on "Critical Click Chance" and "Click Multipliers." This turns the title into a <strong>space bar clicking game</strong> where your interaction is the primary income source. Best for short bursts of play.</li>
-                <li><strong>The Idle Tree:</strong> Focuses on "Offline Production" and "Drone Synergy." This turns it into a true management sim. Best for players who check in once a day.</li>
+                <li><strong>Quantum Optics:</strong> increases critical-hit chance.</li>
+                <li><strong>Flux Capacitors:</strong> increases critical-hit multiplier.</li>
+                <li><strong>Nanobot Swarm:</strong> increases automated production.</li>
             </ol>
 
             <h2>The Kardashev Scale</h2>
@@ -326,13 +325,13 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Type II:</strong> Stellar mastery (Dyson Swarm in Galaxy Miner).</li>
                 <li><strong>Type III:</strong> Galactic mastery (The Galactic Core).</li>
             </ul>
-            <p>Our game progression mirrors this scientific concept. You start scraping rocks on a moon and end up harvesting the energy of entire stars. This grounding in real astrophysics gives the <strong>space click game</strong> a sense of grandeur.</p>
+            <p>The game uses the Kardashev scale only as a useful thematic analogy for increasing scale. Its mechanics are fictional and should not be treated as a scientific simulation of that classification system.</p>
 
             <h2>Practical Optimization Checklist</h2>
             <p>For <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a> and similar incremental games, these checks are more useful than comparing raw totals without considering payback time:</p>
             <ul>
-                <li><strong>Always be unlocking:</strong> If a new planet is available, warp immediately. The production multiplier of a new sector always outweighs the loss of your old buildings.</li>
-                <li><strong>Compound Interest:</strong> Leave the game open in a background tab if you can. While offline production is good (usually capped at 80% efficiency), online production allows for "Golden Comet" events which can grant 4 hours of production in a single click.</li>
+                <li><strong>Compare sector multipliers:</strong> A newly available sector can raise production, but check the actual multiplier and your current run before treating any move as automatic.</li>
+                <li><strong>Understand offline vs. active play:</strong> Galaxy Miner credits up to 24 hours of offline automatic production. While actively playing, Golden Comets can award the greater of roughly five minutes of current production or a fixed manual-click floor.</li>
                 <li><strong>Recalculate after milestones:</strong> A multiplier, prestige bonus, or new automation tier can change which upgrade has the shortest payback time.</li>
             </ul>
 
@@ -354,23 +353,23 @@ export const BLOG_POSTS: BlogPost[] = [
         tags: ['education', 'math', 'space clicker game', 'incremental'],
         image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Video games are often criticized as time-wasters, but the <strong>space clicker game</strong> genre is different. It is, effectively, a colorful spreadsheet. By playing, you are engaging with high-level mathematical concepts that govern our actual universe.</p>
+            <p class="lead"><strong>Space clicker games</strong> can make compounding, scientific notation, ratios, and resource tradeoffs visible on screen. They are simplified game systems, not substitutes for formal mathematics, economics, or science instruction.</p>
 
             <h2>Visualizing the Impossible</h2>
-            <p>The human brain is bad at comprehending large numbers. We can visualize 10 apples. We cannot visualize 10 billion apples. However, a <strong>space clicker game</strong> bridges this gap.</p>
-            <p>In <a href="https://spaceclickergame.com">Galaxy Miner</a>, players routinely deal with numbers like "Septillion" (10^24) or "Decillion" (10^33). By associating these abstract figures with tangible assets (fleets of ships, Dyson spheres), players develop an intuitive sense of <em>Orders of Magnitude</em>.</p>
+            <p>Very large numbers are difficult to picture directly. Incremental games can make orders of magnitude easier to compare by tying changing values to production rates, upgrade costs, and milestones.</p>
+            <p>Galaxy Miner uses formatted resource values and increasingly expensive automation tiers so the player can see how quickly scale changes across a run.</p>
 
             <h3>The Compound Interest Lesson</h3>
-            <p>Albert Einstein reportedly called compound interest the "eighth wonder of the world." In a <strong>clicker game space</strong> environment, this is the primary mechanic.</p>
+            <p>Compounding is a useful way to describe many incremental systems: production creates resources, those resources buy more production, and the next cycle starts from a larger base.</p>
             <ul>
                 <li><strong>Linear Growth:</strong> You click once and receive a fixed +1 resource.</li>
                 <li><strong>Compounding Growth:</strong> You buy production, reinvest the output, and increase the rate at which future resources arrive.</li>
             </ul>
-            <p>This feedback loop teaches players the value of reinvestment—a core tenet of economics and personal finance. If you hoard your Stardust, you lose. If you reinvest it into automation, you win. This is a simplified model of capitalism.</p>
+            <p>This provides a simplified example of reinvestment and opportunity cost: spending resources now may increase the rate at which future resources arrive, while saving may be useful when a larger milestone is close.</p>
 
             <h2>Resource Management and Logistics</h2>
             <p>Our game <em>Mars Colony</em> introduces a multi-variable equation. You cannot just maximize one number. You must balance Oxygen, Food, and Energy.</p>
-            <p>This teaches <strong>Systems Thinking</strong>. In a <strong>space clicking game</strong>, changing one variable (building a Solar Panel) affects another (draining minerals). Players learn to identify bottlenecks. "I have enough energy, but my food production is throttling my population growth." This is the same logic used by supply chain managers.</p>
+            <p>This can illustrate basic systems thinking. Changing one variable may affect another, and the player has to identify the current bottleneck instead of maximizing every resource independently.</p>
 
             <h3>Scientific Literacy</h3>
             <p>While the physics in a <strong>space bar clicking game</strong> are stylized, the terminology is real. Players encounter:</p>
@@ -381,10 +380,10 @@ export const BLOG_POSTS: BlogPost[] = [
             </ul>
             <p>Space terminology can create useful follow-up questions. If a game mentions quasars, nebulae, or black holes, players can compare the fictional mechanic with an authoritative astronomy source and see where the game simplifies reality.</p>
 
-            <h2>Conclusion: The Classroom of the Future?</h2>
-            <p>We aren't saying <a href="https://spaceclickergame.com">Space Clicker Game</a> replaces a textbook. But as a supplemental tool for visualizing large numbers and economic principles, it is powerful. It turns math from a chore into a tool for galactic conquest.</p>
+            <h2>What These Games Can Illustrate</h2>
+            <p>Space Clicker Game does not replace a textbook or formal instruction. It can provide concrete examples of changing rates, reinvestment, large-number notation, and resource constraints that a player can then compare with formal explanations.</p>
             
-            <p>Start your math lesson today at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Explore the mechanics directly at <a href="https://spaceclickergame.com/">SpaceClickerGame.com</a>.</p>
         `
     },
     {
@@ -399,7 +398,7 @@ export const BLOG_POSTS: BlogPost[] = [
         tags: ['space click game', 'playstyle', 'strategy', 'guide'],
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Every <strong>space click game</strong> offers two distinct paths to power. You can brute force your way through the galaxy with a high click rate, or you can build an automated engine that hums while you sleep. Which commander are you?</p>
+            <p class="lead">Many <strong>space click games</strong> mix two styles: active input while the player is present and automatic production that continues with less interaction. The useful balance depends on the mechanics of the specific game.</p>
 
             <h2>The Active Commander (The Clicker)</h2>
             <p>This playstyle centers on the <strong>space bar clicking game</strong> mechanic. You are present. You are engaged. You want results <em>now</em>.</p>
@@ -407,35 +406,35 @@ export const BLOG_POSTS: BlogPost[] = [
             <h3>Pros:</h3>
             <ul>
                 <li><strong>Explosive Early Game:</strong> Automation takes time to ramp up. Your finger is instant.</li>
-                <li><strong>Skill Expression:</strong> Timing your "Critical Strike" abilities with "Golden Comets" yields massive payouts.</li>
+                <li><strong>Active Opportunities:</strong> Heat Flux, critical hits, Golden Comets, and crisis events can reward attention while the game is open.</li>
                 <li><strong>Engagement:</strong> It feels more like an action game.</li>
             </ul>
 
             <h3>Cons:</h3>
             <ul>
-                <li><strong>Physical Fatigue:</strong> Risk of RSI (Repetitive Strain Injury).</li>
+                <li><strong>Physical Fatigue:</strong> Repeated rapid input can become uncomfortable; stop and rest if that happens.</li>
                 <li><strong>Diminishing Returns:</strong> Eventually, the cost of "Click Power" upgrades scales faster than you can click.</li>
             </ul>
 
-            <p><strong>Recommended Build in <a href="https://spaceclickergame.com">Galaxy Miner</a>:</strong> Focus on "Laser Drill" upgrades and the "Crit Chance" prestige tree. Equip artifacts that boost "Active Production."</p>
+            <p><strong>Active-oriented Galaxy Miner approach:</strong> Manual Laser Drill upgrades, Quantum Optics, and Flux Capacitors support active clicking and critical-hit output. There is no artifact equipment system in the current build.</p>
 
             <h2>The Passive Architect (The Idler)</h2>
             <p>This player views the <strong>space clicking game</strong> as a garden. You plant the seeds (Drones), water them (Upgrades), and walk away. When you return, the harvest is ready.</p>
 
             <h3>Pros:</h3>
             <ul>
-                <li><strong>Zero Effort:</strong> The game plays itself. Perfect for second-monitor gaming at work.</li>
-                <li><strong>Infinite Scale:</strong> Automation upgrades usually scale better into the late game (post-trillion resources).</li>
-                <li><strong>Efficiency:</strong> You never miss a second of production, even when sleeping.</li>
+                <li><strong>Lower Input:</strong> Automatic production reduces the need for continuous manual pressing.</li>
+                <li><strong>Long-Run Scaling:</strong> Automation benefits from unit milestones, sector multipliers, Dark Matter, and Nanobot Swarm upgrades.</li>
+                <li><strong>Offline Progress:</strong> Galaxy Miner can credit up to 24 hours of saved automatic production when you return.</li>
             </ul>
 
             <h3>Cons:</h3>
             <ul>
-                <li><strong>Slow Start:</strong> The first 20 minutes can be a slog without clicking.</li>
+                <li><strong>Slower Start:</strong> Before enough automatic production is purchased, manual mining can contribute a larger share of the run.</li>
                 <li><strong>Less "Excitement":</strong> You miss out on the adrenaline of crisis events if you aren't watching.</li>
             </ul>
 
-            <p><strong>Recommended Build in <a href="https://spaceclickergame.com">Space Clicker Game</a>:</strong> Rush "Mining Drones" and "Solar Arrays." Ignore click upgrades entirely. Focus on "Offline Production" prestige nodes.</p>
+            <p><strong>Passive-oriented Galaxy Miner approach:</strong> Prioritize automatic units such as Mining Drones and later production tiers, then use Nanobot Swarm for a permanent automated-production bonus. The current build does not have Solar Array or Offline Production prestige nodes.</p>
 
             <h2>The Hybrid Approach</h2>
             <p>A hybrid approach shifts with the economy. Early manual input can jump-start a run; once passive production becomes meaningful, active time is better spent on upgrades, milestones, and decisions that multiply the automated base.</p>
@@ -471,15 +470,15 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>That single sentence implies a struggle. It tells you the colonists have been suffering. It adds emotional weight to a simple math upgrade.</p>
 
             <h2>Emergent Gameplay as Story</h2>
-            <p>In our text-adventure module <em>Deep Space Signal</em>, the story isn't linear. It emerges from your actions. You receive a signal. Do you decode it? Do you reply? If you reply aggressively, maybe a trade route closes. If you reply peacefully, maybe you gain a new technology.</p>
+            <p>In the text-adventure module <em>Deep Space Signal</em>, the narrative is presented through terminal-style transmissions, signal choices, decoding, and resource decisions. The current build should be read as an interactive text system rather than a promise of specific branching outcomes such as trade-route closures.</p>
             <p>This is the strength of the <strong>space clicking game</strong> medium. Because the graphics are abstract (or text-based), the player's imagination fills in the gaps. It is the same mechanism that makes reading a book often more vivid than watching a movie.</p>
 
             <h3>The Scale of the Narrative</h3>
             <p>A <strong>space click game</strong> allows us to tell stories that span eons. In a traditional RPG, playing through 1,000 years takes too long. In a clicker, we can say "1,000 years pass" and update your resource count instantly.</p>
-            <p>This allows us to explore <a href="https://en.wikipedia.org/wiki/Deep_time" target="_blank" rel="noopener noreferrer">Deep Time</a> concepts—the rise and fall of civilizations, the death of stars, and the heat death of the universe—in a way other genres cannot.</p>
+            <p>This format can reference <a href="https://en.wikipedia.org/wiki/Deep_time" target="_blank" rel="noopener noreferrer">deep time</a>, long-lived civilizations, stellar evolution, and other large time scales without requiring the game to simulate every intervening moment.</p>
 
             <h2>Writing for UI</h2>
-            <p>The challenge for us at <strong>SpaceClickerGame.com</strong> is brevity. We have limited screen real estate. Every word must fight for its existence. We use "Micro-Fiction"—stories told in 140 characters or less.</p>
+            <p>Short transmission-style writing suits a compact game interface because a few lines can establish a situation without covering the controls or resource information.</p>
             <blockquote>
                 "Signal Lost. The probe entered the event horizon. Its final telemetry packet contained impossible data."
             </blockquote>
@@ -503,37 +502,31 @@ export const BLOG_POSTS: BlogPost[] = [
         tags: ['space bar click game', 'hardware', 'review', 'keyboards'],
         image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">You wouldn't enter a Formula 1 race in a minivan. So why play a high-intensity <strong>space bar click game</strong> on a mushy membrane keyboard? To reach peak efficiency in <a href="https://spaceclickergame.com">Space Clicker Game</a>, you need mechanical precision.</p>
+            <p class="lead">Keyboard feel can affect comfort during a <strong>space bar click game</strong>, but a more expensive or mechanical keyboard does not automatically produce a better CPS result. Travel, stabilizer feel, layout, and technique all matter.</p>
 
             <h2>The Switch Debate: Linear vs. Tactile</h2>
             <p>The heart of any keyboard is the switch underneath the keycap. For a <strong>space clicking game</strong>, the choice usually comes down to two types:</p>
 
             <h3>1. Linear Switches (Red/Silver/Black)</h3>
-            <p>These have a smooth travel with no "bump." They are the preferred choice for <strong>space bar clicking games</strong> because they offer the fastest reset time. You can hover precisely around the actuation point and vibrate your finger for massive CPS (Clicks Per Second).</p>
-            <ul>
-                <li><strong>Recommendation:</strong> Cherry MX Speed Silver (1.2mm actuation distance).</li>
-            </ul>
+            <p>Linear switches move without a tactile bump. Some players prefer that feel for repeated presses, but actuation distance and reset behavior vary by switch and keyboard design.</p>
 
             <h3>2. Tactile/Clicky Switches (Brown/Blue)</h3>
-            <p>These provide physical feedback (a bump or click) when pressed. While satisfying for typing, the bump creates resistance (hysteresis) that can slow down rapid-fire inputs required in the active phase of a <strong>space click game</strong>.</p>
-            <ul>
-                <li><strong>Verdict:</strong> Avoid for speedruns, great for casual play.</li>
-            </ul>
+            <p>Tactile and clicky switches provide additional physical or audible feedback. Some players find that feedback helpful for consistency, while others prefer a smoother switch. There is no universal winner for CPS.</p>
 
             <h2>The Space Bar Stabilizer</h2>
-            <p>In a <strong>space bar click game</strong>, you are hammering the largest key on the board. A cheap keyboard uses a metal wire stabilizer that rattles and wobbles. A high-end board uses "screw-in" stabilizers that keep the bar level, no matter where you strike it.</p>
+            <p>The space bar is wider than most keys, so a stabilizer helps it travel evenly when pressed away from the center. Stabilizer designs vary across keyboards, and price alone does not guarantee a better result.</p>
             <p><strong>Maintenance note:</strong> A rattling space bar can come from the stabilizer or keycap fit. Follow the keyboard manufacturer's maintenance guidance before lubricating or disassembling anything, especially on a laptop or sealed board.</p>
 
             <h2>Mice for the Clicker</h2>
             <p>While the space bar is iconic, the mouse is the workhorse of games like <em>Star Defense</em>. You want a mouse with:</p>
             <ol>
-                <li><strong>Lightweight Switches:</strong> Optical switches are immune to "double-clicking" issues that plague mechanical switches after millions of clicks.</li>
-                <li><strong>Low Weight:</strong> A heavy mouse fatigues your wrist. Look for honeycomb shells (under 60g).</li>
+                <li><strong>Reliable Switches:</strong> Different optical and mechanical switch designs have different debounce behavior and durability characteristics.</li>
+                <li><strong>Comfortable Shape and Weight:</strong> Choose a mouse that feels comfortable for your grip rather than chasing a specific weight target.</li>
             </ol>
 
             <h2>Ergonomics and Health</h2>
-            <p>We cannot stress this enough: Health comes first. A <strong>space clicker games</strong> session can last hours. Ensure your wrists are elevated (use a wrist rest) and neutral.</p>
-            <p>If you feel pain, STOP. Switch to the idle playstyle in <a href="https://spaceclickergame.com">Galaxy Miner</a> and let your drones do the work. No high score is worth carpal tunnel syndrome.</p>
+            <p>For repeated-input sessions, use a comfortable posture and take breaks. A wrist rest or other setup choice may help some people, but comfort varies by person and device.</p>
+            <p>If repeated input causes pain or persistent discomfort, stop the session rather than trying to push through it.</p>
 
             <h2>Conclusion</h2>
             <p>Hardware can change comfort and feel, but technique, consistency, and avoiding fatigue matter more than the price of the keyboard. If repeated input becomes uncomfortable, stop the test and rest your hand.</p>
