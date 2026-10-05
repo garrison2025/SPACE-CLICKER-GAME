@@ -26,7 +26,7 @@ import StatsAndSaveModal from './components/StatsAndSaveModal';
 import OfflineEarningsModal from './components/OfflineEarningsModal';
 import HotkeyOverlay from './components/HotkeyOverlay';
 import { AboutPage, ContactPage, PrivacyPage, TermsPage, CookiesPage, SitemapPage } from './components/InfoPages';
-import { generateSpaceEvent } from './services/geminiService';
+import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
 
