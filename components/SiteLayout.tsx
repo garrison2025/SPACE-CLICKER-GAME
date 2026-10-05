@@ -60,6 +60,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
 
   return (
     <div className="min-h-screen flex flex-col relative bg-space-900 selection:bg-neon-blue selection:text-black font-sans text-gray-200">
+      <a
+        href="#main-content"
+        className="fixed left-3 top-3 z-[200] -translate-y-24 rounded-lg bg-neon-blue px-4 py-3 font-bold text-black shadow-xl transition-transform focus:translate-y-0"
+      >
+        Skip to main content
+      </a>
       
       {/* Navigation */}
       <header className="sticky top-0 z-[100] w-full bg-space-950 md:bg-space-950/80 md:backdrop-blur-md border-b border-white/10">
@@ -157,7 +163,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 w-full relative">
+      <main id="main-content" tabIndex={-1} className="flex-1 w-full relative">
         {children}
       </main>
 
