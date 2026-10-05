@@ -351,7 +351,10 @@ for (const file of htmlFiles) {
 
   if (route.startsWith('/blog/') && route !== '/blog/') {
     for (const href of blogClusterLinkCounts.keys()) {
-      const matches = html.match(new RegExp('href="' + href.replace(/[.*+?^$()|[\]\\]/g, '\\  if (route.startsWith('/blog/') && route !== '/blog/') {
+      const matches = html.split('href="' + href + '"').length - 1;
+      blogClusterLinkCounts.set(href, blogClusterLinkCounts.get(href) + matches);
+    }
+
     const h2Count = (html.match(/<h2\b/gi) || []).length;') + '"', 'g')) || [];
       blogClusterLinkCounts.set(href, blogClusterLinkCounts.get(href) + matches.length);
     }
