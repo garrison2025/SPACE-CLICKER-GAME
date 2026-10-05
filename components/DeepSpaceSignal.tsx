@@ -132,13 +132,13 @@ const DeepSpaceSignal: React.FC = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             // 1. Energy Regen
-            setEnergy(prev => Math.min(maxEnergy, prev + (regenRate / 10))); 
+            setEnergy(prev => Math.min(maxEnergy, prev + (regenRate / 5))); 
 
             // 2. Decryption Logic
             setMessages(prev => prev.map(msg => {
                 if (msg.isDecoded) return msg;
                 // Passive decay
-                const newLevel = Math.max(0, msg.encryptionLevel - (decryptSpeed / 10));
+                const newLevel = Math.max(0, msg.encryptionLevel - (decryptSpeed / 5));
                 
                 if (newLevel <= 0 && msg.encryptionLevel > 0) {
                     setDataBytes(d => d + msg.rewardData);
@@ -149,11 +149,11 @@ const DeepSpaceSignal: React.FC = () => {
             }));
 
             // 3. Auto Scan
-            if (upgrades.ai > 0 && !isScanning && energy >= scanCost + 10 && Math.random() < 0.02) {
+            if (upgrades.ai > 0 && !isScanning && energy >= scanCost + 10 && Math.random() < 0.04) {
                 handleScan();
             }
 
-        }, 100);
+        }, 200);
         return () => clearInterval(interval);
     }, [maxEnergy, regenRate, decryptSpeed, upgrades.ai, isScanning, energy, scanCost]);
 
