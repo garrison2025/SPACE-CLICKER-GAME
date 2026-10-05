@@ -15,7 +15,7 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
     return (
         <div 
             onClick={onStart}
-            className="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-2xl group cursor-pointer select-none"
+            className="marketing-motion relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-xl md:shadow-2xl group cursor-pointer select-none"
         >
             {/* Background Atmosphere */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e1b4b_0%,#000_100%)]"></div>
@@ -129,7 +129,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
     };
 
     return (
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-space-950">
+        <section className="relative min-h-[78svh] md:min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-space-950">
             {/* Dynamic Background */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black pointer-events-none"></div>
             <div className="absolute inset-0 bg-[radial-gradient(rgba(0,243,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30 mix-blend-overlay pointer-events-none"></div>
@@ -139,7 +139,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
 
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto space-y-8">
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
+                <div className="marketing-motion inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 md:backdrop-blur-md mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <span className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></span>
                     <span className="text-xs font-mono text-neon-green tracking-widest">V.3.0 SYSTEM ONLINE</span>
                 </div>
@@ -150,7 +150,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                 </h1>
 
                 {/* Subtitle - SEO OPTIMIZED */}
-                <p className="text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
+                <p className="marketing-motion text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
                     Enter a connected universe of browser-based space simulations. <br className="hidden md:block"/>
                     Mine Stardust, automate production, manage colonies, defend sectors, and explore several browser-based space simulations.
                     <br/>
@@ -158,7 +158,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                 </p>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-white/5 bg-black/20 backdrop-blur-sm animate-in fade-in duration-1000 delay-300">
+                <div className="marketing-motion grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8 py-6 md:py-8 border-y border-white/5 bg-black/20 md:backdrop-blur-sm animate-in fade-in duration-1000 delay-300">
                     {[
                         { label: 'Simulations', val: '6' },
                         { label: 'Save', val: 'Local' },
@@ -173,7 +173,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                 </div>
 
                 {/* Primary search-intent CTA */}
-                <div className="pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+                <div className="marketing-motion pt-6 md:pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <button 
                             onClick={onPlay}
@@ -254,7 +254,7 @@ const HowToPlay = () => (
                 </div>
                 
                 {/* Visual Graphic */}
-                <div className="relative h-64 bg-space-900 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden group">
+                <div className="marketing-motion relative h-64 bg-space-900 rounded-2xl border border-white/10 flex items-center justify-center overflow-hidden group">
                     <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]"></div>
                     <div className="text-center relative z-10">
                         <div className="text-5xl mb-2">🚀</div>
@@ -453,7 +453,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
       </section>
 
       {/* 4. GAME CATALOG (Holographic Grid) */}
-      <section id="games-section" className="relative py-24 px-4 bg-black/40 backdrop-blur-md border-b border-white/5">
+      <section id="games-section" className="defer-section relative py-16 md:py-24 px-4 bg-black/40 md:backdrop-blur-md border-b border-white/5">
          <div className="max-w-7xl mx-auto relative z-10">
             <div className="flex items-center gap-4 mb-12">
                <div className="w-2 h-2 bg-neon-purple rounded-full shadow-[0_0_10px_purple]"></div>
@@ -511,7 +511,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
       </section>
 
       {/* 5. LORE & SEO TEXT */}
-      <div className="w-full bg-space-950 py-24 px-4 relative overflow-hidden">
+      <div className="defer-section w-full bg-space-950 py-16 md:py-24 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-neon-blue/5 rounded-full blur-[80px] pointer-events-none"></div>
 
