@@ -540,7 +540,9 @@ const StarDefense: React.FC = () => {
         powerupsRef.current = powerupsRef.current.filter(i => i.id !== p.id);
         
         if (p.type === 'heal') {
-            setHp(prev => Math.min(maxHp, prev + 25));
+            const nextHp = Math.min(maxHp, hpRef.current + 25);
+            hpRef.current = nextHp;
+            setHp(nextHp);
             addFloatingText(p.x, p.y, "+25 HP", "#10b981", true);
         } else if (p.type === 'scrap') {
             const amount = 100 * wave;
