@@ -445,10 +445,19 @@ const DeepSpaceSignal: React.FC = () => {
                 
                 {messages.map((msg) => (
                     <div 
-                        key={msg.id} 
+                        key={msg.id}
+                        role={!msg.isDecoded && msg.sender !== 'SYSTEM' ? 'button' : undefined}
+                        tabIndex={!msg.isDecoded && msg.sender !== 'SYSTEM' ? 0 : -1}
+                        aria-label={!msg.isDecoded && msg.sender !== 'SYSTEM' ? `Encrypted transmission from ${msg.sender}. Activate to attempt decoding.` : undefined}
+                        onKeyDown={(event) => {
+                            if (!msg.isDecoded && msg.sender !== 'SYSTEM' && (event.key === 'Enter' || event.key === ' ')) {
+                                event.preventDefault();
+                                handleMessageClick(msg.id);
+                            }
+                        }}
                         onClick={() => handleMessageClick(msg.id)}
                         className={`
-                            relative border-l-4 pl-3 py-2 bg-green-900/5 transition-all duration-200 group
+                            relative border-l-4 pl-3 py-2 bg-green-900/5 transition-all duration-200 group focus:outline-none focus:ring-1 focus:ring-green-500/60
                             ${msg.sender === 'SYSTEM' ? 'border-green-800 text-green-600 text-xs py-1' : 
                               msg.isDecoded ? `border-l-green-500 bg-green-500/5` : 
                               'border-l-red-500 bg-red-900/10 cursor-pointer hover:bg-red-900/20 active:scale-[0.99]'}
