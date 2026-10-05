@@ -43,6 +43,23 @@ if (mainCss.gzipBytes > MAIN_CSS_GZIP_LIMIT) {
 }
 
 const lazyJs = files.filter((file) => file.name.endsWith('.js') && file.name !== mainJs.name);
+const MIN_LAZY_JS_CHUNKS = 12;
+
+if (lazyJs.length < MIN_LAZY_JS_CHUNKS) {
+  throw new Error(`Expected at least ${MIN_LAZY_JS_CHUNKS} lazy JS chunks, found ${lazyJs.length}. Check whether route/game code was accidentally pulled into the main bundle.`);
+}
+
+const mainJsSource = fs.readFileSync(path.join(assetsDir, mainJs.name), 'utf8');
+for (const forbidden of [
+  'Before there were complex simulations',
+  'CHARGE OVERDRIVE',
+  'Recent Spacebar Test Results'
+]) {
+  if (mainJsSource.includes(forbidden)) {
+    throw new Error(`Main JS contains lazy-only content marker "${forbidden}". Code splitting has regressed.`);
+  }
+}
+
 for (const file of lazyJs) {
   if (file.gzipBytes > LAZY_CHUNK_GZIP_LIMIT) {
     throw new Error(`Lazy chunk gzip budget exceeded for ${file.name}: ${format(file.gzipBytes)} > ${format(LAZY_CHUNK_GZIP_LIMIT)}`);
@@ -62,6 +79,7 @@ console.log(
     'Bundle budget passed',
     `main JS ${format(mainJs.gzipBytes)} / ${format(MAIN_JS_GZIP_LIMIT)}`,
     `main CSS ${format(mainCss.gzipBytes)} / ${format(MAIN_CSS_GZIP_LIMIT)}`,
+    `lazy chunks ${lazyJs.length} (min ${MIN_LAZY_JS_CHUNKS})`,
     `largest lazy JS ${format(Math.max(0, ...lazyJs.map((file) => file.gzipBytes)))} / ${format(LAZY_CHUNK_GZIP_LIMIT)}`,
     `total JS ${format(totalJsGzip)} / ${format(TOTAL_JS_GZIP_LIMIT)}`
   ].join(' • ')
