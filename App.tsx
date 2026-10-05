@@ -58,6 +58,39 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
+const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
+  galaxy_miner: {
+    title: 'Galaxy Miner - Free Online Space Clicker Game',
+    description: 'Mine Stardust, automate a growing space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.',
+    genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi']
+  },
+  mars_colony: {
+    title: 'Mars Colony Idle - Free Space Strategy Game',
+    description: 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and idle resource progression.',
+    genres: ['Idle', 'Management', 'Strategy', 'Simulation']
+  },
+  star_defense: {
+    title: 'Star Defense - Free Space Defense Clicker',
+    description: 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.',
+    genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi']
+  },
+  merge_ships: {
+    title: 'Merge Spaceships - Free Browser Merge Game',
+    description: 'Drag and combine matching ships, evolve higher-level vessels, and place your fleet in orbit for passive income.',
+    genres: ['Merge', 'Idle', 'Casual', 'Collection']
+  },
+  gravity_idle: {
+    title: 'Gravity Idle - Free Physics Idle Game',
+    description: 'Launch projectiles into gravity wells, automate firing, upgrade orbital mechanics, and break apart asteroid layers in your browser.',
+    genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi']
+  },
+  deep_signal: {
+    title: 'Deep Space Signal - Free Browser Text Adventure',
+    description: 'Send signals, manage energy, decode strange transmissions, and uncover a text-based deep-space mystery in your browser.',
+    genres: ['Text Adventure', 'Mystery', 'Sci-Fi', 'Single Player']
+  }
+};
+
 // Define valid views for strict routing
 const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games', 'spacebar-clicker-2'];
 
@@ -84,7 +117,7 @@ const App: React.FC = () => {
         let newPath = '/';
         if (legacyView === 'game') {
             const id = params.get('id');
-            newPath = id ? `/game/${id}` : '/game';
+            newPath = id ? `/game/${id}` : '/game/galaxy_miner';
         } else if (legacyView === 'blog') {
             const post = params.get('post');
             newPath = post ? `/blog/${post}` : '/blog';
@@ -320,19 +353,24 @@ const App: React.FC = () => {
       if (viewMode === 'game') {
           const game = GAMES_CATALOG.find(g => g.id === activeGame);
           if (game) {
-              title = `${game.title} - Free Online Space Clicker Game`;
-              desc = game.description;
+              const gameSeo = GAME_SEO[game.id];
+              title = gameSeo.title;
+              desc = gameSeo.description;
               image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
               type = 'game';
               schema = {
                 "@context": "https://schema.org",
                 "@type": "VideoGame",
+                "@id": `https://spaceclickergame.com/game/${game.id}/#game`,
+                "url": `https://spaceclickergame.com/game/${game.id}/`,
                 "name": game.title,
-                "description": game.description,
-                "genre": ["Idle", "Incremental", "Strategy", "Sci-Fi"],
+                "description": gameSeo.description,
+                "genre": gameSeo.genres,
                 "playMode": "SinglePlayer",
                 "applicationCategory": "Game",
                 "operatingSystem": "Any modern web browser",
+                "isAccessibleForFree": true,
+                "inLanguage": "en",
                 "offers": {
                   "@type": "Offer",
                   "price": "0",
@@ -366,18 +404,52 @@ const App: React.FC = () => {
               },
               {
                 "@type": "VideoGame",
-                "@id": "https://spaceclickergame.com/#game",
-                "name": "Space Clicker Game (Cosmic Miner)",
-                "description": "A free browser space clicker game with mining, automation, heat flux multipliers, offline progress, and a permanent prestige loop.",
-                "genre": ["Clicker", "Incremental", "Sci-Fi", "Strategy"],
+                "@id": "https://spaceclickergame.com/game/galaxy_miner/#game",
+                "url": "https://spaceclickergame.com/game/galaxy_miner/",
+                "name": "Galaxy Miner",
+                "alternateName": "Space Clicker Game",
+                "description": "A free browser space clicker game with Stardust mining, automation, Heat Flux, Golden Comets, offline progress, and permanent Dark Matter upgrades.",
+                "genre": ["Clicker", "Incremental", "Idle", "Sci-Fi"],
                 "playMode": "SinglePlayer",
                 "applicationCategory": "Game",
-                "operatingSystem": "Browser",
+                "operatingSystem": "Any modern web browser",
+                "isAccessibleForFree": true,
+                "inLanguage": "en",
                 "offers": {
                   "@type": "Offer",
                   "price": "0",
                   "priceCurrency": "USD"
                 }
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://spaceclickergame.com/#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Is this space clicker game free to play?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. The current browser games and Spacebar tools can be played without purchasing a paid account or upgrade."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Does Galaxy Miner save my progress?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What happens when I use Galactic Reset?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Galaxy Miner resets Stardust and standard upgrades, then awards Dark Matter based on the size of the run. Dark Matter and permanent technology remain for future runs."
+                    }
+                  }
+                ]
               }
             ]
           };
