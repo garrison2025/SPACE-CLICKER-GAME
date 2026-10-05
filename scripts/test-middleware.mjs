@@ -4,9 +4,24 @@ import { onRequest } from '../functions/_middleware.js';
 const nextResponse = () => new Response('OK', { status: 200 });
 
 const run = async (url) => {
+  const request = new Request(url);
   const response = await onRequest({
-    request: new Request(url),
-    next: async () => nextResponse()
+    request,
+    next: async () => nextResponse(),
+    env: {
+      ASSETS: {
+        fetch: async (assetRequest) => {
+          const assetUrl = new URL(assetRequest.url);
+          if (
+            assetUrl.pathname.includes('not-a-real') ||
+            assetUrl.pathname === '/404.html'
+          ) {
+            return new Response('Missing', { status: 404 });
+          }
+          return nextResponse();
+        }
+      }
+    }
   });
   return response;
 };
@@ -56,6 +71,12 @@ expect(knownBlog.status === 200, 'Known blog route should pass through');
 
 const asset = await run('https://spaceclickergame.com/assets/index-ABC123.js');
 expect(asset.status === 200, 'Static asset should pass through');
+
+const missingAsset = await run('https://spaceclickergame.com/assets/not-a-real-file.js');
+expect(missingAsset.status === 404, 'Missing static asset must return HTTP 404');
+
+const missingHtmlAsset = await run('https://spaceclickergame.com/not-a-real-page.html');
+expect(missingHtmlAsset.status === 404, 'Missing .html request must return HTTP 404');
 
 const legacyGame = await run('https://spaceclickergame.com/?view=game&id=galaxy_miner');
 expect(legacyGame.status === 301, 'Legacy game URL should redirect');
