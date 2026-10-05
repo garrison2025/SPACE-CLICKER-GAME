@@ -135,6 +135,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const [upgrades, setUpgrades] = useState<Record<UpgradeId, number>>(initial.upgrades);
   const [bestCps, setBestCps] = useState(initial.bestCps);
   const [currentCps, setCurrentCps] = useState(0);
+  const [cpsTrackingActive, setCpsTrackingActive] = useState(false);
   const [combo, setCombo] = useState(0);
   const [lastGain, setLastGain] = useState(0);
   const [lastWasCrit, setLastWasCrit] = useState(false);
@@ -250,15 +251,19 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   }, [autoRate]);
 
   useEffect(() => {
+    if (!cpsTrackingActive) return;
+
     const timer = window.setInterval(() => {
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
       setCurrentCps(cps);
       setBestCps((best) => Math.max(best, cps));
+      if (cps === 0) setCpsTrackingActive(false);
     }, 200);
+
     return () => window.clearInterval(timer);
-  }, []);
+  }, [cpsTrackingActive]);
 
   useEffect(() => {
     const timer = window.setInterval(saveNow, 10000);
@@ -274,6 +279,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const performPress = useCallback(() => {
     const now = performance.now();
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
+    setCpsTrackingActive(true);
 
     const nextCombo = now - lastPressAt.current <= 1100 ? Math.min(combo + 1, 100) : 1;
     lastPressAt.current = now;
