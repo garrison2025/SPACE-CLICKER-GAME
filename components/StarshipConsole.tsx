@@ -158,7 +158,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                       </div>
 
                       <div className="text-center text-[10px] text-gray-600 font-mono pt-4">
-                          BUILD VERSION: 3.0.2 (PATCHED)
+                          LOCAL SETTINGS • BROWSER SAVE
                       </div>
                   </div>
               </div>
