@@ -16,13 +16,20 @@ interface PrestigeShopProps {
 
 const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prestigeGain, canPrestige, thresholdLabel, onPrestige, onBuy, onClose }) => {
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in p-3 sm:p-4">
-      <div className="bg-space-800 w-full max-w-4xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[88dvh] rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden">
+    <div className="safe-screen-overlay fixed inset-0 z-[70] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="prestige-shop-title"
+        tabIndex={-1}
+        autoFocus
+        className="bg-space-800 w-full max-w-4xl max-h-full rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
+      >
         
         {/* Header */}
         <div className="p-4 sm:p-6 border-b border-space-600 flex justify-between items-center gap-3 bg-space-900">
           <div>
-             <h2 className="text-2xl sm:text-3xl font-display text-neon-purple">VOID TECHNOLOGY</h2>
+             <h2 id="prestige-shop-title" className="text-2xl sm:text-3xl font-display text-neon-purple">VOID TECHNOLOGY</h2>
              <p className="text-gray-400 text-sm">Spend Dark Matter to warp reality.</p>
           </div>
           <div className="text-right">
