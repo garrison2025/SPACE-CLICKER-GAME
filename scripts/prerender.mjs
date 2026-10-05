@@ -886,12 +886,11 @@ for (const [route, title, description, h1] of routes) {
   fs.writeFileSync(path.join(targetDir, 'index.html'), renderHtml(route, title, description, h1));
 }
 
-const excludedFromXmlSitemap = new Set(['/contact', '/privacy', '/terms', '/cookies', '/sitemap']);
-const sitemapRoutes = routes.map(([route]) => route).filter((route) => !excludedFromXmlSitemap.has(route));
+const sitemapRoutes = routes.map(([route]) => route);
 // Update this date only when the core indexable pages receive a meaningful
 // content, gameplay, metadata, or routing change. Do not stamp every build.
 const coreLastModified = '2026-10-05';
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc><lastmod>${coreLastModified}</lastmod></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
-console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml with ${sitemapRoutes.length} core URLs`);
+console.log(`Prerendered ${routes.length} routes (${Object.keys(blogStaticContent).length} full blog articles); generated sitemap.xml with ${sitemapRoutes.length} indexable URLs`);
