@@ -760,8 +760,8 @@ const GravityIdle: React.FC = () => {
                              cost = res.cost;
                              buyCount = res.count;
                          } else {
-                             buyCount = buyAmount;
-                             cost = calculateCost(key, buyAmount);
+                             buyCount = Math.min(buyAmount, Math.max(0, cfg.max - lvl));
+                             cost = calculateCost(key, buyCount);
                          }
 
                          const canAfford = matter >= cost && !isMax;
