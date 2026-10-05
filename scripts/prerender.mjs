@@ -12,7 +12,7 @@ const baseHtml = fs.readFileSync(basePath, 'utf8');
 const site = 'https://spaceclickergame.com';
 const ORGANIZATION_ID = site + '/#organization';
 const EDITORIAL_ID = site + '/#editorial';
-const SITE_CONTENT_UPDATED = '2026-10-05';
+const SITE_CONTENT_UPDATED = '2026-10-06';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
