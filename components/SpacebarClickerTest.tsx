@@ -68,6 +68,7 @@ const SpacebarClickerTest: React.FC = () => {
   const deadlineAt = useRef<number | null>(null);
   const pressTimes = useRef<number[]>([]);
   const clicksRef = useRef(0);
+  const peakCpsRef = useRef(0);
   const finishedRef = useRef(false);
 
   const loadBest = (nextMode: TestMode) => {
@@ -85,6 +86,7 @@ const SpacebarClickerTest: React.FC = () => {
     setTimeLeft(nextMode.type === 'time' ? nextMode.seconds : 0);
     setCurrentCps(0);
     setPeakCps(0);
+    peakCpsRef.current = 0;
     setFinalElapsed(0);
     setShareStatus('');
     startedAt.current = null;
@@ -97,7 +99,7 @@ const SpacebarClickerTest: React.FC = () => {
     finishedRef.current = true;
     const safeElapsed = Math.max(0.001, elapsedSeconds);
     const average = clicksRef.current / safeElapsed;
-    const peak = peakCps;
+    const peak = peakCpsRef.current;
 
     setRunning(false);
     setFinished(true);
@@ -181,7 +183,8 @@ const SpacebarClickerTest: React.FC = () => {
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
       setCurrentCps(cps);
-      setPeakCps((value) => Math.max(value, cps));
+      peakCpsRef.current = Math.max(peakCpsRef.current, cps);
+      setPeakCps(peakCpsRef.current);
 
       if (mode.type === 'time') {
         const deadline = deadlineAt.current ?? ((startedAt.current || now) + mode.seconds * 1000);
