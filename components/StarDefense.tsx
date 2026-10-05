@@ -44,6 +44,8 @@ const StarDefense: React.FC = () => {
     const [wave, setWave] = useState(1);
     const [hp, setHp] = useState(100);
     const [shield, setShield] = useState(0);
+    const hpRef = useRef(100);
+    const shieldRef = useRef(0);
     const [gameOver, setGameOver] = useState(false);
     const [bossWarning, setBossWarning] = useState(false);
     
@@ -129,7 +131,12 @@ const StarDefense: React.FC = () => {
 
         // 2. Shield Regen
         if (maxShield > 0 && nowMs - lastHitTimeRef.current > 3000) {
-            setShield(prev => Math.min(maxShield, prev + (maxShield * 0.01 * deltaTime))); 
+            const nextShield = Math.min(
+                maxShield,
+                shieldRef.current + (maxShield * 0.01 * deltaTime)
+            );
+            shieldRef.current = nextShield;
+            setShield(nextShield);
         }
 
         // 3. Cooldowns
@@ -425,40 +432,35 @@ const StarDefense: React.FC = () => {
     };
 
     const takeDamage = (amount: number) => {
-        lastHitTimeRef.current = Date.now();
-        setCombo(0); // Break combo
-        comboTimerRef.current = 0;
-        
-        // Shield
-        let remaining = amount;
-        setShield(prev => {
-            if (prev >= remaining) {
-                remaining = 0;
-                return prev - amount;
-            } else {
-                remaining -= prev;
-                return 0;
-            }
-        });
+        if (amount <= 0 || gameOver) return;
 
-        if (remaining > 0) {
-            setHp(prev => {
-                const newHp = prev - remaining;
-                if (newHp <= 0) {
-                    // A defeated run is over. Point the in-memory snapshot at a
-                    // fresh run before removing storage; even if an autosave races this
-                    // state update, it can only persist Wave 1 rather than resurrect death.
-                    saveStateRef.current = {
-                        scraps: 0,
-                        wave: 1,
-                        upgrades: INITIAL_UPGRADES.map((upgrade) => ({ ...upgrade })),
-                    };
-                    localStorage.removeItem(DEFENSE_SAVE_KEY);
-                    setGameOver(true);
-                    return 0;
-                }
-                return newHp;
-            });
+        lastHitTimeRef.current = Date.now();
+        setCombo(0);
+        comboTimerRef.current = 0;
+
+        const absorbed = Math.min(shieldRef.current, amount);
+        const nextShield = Math.max(0, shieldRef.current - absorbed);
+        const remaining = amount - absorbed;
+
+        shieldRef.current = nextShield;
+        setShield(nextShield);
+
+        if (remaining <= 0) return;
+
+        const nextHp = Math.max(0, hpRef.current - remaining);
+        hpRef.current = nextHp;
+        setHp(nextHp);
+
+        if (nextHp <= 0) {
+            // A defeated run is over. Point the in-memory snapshot at a fresh
+            // run before removing storage so autosave cannot resurrect death.
+            saveStateRef.current = {
+                scraps: 0,
+                wave: 1,
+                upgrades: INITIAL_UPGRADES.map((upgrade) => ({ ...upgrade })),
+            };
+            localStorage.removeItem(DEFENSE_SAVE_KEY);
+            setGameOver(true);
         }
     };
 
@@ -561,7 +563,9 @@ const StarDefense: React.FC = () => {
         if (scraps >= cost) {
             setScraps(prev => prev - cost);
             if (id === 'repair') {
-                setHp(prev => Math.min(maxHp, prev + (maxHp * 0.3)));
+                const nextHp = Math.min(maxHp, hpRef.current + (maxHp * 0.3));
+                hpRef.current = nextHp;
+                setHp(nextHp);
                 addFloatingText(50, 50, "REPAIRED", "#10b981", true);
             } else {
                 setUpgrades(prev => prev.map(item => item.id === id ? { ...item, level: item.level + 1 } : item));
@@ -581,6 +585,8 @@ const StarDefense: React.FC = () => {
             lastSaveTime: Date.now(),
         }));
 
+        hpRef.current = 100;
+        shieldRef.current = 0;
         setGameOver(false);
         setHp(100);
         setShield(0);
