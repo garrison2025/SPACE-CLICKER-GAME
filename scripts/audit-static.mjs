@@ -75,6 +75,14 @@ const requiredSpacebarHubLinks = [
   '/spacebar-clicker-unblocked/'
 ];
 
+const deepSpacebarContentRoutes = new Set([
+  '/spacebar-games/',
+  '/spacebar-clicker/',
+  '/spacebar-clicker-2/',
+  '/spacebar-counter/',
+  '/spacebar-clicker-test/'
+]);
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -169,6 +177,22 @@ for (const file of htmlFiles) {
     }
   } else if (html.includes('id="prerender-route-jsonld"')) {
     throw new Error(route + ': unexpected static route JSON-LD on a non-core route');
+  }
+
+  if (deepSpacebarContentRoutes.has(route)) {
+    const h2Count = (html.match(/<h2\b/gi) || []).length;
+    const visibleText = html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (h2Count < 4) {
+      throw new Error(route + ': high-value Spacebar prerender needs at least four static sections');
+    }
+    if (visibleText.length < 900) {
+      throw new Error(route + ': high-value Spacebar prerender is too thin (' + visibleText.length + ' chars)');
+    }
   }
 
   if (route === '/spacebar-games/') {
@@ -292,4 +316,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone/blog/about hubs, 6 deep game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs, 6 deep game summaries, 10 full blog articles.');
