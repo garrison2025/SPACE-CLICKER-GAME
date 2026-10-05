@@ -47,7 +47,8 @@ const StarDefense: React.FC = () => {
     const [activeEffects, setActiveEffects] = useState<{[key:string]: number}>({});
     const skillCooldownsRef = useRef<{[key:string]: number}>({});
     const activeEffectsRef = useRef<{[key:string]: number}>({});
-    const lastStatusSyncRef = useRef(0); 
+    const lastStatusSyncRef = useRef(0);
+    const statusUiActiveRef = useRef(false); 
     
     const [upgrades, setUpgrades] = useState<DefenseUpgrade[]>(INITIAL_UPGRADES);
     const saveStateRef = useRef({ scraps, wave, upgrades });
@@ -121,10 +122,15 @@ const StarDefense: React.FC = () => {
             }
         });
 
-        if (timestamp - lastStatusSyncRef.current >= 100) {
+        if (statusUiActiveRef.current && timestamp - lastStatusSyncRef.current >= 100) {
             lastStatusSyncRef.current = timestamp;
             setSkillCooldowns({ ...skillCooldownsRef.current });
             setActiveEffects({ ...activeEffectsRef.current });
+
+            const hasRunningTimer =
+                Object.values(skillCooldownsRef.current).some(value => value > 0) ||
+                Object.values(activeEffectsRef.current).some(value => value > 0);
+            if (!hasRunningTimer) statusUiActiveRef.current = false;
         }
 
         // 4. Spawning
@@ -460,14 +466,17 @@ const StarDefense: React.FC = () => {
         if (!skill) return;
 
         skillCooldownsRef.current = { ...skillCooldownsRef.current, [skillId]: skill.cooldown * 1000 };
+        statusUiActiveRef.current = true;
         setSkillCooldowns({ ...skillCooldownsRef.current });
         
         if (skillId === 'emp') {
             activeEffectsRef.current = { ...activeEffectsRef.current, emp: skill.duration };
+            statusUiActiveRef.current = true;
             setActiveEffects({ ...activeEffectsRef.current });
             addFloatingText(50, 50, "EMP BLAST!", "#00f3ff", true);
         } else if (skillId === 'rapid') {
             activeEffectsRef.current = { ...activeEffectsRef.current, rapid: skill.duration };
+            statusUiActiveRef.current = true;
             setActiveEffects({ ...activeEffectsRef.current });
             addFloatingText(50, 50, "RAPID FIRE!", "#facc15", true);
         } else if (skillId === 'nuke') {
@@ -510,6 +519,7 @@ const StarDefense: React.FC = () => {
             addFloatingText(p.x, p.y, `+${amount} SCRAP`, "#fbbf24", true);
         } else if (p.type === 'double_damage') {
              activeEffectsRef.current = { ...activeEffectsRef.current, double_damage: 10000 };
+             statusUiActiveRef.current = true;
              setActiveEffects({ ...activeEffectsRef.current }); 
              addFloatingText(p.x, p.y, "DAMAGE BOOST!", "#ef4444", true);
         }
@@ -552,6 +562,7 @@ const StarDefense: React.FC = () => {
         setCombo(0);
         skillCooldownsRef.current = {};
         activeEffectsRef.current = {};
+        statusUiActiveRef.current = false;
         setSkillCooldowns({});
         setActiveEffects({});
         enemiesRef.current = [];
