@@ -14,6 +14,9 @@ const expect = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
+const hub = await run('https://spaceclickergame.com/spacebar-games/');
+expect(hub.status === 200, 'Known Spacebar games hub should pass through');
+
 const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
 
