@@ -10,6 +10,7 @@ if (!fs.existsSync(basePath)) {
 
 const baseHtml = fs.readFileSync(basePath, 'utf8');
 const site = 'https://spaceclickergame.com';
+const SITE_CONTENT_UPDATED = '2026-10-05';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
@@ -140,6 +141,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "url": site + "/",
           "name": "Space Clicker Game",
           "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
+          "dateModified": SITE_CONTENT_UPDATED,
           "publisher": {
             "@type": "Organization",
             "name": "Space Clicker Game"
@@ -157,6 +159,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "applicationCategory": "Game",
           "operatingSystem": "Any modern web browser",
           "isAccessibleForFree": true,
+          "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         }
@@ -180,6 +183,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "applicationCategory": "Game",
           "operatingSystem": "Any modern web browser",
           "isAccessibleForFree": true,
+          "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
           "offers": {
             "@type": "Offer",
@@ -218,7 +222,8 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "@type": "CollectionPage",
           "name": "Spacebar Games",
           "description": description,
-          "url": canonical
+          "url": canonical,
+          "dateModified": SITE_CONTENT_UPDATED
         },
         {
           "@type": "ItemList",
@@ -263,6 +268,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "applicationCategory": "Game",
           "operatingSystem": "Any modern web browser",
           "isAccessibleForFree": true,
+          "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
@@ -293,6 +299,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Any modern web browser",
           "isAccessibleForFree": true,
+          "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
