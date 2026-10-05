@@ -378,7 +378,8 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           ['Is this the same as the classic Spacebar Clicker?', 'No. It is a separate enhanced mode with its own mechanics and local save.'],
           ['Does Spacebar Clicker 2 have auto-clickers?', 'Yes. Micro Bots generate passive points and Reactor Banks multiply automatic production.'],
           ['What does Nova Ascension reset?', 'It resets current points and standard upgrades. Nova Cores, lifetime records and the permanent Nova bonus remain.'],
-          ['Does Spacebar Clicker 2 work on mobile?', 'Yes. Mobile players can use the on-screen Space button, while desktop players can use the physical Space key.']
+          ['Does Spacebar Clicker 2 work on mobile?', 'Yes. Mobile players can use the on-screen Space button, while desktop players can use the physical Space key.'],
+          ['Can I move my Spacebar Clicker 2 save to another browser?', 'Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save.']
         ]
       : route === '/spacebar-clicker-unblocked'
         ? [
@@ -815,6 +816,8 @@ const staticRouteContent = {
       <p>Micro Bots add passive point generation, while Reactor Banks multiply automatic production. These systems are designed to create a clearer transition from manual pressing into idle accumulation than the classic mode.</p>
       <h2>Offline earnings</h2>
       <p>Supported saved runs can calculate offline production when you return after time away. The offline reward is based on the saved production state and is stored locally in the current browser.</p>
+      <h2>Portable backup and restore</h2>
+      <p>Spacebar Clicker 2 can copy a validated SCG2 save code or download a portable .scg backup file. Either format can be restored in another browser or device, while the Edition 2 save remains separate from the classic Spacebar Clicker save.</p>
       <h2>Nova Core ascension</h2>
       <p>Nova Ascension resets current points and standard upgrades in exchange for permanent Nova Cores. Nova Cores, lifetime records, and the permanent Nova bonus survive the reset and strengthen future runs.</p>
       <p>Prefer the original progression loop? Open the <a href="/spacebar-clicker/">classic Spacebar Clicker</a>. For a pure benchmark, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for an untimed total, use the <a href="/spacebar-counter/">Spacebar Counter</a>; or compare all available modes on the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
