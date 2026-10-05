@@ -253,11 +253,19 @@ for (const file of htmlFiles) {
       }
 
       if (route === '/') {
-        if (!schemaNodes.some((node) => node?.['@type'] === 'WebSite')) {
+        const websiteNode = schemaNodes.find((node) => node?.['@type'] === 'WebSite');
+        const organizationNode = schemaNodes.find((node) => node?.['@id'] === site + '/#organization');
+        if (!websiteNode) {
           throw new Error('Homepage schema is missing WebSite');
         }
         if (!schemaNodes.some((node) => node?.['@type'] === 'VideoGame')) {
           throw new Error('Homepage schema is missing flagship VideoGame');
+        }
+        if (!organizationNode || organizationNode?.['@type'] !== 'Organization') {
+          throw new Error('Homepage schema is missing the stable publisher Organization node');
+        }
+        if (websiteNode?.publisher?.['@id'] !== site + '/#organization') {
+          throw new Error('Homepage WebSite publisher must reference the stable Organization @id');
         }
       }
 
@@ -395,11 +403,22 @@ for (const file of htmlFiles) {
     try {
       const articleSchema = JSON.parse(articleSchemaMatch[1]);
       const nodes = Array.isArray(articleSchema['@graph']) ? articleSchema['@graph'] : [articleSchema];
-      if (!nodes.some((node) => node?.['@type'] === 'Article')) {
+      const articleNode = nodes.find((node) => node?.['@type'] === 'Article');
+      if (!articleNode) {
         throw new Error('Article node is missing');
       }
       if (!nodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
         throw new Error('BreadcrumbList node is missing');
+      }
+      if (articleNode?.publisher?.['@id'] !== site + '/#organization') {
+        throw new Error('Article publisher must reference the stable Organization @id');
+      }
+      const authorNode = Array.isArray(articleNode.author) ? articleNode.author[0] : articleNode.author;
+      if (authorNode?.['@id'] !== site + '/#editorial') {
+        throw new Error('Article author must use the stable Editorial @id');
+      }
+      if (authorNode?.parentOrganization?.['@id'] !== site + '/#organization') {
+        throw new Error('Article Editorial author must reference the publisher Organization');
       }
     } catch (error) {
       throw new Error(route + ': invalid article JSON-LD: ' + error.message);
