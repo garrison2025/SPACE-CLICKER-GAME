@@ -397,6 +397,15 @@ for (const file of htmlFiles) {
     if (!/<meta\s+[^>]*property="og:type"[^>]*content="article"[^>]*>/i.test(html)) {
       throw new Error(route + ': article Open Graph type is missing');
     }
+    if (!/<meta\s+[^>]*property="article:published_time"[^>]*content="[^"]+"[^>]*>/i.test(html)) {
+      throw new Error(route + ': article published time is missing');
+    }
+    if (!/<meta\s+[^>]*property="article:modified_time"[^>]*content="[^"]+"[^>]*>/i.test(html)) {
+      throw new Error(route + ': article modified time is missing');
+    }
+    if (!/<meta\s+[^>]*property="article:author"[^>]*content="https:\/\/spaceclickergame\.com\/about\/"[^>]*>/i.test(html)) {
+      throw new Error(route + ': article author profile link is missing');
+    }
   }
 
   auditedRoutes.push(route);
@@ -458,6 +467,9 @@ if (!feed.includes('<link>https://spaceclickergame.com/blog/</link>')) {
 }
 if (!feed.includes('<title>Space Clicker Game Blog</title>')) {
   throw new Error('RSS channel title is missing or incorrect');
+}
+if (!feed.includes('<atom:link href="https://spaceclickergame.com/feed.xml" rel="self" type="application/rss+xml" />')) {
+  throw new Error('RSS self link is missing');
 }
 const firstRssItem = feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/);
 if (
