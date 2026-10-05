@@ -55,17 +55,49 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-4">
-                <div className="hidden md:flex items-center bg-space-900 border border-white/10 rounded-full px-3 py-1.5 gap-2 focus-within:border-neon-blue/50 transition-colors">
-                    <span className="text-gray-500 text-xs">🔍</span>
-                    <input type="text" placeholder="Search..." className="bg-transparent text-xs text-white focus:outline-none w-20 placeholder-gray-600" />
-                </div>
+            <div className="flex items-center gap-2 md:gap-3">
+                <button
+                  onClick={() => onNavigate('spacebar-games')}
+                  className="hidden lg:inline-flex px-3.5 py-1.5 bg-neon-purple/10 border border-neon-purple/40 text-neon-purple hover:bg-neon-purple hover:text-black transition-all rounded-full font-mono text-xs font-bold"
+                >
+                  SPACEBAR TOOLS
+                </button>
                 <button 
                   onClick={() => onNavigate('compare')}
-                  className="px-3.5 py-1.5 bg-neon-blue/10 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-all rounded-full font-mono text-xs font-bold"
+                  className="hidden md:inline-flex px-3.5 py-1.5 bg-neon-blue/10 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-all rounded-full font-mono text-xs font-bold"
                 >
                   VS IDLE GAMES
                 </button>
+
+                <details className="md:hidden relative">
+                  <summary className="list-none cursor-pointer px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white">
+                    MENU
+                  </summary>
+                  <nav className="absolute right-0 mt-2 w-56 rounded-xl border border-white/10 bg-space-950/95 backdrop-blur-xl shadow-2xl p-2 z-[120]">
+                    {[
+                      ['home', 'Home'],
+                      ['game', 'Games'],
+                      ['spacebar-games', 'Spacebar Games'],
+                      ['spacebar-clicker', 'Spacebar Clicker'],
+                      ['blog', 'Blog'],
+                      ['about', 'About']
+                    ].map(([view, label]) => (
+                      <a
+                        key={view}
+                        href={view === 'home' ? '/' : `/${view}/`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          onNavigate(view as ViewMode);
+                          const details = event.currentTarget.closest('details');
+                          if (details) details.removeAttribute('open');
+                        }}
+                        className="block rounded-lg px-3 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
+                      >
+                        {label}
+                      </a>
+                    ))}
+                  </nav>
+                </details>
             </div>
         </div>
       </header>
