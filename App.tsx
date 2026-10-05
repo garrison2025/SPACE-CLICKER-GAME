@@ -924,6 +924,16 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "Can I choose a custom test duration?",
                       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "What is a good Spacebar CPS score?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "There is no universal good CPS threshold across every keyboard and test. Compare results using the same device, browser, test duration, and input rules." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "What is the difference between CPS and PPS?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "CPS means clicks per second and PPS means presses per second. For a Spacebar test they describe the same basic rate here: valid Space presses divided by time." }
                     }
                   ]
                 }
