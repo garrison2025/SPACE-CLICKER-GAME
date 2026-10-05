@@ -1310,13 +1310,15 @@ const App: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setShowPrestigeShop(true)}
-                            className="absolute top-4 right-4 z-40 rounded-lg border border-neon-purple/50 bg-space-900/90 px-3 py-2 text-xs font-bold text-neon-purple hover:bg-neon-purple hover:text-black transition-colors"
+                            className="absolute bottom-4 left-4 md:bottom-auto md:left-auto md:top-4 md:right-4 z-40 min-h-11 rounded-lg border border-neon-purple/50 bg-space-900/95 px-3 py-2 text-xs font-bold text-neon-purple hover:bg-neon-purple hover:text-black transition-colors"
                           >
-                            VOID TECH {canPrestige ? `• +${prestigeGain} DM READY` : ''}
+                            <span>VOID TECH</span>
+                             {canPrestige && <span className="hidden sm:inline"> • +{prestigeGain} DM READY</span>}
+                             {canPrestige && <span className="sm:hidden"> • +{prestigeGain} DM</span>}
                           </button>
                           
                           <button 
-                            className="md:hidden absolute bottom-4 right-4 z-50 bg-neon-blue text-black p-3 rounded-full font-bold shadow-lg"
+                            className="md:hidden absolute bottom-4 right-4 z-50 min-h-11 px-4 py-2.5 bg-neon-blue text-black rounded-full font-bold shadow-lg"
                             onClick={() => setShowMobileShop(true)}
                           >
                             UPGRADES
