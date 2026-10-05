@@ -655,6 +655,15 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   Use the Spacebar Counter when you only need a running press total, or the Spacebar Clicker Test for fixed-duration CPS challenges and the 100-click sprint. The main Spacebar Clicker page is the full incremental game.
                 </p>
               </section>
+              <section>
+                <h2 className="text-2xl font-display text-white mb-3">Spacebar Clicker Unblocked FAQ</h2>
+                <div className="space-y-4">
+                  <div><h3 className="text-lg text-white">What does “unblocked” mean on this page?</h3><p>It means the game opens directly in a browser with no installation, launcher, extension, or account step. It does not bypass network restrictions.</p></div>
+                  <div><h3 className="text-lg text-white">Can a school or workplace network still block the game?</h3><p>Yes. Access depends on the rules applied by the network, device, firewall, parental controls, or administrator.</p></div>
+                  <div><h3 className="text-lg text-white">Does the instant-play version save progress?</h3><p>Yes. Progress is stored locally in the current browser. There is no cloud or cross-device sync.</p></div>
+                  <div><h3 className="text-lg text-white">Is this the same Spacebar Clicker game?</h3><p>Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page.</p></div>
+                </div>
+              </section>
             </>
           ) : (
             <>
