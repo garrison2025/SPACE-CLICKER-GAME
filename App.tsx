@@ -308,7 +308,7 @@ const App: React.FC = () => {
       }
       
       let title = "Space Clicker Game - Play Free Idle Mining & Strategy Online";
-      let desc = "The ultimate Space Clicker Game. Mine resources, build colonies, and command fleets in this epic browser-based idle strategy simulation. No download required.";
+      let desc = "Play Space Clicker Game in your browser. Mine Stardust, automate production, manage heat, explore six space simulations, and reset for Dark Matter progression.";
       let image = DEFAULT_OG_IMAGE;
       let type: 'website' | 'game' | 'article' = 'website';
       let schema: any = undefined;
@@ -354,7 +354,7 @@ const App: React.FC = () => {
                 "@id": "https://spaceclickergame.com/#website",
                 "url": "https://spaceclickergame.com/",
                 "name": "Space Clicker Game",
-                "description": "Play the best space clicker and sci-fi idle incremental games online for free in your browser.",
+                "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
                 "publisher": {
                   "@type": "Organization",
                   "name": "Space Clicker Game"
