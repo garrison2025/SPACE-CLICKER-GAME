@@ -140,6 +140,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const [lastWasCrit, setLastWasCrit] = useState(false);
   const [offlineEarned, setOfflineEarned] = useState(0);
   const [saveTransferStatus, setSaveTransferStatus] = useState('');
+  const [showSaveImport, setShowSaveImport] = useState(false);
+  const [saveImportText, setSaveImportText] = useState('');
   const [buyMode, setBuyMode] = useState<1 | 10 | 'max'>(1);
   const pressTimes = useRef<number[]>([]);
   const lastPressAt = useRef(0);
@@ -461,9 +463,15 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   };
 
   const importSave = () => {
-    const entered = window.prompt('Paste a Spacebar Clicker save code:');
-    if (!entered) return;
-    applyImportedSaveCode(entered);
+    if (!saveImportText.trim()) {
+      setSaveTransferStatus('Paste a save code or choose a backup file first.');
+      return;
+    }
+
+    if (applyImportedSaveCode(saveImportText)) {
+      setSaveImportText('');
+      setShowSaveImport(false);
+    }
   };
 
   const importSaveFile = () => {
@@ -480,7 +488,10 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
       try {
         const code = await selected.text();
-        applyImportedSaveCode(code);
+        if (applyImportedSaveCode(code)) {
+          setSaveImportText('');
+          setShowSaveImport(false);
+        }
       } catch {
         setSaveTransferStatus('Could not read that backup file.');
       }
@@ -766,17 +777,14 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
           </button>
           <button
             type="button"
-            onClick={importSave}
+            aria-expanded={showSaveImport}
+            onClick={() => {
+              setShowSaveImport((open) => !open);
+              setSaveTransferStatus('');
+            }}
             className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
           >
-            Paste save code
-          </button>
-          <button
-            type="button"
-            onClick={importSaveFile}
-            className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
-          >
-            Import backup file
+            {showSaveImport ? 'Close restore' : 'Restore save'}
           </button>
           <button
             type="button"
@@ -786,6 +794,56 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
             Reset local progress
           </button>
         </div>
+
+        {showSaveImport && (
+          <div className="mb-6 rounded-xl border border-neon-blue/30 bg-space-900/70 p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div>
+                <h3 className="font-display font-bold text-white">Restore Spacebar Clicker save</h3>
+                <p className="mt-1 text-xs text-gray-500">
+                  Paste an SCG1 save code below, or choose a .scg backup file. Imported values are validated before replacing this browser's current save.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={importSaveFile}
+                className="min-h-11 shrink-0 px-4 py-2 rounded border border-white/15 text-sm text-white hover:border-neon-blue"
+              >
+                Choose backup file
+              </button>
+            </div>
+            <label htmlFor="spacebar-save-import" className="sr-only">Spacebar Clicker save code</label>
+            <textarea
+              id="spacebar-save-import"
+              value={saveImportText}
+              onChange={(event) => setSaveImportText(event.target.value)}
+              placeholder="Paste SCG1 save code here..."
+              spellCheck={false}
+              className="mt-4 h-28 w-full resize-y rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-xs text-gray-200 outline-none focus:border-neon-blue"
+            />
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={importSave}
+                className="min-h-11 px-4 py-2 rounded bg-neon-blue text-black text-sm font-bold hover:bg-white"
+              >
+                Restore pasted code
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSaveImportText('');
+                  setShowSaveImport(false);
+                  setSaveTransferStatus('Restore cancelled.');
+                }}
+                className="min-h-11 px-4 py-2 rounded border border-white/10 text-sm text-gray-300 hover:border-white/30"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
         {saveTransferStatus && (
           <p role="status" aria-live="polite" className="mb-10 text-sm text-gray-400">
             {saveTransferStatus}
