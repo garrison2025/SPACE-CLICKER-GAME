@@ -264,6 +264,9 @@ for (const file of htmlFiles) {
     if (visibleText.length < 900) {
       throw new Error(route + ': high-value Spacebar prerender is too thin (' + visibleText.length + ' chars)');
     }
+    if (!html.includes('href="/blog/')) {
+      throw new Error(route + ': high-value Spacebar page must link back to a relevant guide');
+    }
   }
 
   if (trustContentRoutes.has(route)) {
