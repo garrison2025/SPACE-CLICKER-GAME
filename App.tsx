@@ -471,6 +471,22 @@ const App: React.FC = () => {
                   },
                   {
                     "@type": "Question",
+                    "name": "Is Space Clicker an idle game?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. Galaxy Miner starts with manual Stardust mining, then shifts toward automated production through Mining Drones and later upgrade tiers. Returning after time away can credit up to 24 hours of saved automatic production."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can I play Space Clicker on mobile?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. Galaxy Miner supports touch input in a modern mobile browser. The Spacebar games also provide large on-screen controls for devices without a physical keyboard."
+                    }
+                  },
+                  {
+                    "@type": "Question",
                     "name": "Does Galaxy Miner save my progress?",
                     "acceptedAnswer": {
                       "@type": "Answer",
