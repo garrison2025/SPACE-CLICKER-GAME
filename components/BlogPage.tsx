@@ -36,19 +36,82 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
         postId ? BLOG_POSTS.find(p => p.slug === postId || p.id === postId) : null, 
     [postId]);
 
-    // Calculate related posts based on shared tags
+    // Prefer shared-tag matches, then fill any remaining slots with
+    // manually reviewed topic-adjacent guides so every article has three useful next reads.
     const relatedPosts = useMemo(() => {
         if (!post) return [];
-        return BLOG_POSTS
-            .filter(p => p.id !== post.id) // Exclude current
+
+        const fallbackSlugs: Record<string, string[]> = {
+            'evolution-of-space-clicker-game-genre': [
+                'educational-value-of-space-clicker-games',
+                'top-10-space-clicking-games-features-2025',
+                'strategy-guide-clicker-game-space-empire'
+            ],
+            'psychology-of-space-clicking-games': [
+                'top-10-space-clicking-games-features-2025',
+                'active-vs-passive-space-click-game-styles',
+                'evolution-of-space-clicker-game-genre'
+            ],
+            'mastering-the-space-bar-clicking-game': [
+                'mechanics-of-space-bar-clicking-game-physics',
+                'ultimate-hardware-guide-space-bar-click-game',
+                'active-vs-passive-space-click-game-styles'
+            ],
+            'top-10-space-clicking-games-features-2025': [
+                'psychology-of-space-clicking-games',
+                'evolution-of-space-clicker-game-genre',
+                'active-vs-passive-space-click-game-styles'
+            ],
+            'mechanics-of-space-bar-clicking-game-physics': [
+                'mastering-the-space-bar-clicking-game',
+                'ultimate-hardware-guide-space-bar-click-game',
+                'active-vs-passive-space-click-game-styles'
+            ],
+            'strategy-guide-clicker-game-space-empire': [
+                'active-vs-passive-space-click-game-styles',
+                'educational-value-of-space-clicker-games',
+                'evolution-of-space-clicker-game-genre'
+            ],
+            'educational-value-of-space-clicker-games': [
+                'evolution-of-space-clicker-game-genre',
+                'strategy-guide-clicker-game-space-empire',
+                'psychology-of-space-clicking-games'
+            ],
+            'active-vs-passive-space-click-game-styles': [
+                'strategy-guide-clicker-game-space-empire',
+                'mastering-the-space-bar-clicking-game',
+                'top-10-space-clicking-games-features-2025'
+            ],
+            'narrative-design-clicker-game-space-adventure': [
+                'top-10-space-clicking-games-features-2025',
+                'evolution-of-space-clicker-game-genre',
+                'psychology-of-space-clicking-games'
+            ],
+            'ultimate-hardware-guide-space-bar-click-game': [
+                'mechanics-of-space-bar-clicking-game-physics',
+                'mastering-the-space-bar-clicking-game',
+                'active-vs-passive-space-click-game-styles'
+            ]
+        };
+
+        const scored = BLOG_POSTS
+            .filter(p => p.id !== post.id)
             .map(p => ({
                 post: p,
                 score: p.tags.filter(tag => post.tags.includes(tag)).length
             }))
             .filter(match => match.score > 0)
             .sort((a, b) => b.score - a.score)
-            .slice(0, 3) // Top 3
             .map(match => match.post);
+
+        const result = [...scored];
+        for (const slug of fallbackSlugs[post.slug] || []) {
+            const candidate = BLOG_POSTS.find(item => item.slug === slug);
+            if (candidate && !result.some(item => item.id === candidate.id)) result.push(candidate);
+            if (result.length >= 3) break;
+        }
+
+        return result.slice(0, 3);
     }, [post]);
 
     const interactiveDestinations = useMemo(() => {
@@ -197,6 +260,15 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
         }
     }, [postId, post]);
 
+    const handleTocClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+        event.preventDefault();
+        const target = document.getElementById(id);
+        if (!target) return;
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        window.history.replaceState(null, '', `#${id}`);
+    };
+
     // --- SINGLE POST VIEW ---
     if (postId) {
         if (!post) {
@@ -231,10 +303,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                         <li key={item.id} style={{ paddingLeft: `${(item.level - 2) * 12}px` }}>
                                             <a 
                                                 href={`#${item.id}`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
-                                                }}
+                                                onClick={(e) => handleTocClick(e, item.id)}
                                                 className="text-gray-400 hover:text-neon-blue transition-colors block leading-tight"
                                             >
                                                 {item.text}
@@ -255,6 +324,27 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                             ]} 
                             onNavigate={onNavigate} 
                         />
+
+                        {toc.length > 0 && (
+                            <details className="lg:hidden mb-5 rounded-xl border border-white/10 bg-space-900/70 p-4">
+                                <summary className="cursor-pointer font-bold text-white">Article contents</summary>
+                                <nav className="mt-4" aria-label="Article table of contents">
+                                    <ul className="space-y-2 text-sm">
+                                        {toc.map(item => (
+                                            <li key={item.id} style={{ paddingLeft: `${(item.level - 2) * 12}px` }}>
+                                                <a
+                                                    href={`#${item.id}`}
+                                                    onClick={(e) => handleTocClick(e, item.id)}
+                                                    className="block text-gray-400 hover:text-neon-blue"
+                                                >
+                                                    {item.text}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </nav>
+                            </details>
+                        )}
 
                         <article className="bg-space-900/80 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md shadow-2xl relative">
                             {/* Cover Image with CLS Fix */}
