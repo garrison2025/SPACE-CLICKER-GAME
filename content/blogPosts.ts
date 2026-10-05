@@ -142,7 +142,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h3>Techniques for Rapid Input</h3>
             <ul>
                 <li><strong>The Jitter Click:</strong> Tensing the forearm muscles to vibrate the hand. High speed, low accuracy. Good for big buttons.</li>
-                <li><strong>The Butterfly Click:</strong> Using two fingers (index and middle) to alternate strikes on the space bar or mouse button. This is the preferred method for any <strong>space clicking game</strong> veteran.</li>
+                <li><strong>Alternating Fingers:</strong> Some players alternate two fingers on a large key or button to spread repeated input across more than one finger. Whether this feels faster or more comfortable depends on the keyboard and the player.</li>
                 <li><strong>The Drag Click:</strong> Dragging a finger across the surface to create friction-based clicks. Rare, but effective on specific hardware.</li>
             </ul>
             <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
@@ -168,7 +168,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>In our <em>Gravity Idle</em> module, we experiment with physics-based inputs where the timing of your click matters more than the speed. This evolves the concept of the <strong>space click game</strong> into something requiring skill and precision, not just brute force.</p>
 
             <h2>Summary</h2>
-            <p>Whether you are a button-mashing speedster looking for the ultimate <strong>space bar clicking game</strong> or a strategist building a Dyson sphere, the input is just the beginning. The keyboard is your helm, and the screen is your viewport to the universe.</p>
+            <p>Whether you use a <strong>space bar clicking game</strong> for a short speed challenge or play a longer incremental simulation, input is only one part of the experience; upgrades, automation, timing, and resource choices determine what happens after the first presses.</p>
             
             <p>Check your APM and start your journey at <a href="https://spaceclickergame.com">Space Clicker Game</a>.</p>
         `
@@ -270,7 +270,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>On our <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a>, browser-generated key-repeat events are ignored. Current CPS is based on recent deliberate presses, while the timed result uses valid presses divided by elapsed test time. That is more useful than making an unsupported claim about a particular keyboard or frame rate.</p>
 
             <h2>From Active to Idle: The Transition</h2>
-            <p>Every great <strong>space bar clicking game</strong> eventually evolves into a management sim. The "click" becomes a strategic resource.</p>
+            <p>Some <strong>space bar clicking games</strong> stay focused on raw input speed, while others add upgrades or automation and gradually shift attention from pressing to resource decisions.</p>
             <p>In our game <em>Star Defense</em>, clicking is used for targeting high-priority enemies, while your automated turrets handle the trash mobs. This hybrid approach keeps the visceral fun of the <strong>space bar click game</strong> while adding the depth of a strategy RPG.</p>
 
             <h2>Conclusion</h2>
