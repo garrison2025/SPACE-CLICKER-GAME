@@ -72,8 +72,15 @@ const defaultSave = (): SpacebarSave => ({
   lastSaveTime: Date.now(),
 });
 
-const safeNumber = (value: unknown, fallback = 0) =>
-  typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : fallback;
+const MAX_IMPORTED_RESOURCE = 1e300;
+const MAX_IMPORTED_COUNTER = Number.MAX_SAFE_INTEGER;
+const MAX_IMPORTED_QUANTUM_KEYS = 1e12;
+const MAX_IMPORTED_CPS = 10_000;
+
+const safeNumber = (value: unknown, fallback = 0, max = MAX_IMPORTED_RESOURCE) =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0
+    ? Math.min(value, max)
+    : fallback;
 
 const sanitizeSave = (raw: unknown): SpacebarSave => {
   if (!raw || typeof raw !== 'object') return defaultSave();
@@ -94,10 +101,10 @@ const sanitizeSave = (raw: unknown): SpacebarSave => {
     version: SAVE_VERSION,
     points: safeNumber(data.points),
     lifetimePoints: safeNumber(data.lifetimePoints),
-    lifetimePresses: Math.floor(safeNumber(data.lifetimePresses)),
-    quantumKeys: Math.floor(safeNumber(data.quantumKeys)),
+    lifetimePresses: Math.floor(safeNumber(data.lifetimePresses, 0, MAX_IMPORTED_COUNTER)),
+    quantumKeys: Math.floor(safeNumber(data.quantumKeys, 0, MAX_IMPORTED_QUANTUM_KEYS)),
     upgrades,
-    bestCps: safeNumber(data.bestCps),
+    bestCps: safeNumber(data.bestCps, 0, MAX_IMPORTED_CPS),
     lastSaveTime: safeNumber(data.lastSaveTime, Date.now()),
   };
 };
