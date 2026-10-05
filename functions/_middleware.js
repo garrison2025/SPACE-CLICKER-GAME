@@ -1,5 +1,101 @@
+const GAME_ROUTES = new Set([
+  'galaxy_miner',
+  'mars_colony',
+  'star_defense',
+  'merge_ships',
+  'gravity_idle',
+  'deep_signal'
+]);
+
+const BLOG_ROUTES = new Set([
+  'evolution-of-space-clicker-game-genre',
+  'psychology-of-space-clicking-games',
+  'mastering-the-space-bar-clicking-game',
+  'top-10-space-clicking-games-features-2025',
+  'mechanics-of-space-bar-clicking-game-physics',
+  'strategy-guide-clicker-game-space-empire',
+  'educational-value-of-space-clicker-games',
+  'active-vs-passive-space-click-game-styles',
+  'narrative-design-clicker-game-space-adventure',
+  'ultimate-hardware-guide-space-bar-click-game'
+]);
+
+const STATIC_ROUTES = new Set([
+  '/',
+  '/game',
+  '/blog',
+  '/about',
+  '/contact',
+  '/privacy',
+  '/terms',
+  '/cookies',
+  '/sitemap',
+  '/compare',
+  '/achievements',
+  '/spacebar-clicker',
+  '/spacebar-counter',
+  '/spacebar-clicker-test',
+  '/spacebar-clicker-unblocked'
+]);
+
+const normalizePath = (pathname) => {
+  if (pathname === '/') return '/';
+  return '/' + pathname.split('/').filter(Boolean).join('/');
+};
+
+const isStaticAssetRequest = (pathname) =>
+  pathname.startsWith('/assets/') ||
+  pathname === '/robots.txt' ||
+  pathname === '/sitemap.xml' ||
+  /\.[a-z0-9]{2,8}$/i.test(pathname);
+
+const isKnownRoute = (pathname) => {
+  const path = normalizePath(pathname);
+  if (STATIC_ROUTES.has(path)) return true;
+
+  if (path.startsWith('/game/')) {
+    return GAME_ROUTES.has(path.slice('/game/'.length));
+  }
+
+  if (path.startsWith('/blog/')) {
+    return BLOG_ROUTES.has(path.slice('/blog/'.length));
+  }
+
+  return false;
+};
+
+const html404 = (url) => `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>404 - Signal Lost | Space Clicker Game</title>
+  <meta name="description" content="The requested Space Clicker Game page could not be found.">
+  <link rel="canonical" href="${url.origin}/">
+  <style>
+    :root{color-scheme:dark}
+    body{margin:0;background:#0b0d17;color:#e5e7eb;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:760px;margin:0 auto;padding:12vh 24px}
+    .code{font:800 clamp(64px,18vw,160px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#00f3ff}
+    h1{font-size:clamp(28px,5vw,48px);margin:12px 0}
+    p{color:#9ca3af;line-height:1.7}
+    a{display:inline-block;margin-top:24px;padding:12px 18px;border:1px solid #00f3ff;border-radius:10px;color:#00f3ff;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="code">404</div>
+    <h1>Signal Lost</h1>
+    <p>The coordinates you entered do not match a known game, Spacebar tool, guide, or site page.</p>
+    <a href="/">Return to Space Clicker Game</a>
+  </main>
+</body>
+</html>`;
+
 export async function onRequest(context) {
   const url = new URL(context.request.url);
+  const pathname = url.pathname;
   const legacyView = url.searchParams.get('view');
 
   if (legacyView) {
@@ -7,10 +103,10 @@ export async function onRequest(context) {
 
     if (legacyView === 'game') {
       const id = url.searchParams.get('id');
-      destination = id ? `/game/${encodeURIComponent(id)}` : '/game';
+      destination = id && GAME_ROUTES.has(id) ? `/game/${encodeURIComponent(id)}/` : '/game/';
     } else if (legacyView === 'blog') {
       const post = url.searchParams.get('post');
-      destination = post ? `/blog/${encodeURIComponent(post)}` : '/blog';
+      destination = post && BLOG_ROUTES.has(post) ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
     } else {
       const allowed = new Set([
         'about',
@@ -23,11 +119,21 @@ export async function onRequest(context) {
         'compare',
         'achievements'
       ]);
-      if (allowed.has(legacyView)) destination = `/${legacyView}`;
+      if (allowed.has(legacyView)) destination = `/${legacyView}/`;
     }
 
     return Response.redirect(new URL(destination, url.origin).toString(), 301);
   }
 
-  return context.next();
+  if (isStaticAssetRequest(pathname) || isKnownRoute(pathname)) {
+    return context.next();
+  }
+
+  return new Response(html404(url), {
+    status: 404,
+    headers: {
+      'content-type': 'text/html; charset=UTF-8',
+      'cache-control': 'public, max-age=60'
+    }
+  });
 }
