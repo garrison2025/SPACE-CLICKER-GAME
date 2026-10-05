@@ -56,7 +56,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
           Welcome Back, Commander!
         </h2>
         <p className="text-xs font-mono text-gray-400 mb-6">
-          Your drone fleet operated autonomously while your communications were offline.
+          Your drone fleet operated autonomously while your communications were offline. This harvest has already been credited to your local save.
         </p>
 
         {/* Earnings Card */}
@@ -90,7 +90,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
           className="w-full min-h-11 py-3.5 sm:py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-display font-black text-lg rounded-2xl shadow-[0_0_30px_rgba(234,179,8,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all tracking-wider flex items-center justify-center gap-2"
         >
           <span>⚡</span>
-          <span>CLAIM STARDUST HARVEST</span>
+          <span>CONTINUE WITH CREDITED HARVEST</span>
         </button>
       </div>
     </div>
