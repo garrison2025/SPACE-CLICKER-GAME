@@ -13,9 +13,14 @@ interface LandingPageProps {
 // --- LIGHTWEIGHT HERO PREVIEW (CSS ONLY, NO LOGIC) ---
 const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
     return (
-        <div 
-            onClick={onStart}
-            className="marketing-motion relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-xl md:shadow-2xl group cursor-pointer select-none"
+        <a
+            href="/game/galaxy_miner/"
+            aria-label="Open Galaxy Miner"
+            onClick={(event) => {
+                event.preventDefault();
+                onStart();
+            }}
+            className="marketing-motion relative block w-full aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-xl md:shadow-2xl group cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
         >
             {/* Background Atmosphere */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e1b4b_0%,#000_100%)]"></div>
@@ -58,15 +63,15 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
             <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] transition-all duration-300 group-hover:bg-black/20 group-hover:backdrop-blur-none">
                 <div className="relative">
                     <div className="absolute inset-0 bg-neon-blue blur-xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse"></div>
-                    <button className="relative bg-space-900/90 border border-neon-blue text-neon-blue px-8 py-3 rounded text-sm md:text-base font-display font-black tracking-[0.2em] shadow-[0_0_20px_rgba(0,243,255,0.2)] group-hover:bg-neon-blue group-hover:text-black transition-all transform group-hover:scale-110">
+                    <span className="relative inline-block bg-space-900/90 border border-neon-blue text-neon-blue px-8 py-3 rounded text-sm md:text-base font-display font-black tracking-[0.2em] shadow-[0_0_20px_rgba(0,243,255,0.2)] group-hover:bg-neon-blue group-hover:text-black transition-all transform group-hover:scale-110">
                         RESUME MINING
-                    </button>
+                    </span>
                 </div>
             </div>
 
             {/* Scanlines */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
-        </div>
+        </a>
     );
 };
 
