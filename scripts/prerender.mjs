@@ -192,6 +192,13 @@ const staticRouteContent = {
     <section>
       <h2>Instant browser Spacebar Clicker</h2>
       <p>This page opens the Spacebar Clicker game directly with no download, launcher or account. “Unblocked” here does not mean bypassing school, workplace, parental-control, firewall or network-administrator restrictions.</p>
+      <h2>Spacebar Clicker Unblocked FAQ</h2>
+      <h3>What does “unblocked” mean on this page?</h3>
+      <p>It means the game opens directly in a browser with no installation step. It does not bypass network restrictions.</p>
+      <h3>Can a school or workplace network still block the game?</h3>
+      <p>Yes. Access depends on the network, device, firewall, parental controls, or administrator.</p>
+      <h3>Does the instant-play version save progress?</h3>
+      <p>Yes. Progress is stored locally in the current browser with no cloud or cross-device sync.</p>
     </section>`
 };
 
