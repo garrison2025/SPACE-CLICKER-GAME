@@ -16,21 +16,21 @@ interface PrestigeShopProps {
 
 const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prestigeGain, canPrestige, thresholdLabel, onPrestige, onBuy, onClose }) => {
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 backdrop-blur-md animate-in fade-in">
-      <div className="bg-space-800 w-full max-w-4xl h-[80vh] rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in p-3 sm:p-4">
+      <div className="bg-space-800 w-full max-w-4xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[88dvh] rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden">
         
         {/* Header */}
-        <div className="p-6 border-b border-space-600 flex justify-between items-center bg-space-900">
+        <div className="p-4 sm:p-6 border-b border-space-600 flex justify-between items-center gap-3 bg-space-900">
           <div>
-             <h2 className="text-3xl font-display text-neon-purple">VOID TECHNOLOGY</h2>
+             <h2 className="text-2xl sm:text-3xl font-display text-neon-purple">VOID TECHNOLOGY</h2>
              <p className="text-gray-400 text-sm">Spend Dark Matter to warp reality.</p>
           </div>
           <div className="text-right">
-             <div className="text-2xl font-bold text-white">{formatNumber(darkMatter)} <span className="text-neon-purple text-sm">DM</span></div>
+             <div className="text-lg sm:text-2xl font-bold text-white whitespace-nowrap">{formatNumber(darkMatter)} <span className="text-neon-purple text-sm">DM</span></div>
           </div>
         </div>
 
-        <div className="px-6 py-5 border-b border-space-600 bg-neon-purple/5">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-space-600 bg-neon-purple/5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h3 className="text-white font-display text-xl">GALACTIC RESET</h3>
@@ -50,7 +50,7 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {PRESTIGE_UPGRADES.map(u => {
              const currentLevel = upgrades[u.id] || 0;
              const isMaxed = u.maxLevel !== -1 && currentLevel >= u.maxLevel;
@@ -88,7 +88,7 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
         </div>
 
         <div className="p-4 border-t border-space-600 bg-space-900 text-center">
-            <button onClick={onClose} className="text-gray-400 hover:text-white">CLOSE TERMINAL</button>
+            <button onClick={onClose} className="min-h-11 px-4 text-gray-400 hover:text-white">CLOSE TERMINAL</button>
         </div>
 
       </div>
