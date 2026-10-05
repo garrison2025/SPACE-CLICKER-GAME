@@ -26,6 +26,26 @@ expect(sequel.status === 200, 'Known Spacebar Clicker 2 route should pass throug
 const knownGame = await run('https://spaceclickergame.com/game/galaxy_miner/');
 expect(knownGame.status === 200, 'Known game route should pass through');
 
+const noSlashSpacebar = await run('https://spaceclickergame.com/spacebar-clicker');
+expect(noSlashSpacebar.status === 301, 'Known Spacebar route without trailing slash should redirect');
+expect(noSlashSpacebar.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/', 'Spacebar trailing-slash redirect target is wrong');
+
+const noSlashGame = await run('https://spaceclickergame.com/game/galaxy_miner');
+expect(noSlashGame.status === 301, 'Known game route without trailing slash should redirect');
+expect(noSlashGame.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Game trailing-slash redirect target is wrong');
+
+const noSlashBlog = await run('https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre');
+expect(noSlashBlog.status === 301, 'Known blog route without trailing slash should redirect');
+expect(noSlashBlog.headers.get('location') === 'https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/', 'Blog trailing-slash redirect target is wrong');
+
+const noSlashTracked = await run('https://spaceclickergame.com/spacebar-clicker?utm_source=test');
+expect(noSlashTracked.status === 301, 'Tracked known route without trailing slash should redirect');
+expect(noSlashTracked.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/?utm_source=test', 'Trailing-slash redirect should preserve tracking parameters');
+
+const duplicateSlash = await run('https://spaceclickergame.com//spacebar-clicker//');
+expect(duplicateSlash.status === 301, 'Known route with duplicate slashes should canonicalize');
+expect(duplicateSlash.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/', 'Duplicate-slash canonical target is wrong');
+
 const gameRoot = await run('https://spaceclickergame.com/game/');
 expect(gameRoot.status === 301, 'Duplicate game root should redirect');
 expect(gameRoot.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Game root redirect target is wrong');
