@@ -100,6 +100,9 @@ const SpacebarCounter: React.FC = () => {
               <div className="mt-1 text-sm font-bold text-white">Upgrades + prestige</div>
             </a>
           </div>
+          <a href="/spacebar-games/" className="inline-block mt-4 text-xs font-bold text-neon-blue hover:text-white">
+            Browse all Spacebar modes →
+          </a>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-space-900/80 p-6 md:p-10">
