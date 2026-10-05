@@ -45,6 +45,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const [beams, setBeams] = useState<{id: number, x: number, y: number, color: string, width: number}[]>([]);
   const [geodes, setGeodes] = useState<Geode[]>([]);
   const [shake, setShake] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const planetRef = useRef<HTMLDivElement>(null);
 
   // Safety check to prevent crash if planet data is missing
@@ -76,11 +77,12 @@ const ClickArea: React.FC<ClickAreaProps> = ({
       const timer = setInterval(() => {
           if (!planetRef.current) return;
           const rect = planetRef.current.getBoundingClientRect();
-          // Fallback if rect is zero (e.g. hidden)
-          if (rect.width === 0) return;
+          const containerRect = containerRef.current?.getBoundingClientRect();
+          // Fallback if the game viewport is hidden or not laid out yet.
+          if (rect.width === 0 || !containerRect) return;
 
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
+          const cx = rect.left - containerRect.left + rect.width / 2;
+          const cy = rect.top - containerRect.top + rect.height / 2;
           const angle = Math.random() * Math.PI * 2;
           const radius = rect.width / 2 + 10 + Math.random() * 30;
           
@@ -127,6 +129,10 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const handleInteraction = (clientX: number, clientY: number, multiplier = 1, isGeode = false) => {
     if (overheated && !isGeode) return;
 
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    const localX = containerRect ? clientX - containerRect.left : clientX;
+    const localY = containerRect ? clientY - containerRect.top : clientY;
+
     // 1. Logic Call
     const { amount, isCrit } = onMine(clientX, clientY, multiplier, isGeode);
 
@@ -155,8 +161,8 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
     const newBeam = { 
         id: Date.now() + Math.random(), 
-        x: clientX, 
-        y: clientY, 
+        x: localX, 
+        y: localY, 
         color: beamColor,
         width: beamWidth
     };
@@ -185,8 +191,8 @@ const ClickArea: React.FC<ClickAreaProps> = ({
       
       newDebris.push({
         id: Date.now() + Math.random() + i,
-        x: clientX,
-        y: clientY,
+        x: localX,
+        y: localY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 5,
         rotation: Math.random() * 360,
@@ -255,6 +261,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
   return (
     <div 
+      ref={containerRef}
       className={`relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible touch-manipulation ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
       onPointerDown={(e) => {
         if (e.button !== 0 && e.pointerType === 'mouse') return;
