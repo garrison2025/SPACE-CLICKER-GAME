@@ -709,8 +709,19 @@ const GravityIdle: React.FC = () => {
                          const canAfford = matter >= cost && !isMax;
 
                          return (
-                             <div key={key} 
-                                  className={`p-4 rounded-xl border transition-all select-none group relative overflow-hidden ${canAfford ? 'border-neon-purple/40 bg-neon-purple/5 cursor-pointer hover:bg-neon-purple/10 hover:border-neon-purple' : 'border-white/5 bg-black/40 opacity-60'}`}
+                             <div
+                                  key={key}
+                                  role="button"
+                                  tabIndex={canAfford ? 0 : -1}
+                                  aria-disabled={!canAfford}
+                                  aria-label={`${cfg.name}, level ${lvl}, ${isMax ? 'maxed' : `cost ${formatNumber(cost)} dark matter`}`}
+                                  className={`p-4 rounded-xl border transition-all select-none group relative overflow-hidden touch-manipulation focus:outline-none focus:ring-2 focus:ring-neon-purple/60 ${canAfford ? 'border-neon-purple/40 bg-neon-purple/5 cursor-pointer hover:bg-neon-purple/10 hover:border-neon-purple' : 'border-white/5 bg-black/40 opacity-60'}`}
+                                  onKeyDown={(event) => {
+                                      if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
+                                          event.preventDefault();
+                                          handleBuy(key);
+                                      }
+                                  }}
                                   onClick={() => canAfford && handleBuy(key)}>
                                  
                                  {/* Progress Bar BG */}
