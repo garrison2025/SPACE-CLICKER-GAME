@@ -22,7 +22,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   schema,
   noindex = false
 }) => {
-  const fullUrl = `https://spaceclickergame.com${path === '/' ? '' : path}`;
+  const normalizedPath = path === '/' ? '/' : `/${path.replace(/^\\/+|\\/+$/g, '')}`;
+  const fullUrl = `https://spaceclickergame.com${normalizedPath}`;
 
   return (
     <Helmet>
