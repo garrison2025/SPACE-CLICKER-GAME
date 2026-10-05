@@ -15,7 +15,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
   const NavLink = ({ view, label, className = "" }: { view: ViewMode, label: string, className?: string }) => {
     // Determine path based on view
     let path = '/';
-    if (view !== 'home') path = `/${view}`;
+    if (view === 'game') path = '/game/galaxy_miner/';
+    else if (view !== 'home') path = `/${view}/`;
     
     return (
         <a 
@@ -84,7 +85,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                     ].map(([view, label]) => (
                       <a
                         key={view}
-                        href={view === 'home' ? '/' : `/${view}/`}
+                        href={view === 'home' ? '/' : view === 'game' ? '/game/galaxy_miner/' : `/${view}/`}
                         onClick={(event) => {
                           event.preventDefault();
                           onNavigate(view as ViewMode);
@@ -124,7 +125,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                  <h4 className="font-bold text-white mb-4 tracking-wider text-xs">NAVIGATION</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
                      <li><NavLink view="home" label="Home Base" className="font-normal text-xs" /></li>
-                     <li><NavLink view="game" label="Game Catalog" className="font-normal text-xs" /></li>
+                     <li><NavLink view="game" label="Galaxy Miner" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-games" label="Spacebar Games" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-clicker" label="Spacebar Clicker" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-clicker-2" label="Spacebar Clicker 2" className="font-normal text-xs" /></li>
