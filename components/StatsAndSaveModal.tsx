@@ -14,6 +14,8 @@ interface StatsAndSaveModalProps {
   productionRate: number;
   clickPower: number;
   currentPlanet: Planet;
+  level: number;
+  planetIndex: number;
   upgrades: { [id: string]: Upgrade };
   prestigeUpgrades: { [id: string]: number };
   hapticEnabled: boolean;
@@ -50,6 +52,8 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   productionRate,
   clickPower,
   currentPlanet,
+  level,
+  planetIndex,
   upgrades,
   prestigeUpgrades,
   hapticEnabled,
@@ -79,6 +83,8 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         totalCrits,
         cometsCaught,
         crisesResolved,
+        level,
+        planetIndex,
         upgrades: compactUpgrades,
         prestigeUpgrades,
         lastSaveTime: Date.now(),
