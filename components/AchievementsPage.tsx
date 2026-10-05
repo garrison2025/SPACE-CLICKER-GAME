@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
 import SEOHead from './SEOHead';
-import { SAVE_KEY, PLANETS } from '../constants';
+import { SAVE_KEY } from '../constants';
 import { formatNumber } from '../utils';
 
 interface AchievementsPageProps {
@@ -11,11 +11,11 @@ interface AchievementsPageProps {
 
 interface Achievement {
   id: string;
-  category: 'mining' | 'automation' | 'prestige' | 'tactical' | 'secret';
+  category: 'mining' | 'automation' | 'prestige';
   title: string;
   description: string;
   unlockCondition: string;
-  rewardText: string;
+  noteText: string;
   icon: string;
   targetValue: number;
   currentValue?: number;
@@ -30,7 +30,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Stardust Initiate',
     description: 'Mine your very first units of celestial stardust.',
     unlockCondition: 'Accumulate 1,000 Total Stardust',
-    rewardText: '+5% Click Power',
+    noteText: 'Tracked milestone; no separate achievement bonus.',
     icon: '✨',
     targetValue: 1000
   },
@@ -40,7 +40,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Asteroid Prospector',
     description: 'Establish a steady manual harvest from local orbital rocks.',
     unlockCondition: 'Accumulate 1,000,000 (1M) Total Stardust',
-    rewardText: '+10% Click Power',
+    noteText: 'Tracked milestone; no separate achievement bonus.',
     icon: '☄️',
     targetValue: 1000000
   },
@@ -50,7 +50,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Planetary Core Stripper',
     description: 'Drill deep into the mantle of alien celestial bodies.',
     unlockCondition: 'Accumulate 1,000,000,000 (1B) Total Stardust',
-    rewardText: '+25% Click Power',
+    noteText: 'Tracked milestone; no separate achievement bonus.',
     icon: '🪐',
     targetValue: 1000000000
   },
@@ -60,7 +60,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Galactic Sovereign',
     description: 'Reach the pinnacle of raw mineral wealth across the galaxy.',
     unlockCondition: 'Accumulate 1,000,000,000,000 (1T) Total Stardust',
-    rewardText: '+50% All Production',
+    noteText: 'This milestone also reaches the first Galactic Reset threshold.',
     icon: '👑',
     targetValue: 1000000000000
   },
@@ -70,7 +70,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Cosmic Singularity Master',
     description: 'Harness the mass of black holes into pure stardust.',
     unlockCondition: 'Accumulate 1,000,000,000,000,000 (1Q) Total Stardust',
-    rewardText: '+100% Dark Matter Yield',
+    noteText: 'Tracked lifetime production milestone.',
     icon: '🌌',
     targetValue: 1000000000000000
   },
@@ -82,7 +82,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Drone Fleet Commander',
     description: 'Deploy an automated fleet of Autonomous Mining Drones.',
     unlockCondition: 'Own 25 Autonomous Drones',
-    rewardText: '2x Drone Efficiency',
+    noteText: 'At 25 units, the game’s normal upgrade milestone multiplier also activates.',
     icon: '🛸',
     targetValue: 25
   },
@@ -92,17 +92,17 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Orbital Architect',
     description: 'Construct a constellation of heavy orbital mining stations.',
     unlockCondition: 'Own 50 Orbital Stations',
-    rewardText: '2x Orbital Station Output',
+    noteText: 'At 50 units, normal 25- and 50-unit production milestones are already active.',
     icon: '🛰️',
     targetValue: 50
   },
   {
     id: 'auto_3',
     category: 'automation',
-    title: 'Dyson Sphere Engineer',
-    description: 'Encase star cores to harvest their total luminosity.',
-    unlockCondition: 'Construct at least 1 Dyson Sphere Swarm',
-    rewardText: 'Permanent +20% Global Passive Speed',
+    title: 'Dyson Swarm Engineer',
+    description: 'Deploy the first Dyson Swarm production tier.',
+    unlockCondition: 'Own at least 1 Dyson Swarm',
+    noteText: 'Tracked ownership milestone; no separate achievement bonus.',
     icon: '☀️',
     targetValue: 1
   },
@@ -111,10 +111,10 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
   {
     id: 'prestige_1',
     category: 'prestige',
-    title: 'Quantum Supernova',
-    description: 'Collapse your first planetary civilization to harness Dark Matter.',
-    unlockCondition: 'Perform your first Quantum Supernova Prestige Reset',
-    rewardText: 'Unlocks the Quantum Research Tech Tree',
+    title: 'Galactic Reset',
+    description: 'Complete your first Stardust reset and retain Dark Matter for future runs.',
+    unlockCondition: 'Complete your first Galactic Reset',
+    noteText: 'Dark Matter enables permanent technology purchases in the Void Tech panel.',
     icon: '💥',
     targetValue: 1
   },
@@ -124,7 +124,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Dark Matter Harvester',
     description: 'Amass significant reserves of anti-gravitational dark matter.',
     unlockCondition: 'Accumulate 100 Dark Matter',
-    rewardText: '+1,000% Compounding Multiplier',
+    noteText: '100 Dark Matter itself contributes +1,000% to the production multiplier.',
     icon: '🟣',
     targetValue: 100
   },
@@ -134,64 +134,12 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Multiverse Explorer',
     description: 'Traverse multiple dimensional cycles to explore distant exoplanets.',
     unlockCondition: 'Reach Planet Sector 5 (Chronos Alpha or beyond)',
-    rewardText: 'Instant Sector Jump Capability',
+    noteText: 'Tracked sector milestone; no separate achievement bonus.',
     icon: '🌀',
     targetValue: 5
   },
 
-  // Tactical Mastery
-  {
-    id: 'tactical_1',
-    category: 'tactical',
-    title: 'Heat Crux Master',
-    description: 'Master weapon temperature calibration without causing system shutdown.',
-    unlockCondition: 'Maintain 80-99% heat for 15 consecutive seconds',
-    rewardText: '+15% Critical Flux Multiplier',
-    icon: '🔥',
-    targetValue: 1
-  },
-  {
-    id: 'tactical_2',
-    category: 'tactical',
-    title: 'Comet Interceptor',
-    description: 'Catch swift golden comets traversing the planetary orbit.',
-    unlockCondition: 'Intercept 10 Golden Comets',
-    rewardText: 'Comet Rewards Increased by 50%',
-    icon: '⭐',
-    targetValue: 10
-  },
-  {
-    id: 'tactical_3',
-    category: 'tactical',
-    title: 'Planetary Defense Veteran',
-    description: 'Successfully neutralize extraterrestrial pirate invasion crises.',
-    unlockCondition: 'Successfully resolve 5 Crisis Defense Events',
-    rewardText: '+20% Crisis Defense Bounty',
-    icon: '🛡️',
-    targetValue: 5
-  },
 
-  // Secret Easter Eggs
-  {
-    id: 'secret_1',
-    category: 'secret',
-    title: 'Subspace Cryptographer',
-    description: 'Transmit deep space scans to receive AI anomalous intelligence.',
-    unlockCondition: 'Perform an Interstellar Subspace Scan',
-    rewardText: 'Unlocks Secret Log Transmissions',
-    icon: '📻',
-    targetValue: 1
-  },
-  {
-    id: 'secret_2',
-    category: 'secret',
-    title: 'The Infinite Void Walker',
-    description: 'Achieve total synergy across all mining rigs in the galaxy.',
-    unlockCondition: 'Purchase every tier of basic mining upgrades',
-    rewardText: 'Legendary Commander Badge',
-    icon: '🎖️',
-    targetValue: 1
-  }
 ];
 
 const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
@@ -266,8 +214,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         "@type": "WebPage",
         "@id": "https://spaceclickergame.com/achievements",
         "url": "https://spaceclickergame.com/achievements",
-        "name": "Space Clicker Game: Complete Achievements & Trophy Guide",
-        "description": "Full directory and unlock guide for all achievements, trophies, secret badges, and Dark Matter milestones in Space Clicker Game.",
+        "name": "Galaxy Miner Progress Milestones | Space Clicker Game",
+        "description": "A browser-local tracker for Galaxy Miner mining, automation, Dark Matter, and sector milestones.",
         "isPartOf": {
           "@type": "WebSite",
           "name": "Space Clicker Game",
@@ -276,8 +224,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
       },
       {
         "@type": "HowTo",
-        "name": "How to Unlock All Space Clicker Game Achievements",
-        "description": "Step-by-step strategy to achieve 100% completion in Space Clicker Game.",
+        "name": "How to Progress Through Galaxy Miner Milestones",
+        "description": "A practical progression path through the milestones that this page can verify from the local Galaxy Miner save.",
         "step": [
           {
             "@type": "HowToStep",
@@ -291,8 +239,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
           },
           {
             "@type": "HowToStep",
-            "name": "Execute Quantum Supernova Reset",
-            "text": "Accumulate 1 Trillion Stardust to execute your first Quantum Supernova and unlock the Quantum Supernova trophy."
+            "name": "Complete a Galactic Reset",
+            "text": "Accumulate 1 Trillion Stardust, open Void Tech, and use Galactic Reset to earn Dark Matter while retaining permanent progression."
           }
         ]
       }
@@ -302,11 +250,10 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-space-950 text-gray-200 pt-24 pb-20 px-4">
       <SEOHead
-        title="Space Clicker Game: Full Achievements, Badges & Trophy Guide (2026)"
-        description="Comprehensive guide to unlocking every achievement in Space Clicker Game. Track your live progress, discover secret trophies, and claim Dark Matter bonuses."
+        title="Galaxy Miner Milestones & Progress Tracker | Space Clicker Game"
+        description="Track Galaxy Miner mining, automation, Dark Matter, and sector milestones from your local browser save."
         path="/achievements"
         type="article"
-        keywords="space clicker achievements, idle game trophy guide, space clicker badges, secret achievements space clicker, dark matter unlock guide"
         schema={achievementsSchema}
       />
 
@@ -323,10 +270,10 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             <span>🏆 COMMANDER DOSSIER</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white tracking-tight">
-            ACHIEVEMENTS & TROPHY GUIDE
+            GALAXY MINER MILESTONES
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed font-sans">
-            Track your galactic mastery, claim milestone multipliers, and discover hidden secret ciphers across the Space Clicker Game network.
+            Track milestones that can be verified from your local Galaxy Miner save. This page is a progress dashboard; it does not grant separate hidden rewards.
           </p>
 
           {/* Live Progress Banner */}
@@ -364,9 +311,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             { id: 'all', label: 'ALL TROPHIES' },
             { id: 'mining', label: '✨ MINING' },
             { id: 'automation', label: '🛸 AUTOMATION' },
-            { id: 'prestige', label: '💥 PRESTIGE' },
-            { id: 'tactical', label: '🔥 TACTICAL' },
-            { id: 'secret', label: '📻 SECRET CIPHERS' }
+            { id: 'prestige', label: '💥 DARK MATTER' }
           ].map((cat) => (
             <button
               key={cat.id}
@@ -422,8 +367,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
                     <span className="text-gray-300 font-semibold">{ach.unlockCondition}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block text-[10px] uppercase">Commander Bonus:</span>
-                    <span className="text-neon-blue font-bold">{ach.rewardText}</span>
+                    <span className="text-gray-500 block text-[10px] uppercase">Milestone Note:</span>
+                    <span className="text-neon-blue font-bold">{ach.noteText}</span>
                   </div>
                 </div>
               </div>
@@ -444,13 +389,13 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         {/* Strategic Tips Article & Guides for SEO */}
         <div className="bg-space-900/60 border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
           <h2 className="text-2xl font-display font-bold text-white border-b border-white/10 pb-4">
-            How to Fast-Track 100% Achievement Completion
+            Practical Galaxy Miner Progression
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-300">
             <div className="space-y-2">
-              <h3 className="text-neon-blue font-bold font-display text-base">1. Optimize Heat Crux Rhythm</h3>
+              <h3 className="text-neon-blue font-bold font-display text-base">1. Use the Heat Flux Window</h3>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Maintain your mining laser heat between 80% and 99% to receive a 2x Flux output boost. This cuts the time to achieve the <em>Planetary Core Stripper</em> milestone in half.
+                Heat between 80% and 99% activates the 2x Flux output bonus. Crossing 100% overheats the beam, so active play is about balancing output against the shutdown risk.
               </p>
             </div>
             <div className="space-y-2">
@@ -462,7 +407,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             <div className="space-y-2">
               <h3 className="text-neon-purple font-bold font-display text-base">3. Strategic Dark Matter Resets</h3>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Never trigger a Quantum Supernova for less than 10 Dark Matter. Invest your initial Dark Matter into <em>Passive Boost</em> and <em>Critical Multiplier</em> to accelerate subsequent cycles.
+                Galactic Reset first becomes available at 1 Trillion Stardust and grants 5 Dark Matter at that threshold. A larger run can grant more Dark Matter, so compare the value of resetting now with the time needed to reach the next meaningful gain.
               </p>
             </div>
           </div>
