@@ -149,6 +149,15 @@ export async function onRequest(context) {
     return Response.redirect(new URL('/game/galaxy_miner/', url.origin).toString(), 301);
   }
 
+  if (isKnownRoute(pathname) && pathname !== '/') {
+    const canonicalPath = normalizePath(pathname) + '/';
+    if (pathname !== canonicalPath) {
+      const canonicalUrl = new URL(url.toString());
+      canonicalUrl.pathname = canonicalPath;
+      return Response.redirect(canonicalUrl.toString(), 301);
+    }
+  }
+
   if (isStaticAssetRequest(pathname) || isKnownRoute(pathname)) {
     return context.next();
   }
