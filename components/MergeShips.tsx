@@ -641,7 +641,7 @@ const MergeShips: React.FC = () => {
                          <button
                              type="button"
                              onClick={() => { setDragging(null); setDragOver(null); }}
-                             className="shrink-0 min-h-9 px-3 rounded border border-neon-blue/40 hover:bg-neon-blue hover:text-black transition-colors"
+                             className="shrink-0 min-h-11 px-3 rounded border border-neon-blue/40 hover:bg-neon-blue hover:text-black transition-colors"
                          >
                              CANCEL
                          </button>
