@@ -134,6 +134,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                         ['game', 'Galaxy Miner'],
                         ['spacebar-games', 'Spacebar Games'],
                         ['spacebar-clicker', 'Spacebar Clicker'],
+                        ['spacebar-clicker-2', 'Spacebar Clicker 2'],
                         ['spacebar-clicker-test', 'CPS Test'],
                         ['spacebar-counter', 'Spacebar Counter'],
                         ['compare', 'Feature Comparison'],
