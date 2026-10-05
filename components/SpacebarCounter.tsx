@@ -18,6 +18,7 @@ const SpacebarCounter: React.FC = () => {
   const [peakCps, setPeakCps] = useState(0);
   const [bestCount, setBestCount] = useState(loadBestCount);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
 
@@ -84,6 +85,20 @@ const SpacebarCounter: React.FC = () => {
   const seconds = elapsedMs / 1000;
   const average = seconds > 0 ? count / seconds : 0;
 
+  const enterFullscreen = async () => {
+    if (document.fullscreenElement || !document.documentElement.requestFullscreen) {
+      setStatusMessage(document.fullscreenElement ? 'Fullscreen is already active.' : 'Fullscreen is not supported in this browser.');
+      return;
+    }
+
+    try {
+      await document.documentElement.requestFullscreen();
+      setStatusMessage('Fullscreen enabled.');
+    } catch {
+      setStatusMessage('Fullscreen request was blocked by the browser.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-space-950 text-gray-200">
       <section className="max-w-5xl mx-auto px-4 py-14">
@@ -137,11 +152,14 @@ const SpacebarCounter: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-3 mt-7">
             <button type="button" onClick={reset} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>
-            <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
+            <button type="button" onClick={enterFullscreen} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
             <button type="button" onClick={() => setSoundEnabled((value) => !value)} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">{soundEnabled ? 'Sound On' : 'Sound Off'}</button>
             <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Spacebar Clicker</a>
             <a href="/spacebar-clicker-test/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Speed Test</a>
           </div>
+          {statusMessage && (
+            <p role="status" aria-live="polite" className="mt-3 text-center text-xs text-gray-400">{statusMessage}</p>
+          )}
         </div>
 
         <article className="mt-14 space-y-8 text-gray-400 leading-relaxed">
