@@ -217,6 +217,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                      <li><NavLink view="terms" label="Terms of Service" className="font-normal text-xs" /></li>
                      <li><NavLink view="cookies" label="Cookie Settings" className="font-normal text-xs" /></li>
                      <li><NavLink view="sitemap" label="HTML Sitemap" className="font-normal text-xs" /></li>
+                     <li><a href="/feed.xml" className="hover:text-neon-blue transition-colors">RSS Feed</a></li>
                  </ul>
              </div>
          </div>
