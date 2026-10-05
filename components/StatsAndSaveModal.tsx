@@ -24,6 +24,20 @@ interface StatsAndSaveModalProps {
   onResetGame: () => void;
 }
 
+const encodeBase64Utf8 = (value: string) => {
+  const bytes = new TextEncoder().encode(value);
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+};
+
+const decodeBase64Utf8 = (value: string) => {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+};
+
 export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   isOpen,
   onClose,
@@ -55,6 +69,9 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   // Calculate export string
   const generateExportString = () => {
     try {
+      const compactUpgrades = Object.fromEntries(
+        Object.entries(upgrades).map(([id, upgrade]) => [id, { count: upgrade.count }])
+      );
       const saveData = {
         resources,
         lifetimeEarnings,
@@ -62,22 +79,31 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         totalCrits,
         cometsCaught,
         crisesResolved,
-        upgrades,
+        upgrades: compactUpgrades,
         prestigeUpgrades,
         lastSaveTime: Date.now(),
-        version: '3.1.0'
+        version: 3
       };
-      return btoa(JSON.stringify(saveData));
+      return encodeBase64Utf8(JSON.stringify(saveData));
     } catch {
       return '';
     }
   };
 
-  const handleCopySave = () => {
+  const handleCopySave = async () => {
     const code = generateExportString();
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (!code) {
+      setCopied(false);
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
   };
 
   const handleApplyImport = () => {
@@ -88,7 +114,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     }
 
     try {
-      const decoded = atob(importString.trim());
+      const decoded = decodeBase64Utf8(importString.trim());
       const parsed = JSON.parse(decoded);
       if (!parsed.resources && !parsed.upgrades) {
         throw new Error('Corrupted format');
