@@ -292,7 +292,7 @@ const MarsColony: React.FC = () => {
     const population = resources.population;
 
     return (
-        <div className="w-full h-full bg-orange-950 relative overflow-hidden flex font-sans select-none text-white">
+        <div className="w-full h-full bg-orange-950 relative overflow-y-auto md:overflow-hidden flex flex-col md:flex-row font-sans select-none text-white">
             {/* Background */}
             <div className="absolute inset-0 bg-[radial-gradient(rgba(249,115,22,0.06)_1px,transparent_1px)] bg-[size:16px_16px] opacity-20 pointer-events-none"></div>
             
@@ -327,22 +327,22 @@ const MarsColony: React.FC = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col relative z-10">
+            <div className="flex-1 min-h-[460px] md:min-h-0 flex flex-col relative z-10">
                 
                 {/* Top HUD */}
-                <div className="h-16 bg-black/40 border-b border-orange-500/30 flex items-center justify-between px-6 backdrop-blur-md">
-                    <div className="flex gap-6">
+                <div className="h-16 bg-black/50 border-b border-orange-500/30 flex items-center justify-between px-3 md:px-6 md:backdrop-blur-md">
+                    <div className="flex gap-3 md:gap-6">
                         <div className="flex flex-col">
                             <span className="text-[10px] text-orange-400 font-bold uppercase tracking-widest">MINERALS</span>
-                            <span className="text-2xl font-mono font-bold text-white">{formatNumber(resources.minerals)}</span>
+                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">{formatNumber(resources.minerals)}</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-[10px] text-yellow-400 font-bold uppercase tracking-widest">CREDITS</span>
-                            <span className="text-2xl font-mono font-bold text-white">${formatNumber(resources.credits)}</span>
+                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">${formatNumber(resources.credits)}</span>
                         </div>
                          <div className="flex flex-col">
                             <span className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">COLONISTS</span>
-                            <span className="text-2xl font-mono font-bold text-white">{formatNumber(resources.population)}</span>
+                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">{formatNumber(resources.population)}</span>
                         </div>
                     </div>
                 </div>
@@ -423,9 +423,9 @@ const MarsColony: React.FC = () => {
                 </div>
 
                 {/* Resource Stats Bar */}
-                <div className="h-24 bg-black/60 border-t border-orange-500/30 grid grid-cols-3 gap-4 px-6 py-2">
+                <div className="h-24 bg-black/60 border-t border-orange-500/30 grid grid-cols-3 gap-2 md:gap-4 px-2 md:px-6 py-2">
                      <div className="flex flex-col justify-center">
-                         <div className="flex justify-between text-xs text-yellow-500 font-bold mb-1">
+                         <div className="flex justify-between text-[9px] md:text-xs text-yellow-500 font-bold mb-1">
                              <span>ENERGY ({resources.energy.production > resources.energy.consumption ? '+' : ''}{resources.energy.production - resources.energy.consumption}/s)</span>
                              <span>{Math.floor(resources.energy.current)}/{resources.energy.max}</span>
                          </div>
@@ -434,7 +434,7 @@ const MarsColony: React.FC = () => {
                          </div>
                      </div>
                      <div className="flex flex-col justify-center">
-                         <div className="flex justify-between text-xs text-green-500 font-bold mb-1">
+                         <div className="flex justify-between text-[9px] md:text-xs text-green-500 font-bold mb-1">
                              <span>FOOD</span>
                              <span>{Math.floor(resources.food.current)}/{resources.food.max}</span>
                          </div>
@@ -443,7 +443,7 @@ const MarsColony: React.FC = () => {
                          </div>
                      </div>
                      <div className="flex flex-col justify-center">
-                         <div className="flex justify-between text-xs text-blue-400 font-bold mb-1">
+                         <div className="flex justify-between text-[9px] md:text-xs text-blue-400 font-bold mb-1">
                              <span>OXYGEN</span>
                              <span>{Math.floor(resources.oxygen.current)}/{resources.oxygen.max}</span>
                          </div>
@@ -456,7 +456,7 @@ const MarsColony: React.FC = () => {
             </div>
 
             {/* Sidebar Shop */}
-            <div className="w-80 bg-orange-950 border-l border-orange-500/30 flex flex-col z-20">
+            <div className="w-full md:w-80 h-[360px] md:h-auto shrink-0 bg-orange-950 border-t md:border-t-0 md:border-l border-orange-500/30 flex flex-col z-20">
                 <div className="p-4 border-b border-orange-500/30 bg-black/20 flex justify-between items-center">
                     <h2 className="font-display font-bold text-xl text-orange-400 tracking-wider">CONSTRUCTION</h2>
                     <button 
