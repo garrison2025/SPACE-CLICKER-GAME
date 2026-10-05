@@ -1015,9 +1015,12 @@ const renderHtml = (route, title, description, h1) => {
 
   if (isArticle) {
     const articleMeta = blogStaticMeta[route];
-    html = html.replace('</head>', '  <meta name="author" content="SpaceClickerGame.com Editorial" />\n  <meta property="article:modified_time" content="2026-10-05T00:00:00Z" />\n</head>');
 
     if (articleMeta) {
+      html = html.replace(
+        '</head>',
+        `  <meta name="author" content="${escapeHtml(articleMeta.author)}" />\n  <meta property="article:published_time" content="${escapeHtml(articleMeta.datePublished)}" />\n  <meta property="article:modified_time" content="${escapeHtml(articleMeta.dateModified)}" />\n  <meta property="article:author" content="https://spaceclickergame.com/about/" />\n</head>`
+      );
       const articleSchema = {
         "@context": "https://schema.org",
         "@graph": [
@@ -1120,8 +1123,9 @@ const rssItems = Object.entries(blogStaticMeta)
 }).join('\n');
 
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
+    <atom:link href="${site}/feed.xml" rel="self" type="application/rss+xml" />
     <title>Space Clicker Game Blog</title>
     <link>${site}/blog/</link>
     <description>Guides, mechanics explainers and strategy articles for space clicker, incremental browser games and Spacebar tools.</description>
