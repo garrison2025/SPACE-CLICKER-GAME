@@ -115,12 +115,15 @@ const MergeShips: React.FC = () => {
     const lastUiRenderRef = useRef<number>(0);
     const animationFrameRef = useRef<number>();
     const bossWarningTimerRef = useRef<number>();
+    const floatingTextTimersRef = useRef<Set<number>>(new Set());
 
     useEffect(() => {
         return () => {
             if (bossWarningTimerRef.current !== undefined) {
                 window.clearTimeout(bossWarningTimerRef.current);
             }
+            floatingTextTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+            floatingTextTimersRef.current.clear();
         };
     }, []);
     
@@ -306,10 +309,17 @@ const MergeShips: React.FC = () => {
     };
 
     const showFloatText = (x: number, y: number, text: string, color: string) => {
-        setFloatingTexts(prev => [...prev, {
-            id: Date.now() + Math.random(),
-            x, y, text, opacity: 1, isCrit: true
-        }]);
+        const id = Date.now() + Math.random();
+        setFloatingTexts(prev => {
+            const next = [...prev, { id, x, y, text, opacity: 1, isCrit: true }];
+            return next.length > 20 ? next.slice(-20) : next;
+        });
+
+        const timer = window.setTimeout(() => {
+            floatingTextTimersRef.current.delete(timer);
+            setFloatingTexts(prev => prev.filter(item => item.id !== id));
+        }, 1200);
+        floatingTextTimersRef.current.add(timer);
     };
 
     // --- INTERACTIONS ---
