@@ -35,7 +35,13 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
     // Inject JSON-LD Structure for Article
     useEffect(() => {
         if (post) {
+            document.getElementById('prerender-article-jsonld')?.remove();
+
+            const existingRuntime = document.getElementById('runtime-article-jsonld');
+            existingRuntime?.remove();
+
             const script = document.createElement('script');
+            script.id = 'runtime-article-jsonld';
             script.type = 'application/ld+json';
             script.text = JSON.stringify({
                 "@context": "https://schema.org",
@@ -61,7 +67,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 }
             });
             document.head.appendChild(script);
-            return () => { document.head.removeChild(script); };
+            return () => { script.remove(); };
         }
     }, [post]);
 
