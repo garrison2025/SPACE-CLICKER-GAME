@@ -5,6 +5,9 @@ import { formatNumber } from '../utils';
 
 const MERGE_SAVE_KEY = 'merge_ships_save_v3';
 const HANGAR_SLOTS = 12; // 4x3 Grid
+const MAX_RESOURCE_VALUE = 1e300;
+const MAX_SHIP_LEVEL = 256;
+const MAX_PURCHASE_COUNT = 4000;
 
 // Config
 const BASE_SHIP_COST = 50;
@@ -53,6 +56,31 @@ const UPGRADE_CONFIG = {
     shipLevel: { name: 'Adv. Fabrication', base: 1000, mult: 3, max: 5, desc: 'Buy higher level ships' },
     crateSpeed: { name: 'Logistics Net', base: 250, mult: 1.5, max: 10, desc: 'Crates drop faster' },
 };
+
+const safeFinite = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed >= 0 ? Math.min(max, parsed) : fallback;
+};
+
+const sanitizeShip = (raw: unknown): MergeShip | null => {
+    if (!raw || typeof raw !== 'object') return null;
+    const ship = raw as Partial<MergeShip>;
+    const parsedLevel = Math.floor(Number(ship.level));
+    if (!Number.isFinite(parsedLevel) || parsedLevel < 1) return null;
+
+    return {
+        id: typeof ship.id === 'string' && ship.id.length > 0
+            ? ship.id.slice(0, 120)
+            : `restored-${parsedLevel}`,
+        level: Math.min(MAX_SHIP_LEVEL, parsedLevel),
+        isCrate: ship.isCrate === true,
+    };
+};
+
+const sanitizeShipArray = (raw: unknown, size: number) =>
+    Array.from({ length: size }, (_, index) =>
+        Array.isArray(raw) ? sanitizeShip(raw[index]) : null
+    );
 
 const MergeShips: React.FC = () => {
     // --- STATE ---
@@ -393,18 +421,42 @@ const MergeShips: React.FC = () => {
 
         try {
             const data = JSON.parse(saved);
-            const loadedCredits = Number.isFinite(Number(data.credits)) ? Math.max(0, Number(data.credits)) : 100;
-            const loadedHangar = Array.isArray(data.hangar) ? data.hangar : Array(HANGAR_SLOTS).fill(null);
-            const loadedOrbit = Array.isArray(data.orbit) ? data.orbit : Array(3).fill(null);
+            if (!data || typeof data !== 'object') throw new Error('Invalid Merge Ships save payload');
+
+            const loadedCredits = safeFinite(data.credits, 100);
             const loadedTech: MergeUpgradeState = data.tech && typeof data.tech === 'object'
                 ? {
-                    orbitSlots: Math.max(0, Math.floor(Number(data.tech.orbitSlots) || 0)),
-                    shipLevel: Math.max(0, Math.floor(Number(data.tech.shipLevel) || 0)),
-                    crateSpeed: Math.max(0, Math.floor(Number(data.tech.crateSpeed) || 0)),
+                    orbitSlots: Math.min(
+                        UPGRADE_CONFIG.orbitSlots.max,
+                        Math.max(0, Math.floor(safeFinite(data.tech.orbitSlots)))
+                    ),
+                    shipLevel: Math.min(
+                        UPGRADE_CONFIG.shipLevel.max,
+                        Math.max(0, Math.floor(safeFinite(data.tech.shipLevel)))
+                    ),
+                    crateSpeed: Math.min(
+                        UPGRADE_CONFIG.crateSpeed.max,
+                        Math.max(0, Math.floor(safeFinite(data.tech.crateSpeed)))
+                    ),
                   }
                 : { orbitSlots: 0, shipLevel: 0, crateSpeed: 0 };
-            const loadedShipsPurchased = Math.max(0, Math.floor(Number(data.shipsPurchased) || 0));
-            const loadedHighestLevel = Math.max(1, Math.floor(Number(data.highestLevel) || 1));
+
+            const loadedHangar = sanitizeShipArray(data.hangar, HANGAR_SLOTS);
+            const loadedOrbit = sanitizeShipArray(data.orbit, 3 + loadedTech.orbitSlots);
+            const loadedShipsPurchased = Math.min(
+                MAX_PURCHASE_COUNT,
+                Math.floor(safeFinite(data.shipsPurchased))
+            );
+            const restoredHighest = Math.min(
+                MAX_SHIP_LEVEL,
+                Math.max(1, Math.floor(safeFinite(data.highestLevel, 1, MAX_SHIP_LEVEL)))
+            );
+            const currentShipHighest = Math.max(
+                1,
+                ...loadedHangar.map((ship) => ship?.level || 1),
+                ...loadedOrbit.map((ship) => ship?.level || 1)
+            );
+            const loadedHighestLevel = Math.max(restoredHighest, currentShipHighest);
 
             const now = Date.now();
             const lastSaveTime = Number(data.lastSaveTime) || now;
@@ -416,7 +468,7 @@ const MergeShips: React.FC = () => {
             );
             // Offline output models asteroid availability at 50% of orbit DPS.
             const earning = seconds >= 60 ? Math.floor(dps * seconds * 0.5) : 0;
-            const nextCredits = loadedCredits + Math.max(0, earning);
+            const nextCredits = Math.min(MAX_RESOURCE_VALUE, loadedCredits + Math.max(0, earning));
 
             const nextSnapshot = {
                 credits: nextCredits,
