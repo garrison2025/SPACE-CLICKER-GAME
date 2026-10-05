@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
-import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, GEMINI_EVENT_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
+import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
 import StarField from './components/StarField';
 import UpgradeShop from './components/UpgradeShop';
 import ClickArea from './components/ClickArea';
@@ -567,9 +567,9 @@ const App: React.FC = () => {
   };
 
   const handleScan = async () => {
-    if (resources[ResourceType.Stardust] < GEMINI_EVENT_COST) return;
+    if (resources[ResourceType.Stardust] < EVENT_SCAN_COST) return;
     setIsScanning(true);
-    setResources(prev => ({...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - GEMINI_EVENT_COST}));
+    setResources(prev => ({...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - EVENT_SCAN_COST}));
     const event = await generateSpaceEvent({ 
       resources, upgrades, level, totalMined: resources[ResourceType.Stardust], lifetimeEarnings, lastSaveTime: Date.now(), prestigeUpgrades, planetIndex,
       heat, overheated 
