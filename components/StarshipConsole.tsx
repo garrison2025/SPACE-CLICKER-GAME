@@ -18,7 +18,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const dockScrollRef = useRef<HTMLElement | null>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
+  const settingsDialogRef = useRef<HTMLDivElement | null>(null);
+  const saveTimersRef = useRef<number[]>([]);
   const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
   const activeGameMeta = GAMES_CATALOG.find((game) => game.id === activeGame);
 
@@ -38,6 +42,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   useEffect(() => {
       if (!showSettings) return;
 
+      settingsDialogRef.current?.focus();
+
       const handleKeyDown = (event: KeyboardEvent) => {
           if (event.key === 'Escape') setShowSettings(false);
       };
@@ -46,6 +52,24 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showSettings]);
 
+  useEffect(() => {
+      const handleFullscreenChange = () => {
+          setIsFullscreen(Boolean(document.fullscreenElement));
+      };
+
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      handleFullscreenChange();
+
+      return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  useEffect(() => {
+      return () => {
+          saveTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+          saveTimersRef.current = [];
+      };
+  }, []);
+
   const handleMuteToggle = () => {
       const newState = !isMuted;
       setIsMuted(newState);
@@ -53,14 +77,23 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   const handleManualSave = () => {
+      saveTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+      saveTimersRef.current = [];
+
       setSaveStatus('saving');
-      // Dispatch event for games to listen to
       window.dispatchEvent(new Event('game-save-trigger'));
-      
-      setTimeout(() => {
+
+      const savedTimer = window.setTimeout(() => {
           setSaveStatus('saved');
-          setTimeout(() => setSaveStatus('idle'), 2000);
+          const idleTimer = window.setTimeout(() => {
+              setSaveStatus('idle');
+              saveTimersRef.current = saveTimersRef.current.filter((timer) => timer !== idleTimer);
+          }, 2000);
+          saveTimersRef.current.push(idleTimer);
+          saveTimersRef.current = saveTimersRef.current.filter((timer) => timer !== savedTimer);
       }, 500);
+
+      saveTimersRef.current.push(savedTimer);
   };
 
   const handleFactoryReset = () => {
@@ -117,8 +150,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             )}
 
             <button
+                ref={settingsButtonRef}
                 type="button"
                 aria-label="Open game settings"
+                aria-haspopup="dialog"
                 onClick={() => setShowSettings(true)}
                 className="min-w-11 min-h-11 p-2 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" 
                 title="Settings"
@@ -127,7 +162,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             </button>
             <button
                 type="button"
-                aria-label="Toggle fullscreen"
+                aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                aria-pressed={isFullscreen}
                 className="min-w-11 min-h-11 px-3 py-2 flex items-center justify-center gap-2 border border-neon-blue/60 text-neon-blue rounded-lg text-xs font-bold hover:bg-neon-blue hover:text-black transition-colors"
                 onClick={() => {
                     if (!document.fullscreenElement) {
@@ -138,19 +174,21 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                 }}
             >
                <span aria-hidden="true">⛶</span>
-               <span className="hidden md:inline">FULLSCREEN</span>
+               <span className="hidden md:inline">{isFullscreen ? 'EXIT FULLSCREEN' : 'FULLSCREEN'}</span>
             </button>
          </div>
       </header>
 
       {/* --- SETTINGS MODAL --- */}
       {showSettings && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 md:backdrop-blur-sm animate-in fade-in p-3">
+          <div className="game-settings-overlay fixed inset-0 z-[100] flex items-center justify-center bg-black/80 md:backdrop-blur-sm animate-in fade-in">
               <div
+                ref={settingsDialogRef}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="system-config-title"
-                className="bg-space-800 w-full max-w-md max-h-[calc(100dvh-1.5rem)] border border-white/20 rounded-2xl shadow-2xl overflow-y-auto"
+                tabIndex={-1}
+                className="bg-space-800 w-full max-w-md max-h-full border border-white/20 rounded-2xl shadow-2xl overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
               >
                   <div className="p-6 border-b border-white/10 flex justify-between items-center bg-space-900">
                       <h2 id="system-config-title" className="font-display font-bold text-xl text-white tracking-widest">SYSTEM CONFIG</h2>
