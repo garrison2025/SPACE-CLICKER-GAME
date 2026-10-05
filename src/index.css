@@ -164,6 +164,7 @@ body {
     }
 
     .game-viewport {
+        min-height: 500px;
         padding-bottom: calc(4rem + env(safe-area-inset-bottom));
     }
 
