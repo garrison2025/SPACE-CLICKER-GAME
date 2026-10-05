@@ -95,6 +95,12 @@ expect(robots.status === 200, 'robots.txt should pass through');
 const sitemap = await run('https://spaceclickergame.com/sitemap.xml');
 expect(sitemap.status === 200, 'sitemap.xml should pass through');
 
+const feed = await run('https://spaceclickergame.com/feed.xml');
+expect(feed.status === 200, 'feed.xml should pass through');
+
+const llms = await run('https://spaceclickergame.com/llms.txt');
+expect(llms.status === 200, 'llms.txt should pass through');
+
 const trackedHome = await run('https://spaceclickergame.com/?utm_source=test&utm_medium=qa');
 expect(trackedHome.status === 200, 'Normal tracking parameters must not break the homepage');
 
