@@ -54,7 +54,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   return (
-    <div className="relative w-full h-[100dvh] min-h-[420px] sm:min-h-[520px] overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+    <div className="relative w-full h-[100dvh] min-h-0 overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
       {/* --- TOP HUD --- */}
       <header className="h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
@@ -102,17 +102,20 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             >
                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543 .826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
             </button>
-            <button 
-                className="hidden md:block border border-neon-blue text-neon-blue px-3 py-1 rounded text-xs font-bold hover:bg-neon-blue hover:text-black transition-colors"
+            <button
+                type="button"
+                aria-label="Toggle fullscreen"
+                className="min-w-11 min-h-11 px-3 py-2 flex items-center justify-center gap-2 border border-neon-blue/60 text-neon-blue rounded-lg text-xs font-bold hover:bg-neon-blue hover:text-black transition-colors"
                 onClick={() => {
                     if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen();
+                        document.documentElement.requestFullscreen?.().catch(() => undefined);
                     } else {
-                        document.exitFullscreen();
+                        document.exitFullscreen?.().catch(() => undefined);
                     }
                 }}
             >
-               FULLSCREEN
+               <span aria-hidden="true">⛶</span>
+               <span className="hidden md:inline">FULLSCREEN</span>
             </button>
          </div>
       </header>
@@ -215,7 +218,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
          </aside>
 
          {/* Center Viewport - SCROLLABLE FOR SEO CONTENT */}
-         <div className="flex-1 relative bg-black/40 shadow-inner overflow-y-auto custom-scrollbar scroll-smooth">
+         <div className="game-scroll-region flex-1 relative bg-black/40 shadow-inner overflow-y-auto custom-scrollbar scroll-smooth">
              {/* Scanlines Effect */}
              <div className="hidden md:block absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 mix-blend-overlay z-[5] fixed"></div>
              <div className="hidden md:block absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/30 z-[5] fixed"></div>
@@ -226,8 +229,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       </main>
 
       {/* --- BOTTOM DOCK --- */}
-      <footer className="h-24 flex items-end safe-area-bottom bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
-          <div className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
+      <footer className="game-dock flex items-end bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
+          <nav aria-label="Game switcher" className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto overscroll-x-contain scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
               <div className="min-w-max flex items-end justify-start sm:justify-center gap-2 p-2">
                   {GAMES_CATALOG.map(game => (
                       <button
@@ -257,7 +260,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                       </button>
                   ))}
               </div>
-          </div>
+          </nav>
       </footer>
 
     </div>
