@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { GameId, GameMeta } from '../types';
 import { GAMES_CATALOG } from '../constants';
 import { toggleMute, getMuteState } from '../services/audioService';
@@ -17,6 +17,16 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+      if (window.innerWidth >= 640) return;
+      activeDockButtonRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+      });
+  }, [activeGame]);
 
   const handleMuteToggle = () => {
       const newState = !isMuted;
@@ -217,6 +227,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                   {GAMES_CATALOG.map(game => (
                       <button
                         key={game.id}
+                        ref={activeGame === game.id ? activeDockButtonRef : undefined}
                         onClick={() => onSwitchGame(game.id)}
                         aria-label={`Switch to ${game.title}`}
                         aria-current={activeGame === game.id ? 'page' : undefined}
