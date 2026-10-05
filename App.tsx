@@ -729,7 +729,7 @@ const App: React.FC = () => {
               : "Spacebar Clicker – Free Space Bar Clicker Game Online";
           desc = unblocked
               ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
-              : "Play Spacebar Clicker free online. Press Space for points, buy upgrades, automate production, track CPS, and prestige for permanent Quantum Keys.";
+              : "Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.";
           type = 'website';
           const clickerGameSchema = {
               "@type": "VideoGame",
@@ -823,7 +823,7 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'spacebar-counter') {
           title = "Spacebar Counter - Count Space Bar Presses & CPS";
-          desc = "Free online Spacebar Counter with total presses, current CPS, average CPS, peak CPS and local best. Works with keyboard and mobile touch.";
+          desc = "Use a free untimed Spacebar Counter to track total presses, current CPS, average CPS, peak CPS and local best. Keyboard and mobile touch supported.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
