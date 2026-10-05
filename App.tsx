@@ -12,17 +12,13 @@ import PrestigeShop from './components/PrestigeShop';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
 import GameCanvas from './components/GameCanvas';
 import GameCarousel from './components/GameCarousel';
-import SEOContent from './components/SEOContent';
 import InterstellarComms from './components/InterstellarComms';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
-import ComparisonPage from './components/ComparisonPage';
-import AchievementsPage from './components/AchievementsPage';
 import StatsAndSaveModal from './components/StatsAndSaveModal';
 import OfflineEarningsModal from './components/OfflineEarningsModal';
 import HotkeyOverlay from './components/HotkeyOverlay';
-import { AboutPage, ContactPage, PrivacyPage, TermsPage, CookiesPage, SitemapPage } from './components/InfoPages';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
@@ -39,6 +35,15 @@ const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClicke
 const SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
 const SpacebarClicker2 = React.lazy(() => import('./components/SpacebarClicker2'));
 const BlogPage = React.lazy(() => import('./components/BlogPage'));
+const SEOContent = React.lazy(() => import('./components/SEOContent'));
+const ComparisonPage = React.lazy(() => import('./components/ComparisonPage'));
+const AchievementsPage = React.lazy(() => import('./components/AchievementsPage'));
+const AboutPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.AboutPage })));
+const ContactPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.ContactPage })));
+const PrivacyPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.PrivacyPage })));
+const TermsPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.TermsPage })));
+const CookiesPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.CookiesPage })));
+const SitemapPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.SitemapPage })));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -1181,8 +1186,8 @@ const App: React.FC = () => {
                     />
                 )}
 
-                {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
-                {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
+                {viewMode === 'compare' && <Suspense fallback={<LoadingSimulation />}><ComparisonPage onNavigate={handleNavigate} /></Suspense>}
+                {viewMode === 'achievements' && <Suspense fallback={<LoadingSimulation />}><AchievementsPage onNavigate={handleNavigate} /></Suspense>}
                 {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}
                 {viewMode === 'spacebar-clicker-2' && <Suspense fallback={<LoadingSimulation />}><SpacebarClicker2 /></Suspense>}
                 {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
@@ -1190,12 +1195,12 @@ const App: React.FC = () => {
                 {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
                 {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
                 {viewMode === 'blog' && <Suspense fallback={<LoadingSimulation />}><BlogPage postId={activePostId} onNavigate={handleNavigate} /></Suspense>}
-                {viewMode === 'about' && <AboutPage />}
-                {viewMode === 'contact' && <ContactPage />}
-                {viewMode === 'privacy' && <PrivacyPage />}
-                {viewMode === 'terms' && <TermsPage />}
-                {viewMode === 'cookies' && <CookiesPage />}
-                {viewMode === 'sitemap' && <SitemapPage />}
+                {viewMode === 'about' && <Suspense fallback={<LoadingSimulation />}><AboutPage /></Suspense>}
+                {viewMode === 'contact' && <Suspense fallback={<LoadingSimulation />}><ContactPage /></Suspense>}
+                {viewMode === 'privacy' && <Suspense fallback={<LoadingSimulation />}><PrivacyPage /></Suspense>}
+                {viewMode === 'terms' && <Suspense fallback={<LoadingSimulation />}><TermsPage /></Suspense>}
+                {viewMode === 'cookies' && <Suspense fallback={<LoadingSimulation />}><CookiesPage /></Suspense>}
+                {viewMode === 'sitemap' && <Suspense fallback={<LoadingSimulation />}><SitemapPage /></Suspense>}
             </SiteLayout>
         )}
     </>
