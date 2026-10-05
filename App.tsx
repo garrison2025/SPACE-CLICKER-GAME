@@ -416,13 +416,56 @@ const App: React.FC = () => {
                 ]
               };
           }
-      } else if (viewMode === 'blog' && activePostId) {
-          const post = BLOG_POST_META.find(p => p.slug === activePostId || p.id === activePostId);
-          if (post) {
-              title = `${post.title} | Space Clicker Game Blog`;
-              desc = post.excerpt;
-              if (post.image) image = post.image;
-              type = 'article';
+      } else if (viewMode === 'blog') {
+          if (activePostId) {
+              const post = BLOG_POST_META.find(p => p.slug === activePostId || p.id === activePostId);
+              if (post) {
+                  title = `${post.title} | Space Clicker Game Blog`;
+                  desc = post.excerpt;
+                  if (post.image) image = post.image;
+                  type = 'article';
+              }
+          } else {
+              title = "Space Clicker Game Blog - Guides & Strategy";
+              desc = "Read guides, mechanics explainers and strategy articles for space clicker and incremental browser games.";
+              schema = {
+                  "@context": "https://schema.org",
+                  "@graph": [
+                    {
+                      "@type": "CollectionPage",
+                      "@id": "https://spaceclickergame.com/blog/#webpage",
+                      "url": "https://spaceclickergame.com/blog/",
+                      "name": title,
+                      "description": desc,
+                      "dateModified": SITE_CONTENT_UPDATED,
+                      "isPartOf": {
+                        "@type": "WebSite",
+                        "@id": "https://spaceclickergame.com/#website",
+                        "name": "Space Clicker Game",
+                        "url": "https://spaceclickergame.com/"
+                      }
+                    },
+                    {
+                      "@type": "ItemList",
+                      "@id": "https://spaceclickergame.com/blog/#articles",
+                      "name": "Space Clicker Game guides and strategy articles",
+                      "itemListElement": BLOG_POST_META.map((post, index) => ({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "name": post.title,
+                        "url": `https://spaceclickergame.com/blog/${post.slug}/`
+                      }))
+                    },
+                    {
+                      "@type": "BreadcrumbList",
+                      "@id": "https://spaceclickergame.com/blog/#breadcrumb",
+                      "itemListElement": [
+                        { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://spaceclickergame.com/blog/" }
+                      ]
+                    }
+                  ]
+              };
           }
       } else if (viewMode === 'home') {
           schema = {
@@ -516,7 +559,40 @@ const App: React.FC = () => {
           desc = "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.";
       } else if (viewMode === 'about') {
           title = "About | Space Clicker Game";
-          desc = "Learn how SpaceClickerGame.com is built around free browser clicker, idle, strategy, and Spacebar experiences with local-first gameplay.";
+          desc = "Learn about SpaceClickerGame.com and its free browser-based clicker, idle and spacebar experiences.";
+          schema = {
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "AboutPage",
+                  "@id": "https://spaceclickergame.com/about/#webpage",
+                  "url": "https://spaceclickergame.com/about/",
+                  "name": "About Space Clicker Game",
+                  "description": desc,
+                  "dateModified": SITE_CONTENT_UPDATED,
+                  "about": {
+                    "@type": "Organization",
+                    "@id": "https://spaceclickergame.com/#organization",
+                    "name": "Space Clicker Game",
+                    "url": "https://spaceclickergame.com/"
+                  },
+                  "isPartOf": {
+                    "@type": "WebSite",
+                    "@id": "https://spaceclickergame.com/#website",
+                    "name": "Space Clicker Game",
+                    "url": "https://spaceclickergame.com/"
+                  }
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  "@id": "https://spaceclickergame.com/about/#breadcrumb",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "About", "item": "https://spaceclickergame.com/about/" }
+                  ]
+                }
+              ]
+          };
       } else if (viewMode === 'contact') {
           title = "Contact | Space Clicker Game";
           desc = "Contact SpaceClickerGame.com for player support, bug reports, feedback, business, advertising, or press questions.";
