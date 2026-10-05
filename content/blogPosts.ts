@@ -151,10 +151,10 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>A useful transition point in a <strong>clicker game space</strong> adventure is when passive generation becomes more important than another burst of manual input. The exact point depends on current upgrades, multipliers, and how actively the player is pressing.</p>
             
             <h3>Math Breakdown: Click vs. Idle</h3>
-            <p>Let's look at the math found in a typical <strong>space clicking game</strong>:</p>
+            <p>Here is a deliberately simplified example for comparing manual and automatic output. These numbers are illustrative and do not describe a specific SpaceClickerGame.com mode:</p>
             <ul>
-                <li><strong>Manual:</strong> 5 clicks/sec * 10 resources/click = 50 res/sec.</li>
-                <li><strong>Auto:</strong> 10 Drones * 5 res/sec = 50 res/sec.</li>
+                <li><strong>Manual example:</strong> 5 presses/sec × 10 resources/press = 50 resources/sec.</li>
+                <li><strong>Automation example:</strong> 10 producers × 5 resources/sec = 50 resources/sec.</li>
             </ul>
             <p>Once automatic production approaches the value of manual input, upgrade selection and payback time become more important than simply pressing faster.</p>
 
@@ -502,7 +502,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p class="lead">Keyboard feel can affect comfort during a <strong>space bar click game</strong>, but a more expensive or mechanical keyboard does not automatically produce a better CPS result. Travel, stabilizer feel, layout, and technique all matter.</p>
 
             <h2>The Switch Debate: Linear vs. Tactile</h2>
-            <p>The heart of any keyboard is the switch underneath the keycap. For a <strong>space clicking game</strong>, the choice usually comes down to two types:</p>
+            <p>The switch or sensing mechanism under the keycap changes how repeated input feels. Two common mechanical-switch feel categories are:</p>
 
             <h3>1. Linear Switches (Red/Silver/Black)</h3>
             <p>Linear switches move without a tactile bump. Some players prefer that feel for repeated presses, but actuation distance and reset behavior vary by switch and keyboard design.</p>
