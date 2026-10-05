@@ -74,7 +74,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                   },
                   "author": {
                       "@type": "Organization",
-                      "name": "Void Expanse Games"
+                      "name": "Space Clicker Game"
                   }
               },
               {
