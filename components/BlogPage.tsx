@@ -42,7 +42,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 "@type": "Article",
                 "headline": post.title,
                 "image": [post.image],
-                "datePublished": new Date(post.date).toISOString(), 
+                "datePublished": new Date(post.date).toISOString(),
+                "dateModified": new Date(post.updatedDate || post.date).toISOString(),
                 "author": [{
                     "@type": "Organization",
                     "name": post.author,
@@ -157,6 +158,12 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <header className="mb-10 border-b border-white/10 pb-8">
                                     <div className="flex flex-wrap gap-4 text-xs font-mono text-gray-400 mb-4 uppercase tracking-widest bg-black/50 inline-block px-4 py-2 rounded backdrop-blur-sm border border-white/5">
                                         <span className="text-neon-green">{post.date}</span>
+                                        {post.updatedDate && (
+                                            <>
+                                                <span>//</span>
+                                                <span className="text-neon-blue">UPDATED {post.updatedDate}</span>
+                                            </>
+                                        )}
                                         <span>//</span>
                                         <span>{post.readTime}</span>
                                         <span>//</span>
