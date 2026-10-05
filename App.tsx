@@ -361,7 +361,7 @@ const App: React.FC = () => {
       let title = "Space Clicker – Free Space Clicker Game Online";
       let desc = "Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.";
       let image = DEFAULT_OG_IMAGE;
-      let type: 'website' | 'game' | 'article' = 'website';
+      let type: 'website' | 'article' = 'website';
       let schema: any = undefined;
 
       if (viewMode === 'game') {
@@ -371,7 +371,7 @@ const App: React.FC = () => {
               title = gameSeo.title;
               desc = gameSeo.description;
               image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
-              type = 'game';
+              type = 'website';
               schema = {
                 "@context": "https://schema.org",
                 "@graph": [
@@ -668,7 +668,7 @@ const App: React.FC = () => {
       } else if (viewMode === 'spacebar-clicker-2') {
           title = "Spacebar Clicker 2 - Upgraded Idle Space Bar Game";
           desc = "Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.";
-          type = 'game';
+          type = 'website';
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -730,7 +730,7 @@ const App: React.FC = () => {
           desc = unblocked
               ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
               : "Play Spacebar Clicker free online. Press Space for points, buy upgrades, automate production, track CPS, and prestige for permanent Quantum Keys.";
-          type = 'game';
+          type = 'website';
           const clickerGameSchema = {
               "@type": "VideoGame",
               "name": unblocked ? "Spacebar Clicker Unblocked" : "Spacebar Clicker",
