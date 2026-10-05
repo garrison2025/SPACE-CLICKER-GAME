@@ -311,7 +311,7 @@ const MergeShips: React.FC = () => {
     const showFloatText = (x: number, y: number, text: string, color: string) => {
         const id = Date.now() + Math.random();
         setFloatingTexts(prev => {
-            const next = [...prev, { id, x, y, text, opacity: 1, isCrit: true }];
+            const next = [...prev, { id, x, y, text, opacity: 1, color, isCrit: true }];
             return next.length > 20 ? next.slice(-20) : next;
         });
 
@@ -644,7 +644,7 @@ const MergeShips: React.FC = () => {
                      <div 
                         key={ft.id}
                         className="absolute pointer-events-none z-50 font-black text-xl animate-float"
-                        style={{ left: `${ft.x}%`, top: `${ft.y}%`, color: ft.isCrit ? ft.text : '#fff', textShadow: '0 0 5px black' }}
+                        style={{ left: `${ft.x}%`, top: `${ft.y}%`, color: ft.color || '#fff', textShadow: '0 0 5px black' }}
                      >
                          {ft.text}
                      </div>
