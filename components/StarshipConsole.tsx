@@ -18,6 +18,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
+  const activeGameMeta = GAMES_CATALOG.find((game) => game.id === activeGame);
 
   useEffect(() => {
       if (window.innerWidth >= 640) return;
@@ -67,9 +68,13 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                   <span className="font-display font-bold text-sm md:text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
                   <span className="text-[10px] text-neon-blue font-mono tracking-wider">GAME CONSOLE</span>
                </div>
+               <div className="sm:hidden min-w-0 max-w-[8rem]">
+                  <div className="text-[9px] text-neon-blue font-mono tracking-wider">ACTIVE SIM</div>
+                  <div className="text-xs font-bold text-white truncate">{activeGameMeta?.title || 'Space Game'}</div>
+               </div>
             </div>
             
-            <div className="h-8 w-px bg-white/10 mx-2"></div>
+            <div className="hidden sm:block h-8 w-px bg-white/10 mx-2"></div>
             
             <div className="hidden md:flex items-center gap-2 text-xs text-gray-400 font-mono">
                <span className="w-2 h-2 rounded-full bg-green-500"></span>
