@@ -148,6 +148,11 @@ const SpacebarClickerTest: React.FC = () => {
     }
 
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
+    const rollingCps = pressTimes.current.length;
+    peakCpsRef.current = Math.max(peakCpsRef.current, rollingCps);
+    setCurrentCps(rollingCps);
+    setPeakCps(peakCpsRef.current);
+
     clicksRef.current += 1;
     setClicks(clicksRef.current);
 
@@ -382,7 +387,7 @@ const SpacebarClickerTest: React.FC = () => {
             <div className="grid grid-cols-3 gap-3 mb-5">
               <Metric label="Runs Stored" value={String(history.length)} />
               <Metric
-                label={`Last ${Math.min(5, recentSameMode.length)} Avg • ${historyModeLabel}`}
+                label={`Recent Avg • ${historyModeLabel}`}
                 value={recentSameMode.length > 0 ? recentAverageCps.toFixed(2) : '—'}
               />
               <Metric
