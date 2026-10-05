@@ -181,6 +181,34 @@ const GAME_SCHEMA_CONFIG = {
   '/game/deep_signal': { name: 'Deep Space Signal', genres: ['Text Adventure', 'Mystery', 'Sci-Fi', 'Single Player'] }
 };
 
+const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
+const ROUTE_SOCIAL_IMAGES = {
+  '/game/galaxy_miner': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
+  '/game/mars_colony': 'https://images.unsplash.com/photo-1614730341194-75c60740a070?auto=format&fit=crop&q=80&w=1200',
+  '/game/star_defense': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200',
+  '/game/merge_ships': 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
+  '/game/gravity_idle': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
+  '/game/deep_signal': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200'
+};
+
+const normalizeSocialImage = (source) => {
+  try {
+    const url = new URL(source);
+    if (url.hostname === 'images.unsplash.com') {
+      url.searchParams.set('w', '1200');
+      url.searchParams.set('h', '630');
+      url.searchParams.set('fit', 'crop');
+      url.searchParams.set('q', '80');
+    }
+    return url.toString();
+  } catch {
+    return source;
+  }
+};
+
+const getRouteSocialImage = (route) =>
+  normalizeSocialImage(blogStaticMeta[route]?.image || ROUTE_SOCIAL_IMAGES[route] || DEFAULT_SOCIAL_IMAGE);
+
 const buildStaticRouteSchema = (route, description, canonical) => {
   if (route === '/') {
     return {
@@ -960,12 +988,17 @@ const staticRouteContent = {
 const renderHtml = (route, title, description, h1) => {
   const canonical = site + (route === '/' ? '/' : route + '/');
   const isArticle = route.startsWith('/blog/');
+  const socialImage = getRouteSocialImage(route);
   let html = baseHtml;
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" data-rh="true" content="${escapeHtml(description)}">`);
   html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" data-rh="true" content="${escapeHtml(title)}" />`);
   html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" data-rh="true" content="${escapeHtml(description)}" />`);
   html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" data-rh="true" content="${isArticle ? 'article' : 'website'}" />`);
+  html = html.replace(
+    /<meta property="og:image"[^>]*>/i,
+    `<meta property="og:image" content="${escapeHtml(socialImage)}" />`
+  );
   if (!isArticle && HIGH_VALUE_SCHEMA_ROUTES.has(route)) {
     const routeSchema = buildStaticRouteSchema(route, description, canonical);
     if (routeSchema) {
@@ -1035,6 +1068,7 @@ const renderHtml = (route, title, description, h1) => {
   } else {
     html = html.replace('</head>', `  <meta name="twitter:description" data-rh="true" content="${escapeHtml(description)}" />\n</head>`);
   }
+  html = html.replace('</head>', `  <meta property="og:image:width" data-rh="true" content="1200" />\n  <meta property="og:image:height" data-rh="true" content="630" />\n  <meta property="og:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n  <meta name="twitter:card" data-rh="true" content="summary_large_image" />\n  <meta name="twitter:image" data-rh="true" content="${escapeHtml(socialImage)}" />\n  <meta name="twitter:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n</head>`);
   // Mark static SEO tags as Helmet-managed so the client can reconcile them
   // instead of appending a second canonical/meta set after React mounts.
   html = html.replace(/<meta property="og:image"([^>]*)>/i, '<meta property="og:image" data-rh="true"$1>');
