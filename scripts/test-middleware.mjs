@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { onRequest } from '../functions/_middleware.js';
 
 const nextResponse = () => new Response('OK', { status: 200 });
@@ -126,4 +127,27 @@ expect(invalidGame.status === 404, 'Unknown game route must return HTTP 404');
 const invalidBlog = await run('https://spaceclickergame.com/blog/not-a-real-post/');
 expect(invalidBlog.status === 404, 'Unknown blog route must return HTTP 404');
 
-console.log('Middleware routing tests passed.');
+// Build-output contract: every indexable URL published in sitemap.xml must be
+// accepted by middleware, and every non-root HTML route must canonicalize its
+// no-trailing-slash variant with a permanent redirect.
+const builtSitemap = fs.readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
+const sitemapUrls = [...builtSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+expect(sitemapUrls.length === 32, 'Middleware test expected all 32 sitemap URLs');
+
+for (const canonicalUrl of sitemapUrls) {
+  const canonicalResponse = await run(canonicalUrl);
+  expect(canonicalResponse.status === 200, 'Sitemap URL must pass middleware: ' + canonicalUrl);
+
+  const parsed = new URL(canonicalUrl);
+  if (parsed.pathname === '/') continue;
+
+  const noSlashUrl = parsed.origin + parsed.pathname.replace(/\/$/, '');
+  const noSlashResponse = await run(noSlashUrl);
+  expect(noSlashResponse.status === 301, 'No-slash sitemap URL must redirect: ' + noSlashUrl);
+  expect(
+    noSlashResponse.headers.get('location') === canonicalUrl,
+    'No-slash sitemap redirect target is wrong: ' + noSlashUrl
+  );
+}
+
+console.log('Middleware routing tests passed: legacy routes, 404s, static discovery files, and 32/32 sitemap URLs are canonical.');
