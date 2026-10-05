@@ -145,7 +145,18 @@ if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
 
 const sitemap = fs.readFileSync(sitemapPath, 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((match) => match[1]);
 if (locs.length !== 27) throw new Error('Expected 27 core sitemap URLs, found ' + locs.length);
+if (lastmods.length !== locs.length) throw new Error('Every sitemap URL must include one lastmod date');
+for (const lastmod of lastmods) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod)) {
+    throw new Error('Invalid sitemap lastmod format: ' + lastmod);
+  }
+  const timestamp = Date.parse(lastmod + 'T00:00:00Z');
+  if (!Number.isFinite(timestamp) || timestamp > Date.now() + 86_400_000) {
+    throw new Error('Invalid or future sitemap lastmod date: ' + lastmod);
+  }
+}
 if (new Set(locs).size !== locs.length) throw new Error('Duplicate URLs found in sitemap.xml');
 if (locs.includes(site + '/game/')) throw new Error('Duplicate /game/ URL must not return to the sitemap');
 
@@ -165,4 +176,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, canonical/robots/hreflang handoff, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
