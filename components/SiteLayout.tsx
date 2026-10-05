@@ -115,7 +115,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                     <Logo withText={true} className="w-8 h-8" />
                  </div>
                  <p className="text-xs leading-relaxed mb-4 text-gray-500">
-                     The premier destination for the <strong>space clicker game</strong> genre. 
+                     A browser hub for <strong>space clicker game</strong> simulations and Spacebar tools. 
                      Play browser-based clicker games, build idle economies, and test your spacebar speed without downloads.
                  </p>
                  </div>
