@@ -142,12 +142,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
              <div>
                  <h4 className="font-bold text-white mb-4 tracking-wider text-xs">FEATURED GAMES</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
-                     <li><a href="/game/galaxy_miner" onClick={(e) => { e.preventDefault(); onNavigate('game', 'galaxy_miner'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
-                     <li><a href="/game/mars_colony" onClick={(e) => { e.preventDefault(); onNavigate('game', 'mars_colony'); }} className="hover:text-neon-blue transition-colors">Mars Colony Idle</a></li>
-                     <li><a href="/game/star_defense" onClick={(e) => { e.preventDefault(); onNavigate('game', 'star_defense'); }} className="hover:text-neon-blue transition-colors">Star Defense Force</a></li>
-                     <li><a href="/game/merge_ships" onClick={(e) => { e.preventDefault(); onNavigate('game', 'merge_ships'); }} className="hover:text-neon-blue transition-colors">Merge Ships Orbit</a></li>
-                     <li><a href="/game/gravity_idle" onClick={(e) => { e.preventDefault(); onNavigate('game', 'gravity_idle'); }} className="hover:text-neon-blue transition-colors">Gravity Well Idle</a></li>
-                     <li><a href="/game/deep_signal" onClick={(e) => { e.preventDefault(); onNavigate('game', 'deep_signal'); }} className="hover:text-neon-blue transition-colors">Deep Space Signal</a></li>
+                     <li><a href="/game/galaxy_miner/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'galaxy_miner'); }} className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
+                     <li><a href="/game/mars_colony/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'mars_colony'); }} className="hover:text-neon-blue transition-colors">Mars Colony Idle</a></li>
+                     <li><a href="/game/star_defense/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'star_defense'); }} className="hover:text-neon-blue transition-colors">Star Defense Force</a></li>
+                     <li><a href="/game/merge_ships/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'merge_ships'); }} className="hover:text-neon-blue transition-colors">Merge Ships Orbit</a></li>
+                     <li><a href="/game/gravity_idle/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'gravity_idle'); }} className="hover:text-neon-blue transition-colors">Gravity Well Idle</a></li>
+                     <li><a href="/game/deep_signal/" onClick={(e) => { e.preventDefault(); onNavigate('game', 'deep_signal'); }} className="hover:text-neon-blue transition-colors">Deep Space Signal</a></li>
                  </ul>
              </div>
 
