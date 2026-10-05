@@ -48,28 +48,43 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             const script = document.createElement('script');
             script.id = 'runtime-article-jsonld';
             script.type = 'application/ld+json';
+            const canonical = `https://spaceclickergame.com/blog/${post.slug}/`;
             script.text = JSON.stringify({
                 "@context": "https://schema.org",
-                "@type": "Article",
-                "headline": post.title,
-                "image": [post.image],
-                "datePublished": new Date(post.date).toISOString(),
-                "dateModified": new Date(post.updatedDate || post.date).toISOString(),
-                "author": [{
-                    "@type": "Organization",
-                    "name": post.author,
-                    "url": "https://spaceclickergame.com/about/"
-                }],
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Space Clicker Game",
-                    "url": "https://spaceclickergame.com/"
-                },
-                "description": post.excerpt,
-                "mainEntityOfPage": {
-                    "@type": "WebPage",
-                    "@id": `https://spaceclickergame.com/blog/${post.slug}/`
-                }
+                "@graph": [
+                    {
+                        "@type": "Article",
+                        "@id": canonical + "#article",
+                        "headline": post.title,
+                        "image": [post.image],
+                        "datePublished": new Date(post.date).toISOString(),
+                        "dateModified": new Date(post.updatedDate || post.date).toISOString(),
+                        "author": [{
+                            "@type": "Organization",
+                            "name": post.author,
+                            "url": "https://spaceclickergame.com/about/"
+                        }],
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Space Clicker Game",
+                            "url": "https://spaceclickergame.com/"
+                        },
+                        "description": post.excerpt,
+                        "mainEntityOfPage": {
+                            "@type": "WebPage",
+                            "@id": canonical
+                        }
+                    },
+                    {
+                        "@type": "BreadcrumbList",
+                        "@id": canonical + "#breadcrumb",
+                        "itemListElement": [
+                            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                            { "@type": "ListItem", "position": 2, "name": "Mission Logs", "item": "https://spaceclickergame.com/blog/" },
+                            { "@type": "ListItem", "position": 3, "name": post.title, "item": canonical }
+                        ]
+                    }
+                ]
             });
             document.head.appendChild(script);
             return () => { script.remove(); };
