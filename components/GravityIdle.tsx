@@ -581,35 +581,47 @@ const GravityIdle: React.FC = () => {
     // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(GRAVITY_SAVE_KEY);
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                if (data.matter) setMatter(data.matter);
-                if (data.upgrades) setUpgrades(data.upgrades);
-                
-                // OFFLINE CALCULATION
-                if (data.lastSaveTime) {
-                    const now = Date.now();
-                    const seconds = (now - data.lastSaveTime) / 1000;
-                    if (seconds > 60) { // Min 1 min
-                        const launchers = data.upgrades.launchers || 1;
-                        const power = data.upgrades.power || 1;
-                        
-                        // Approx Formula: 
-                        // Avg Spawn Rate (1.2/s) * Value Factor (25) * Power Mult (1.1^P) * Efficiency (Launchers/10 cap at 1)
-                        const powerMult = Math.pow(1.1, power);
-                        const efficiency = Math.min(1, launchers * 0.15); 
-                        const rate = 30 * powerMult * efficiency;
-                        
-                        const earned = Math.floor(rate * seconds);
-                        if (earned > 0) {
-                            setMatter(prev => prev + earned);
-                            setOfflineReport({ time: seconds, earned });
-                        }
-                    }
-                }
+        if (!saved) return;
 
-            } catch(e) {}
+        try {
+            const data = JSON.parse(saved);
+            const loadedMatter = Number.isFinite(Number(data.matter)) ? Math.max(0, Number(data.matter)) : 0;
+            const loadedUpgrades: GravitySaveData['upgrades'] = {
+                gravity: Math.max(1, Math.floor(Number(data.upgrades?.gravity) || 1)),
+                launchers: Math.max(1, Math.floor(Number(data.upgrades?.launchers) || 1)),
+                fireRate: Math.max(1, Math.floor(Number(data.upgrades?.fireRate) || 1)),
+                power: Math.max(1, Math.floor(Number(data.upgrades?.power) || 1)),
+                pierce: Math.max(0, Math.floor(Number(data.upgrades?.pierce) || 0)),
+            };
+
+            const now = Date.now();
+            const lastSaveTime = Number(data.lastSaveTime) || now;
+            const seconds = Math.min(86_400, Math.max(0, (now - lastSaveTime) / 1000));
+
+            // Approximate offline output from launcher count and kinetic power.
+            const powerMult = Math.pow(1.1, loadedUpgrades.power);
+            const efficiency = Math.min(1, loadedUpgrades.launchers * 0.15);
+            const rate = 30 * powerMult * efficiency;
+            const earned = seconds >= 60 ? Math.floor(rate * seconds) : 0;
+            const nextMatter = loadedMatter + Math.max(0, earned);
+            const nextSnapshot = { matter: nextMatter, upgrades: loadedUpgrades };
+
+            // Consume the offline window immediately so refreshing before the
+            // autosave interval cannot award the same period again.
+            saveStateRef.current = nextSnapshot;
+            localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: now,
+            }));
+
+            setMatter(nextMatter);
+            setUpgrades(loadedUpgrades);
+
+            if (earned > 0) {
+                setOfflineReport({ time: seconds, earned });
+            }
+        } catch (error) {
+            console.warn('Could not load Gravity Idle save.', error);
         }
     }, []);
 
