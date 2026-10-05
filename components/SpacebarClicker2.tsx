@@ -296,12 +296,26 @@ const SpacebarClicker2: React.FC = () => {
   const cost = (def: UpgradeDef) => Math.floor(def.baseCost * Math.pow(def.scale, upgrades[def.id]));
 
   const buy = (def: UpgradeDef) => {
-    const level = upgrades[def.id];
+    const snapshot = saveRef.current;
+    const level = snapshot.upgrades[def.id];
     if (def.max !== undefined && level >= def.max) return;
-    const price = cost(def);
-    if (points < price) return;
-    setPoints((value) => value - price);
-    setUpgrades((value) => ({ ...value, [def.id]: value[def.id] + 1 }));
+
+    const price = Math.floor(def.baseCost * Math.pow(def.scale, level));
+    if (snapshot.points < price) return;
+
+    const nextPoints = snapshot.points - price;
+    const nextUpgrades = {
+      ...snapshot.upgrades,
+      [def.id]: level + 1,
+    };
+
+    saveRef.current = {
+      ...snapshot,
+      points: nextPoints,
+      upgrades: nextUpgrades,
+    };
+    setPoints(nextPoints);
+    setUpgrades(nextUpgrades);
   };
 
   const ascend = () => {
