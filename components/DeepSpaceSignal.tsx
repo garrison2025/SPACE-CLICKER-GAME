@@ -498,10 +498,10 @@ const DeepSpaceSignal: React.FC = () => {
             </div>
 
             {/* CONTROL DECK */}
-            <div className="relative z-40 bg-black border-t-2 border-green-900/50 pt-4 grid grid-cols-1 md:grid-cols-3 gap-4 shrink-0">
+            <div className="relative z-40 bg-black border-t-2 border-green-900/50 pt-3 md:pt-4 grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 shrink-0">
                 
                 {/* 1. Energy */}
-                <div className="bg-green-900/10 p-4 rounded border border-green-900/30 flex flex-col justify-between">
+                <div className="col-span-2 md:col-span-1 bg-green-900/10 p-3 md:p-4 rounded border border-green-900/30 flex flex-col justify-between">
                     <div className="flex justify-between text-xs mb-2 font-bold tracking-widest text-green-600">
                         <span>CAPACITOR</span>
                         <span className={energy < 20 ? 'text-red-500 animate-pulse' : 'text-green-400'}>{Math.floor(energy)} / {Math.floor(maxEnergy)}</span>
@@ -520,7 +520,7 @@ const DeepSpaceSignal: React.FC = () => {
                     onClick={handleScan}
                     disabled={isScanning || energy < scanCost}
                     className={`
-                        relative group overflow-hidden border-2 rounded flex flex-col items-center justify-center transition-all
+                        min-h-12 md:min-h-0 relative group overflow-hidden border-2 rounded flex flex-col items-center justify-center transition-all
                         ${isScanning || energy < scanCost ? 'border-gray-800 text-gray-700 cursor-not-allowed' : 'border-green-500 text-green-400 hover:bg-green-500 hover:text-black hover:shadow-[0_0_30px_lime]'}
                     `}
                 >
@@ -532,16 +532,16 @@ const DeepSpaceSignal: React.FC = () => {
                 </button>
 
                 {/* 3. Upgrades Toggle */}
-                <div className="grid grid-rows-2 gap-2">
+                <div className="grid grid-rows-2 gap-2 min-h-12">
                     <button 
                         onClick={() => { setShowUpgrades(!showUpgrades); playSound('click'); }}
-                        className={`border border-green-700 text-xs font-bold tracking-wider hover:bg-green-900/30 transition-colors ${showUpgrades ? 'bg-green-900 text-white' : 'text-green-600'}`}
+                        className={`min-h-11 border border-green-700 text-[10px] sm:text-xs font-bold tracking-wide sm:tracking-wider hover:bg-green-900/30 transition-colors ${showUpgrades ? 'bg-green-900 text-white' : 'text-green-600'}`}
                     >
                         SYSTEM UPGRADES
                     </button>
                     <button 
                         onClick={clearLogs}
-                        className="border border-green-900 text-green-800 text-xs font-bold hover:text-red-400 hover:border-red-900 transition-colors"
+                        className="min-h-11 border border-green-900 text-green-800 text-[10px] sm:text-xs font-bold hover:text-red-400 hover:border-red-900 transition-colors"
                     >
                         PURGE LOGS
                     </button>
