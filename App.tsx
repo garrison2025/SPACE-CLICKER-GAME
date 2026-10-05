@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
-import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, BLOG_POSTS } from './constants';
+import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG } from './constants';
+import { BLOG_POST_META } from './content/blogMeta';
 import StarField from './components/StarField';
 import UpgradeShop from './components/UpgradeShop';
 import ClickArea from './components/ClickArea';
@@ -14,7 +15,6 @@ import GameCarousel from './components/GameCarousel';
 import SEOContent from './components/SEOContent';
 import InterstellarComms from './components/InterstellarComms';
 import LandingPage from './components/LandingPage';
-import BlogPage from './components/BlogPage';
 import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
 import ComparisonPage from './components/ComparisonPage';
@@ -38,6 +38,7 @@ const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'))
 const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
 const SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
 const SpacebarClicker2 = React.lazy(() => import('./components/SpacebarClicker2'));
+const BlogPage = React.lazy(() => import('./components/BlogPage'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -119,7 +120,7 @@ const App: React.FC = () => {
           const parts = path.split('/');
           const id = parts[2];
           if (id) {
-              if (BLOG_POSTS.some(p => p.slug === id || p.id === id)) {
+              if (BLOG_POST_META.some(p => p.slug === id || p.id === id)) {
                   postId = id;
               } else {
                   error = true;
@@ -332,7 +333,7 @@ const App: React.FC = () => {
               };
           }
       } else if (viewMode === 'blog' && activePostId) {
-          const post = BLOG_POSTS.find(p => p.slug === activePostId || p.id === activePostId);
+          const post = BLOG_POST_META.find(p => p.slug === activePostId || p.id === activePostId);
           if (post) {
               title = `${post.title} | Space Clicker Game Blog`;
               desc = post.excerpt;
@@ -1188,7 +1189,7 @@ const App: React.FC = () => {
                 {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
                 {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
                 {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
-                {viewMode === 'blog' && <BlogPage postId={activePostId} onNavigate={handleNavigate} />}
+                {viewMode === 'blog' && <Suspense fallback={<LoadingSimulation />}><BlogPage postId={activePostId} onNavigate={handleNavigate} /></Suspense>}
                 {viewMode === 'about' && <AboutPage />}
                 {viewMode === 'contact' && <ContactPage />}
                 {viewMode === 'privacy' && <PrivacyPage />}
