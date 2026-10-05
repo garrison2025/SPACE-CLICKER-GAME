@@ -204,6 +204,10 @@ export const SitemapPage = () => (
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
             <li><a href="/" className="hover:text-neon-blue transition-colors">Home Base</a></li>
             <li><a href="/game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
+            <li><a href="/spacebar-clicker" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Clicker</a></li>
+            <li><a href="/spacebar-counter" className="hover:text-neon-blue transition-colors">Spacebar Counter</a></li>
+            <li><a href="/spacebar-clicker-test" className="hover:text-neon-blue transition-colors">Spacebar Clicker Test</a></li>
+            <li><a href="/spacebar-clicker-unblocked" className="hover:text-neon-blue transition-colors">Spacebar Clicker Instant Browser Mode</a></li>
             <li><a href="/compare" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Game Comparisons (vs Cookie Clicker)</a></li>
             <li><a href="/achievements" className="hover:text-neon-blue transition-colors font-bold text-neon-green">Achievements & Trophy Guide</a></li>
             <li><a href="/blog" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>
