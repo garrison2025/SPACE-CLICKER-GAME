@@ -150,20 +150,35 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   const prestigeGain = Math.floor(Math.sqrt(points / PRESTIGE_THRESHOLD));
 
-  const saveNow = useCallback(() => {
-    if (typeof window === 'undefined') return;
-    const payload: SpacebarSave = {
-      version: SAVE_VERSION,
+  const saveStateRef = useRef({
+    points,
+    lifetimePoints,
+    lifetimePresses,
+    quantumKeys,
+    upgrades,
+    bestCps,
+  });
+
+  useEffect(() => {
+    saveStateRef.current = {
       points,
       lifetimePoints,
       lifetimePresses,
       quantumKeys,
       upgrades,
       bestCps,
+    };
+  }, [points, lifetimePoints, lifetimePresses, quantumKeys, upgrades, bestCps]);
+
+  const saveNow = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const payload: SpacebarSave = {
+      version: SAVE_VERSION,
+      ...saveStateRef.current,
       lastSaveTime: Date.now(),
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
-  }, [points, lifetimePoints, lifetimePresses, quantumKeys, upgrades, bestCps]);
+  }, []);
 
   useEffect(() => {
     const elapsed = Math.min(86400, Math.max(0, (Date.now() - initial.lastSaveTime) / 1000));
