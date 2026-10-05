@@ -122,7 +122,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-colors"
+            className="w-11 h-11 rounded-lg bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-colors"
           >
             ✕
           </button>
@@ -132,7 +132,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         <div className="flex border-b border-white/10 bg-space-900/60 p-2 gap-2">
           <button
             onClick={() => setActiveTab('stats')}
-            className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
               activeTab === 'stats' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -142,7 +142,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('save')}
-            className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
               activeTab === 'save' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -152,7 +152,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('settings')}
-            className={`flex-1 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
               activeTab === 'settings' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
