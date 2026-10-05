@@ -9,7 +9,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 29, 2025',
         updatedDate: 'Oct 5, 2026',
-        readTime: '15 min read',
+        readTime: '4 min read',
         tags: ['space clicker game', 'incremental', 'history', 'mechanics'],
         image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -75,7 +75,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 28, 2025',
         updatedDate: 'Oct 5, 2026',
-        readTime: '12 min read',
+        readTime: '3 min read',
         tags: ['psychology', 'space clicking game', 'game design', 'player motivation'],
         image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -130,7 +130,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 25, 2025',
         updatedDate: 'Oct 5, 2026',
-        readTime: '10 min read',
+        readTime: '3 min read',
         tags: ['space bar clicking game', 'hardware', 'gaming tips', 'automation'],
         image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -181,7 +181,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 02, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '18 min read',
+        readTime: '3 min read',
         tags: ['space clicking games', 'game design', 'features', 'incremental games'],
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -237,7 +237,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 05, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '14 min read',
+        readTime: '3 min read',
         tags: ['space bar clicking game', 'hardware', 'speedrun', 'input lag'],
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -286,7 +286,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 08, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '20 min read',
+        readTime: '3 min read',
         tags: ['clicker game space', 'strategy', 'math', 'optimization'],
         image: 'https://images.unsplash.com/photo-1614730341194-75c60740a070?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -344,12 +344,12 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '7',
         slug: 'educational-value-of-space-clicker-games',
-        title: 'Math in the Void: How Space Clicker Games Teach Exponential Growth',
+        title: 'Math in the Void: How Space Clicker Games Visualize Exponential Growth',
         excerpt: 'Incremental games can make compounding, scientific notation, and resource tradeoffs easier to visualize. They are examples to explore, not substitutes for formal math or science instruction.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 10, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '16 min read',
+        readTime: '2 min read',
         tags: ['education', 'math', 'space clicker game', 'incremental'],
         image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -394,7 +394,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 12, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '14 min read',
+        readTime: '2 min read',
         tags: ['space click game', 'playstyle', 'strategy', 'guide'],
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -453,7 +453,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 15, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '18 min read',
+        readTime: '2 min read',
         tags: ['clicker game space', 'narrative', 'writing', 'lore'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
@@ -498,7 +498,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 18, 2026',
         updatedDate: 'Oct 5, 2026',
-        readTime: '15 min read',
+        readTime: '2 min read',
         tags: ['space bar click game', 'hardware', 'review', 'keyboards'],
         image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000',
         content: `
