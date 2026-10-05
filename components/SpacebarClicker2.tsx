@@ -498,6 +498,13 @@ const SpacebarClicker2: React.FC = () => {
             </p>
           </section>
           <section>
+            <h2 className="text-2xl font-display text-white mb-3">Related strategy guide</h2>
+            <p>
+              Read <a href="/blog/active-vs-passive-space-click-game-styles/" className="text-neon-blue hover:text-white">Active Clicking vs. Passive Mining</a> for a deeper explanation of when manual input gives way to automatic production.
+            </p>
+          </section>
+
+          <section>
             <h2 className="text-2xl font-display text-white mb-3">Spacebar Clicker 2 FAQ</h2>
             <div className="space-y-4">
               <div><h3 className="text-lg text-white">Is this the same as the classic Spacebar Clicker?</h3><p>No. It is a separate enhanced mode with its own mechanics and local save.</p></div>
