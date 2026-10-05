@@ -377,6 +377,12 @@ const App: React.FC = () => {
               }
             ]
           };
+      } else if (viewMode === 'compare') {
+          title = "Space Clicker Game vs Classic Incremental Games: Feature Comparison";
+          desc = "Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games.";
+      } else if (viewMode === 'achievements') {
+          title = "Galaxy Miner Milestones & Progress Tracker | Space Clicker Game";
+          desc = "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.";
       } else if (viewMode === 'spacebar-games') {
           title = "Spacebar Games - Clicker, Counter & CPS Tests";
           desc = "Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.";
