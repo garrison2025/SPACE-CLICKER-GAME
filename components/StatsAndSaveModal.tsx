@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
 import { ResourceType, Upgrade, Planet } from '../types';
 
@@ -68,6 +68,15 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   const [copied, setCopied] = useState(false);
   const [importError, setImportError] = useState('');
   const [backupNotice, setBackupNotice] = useState('');
+  const copiedTimerRef = useRef<number>();
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimerRef.current !== undefined) {
+        window.clearTimeout(copiedTimerRef.current);
+      }
+    };
+  }, []);
 
   if (!isOpen) return null;
 
@@ -109,7 +118,11 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setBackupNotice('Backup code copied to the clipboard.');
-      setTimeout(() => setCopied(false), 2000);
+      if (copiedTimerRef.current !== undefined) window.clearTimeout(copiedTimerRef.current);
+      copiedTimerRef.current = window.setTimeout(() => {
+        copiedTimerRef.current = undefined;
+        setCopied(false);
+      }, 2000);
     } catch {
       setCopied(false);
       setBackupNotice('Clipboard access was blocked. Select the backup code below and copy it manually.');
@@ -203,8 +216,15 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   const totalBuildingLevels = Object.values(upgrades).reduce((sum, u) => sum + u.count, 0);
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/85 md:backdrop-blur-md p-3 sm:p-4 animate-in fade-in">
-      <div role="dialog" aria-modal="true" aria-labelledby="stats-backup-title" className="bg-space-850 border border-neon-blue/40 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(0,243,255,0.15)] overflow-hidden flex flex-col max-h-[calc(100dvh-1.5rem)] sm:max-h-[90dvh]">
+    <div className="safe-screen-overlay fixed inset-0 z-[120] flex items-center justify-center bg-black/85 md:backdrop-blur-md animate-in fade-in">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="stats-backup-title"
+        tabIndex={-1}
+        autoFocus
+        className="bg-space-850 border border-neon-blue/40 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(0,243,255,0.15)] overflow-hidden flex flex-col max-h-full outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+      >
         
         {/* Header */}
         <div className="p-3 sm:p-5 border-b border-white/10 flex justify-between items-center gap-3 bg-space-900">
@@ -219,7 +239,9 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
               </p>
             </div>
           </div>
-          <button 
+          <button
+            type="button"
+            aria-label="Close telemetry and backup"
             onClick={onClose}
             className="w-11 h-11 rounded-lg bg-white/5 hover:bg-white/20 text-gray-400 hover:text-white flex items-center justify-center transition-colors"
           >
