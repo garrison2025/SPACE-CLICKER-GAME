@@ -203,8 +203,23 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
     if (elapsed >= 60 && initialRate > 0) {
       const earned = Math.floor(initialRate * elapsed);
-      setPoints((value) => value + earned);
-      setLifetimePoints((value) => value + earned);
+      const nextSnapshot = {
+        ...saveStateRef.current,
+        points: initial.points + earned,
+        lifetimePoints: initial.lifetimePoints + earned,
+      };
+
+      // Persist credited offline production immediately so a fast refresh cannot
+      // award the same away period more than once.
+      saveStateRef.current = nextSnapshot;
+      localStorage.setItem(SAVE_KEY, JSON.stringify({
+        version: SAVE_VERSION,
+        ...nextSnapshot,
+        lastSaveTime: Date.now(),
+      }));
+
+      setPoints(nextSnapshot.points);
+      setLifetimePoints(nextSnapshot.lifetimePoints);
       setOfflineEarned(earned);
     }
   }, [initial]);
