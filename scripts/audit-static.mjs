@@ -80,7 +80,8 @@ const deepSpacebarContentRoutes = new Set([
   '/spacebar-clicker/',
   '/spacebar-clicker-2/',
   '/spacebar-counter/',
-  '/spacebar-clicker-test/'
+  '/spacebar-clicker-test/',
+  '/spacebar-clicker-unblocked/'
 ]);
 
 const trustContentRoutes = new Set([
