@@ -929,8 +929,6 @@ const App: React.FC = () => {
                 }
               ]
           };
-      } else {
-          title = `${viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} | Space Clicker Game`;
       }
 
       return { title, description: desc, path: location.pathname, image, type, schema };
