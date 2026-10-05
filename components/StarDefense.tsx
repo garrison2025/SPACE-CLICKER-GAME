@@ -78,6 +78,23 @@ const StarDefense: React.FC = () => {
     const muzzleFlashRef = useRef<number>(0); // Opacity of muzzle flash
     const animationFrameRef = useRef<number>();
     const lastUiRenderRef = useRef<number>(0);
+    const transientTimersRef = useRef<Set<number>>(new Set());
+
+    const scheduleTransient = (callback: () => void, delay: number) => {
+        const timer = window.setTimeout(() => {
+            transientTimersRef.current.delete(timer);
+            callback();
+        }, delay);
+        transientTimersRef.current.add(timer);
+        return timer;
+    };
+
+    useEffect(() => {
+        return () => {
+            transientTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+            transientTimersRef.current.clear();
+        };
+    }, []);
     
     // Force Render for UI
     const [_, setRenderTrigger] = useState(0);
@@ -331,7 +348,7 @@ const StarDefense: React.FC = () => {
             waveTimerRef.current = 0;
             if ((wave + 1) % 5 === 0) {
                  setBossWarning(true);
-                 setTimeout(() => setBossWarning(false), 3000);
+                 scheduleTransient(() => setBossWarning(false), 3000);
             } else {
                  addFloatingText(50, 40, `WAVE ${wave + 1}`, '#fff', true);
             }
@@ -463,7 +480,7 @@ const StarDefense: React.FC = () => {
     const addFloatingText = (x: number, y: number, text: string, color: string = '#fff', isCrit: boolean = false, isDamage: boolean = false) => {
         const id = Math.random();
         floatTextRef.current.push({ id, x, y, text, opacity: 1, isCrit, isDamage });
-        setTimeout(() => {
+        scheduleTransient(() => {
             floatTextRef.current = floatTextRef.current.filter(t => t.id !== id);
         }, isDamage ? 500 : 1000);
     };
