@@ -835,7 +835,7 @@ const App: React.FC = () => {
                     {
                       "@type": "Question",
                       "name": "Can I move my Spacebar Clicker save to another browser?",
-                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Export a save code, copy it to the other browser or device, then use Import save. Imported values are validated before replacing the local save." }
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported values are validated before replacing the local save." }
                     }
                   ]
                 }
