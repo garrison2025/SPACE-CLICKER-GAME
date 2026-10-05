@@ -13,7 +13,7 @@ const site = 'https://spaceclickergame.com';
 
 const routes = [
   ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
-  ['/game/galaxy_miner', 'Galaxy Miner - Free Online Space Clicker Game', 'Mine Stardust, automate a growing space economy, manage heat and prestige for permanent Dark Matter upgrades.', 'Galaxy Miner'],
+  ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
   ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with resources, production and idle progression.', 'Mars Colony Idle'],
   ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend the sector in a browser-based space defense clicker with upgrades and waves.', 'Star Defense'],
   ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge ships, expand your orbit and build passive production in a free browser game.', 'Merge Spaceships'],
