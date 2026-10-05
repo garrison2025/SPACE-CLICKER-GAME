@@ -3,6 +3,11 @@ import path from 'node:path';
 
 const distDir = path.resolve('dist');
 const site = 'https://spaceclickergame.com';
+const legacyPublicSitemap = path.resolve('public/sitemap.xml');
+
+if (fs.existsSync(legacyPublicSitemap)) {
+  throw new Error('public/sitemap.xml must not exist; sitemap.xml is generated from the prerender route catalog at build time.');
+}
 
 if (!fs.existsSync(distDir)) {
   throw new Error('dist/ not found. Run the production build before static audit.');
