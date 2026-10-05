@@ -816,6 +816,11 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "What survives a prestige reset?",
                       "acceptedAnswer": { "@type": "Answer", "text": "Quantum Keys, lifetime presses, best CPS and achievement progress remain." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Can I move my Spacebar Clicker save to another browser?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Export a save code, copy it to the other browser or device, then use Import save. Imported values are validated before replacing the local save." }
                     }
                   ]
                 }
