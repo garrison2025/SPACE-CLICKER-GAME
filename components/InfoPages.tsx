@@ -203,7 +203,7 @@ export const SitemapPage = () => (
         <p>Index of all accessible frequencies in the network.</p>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
             <li><a href="/" className="hover:text-neon-blue transition-colors">Home Base</a></li>
-            <li><a href="/game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
+            <li><a href="/game/galaxy_miner/" className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
             <li><a href="/spacebar-games" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Games Hub</a></li>
             <li><a href="/spacebar-clicker" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Clicker</a></li>
             <li><a href="/spacebar-clicker-2" className="hover:text-neon-blue transition-colors">Spacebar Clicker 2</a></li>
