@@ -379,7 +379,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             {/* Planet Name */}
             <div className="mt-1 text-center">
               <p className="text-[10px] text-gray-400 tracking-widest uppercase border-t border-white/10 pt-2 min-w-36 drop-shadow-md bg-black/40 rounded px-2">
-                  {planet.name}
+                  {planet.name} · x{planet.productionMultiplier}
               </p>
               <div className="mt-1 text-[9px] font-mono tracking-wider text-neon-blue/80">
                 {nextPlanet
