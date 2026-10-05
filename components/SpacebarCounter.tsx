@@ -3,13 +3,20 @@ import { playSound } from '../services/audioService';
 
 const BEST_KEY = 'spacebar_counter_best_v1';
 
+const loadBestCount = () => {
+  const value = Number(localStorage.getItem(BEST_KEY) || 0);
+  return Number.isFinite(value) && value >= 0
+    ? Math.min(Number.MAX_SAFE_INTEGER, Math.floor(value))
+    : 0;
+};
+
 const SpacebarCounter: React.FC = () => {
   const [count, setCount] = useState(0);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentCps, setCurrentCps] = useState(0);
   const [peakCps, setPeakCps] = useState(0);
-  const [bestCount, setBestCount] = useState(() => Number(localStorage.getItem(BEST_KEY) || 0));
+  const [bestCount, setBestCount] = useState(loadBestCount);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
