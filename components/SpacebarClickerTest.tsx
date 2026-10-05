@@ -240,6 +240,27 @@ const SpacebarClickerTest: React.FC = () => {
               One and five seconds measure burst speed. Ten seconds is a useful general benchmark. Thirty and sixty seconds reward consistency. The 100-click mode measures how quickly you can finish a fixed workload, and Custom lets you choose any duration from 1 to 300 seconds.
             </p>
           </section>
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">Spacebar Clicker Test FAQ</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg text-white">What is a space bar click test?</h3>
+                <p>It measures how many intentional Space presses you can make during a selected time window and converts the result into clicks per second.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">What does CPS mean in a spacebar speed test?</h3>
+                <p>CPS means clicks per second. Average CPS uses all valid presses over the elapsed test time, while peak CPS tracks the strongest rolling one-second burst.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">Can I run a 100-click spacebar test?</h3>
+                <p>Yes. Select the 100-click mode and the result records how long it takes to reach one hundred valid presses.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">Can I choose a custom test duration?</h3>
+                <p>Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode.</p>
+              </div>
+            </div>
+          </section>
         </article>
       </section>
     </div>
