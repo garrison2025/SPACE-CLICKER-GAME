@@ -80,8 +80,8 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     id: 'auto_1',
     category: 'automation',
     title: 'Drone Fleet Commander',
-    description: 'Deploy an automated fleet of Autonomous Mining Drones.',
-    unlockCondition: 'Own 25 Autonomous Drones',
+    description: 'Deploy an automated fleet of Mining Drones.',
+    unlockCondition: 'Own 25 Mining Drones',
     noteText: 'At 25 units, the game’s normal upgrade milestone multiplier also activates.',
     icon: '🛸',
     targetValue: 25
@@ -128,18 +128,6 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     icon: '🟣',
     targetValue: 100
   },
-  {
-    id: 'prestige_3',
-    category: 'prestige',
-    title: 'Multiverse Explorer',
-    description: 'Traverse multiple dimensional cycles to explore distant exoplanets.',
-    unlockCondition: 'Reach Planet Sector 5 (Chronos Alpha or beyond)',
-    noteText: 'Tracked sector milestone; no separate achievement bonus.',
-    icon: '🌀',
-    targetValue: 5
-  },
-
-
 ];
 
 const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
@@ -156,7 +144,6 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         const data = JSON.parse(saved);
         const stardust = data.lifetimeEarnings || data.resources?.STARDUST || 0;
         const darkMatter = data.resources?.DARK_MATTER || 0;
-        const planetIdx = data.planetIndex || 0;
         const drones = data.upgrades?.['drone']?.count || 0;
         const stations = data.upgrades?.['station']?.count || 0;
         const dyson = data.upgrades?.['dyson']?.count || 0;
@@ -186,9 +173,6 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
           } else if (ach.id === 'prestige_2') {
             current = darkMatter;
             isUnlocked = darkMatter >= ach.targetValue;
-          } else if (ach.id === 'prestige_3') {
-            current = planetIdx + 1;
-            isUnlocked = planetIdx + 1 >= ach.targetValue;
           }
 
           if (isUnlocked) unlocked++;
@@ -215,7 +199,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         "@id": "https://spaceclickergame.com/achievements",
         "url": "https://spaceclickergame.com/achievements",
         "name": "Galaxy Miner Progress Milestones | Space Clicker Game",
-        "description": "A browser-local tracker for Galaxy Miner mining, automation, Dark Matter, and sector milestones.",
+        "description": "A browser-local tracker for Galaxy Miner mining, automation, and Dark Matter milestones.",
         "isPartOf": {
           "@type": "WebSite",
           "name": "Space Clicker Game",
@@ -235,7 +219,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
           {
             "@type": "HowToStep",
             "name": "Automate Heavy Drone Fleets",
-            "text": "Purchase 25 Autonomous Drones and 50 Orbital Stations to unlock Drone Fleet Commander and Orbital Architect."
+            "text": "Purchase 25 Mining Drones and 50 Orbital Stations to unlock Drone Fleet Commander and Orbital Architect."
           },
           {
             "@type": "HowToStep",
@@ -251,7 +235,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-space-950 text-gray-200 pt-24 pb-20 px-4">
       <SEOHead
         title="Galaxy Miner Milestones & Progress Tracker | Space Clicker Game"
-        description="Track Galaxy Miner mining, automation, Dark Matter, and sector milestones from your local browser save."
+        description="Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save."
         path="/achievements"
         type="article"
         schema={achievementsSchema}
@@ -308,7 +292,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         {/* Filter Categories */}
         <div className="flex flex-wrap justify-center gap-2 pt-4">
           {[
-            { id: 'all', label: 'ALL TROPHIES' },
+            { id: 'all', label: 'ALL MILESTONES' },
             { id: 'mining', label: '✨ MINING' },
             { id: 'automation', label: '🛸 AUTOMATION' },
             { id: 'prestige', label: '💥 DARK MATTER' }
