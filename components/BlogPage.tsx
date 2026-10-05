@@ -229,6 +229,12 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         }
                     },
                     {
+                        "@type": "Organization",
+                        "@id": "https://spaceclickergame.com/#organization",
+                        "name": "Space Clicker Game",
+                        "url": "https://spaceclickergame.com/"
+                    },
+                    {
                         "@type": "BreadcrumbList",
                         "@id": canonical + "#breadcrumb",
                         "itemListElement": [
