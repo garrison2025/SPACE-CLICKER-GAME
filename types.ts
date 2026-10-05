@@ -160,6 +160,7 @@ export interface FloatingText {
   y: number;
   text: string;
   opacity: number;
+  color?: string;
   isCrit?: boolean;
   isDamage?: boolean; // Small, fast fade for damage numbers
 }
