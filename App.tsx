@@ -72,6 +72,8 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 const SPACEBAR_OG_IMAGE = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
 const SITE_CONTENT_UPDATED = '2026-10-05';
+const SITE_URL = 'https://spaceclickergame.com/';
+const ORGANIZATION_ID = SITE_URL + '#organization';
 
 const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
   galaxy_miner: {
@@ -480,9 +482,14 @@ const App: React.FC = () => {
                 "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
                 "dateModified": SITE_CONTENT_UPDATED,
                 "publisher": {
-                  "@type": "Organization",
-                  "name": "Space Clicker Game"
+                  "@id": ORGANIZATION_ID
                 }
+              },
+              {
+                "@type": "Organization",
+                "@id": ORGANIZATION_ID,
+                "name": "Space Clicker Game",
+                "url": SITE_URL
               },
               {
                 "@type": "VideoGame",
@@ -573,9 +580,9 @@ const App: React.FC = () => {
                   "dateModified": SITE_CONTENT_UPDATED,
                   "about": {
                     "@type": "Organization",
-                    "@id": "https://spaceclickergame.com/#organization",
+                    "@id": ORGANIZATION_ID,
                     "name": "Space Clicker Game",
-                    "url": "https://spaceclickergame.com/"
+                    "url": SITE_URL
                   },
                   "isPartOf": {
                     "@type": "WebSite",
