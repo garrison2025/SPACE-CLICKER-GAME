@@ -27,6 +27,7 @@ const SpacebarClickerTest: React.FC = () => {
   const [peakCps, setPeakCps] = useState(0);
   const [finalElapsed, setFinalElapsed] = useState(0);
   const [bestCps, setBestCps] = useState(() => Number(localStorage.getItem(BEST_PREFIX + modeKey(PRESETS[2])) || 0));
+  const [shareStatus, setShareStatus] = useState('');
 
   const startedAt = useRef<number | null>(null);
   const pressTimes = useRef<number[]>([]);
@@ -49,6 +50,7 @@ const SpacebarClickerTest: React.FC = () => {
     setCurrentCps(0);
     setPeakCps(0);
     setFinalElapsed(0);
+    setShareStatus('');
     startedAt.current = null;
     pressTimes.current = [];
   };
@@ -135,6 +137,28 @@ const SpacebarClickerTest: React.FC = () => {
 
   const targetLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
 
+  const shareResult = async () => {
+    if (!finished) return;
+    const text = `I scored ${averageCps.toFixed(2)} CPS in the ${targetLabel} Spacebar Clicker Test on SpaceClickerGame.com.`;
+    const url = 'https://spaceclickergame.com/spacebar-clicker-test/';
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Spacebar Clicker Test Result', text, url });
+        setShareStatus('Result shared.');
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(`${text} ${url}`);
+        setShareStatus('Result copied to clipboard.');
+      } else {
+        setShareStatus('Sharing is not supported in this browser.');
+      }
+    } catch (error) {
+      if ((error as DOMException)?.name !== 'AbortError') {
+        setShareStatus('Could not share this result.');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-space-950 text-gray-200">
       <section className="max-w-5xl mx-auto px-4 py-14">
@@ -214,14 +238,21 @@ const SpacebarClickerTest: React.FC = () => {
                 <Metric label="Peak CPS" value={peakCps.toFixed(1)} />
                 <Metric label="Personal Best" value={bestCps.toFixed(2)} />
               </div>
-              <button type="button" onClick={() => reset()} className="mt-6 px-6 py-2 rounded bg-neon-green text-black font-bold">
-                Try Again
-              </button>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <button type="button" onClick={() => reset()} className="px-6 py-2 rounded bg-neon-green text-black font-bold">
+                  Try Again
+                </button>
+                <button type="button" onClick={shareResult} className="px-6 py-2 rounded border border-neon-blue/50 text-neon-blue hover:bg-neon-blue hover:text-black">
+                  Share Result
+                </button>
+              </div>
+              {shareStatus && <p className="mt-3 text-xs text-gray-400">{shareStatus}</p>}
             </div>
           )}
 
           <div className="flex flex-wrap justify-center gap-3 mt-7">
             {!finished && <button type="button" onClick={() => reset()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>}
+            <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
             <a href="/spacebar-counter/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Counter</a>
             <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Game</a>
           </div>
