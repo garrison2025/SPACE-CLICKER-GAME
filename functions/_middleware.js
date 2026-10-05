@@ -22,7 +22,6 @@ const BLOG_ROUTES = new Set([
 
 const STATIC_ROUTES = new Set([
   '/',
-  '/game',
   '/blog',
   '/about',
   '/contact',
@@ -105,7 +104,7 @@ export async function onRequest(context) {
 
     if (legacyView === 'game') {
       const id = url.searchParams.get('id');
-      destination = id && GAME_ROUTES.has(id) ? `/game/${encodeURIComponent(id)}/` : '/game/';
+      destination = id && GAME_ROUTES.has(id) ? `/game/${encodeURIComponent(id)}/` : '/game/galaxy_miner/';
     } else if (legacyView === 'blog') {
       const post = url.searchParams.get('post');
       destination = post && BLOG_ROUTES.has(post) ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
@@ -125,6 +124,10 @@ export async function onRequest(context) {
     }
 
     return Response.redirect(new URL(destination, url.origin).toString(), 301);
+  }
+
+  if (normalizePath(pathname) === '/game') {
+    return Response.redirect(new URL('/game/galaxy_miner/', url.origin).toString(), 301);
   }
 
   if (isStaticAssetRequest(pathname) || isKnownRoute(pathname)) {
