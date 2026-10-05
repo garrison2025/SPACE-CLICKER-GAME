@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { GameId, GameMeta } from '../types';
 import { GAMES_CATALOG } from '../constants';
 import { toggleMute, getMuteState } from '../services/audioService';
+import { clearProjectStorage } from '../utils/projectStorage';
 import { Logo } from './Logo';
 
 interface StarshipConsoleProps {
@@ -12,39 +13,6 @@ interface StarshipConsoleProps {
   onOpenStats?: () => void;
   children: React.ReactNode;
 }
-
-const PROJECT_STORAGE_EXACT_KEYS = new Set([
-  'space_haptic',
-  'space_screenshake',
-  'sc_mute',
-]);
-
-const PROJECT_STORAGE_PREFIXES = [
-  'cosmic-miner-save-',
-  'mars_colony_save_',
-  'star_defense_save_',
-  'merge_ships_save_',
-  'gravity_idle_save_',
-  'deep_signal_save_',
-  'spacebar_clicker_save_',
-  'spacebar_clicker_2_save_',
-  'spacebar_counter_best_',
-  'spacebar_test_',
-];
-
-const clearProjectStorage = () => {
-  const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
-    .filter((key): key is string => Boolean(key));
-
-  keys.forEach((key) => {
-    if (
-      PROJECT_STORAGE_EXACT_KEYS.has(key) ||
-      PROJECT_STORAGE_PREFIXES.some((prefix) => key.startsWith(prefix))
-    ) {
-      localStorage.removeItem(key);
-    }
-  });
-};
 
 const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, onOpenStats, children }) => {
   const [showSettings, setShowSettings] = useState(false);
