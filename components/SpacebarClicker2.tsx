@@ -116,6 +116,7 @@ const SpacebarClicker2: React.FC = () => {
   const [upgrades, setUpgrades] = useState<Record<UpgradeId, number>>(initial.upgrades);
   const [bestCps, setBestCps] = useState(initial.bestCps);
   const [currentCps, setCurrentCps] = useState(0);
+  const [cpsTrackingActive, setCpsTrackingActive] = useState(false);
   const [energy, setEnergy] = useState(0);
   const [overdriveUntil, setOverdriveUntil] = useState(0);
   const [clock, setClock] = useState(Date.now());
@@ -231,15 +232,19 @@ const SpacebarClicker2: React.FC = () => {
   }, [autoRate]);
 
   useEffect(() => {
+    if (!cpsTrackingActive) return;
+
     const timer = window.setInterval(() => {
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
       setCurrentCps(cps);
       setBestCps((value) => Math.max(value, cps));
+      if (cps === 0) setCpsTrackingActive(false);
     }, 200);
+
     return () => window.clearInterval(timer);
-  }, []);
+  }, [cpsTrackingActive]);
 
   useEffect(() => {
     const timer = window.setInterval(saveNow, 10000);
@@ -255,6 +260,7 @@ const SpacebarClicker2: React.FC = () => {
   const press = useCallback(() => {
     const now = performance.now();
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
+    setCpsTrackingActive(true);
 
     setPoints((value) => value + manualPower);
     setLifetimePoints((value) => value + manualPower);
