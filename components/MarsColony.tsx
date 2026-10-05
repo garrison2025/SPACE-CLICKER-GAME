@@ -93,8 +93,11 @@ const finiteNonNegative = (value: unknown, fallback = 0) => {
     return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
 };
 
-const safeCount = (value: unknown, fallback = 0) =>
+const safeBuildingCount = (value: unknown, fallback = 0) =>
     Math.min(1000, Math.max(0, Math.floor(finiteNonNegative(value, fallback))));
+
+const safePopulation = (value: unknown) =>
+    Math.min(1_000_000, Math.max(0, Math.floor(finiteNonNegative(value))));
 
 const sanitizeReservoir = (
     raw: any,
@@ -114,7 +117,7 @@ const sanitizeMarsSave = (raw: any) => {
     const resources: MarsResourceState = {
         minerals: finiteNonNegative(resourcesRaw?.minerals),
         credits: finiteNonNegative(resourcesRaw?.credits),
-        population: safeCount(resourcesRaw?.population),
+        population: safePopulation(resourcesRaw?.population),
         energy: {
             ...energyBase,
             consumption: 0
@@ -128,7 +131,7 @@ const sanitizeMarsSave = (raw: any) => {
         const saved = savedBuildings.find((item: any) => item?.id === base.id);
         return {
             ...base,
-            count: safeCount(saved?.count, base.count)
+            count: safeBuildingCount(saved?.count, base.count)
         };
     });
 
