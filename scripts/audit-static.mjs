@@ -339,8 +339,21 @@ for (const file of htmlFiles) {
   if (route.startsWith('/blog/') && route !== '/blog/') {
     const h2Count = (html.match(/<h2\b/gi) || []).length;
     if (h2Count < 2) throw new Error(route + ': full static blog body appears missing (H2 count ' + h2Count + ')');
-    if (!html.includes('id="prerender-article-jsonld"')) {
+    const articleSchemaMatch = html.match(/<script id="prerender-article-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/i);
+    if (!articleSchemaMatch) {
       throw new Error(route + ': static Article JSON-LD is missing');
+    }
+    try {
+      const articleSchema = JSON.parse(articleSchemaMatch[1]);
+      const nodes = Array.isArray(articleSchema['@graph']) ? articleSchema['@graph'] : [articleSchema];
+      if (!nodes.some((node) => node?.['@type'] === 'Article')) {
+        throw new Error('Article node is missing');
+      }
+      if (!nodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
+        throw new Error('BreadcrumbList node is missing');
+      }
+    } catch (error) {
+      throw new Error(route + ': invalid article JSON-LD: ' + error.message);
     }
     if (!/<meta\s+[^>]*property="og:type"[^>]*content="article"[^>]*>/i.test(html)) {
       throw new Error(route + ': article Open Graph type is missing');
