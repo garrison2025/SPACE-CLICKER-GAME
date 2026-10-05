@@ -13,6 +13,7 @@ const site = 'https://spaceclickergame.com';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
+const blogStaticMeta = {};
 
 if (!fs.existsSync(blogSourcePath)) {
   throw new Error('content/blogPosts.ts not found. Blog prerender content cannot be generated.');
@@ -44,6 +45,24 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
   }
 
   blogStaticContent[`/blog/${slug}`] = `<article class="static-blog-content">${content}</article>`;
+
+  const readField = (field, required = true) => {
+    const fieldMatch = chunk.match(new RegExp(`${field}:\\s*'((?:\\\\'|[^'])*)'`));
+    if (!fieldMatch) {
+      if (required) throw new Error(`Missing ${field} metadata for ${slug}`);
+      return '';
+    }
+    return fieldMatch[1].replace(/\\'/g, "'");
+  };
+
+  blogStaticMeta[`/blog/${slug}`] = {
+    title: readField('title'),
+    description: readField('excerpt'),
+    author: readField('author'),
+    datePublished: new Date(readField('date')).toISOString(),
+    dateModified: new Date(readField('updatedDate', false) || readField('date')).toISOString(),
+    image: readField('image')
+  };
 }
 
 if (Object.keys(blogStaticContent).length !== 10) {
@@ -151,7 +170,36 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(description)}" />`);
   html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" content="${isArticle ? 'article' : 'website'}" />`);
   if (isArticle) {
+    const articleMeta = blogStaticMeta[route];
     html = html.replace('</head>', '  <meta name="author" content="SpaceClickerGame.com Editorial" />\n  <meta property="article:modified_time" content="2026-10-05T00:00:00Z" />\n</head>');
+
+    if (articleMeta) {
+      const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": articleMeta.title,
+        "image": [articleMeta.image],
+        "datePublished": articleMeta.datePublished,
+        "dateModified": articleMeta.dateModified,
+        "author": [{
+          "@type": "Organization",
+          "name": articleMeta.author,
+          "url": "https://spaceclickergame.com/about/"
+        }],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Space Clicker Game",
+          "url": "https://spaceclickergame.com/"
+        },
+        "description": articleMeta.description,
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": canonical
+        }
+      };
+      const safeSchema = JSON.stringify(articleSchema).replace(/</g, '\\u003c');
+      html = html.replace('</head>', `  <script id="prerender-article-jsonld" type="application/ld+json">${safeSchema}</script>\n</head>`);
+    }
   }
   if (/<meta property="og:url"[^>]*>/i.test(html)) {
     html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${canonical}" />`);
