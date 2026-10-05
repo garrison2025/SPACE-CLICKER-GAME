@@ -13,6 +13,39 @@ interface StarshipConsoleProps {
   children: React.ReactNode;
 }
 
+const PROJECT_STORAGE_EXACT_KEYS = new Set([
+  'space_haptic',
+  'space_screenshake',
+  'sc_mute',
+]);
+
+const PROJECT_STORAGE_PREFIXES = [
+  'cosmic-miner-save-',
+  'mars_colony_save_',
+  'star_defense_save_',
+  'merge_ships_save_',
+  'gravity_idle_save_',
+  'deep_signal_save_',
+  'spacebar_clicker_save_',
+  'spacebar_clicker_2_save_',
+  'spacebar_counter_best_',
+  'spacebar_test_',
+];
+
+const clearProjectStorage = () => {
+  const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
+    .filter((key): key is string => Boolean(key));
+
+  keys.forEach((key) => {
+    if (
+      PROJECT_STORAGE_EXACT_KEYS.has(key) ||
+      PROJECT_STORAGE_PREFIXES.some((prefix) => key.startsWith(prefix))
+    ) {
+      localStorage.removeItem(key);
+    }
+  });
+};
+
 const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, onOpenStats, children }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
@@ -58,8 +91,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   const handleFactoryReset = () => {
-      if (window.confirm("WARNING: ALL DATA WILL BE PURGED.\n\nThis includes progress in Galaxy Miner, Mars Colony, and all other simulations.\n\nAre you sure?")) {
-          localStorage.clear();
+      if (window.confirm("WARNING: SPACE CLICKER GAME DATA WILL BE PURGED.\n\nThis removes game progress, Spacebar records, and site game settings stored by SpaceClickerGame.com in this browser. Other localStorage keys on the origin are left untouched.\n\nAre you sure?")) {
+          clearProjectStorage();
           window.location.reload();
       }
   };
@@ -191,7 +224,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                       {/* Reset Data */}
                       <div className="border-t border-white/10 pt-6">
                           <div className="font-bold text-red-400 text-sm mb-2">DANGER ZONE</div>
-                          <p className="text-xs text-gray-500 mb-4">Resetting will purge all local saves for all games. This action cannot be undone.</p>
+                          <p className="text-xs text-gray-500 mb-4">Resetting removes Space Clicker Game saves, Spacebar records, and game settings stored by this site. It does not call localStorage.clear() for unrelated origin data.</p>
                           <button 
                             onClick={handleFactoryReset}
                             className="w-full py-3 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold rounded transition-colors text-xs tracking-widest"
