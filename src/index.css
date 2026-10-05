@@ -3,6 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+button,
+a,
+summary,
+[role="button"] {
+    touch-action: manipulation;
+}
+
 body {
     background-color: #0b0d17;
     color: white;
@@ -93,4 +105,48 @@ body {
 
 .safe-area-panel-bottom {
     padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+/* Mobile gameplay ergonomics: keep scroll momentum inside the game shell,
+   avoid pull-to-refresh/bounce stealing gestures, and reserve exactly the
+   space used by the bottom simulation dock. */
+.game-scroll-region {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.game-dock {
+    height: calc(5rem + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.game-viewport {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 640px) {
+    .game-dock {
+        height: calc(6rem + env(safe-area-inset-bottom));
+    }
+
+    .game-viewport {
+        padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+    }
+}
+
+@media (min-width: 768px) {
+    .game-viewport {
+        padding-bottom: 0;
+    }
+}
+
+@media (max-height: 480px) and (max-width: 900px) {
+    .game-dock {
+        height: calc(4rem + env(safe-area-inset-bottom));
+    }
+
+    .game-viewport {
+        padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+    }
 }
