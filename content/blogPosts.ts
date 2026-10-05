@@ -117,7 +117,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion: A Universe in Your Pocket</h2>
             <p>The genre works well because gathering, reinvestment, automation, and expansion map naturally onto a space setting. The theme gives simple numerical systems room to grow without assuming every player responds to them in the same way.</p>
-            <p>So the next time someone asks why you are staring at increasing numbers on a screen, tell them you are engaging in a complex neurological feedback loop simulating galactic conquest. Or, just tell them it's fun.</p>
+            <p>In practice, the appeal is simpler: an action produces visible progress, the next milestone is understandable, and the player can decide whether to keep clicking, automate, or change strategy.</p>
             
             <p>Try the feedback loop directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, or use <a href="/spacebar-clicker/">Spacebar Clicker</a> if you want a simpler press-upgrade-automation loop.</p>
         `
@@ -139,17 +139,17 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>The Physics of the Space Bar Click Game</h2>
             <p>In the early game of any <strong>space clicker game</strong>, your physical input speed matters. This phase is often called the "active phase."</p>
             
-            <h3>Techniques for Rapid Input</h3>
+            <h3>Techniques for Consistent Input</h3>
             <ul>
-                <li><strong>The Jitter Click:</strong> Tensing the forearm muscles to vibrate the hand. High speed, low accuracy. Good for big buttons.</li>
-                <li><strong>Alternating Fingers:</strong> Some players alternate two fingers on a large key or button to spread repeated input across more than one finger. Whether this feels faster or more comfortable depends on the keyboard and the player.</li>
-                <li><strong>The Drag Click:</strong> Dragging a finger across the surface to create friction-based clicks. Rare, but effective on specific hardware.</li>
+                <li><strong>Use separate presses:</strong> Release the key between inputs so the browser records deliberate keydown events instead of automatic key-repeat.</li>
+                <li><strong>Try alternating fingers if it feels natural:</strong> A wide spacebar allows more than one finger position, but speed and comfort depend on the keyboard and the player.</li>
+                <li><strong>Match the technique to the test:</strong> Short runs measure burst speed, while longer tests are more useful for consistency and repeatability.</li>
             </ul>
             <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
 
             <h2>Transitioning to Automation</h2>
             <p>The defining moment of a <strong>clicker game space</strong> adventure is when your passive generation (stardust per second) exceeds your active generation (stardust per click).</p>
-            <p>In <a href="https://spaceclickergame.com">our games</a>, this usually happens when you unlock the "Rover" or "Orbital Station" tier. At this point, the game shifts from a <strong>space bar click game</strong> to a management sim.</p>
+            <p>In an incremental game, that transition happens when the production added by automation becomes more important than another burst of manual input. The exact point depends on the current upgrades, multipliers, and how actively the player is pressing.</p>
             
             <h3>Math Breakdown: Click vs. Idle</h3>
             <p>Let's look at the math found in a typical <strong>space clicking game</strong>:</p>
@@ -247,26 +247,24 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>When you play a <strong>space bar clicking game</strong>, you aren't just sending a signal to a computer; you are engaging in a physical cycle. <em>Press, Actuate, Bottom-out, Release, Reset.</em></p>
             <p>Top players of <a href="https://spaceclickergame.com">Space Clicker Game</a> understand that minimizing the time of this cycle is key to maximizing resource generation during the early game "active phase."</p>
 
-            <h3>Hardware Matters: Switches and Latency</h3>
-            <p>Not all keyboards are created equal for a <strong>space bar click game</strong>. The type of switch under your keycap determines your maximum theoretical speed.</p>
+            <h3>Hardware Factors: Switches, Travel, and Firmware</h3>
+            <p>No single switch category determines the maximum speed of a <strong>space bar click game</strong>. Key travel, actuation and reset behavior, stabilizer feel, keyboard firmware, debounce handling, layout, and the player's technique can all affect how repeated presses feel and register.</p>
             <ul>
-                <li><strong>Membrane Keyboards:</strong> Often have a softer feel and longer travel. They can still work for rapid input; comfort and consistency matter more than chasing a specific switch type.</li>
-                <li><strong>Mechanical (Blue/Tactile):</strong> Great for typing, but the "bump" slows down the reset point.</li>
-                <li><strong>Mechanical (Red/Linear):</strong> The gold standard for any <strong>space bar clicking game</strong>. Smooth travel, no bump, fast reset.</li>
-                <li><strong>Optical Switches:</strong> Use light beams instead of metal contacts. Zero debounce delay. The choice of champions.</li>
+                <li><strong>Membrane keyboards:</strong> Often feel softer and may use different travel or return characteristics, but they can still register rapid deliberate presses.</li>
+                <li><strong>Mechanical switches:</strong> Linear, tactile, and clicky designs provide different feedback; none is universally fastest for every player.</li>
+                <li><strong>Optical or magnetic designs:</strong> These can use different sensing and firmware approaches, but the complete keyboard implementation matters more than the marketing label alone.</li>
             </ul>
-            <p>Before buying new hardware, test the keyboard you already own. Key feel, stabilizer quality, layout, and hand position can affect comfort, but a more expensive keyboard does not guarantee a higher CPS result.</p>
+            <p>Before buying new hardware, test the keyboard you already own. Key feel, stabilizer quality, layout, firmware, and hand position can affect comfort and consistency, but a more expensive keyboard does not guarantee a higher CPS result.</p>
 
-            <h2>The Limits of Human Performance</h2>
-            <p>The average human can click a mouse about 6-8 times per second (CPS). With two hands on a space bar, playing a <strong>space bar clicking game</strong>, that number can jump to 12-15 CPS.</p>
-            <p>However, sustaining this speed is exhausting. This is where the game design of <a href="https://spaceclickergame.com">Space Clicker Game</a> shines. We use the <strong>space bar click game</strong> mechanic as a "starter motor." You use your physical energy to jumpstart the economy, then use the resources to build automation that takes over the burden.</p>
+            <h2>Why CPS Benchmarks Vary</h2>
+            <p>There is no single reliable “average CPS” that applies across keyboards, browsers, test lengths, and input rules. A test that counts operating-system key-repeat is measuring something different from a test that counts only separate physical presses.</p>
+            <p>For a useful comparison, keep the device, browser, duration, and counting rule the same between attempts. One- or five-second tests emphasize short bursts, while longer tests put more weight on consistency.</p>
 
-            <h3>Technique: The Alternating Tap</h3>
-            <p>To maximize input in a <strong>space clicking game</strong> without injury, players use the "Alternating Tap" method. Place both index fingers (or index and middle of one hand) on the space bar and rock your wrist back and forth.</p>
-            <p>This doubles your input speed while halving the fatigue on any single finger. It is similar to the "trilling" technique used by piano players.</p>
+            <h3>Consistent Pressing</h3>
+            <p>Some players alternate fingers on a wide spacebar, while others use one comfortable finger position. Neither approach guarantees a faster result. Use deliberate presses and stop if repeated input becomes uncomfortable.</p>
 
             <h2>Input Lag and Browser Performance</h2>
-            <p>In a browser-based <strong>space clicker game</strong>, code efficiency is paramount. If the game logic (calculating minerals, updating UI) takes longer than 16ms (1 frame at 60fps), the game feels sluggish.</p>
+            <p>In a browser-based <strong>space clicker game</strong>, responsiveness depends on input handling, JavaScript work, rendering, device performance, and display refresh rate. About 16.7 ms corresponds to one frame at 60 Hz, but that is a frame budget rather than a universal threshold for whether a game feels responsive.</p>
             <p>On our <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a>, browser-generated key-repeat events are ignored. Current CPS is based on recent deliberate presses, while the timed result uses valid presses divided by elapsed test time. That is more useful than making an unsupported claim about a particular keyboard or frame rate.</p>
 
             <h2>From Active to Idle: The Transition</h2>
@@ -297,7 +295,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>Galaxy Miner does not use one universal cost factor: each upgrade tier has its own multiplier. Mining Drones scale by 1.2x per level, Rovers by 1.25x, Lunar Bases by 1.3x, Orbital Stations by 1.4x, while Laser Drills and Dyson Swarms use 1.5x.</p>
             
             <h3>The "Break-Even" Point</h3>
-            <p>A common mistake in any <strong>space click game</strong> is buying the cheapest upgrade available. Strategy dictates you should buy the upgrade with the best "Cost to Production" ratio.</p>
+            <p>A common mistake in any <strong>space click game</strong> is buying the cheapest upgrade available. A useful baseline is to compare each upgrade's cost with the production increase it actually adds.</p>
             <p><em>Formula: Ratio = Cost / Increase_In_Production</em></p>
             <p>The lower the ratio, the faster an upgrade pays for itself. Early in a run, manual upgrades can matter because the player is actively pressing. As automatic production grows, compare the next manual purchase with the next automation purchase instead of assuming one category is always superior.</p>
 
@@ -457,7 +455,7 @@ export const BLOG_POSTS: BlogPost[] = [
         tags: ['clicker game space', 'narrative', 'writing', 'lore'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Most players think a <strong>clicker game space</strong> adventure is devoid of story. They see numbers going up. But look closer. In the description of an upgrade, or the log of a scanned anomaly, a universe is breathing.</p>
+            <p class="lead">At first glance, a <strong>clicker game space</strong> adventure can look like little more than numbers going up. Upgrade descriptions, event logs, and short transmissions can still carry setting, tone, and narrative context.</p>
 
             <h2>The Power of "Flavor Text"</h2>
             <p>In high-fidelity games like <em>Mass Effect</em>, story is told through cutscenes. In a <strong>space clicker game</strong>, story is told through context. This is known as "Environmental Storytelling."</p>
