@@ -177,7 +177,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     category: 'secret',
     title: 'Subspace Cryptographer',
     description: 'Transmit deep space scans to receive AI anomalous intelligence.',
-    unlockCondition: 'Perform a Gemini Interstellar Subspace Scan',
+    unlockCondition: 'Perform an Interstellar Subspace Scan',
     rewardText: 'Unlocks Secret Log Transmissions',
     icon: '📻',
     targetValue: 1
@@ -326,7 +326,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             ACHIEVEMENTS & TROPHY GUIDE
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed font-sans">
-            Track your galactic mastery, claim milestone multipliers, and discover hidden secret ciphers across the Void Expanse network.
+            Track your galactic mastery, claim milestone multipliers, and discover hidden secret ciphers across the Space Clicker Game network.
           </p>
 
           {/* Live Progress Banner */}
