@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { GAMES_CATALOG } from '../constants';
+import { BLOG_POST_META } from '../content/blogMeta';
 
 const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="w-full min-h-screen bg-space-950 text-gray-300 pt-24 pb-12 px-4">
@@ -202,24 +204,46 @@ export const CookiesPage = () => (
 
 export const SitemapPage = () => (
     <PageContainer title="SITEMAP">
-        <p>Index of all accessible frequencies in the network.</p>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
-            <li><a href="/" className="hover:text-neon-blue transition-colors">Home Base</a></li>
-            <li><a href="/game/galaxy_miner/" className="hover:text-neon-blue transition-colors">Galaxy Miner</a></li>
+        <p>Browse every main game, Spacebar tool, guide, and site resource from one crawlable directory.</p>
+
+        <h3>Playable Games</h3>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-base">
+            {GAMES_CATALOG.map((game) => (
+                <li key={game.id}>
+                    <a href={`/game/${game.id}/`} className="hover:text-neon-blue transition-colors">{game.title}</a>
+                </li>
+            ))}
+        </ul>
+
+        <h3>Spacebar Games & Tools</h3>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-base">
             <li><a href="/spacebar-games/" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Games Hub</a></li>
             <li><a href="/spacebar-clicker/" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Clicker</a></li>
             <li><a href="/spacebar-clicker-2/" className="hover:text-neon-blue transition-colors">Spacebar Clicker 2</a></li>
             <li><a href="/spacebar-counter/" className="hover:text-neon-blue transition-colors">Spacebar Counter</a></li>
             <li><a href="/spacebar-clicker-test/" className="hover:text-neon-blue transition-colors">Spacebar Clicker Test</a></li>
             <li><a href="/spacebar-clicker-unblocked/" className="hover:text-neon-blue transition-colors">Spacebar Clicker Instant Browser Mode</a></li>
-            <li><a href="/compare/" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Game Comparisons (vs Cookie Clicker)</a></li>
-            <li><a href="/achievements/" className="hover:text-neon-blue transition-colors font-bold text-neon-green">Achievements & Trophy Guide</a></li>
+        </ul>
+
+        <h3>Guides & Site Resources</h3>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-base">
+            <li><a href="/compare/" className="hover:text-neon-blue transition-colors">Game Feature Comparison</a></li>
+            <li><a href="/achievements/" className="hover:text-neon-green transition-colors">Galaxy Miner Milestones</a></li>
             <li><a href="/blog/" className="hover:text-neon-blue transition-colors">Mission Logs (Blog)</a></li>
             <li><a href="/about/" className="hover:text-neon-blue transition-colors">About Us</a></li>
-            <li><a href="/contact/" className="hover:text-neon-blue transition-colors">Contact Command</a></li>
+            <li><a href="/contact/" className="hover:text-neon-blue transition-colors">Contact</a></li>
             <li><a href="/privacy/" className="hover:text-neon-blue transition-colors">Privacy Policy</a></li>
             <li><a href="/terms/" className="hover:text-neon-blue transition-colors">Terms of Service</a></li>
-            <li><a href="/cookies/" className="hover:text-neon-blue transition-colors">Cookie Settings</a></li>
+            <li><a href="/cookies/" className="hover:text-neon-blue transition-colors">Cookie & Local Storage Settings</a></li>
+        </ul>
+
+        <h3>Mission Logs</h3>
+        <ul className="space-y-3 text-base">
+            {BLOG_POST_META.map((post) => (
+                <li key={post.slug}>
+                    <a href={`/blog/${post.slug}/`} className="hover:text-neon-blue transition-colors">{post.title}</a>
+                </li>
+            ))}
         </ul>
     </PageContainer>
 );
