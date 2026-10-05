@@ -206,6 +206,7 @@ export const SitemapPage = () => (
             <li><a href="/game" className="hover:text-neon-blue transition-colors">Games Catalog</a></li>
             <li><a href="/spacebar-games" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Games Hub</a></li>
             <li><a href="/spacebar-clicker" className="hover:text-neon-blue transition-colors font-bold text-neon-blue">Spacebar Clicker</a></li>
+            <li><a href="/spacebar-clicker-2" className="hover:text-neon-blue transition-colors">Spacebar Clicker 2</a></li>
             <li><a href="/spacebar-counter" className="hover:text-neon-blue transition-colors">Spacebar Counter</a></li>
             <li><a href="/spacebar-clicker-test" className="hover:text-neon-blue transition-colors">Spacebar Clicker Test</a></li>
             <li><a href="/spacebar-clicker-unblocked" className="hover:text-neon-blue transition-colors">Spacebar Clicker Instant Browser Mode</a></li>
