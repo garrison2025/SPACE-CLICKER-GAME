@@ -12,16 +12,44 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
     const encodedUrl = encodeURIComponent(shareUrl);
     const encodedTitle = encodeURIComponent(title);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(shareUrl);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            window.prompt('Copy this link:', shareUrl);
+        }
     };
+
+    const handleNativeShare = async () => {
+        if (!navigator.share) return;
+        try {
+            await navigator.share({ title, url: shareUrl });
+        } catch (error) {
+            if ((error as DOMException)?.name !== 'AbortError') {
+                window.prompt('Copy this link:', shareUrl);
+            }
+        }
+    };
+
+    const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
     return (
         <div className="flex flex-col gap-3 py-6 border-t border-white/10 mt-8">
             <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Share Transmissions</span>
             <div className="flex gap-2">
+                {canNativeShare && (
+                    <button
+                        type="button"
+                        onClick={handleNativeShare}
+                        className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors"
+                    >
+                        <span aria-hidden="true">↗</span>
+                        <span className="hidden md:inline">Share</span>
+                    </button>
+                )}
+
                 {/* Twitter / X */}
                 <a 
                     href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}&hashtags=SpaceClickerGame,IdleGame`}
