@@ -177,7 +177,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                         <button 
                             onClick={onPlay}
-                            className="group relative px-8 py-4 bg-white text-black font-display font-black text-xl tracking-widest hover:bg-neon-blue transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,243,255,0.6)] hover:scale-105"
+                            className="group relative px-5 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-display font-black text-base sm:text-xl tracking-[0.12em] sm:tracking-widest whitespace-nowrap hover:bg-neon-blue transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,243,255,0.6)] hover:scale-105"
                         >
                             PLAY SPACE CLICKER
                             <span className="absolute -bottom-2 -right-2 w-full h-full border-2 border-white/30 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
