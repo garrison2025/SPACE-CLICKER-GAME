@@ -459,6 +459,13 @@ if (!feed.includes('<link>https://spaceclickergame.com/blog/</link>')) {
 if (!feed.includes('<title>Space Clicker Game Blog</title>')) {
   throw new Error('RSS channel title is missing or incorrect');
 }
+const firstRssItem = feed.match(/<item>[\s\S]*?<link>([^<]+)<\/link>/);
+if (
+  !firstRssItem ||
+  firstRssItem[1] !== 'https://spaceclickergame.com/blog/ultimate-hardware-guide-space-bar-click-game/'
+) {
+  throw new Error('RSS items must be ordered newest publication first');
+}
 
 const llmsPath = path.join(distDir, 'llms.txt');
 if (!fs.existsSync(llmsPath)) throw new Error('dist/llms.txt is missing');
