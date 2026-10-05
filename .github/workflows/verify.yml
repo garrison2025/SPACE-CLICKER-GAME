@@ -3,6 +3,7 @@ name: Verify build
 on:
   push:
     branches:
+      - main
       - fix/spacebar-seo-suite-20261005
   pull_request:
 
