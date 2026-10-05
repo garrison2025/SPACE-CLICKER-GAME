@@ -104,18 +104,18 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   const totalBuildingLevels = Object.values(upgrades).reduce((sum, u) => sum + u.count, 0);
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in">
-      <div className="bg-space-850 border border-neon-blue/40 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(0,243,255,0.15)] overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/85 md:backdrop-blur-md p-3 sm:p-4 animate-in fade-in">
+      <div role="dialog" aria-modal="true" aria-labelledby="stats-backup-title" className="bg-space-850 border border-neon-blue/40 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(0,243,255,0.15)] overflow-hidden flex flex-col max-h-[calc(100dvh-1.5rem)] sm:max-h-[90dvh]">
         
         {/* Header */}
-        <div className="p-5 border-b border-white/10 flex justify-between items-center bg-space-900">
+        <div className="p-3 sm:p-5 border-b border-white/10 flex justify-between items-center gap-3 bg-space-900">
           <div className="flex items-center gap-3">
             <span className="text-2xl">📊</span>
             <div>
-              <h2 className="font-display font-black text-lg text-white tracking-widest">
+              <h2 id="stats-backup-title" className="font-display font-black text-sm sm:text-lg text-white tracking-wide sm:tracking-widest leading-tight">
                 COMMAND TELEMETRY & BACKUP
               </h2>
-              <p className="text-[11px] font-mono text-neon-blue">
+              <p className="hidden sm:block text-[11px] font-mono text-neon-blue">
                 COSMIC MINER FLEET DIAGNOSTICS
               </p>
             </div>
@@ -129,10 +129,10 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-white/10 bg-space-900/60 p-2 gap-2">
+        <div className="grid grid-cols-3 border-b border-white/10 bg-space-900/60 p-2 gap-1.5 sm:gap-2">
           <button
             onClick={() => setActiveTab('stats')}
-            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'stats' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -142,7 +142,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('save')}
-            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'save' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -152,7 +152,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('settings')}
-            className={`flex-1 min-h-11 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+            className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'settings' 
                 ? 'bg-neon-blue text-black shadow-[0_0_15px_rgba(0,243,255,0.3)]' 
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -163,7 +163,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         </div>
 
         {/* Body Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar text-sm">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-6 custom-scrollbar text-sm">
           
           {/* STATS TAB */}
           {activeTab === 'stats' && (
@@ -247,7 +247,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                   </div>
                   <button
                     onClick={handleCopySave}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all ${
+                    className={`min-h-11 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
                       copied 
                         ? 'bg-neon-green text-black' 
                         : 'bg-neon-blue text-black hover:bg-white'
@@ -284,7 +284,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                 )}
                 <button
                   onClick={handleApplyImport}
-                  className="w-full py-2.5 bg-neon-green text-black font-mono font-bold rounded-lg text-xs hover:bg-emerald-400 transition-colors shadow-md"
+                  className="w-full min-h-11 py-2.5 bg-neon-green text-black font-mono font-bold rounded-lg text-xs hover:bg-emerald-400 transition-colors shadow-md"
                 >
                   RESTORE SAVED STATE
                 </button>
@@ -341,7 +341,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                 </p>
                 <button
                   onClick={onResetGame}
-                  className="w-full py-2.5 border border-red-500 text-red-400 hover:bg-red-500 hover:text-white font-mono font-bold rounded-lg text-xs transition-colors"
+                  className="w-full min-h-11 py-2.5 border border-red-500 text-red-400 hover:bg-red-500 hover:text-white font-mono font-bold rounded-lg text-xs transition-colors"
                 >
                   PURGE ALL LOCAL FLEET DATA
                 </button>
@@ -352,7 +352,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="p-4 bg-space-900 border-t border-white/10 text-center text-[10px] font-mono text-gray-500">
+        <div className="hidden sm:block p-4 bg-space-900 border-t border-white/10 text-center text-[10px] font-mono text-gray-500">
           HOTKEY SHORTCUT: PRESS <span className="text-neon-blue">[S]</span> TO OPEN STATS | <span className="text-neon-blue">[SPACE]</span> TO MINE
         </div>
 
