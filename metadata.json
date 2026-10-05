@@ -1,8 +1,10 @@
 {
-  "name": "Cosmic Miner: Space Clicker",
-  "description": "The best free to play space clicker game. Mine stardust, manage resources, and explore the galaxy in this addictive idle incremental game.",
+  "name": "Space Clicker Game",
+  "description": "Free browser-based space clicker, idle and spacebar games with local save and no required external API.",
   "requestFramePermissions": [],
   "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+    "BROWSER_GAME",
+    "LOCAL_SAVE",
+    "STATIC_SEO"
   ]
 }
