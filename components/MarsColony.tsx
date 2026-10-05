@@ -79,16 +79,70 @@ const INITIAL_BUILDINGS: MarsBuilding[] = [
     }
 ];
 
+const INITIAL_RESOURCES: MarsResourceState = {
+    minerals: 0,
+    credits: 0,
+    population: 0,
+    energy: { current: 100, max: 100, production: 0, consumption: 0 },
+    food: { current: 100, max: 100, production: 0 },
+    oxygen: { current: 100, max: 100, production: 0 }
+};
+
+const finiteNonNegative = (value: unknown, fallback = 0) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
+};
+
+const safeCount = (value: unknown, fallback = 0) =>
+    Math.min(1000, Math.max(0, Math.floor(finiteNonNegative(value, fallback))));
+
+const sanitizeReservoir = (
+    raw: any,
+    fallback: { current: number; max: number; production: number }
+) => {
+    const max = Math.max(1, finiteNonNegative(raw?.max, fallback.max));
+    return {
+        current: Math.min(max, finiteNonNegative(raw?.current, fallback.current)),
+        max,
+        production: 0
+    };
+};
+
+const sanitizeMarsSave = (raw: any) => {
+    const resourcesRaw = raw?.resources;
+    const energyBase = sanitizeReservoir(resourcesRaw?.energy, INITIAL_RESOURCES.energy);
+    const resources: MarsResourceState = {
+        minerals: finiteNonNegative(resourcesRaw?.minerals),
+        credits: finiteNonNegative(resourcesRaw?.credits),
+        population: safeCount(resourcesRaw?.population),
+        energy: {
+            ...energyBase,
+            consumption: 0
+        },
+        food: sanitizeReservoir(resourcesRaw?.food, INITIAL_RESOURCES.food),
+        oxygen: sanitizeReservoir(resourcesRaw?.oxygen, INITIAL_RESOURCES.oxygen)
+    };
+
+    const savedBuildings = Array.isArray(raw?.buildings) ? raw.buildings : [];
+    const buildings = INITIAL_BUILDINGS.map((base) => {
+        const saved = savedBuildings.find((item: any) => item?.id === base.id);
+        return {
+            ...base,
+            count: safeCount(saved?.count, base.count)
+        };
+    });
+
+    return { resources, buildings };
+};
+
 const MarsColony: React.FC = () => {
     // --- STATE ---
-    const [resources, setResources] = useState<MarsResourceState>({
-        minerals: 0,
-        credits: 0,
-        population: 0,
-        energy: { current: 100, max: 100, production: 0, consumption: 0 },
-        food: { current: 100, max: 100, production: 0 },
-        oxygen: { current: 100, max: 100, production: 0 }
-    });
+    const [resources, setResources] = useState<MarsResourceState>(() => ({
+        ...INITIAL_RESOURCES,
+        energy: { ...INITIAL_RESOURCES.energy },
+        food: { ...INITIAL_RESOURCES.food },
+        oxygen: { ...INITIAL_RESOURCES.oxygen }
+    }));
     
     const [buildings, setBuildings] = useState<MarsBuilding[]>(INITIAL_BUILDINGS);
     const [lastSaved, setLastSaved] = useState(Date.now());
@@ -103,7 +157,12 @@ const MarsColony: React.FC = () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setResources(prev => {
-                const next = { ...prev };
+                const next: MarsResourceState = {
+                    ...prev,
+                    energy: { ...prev.energy },
+                    food: { ...prev.food },
+                    oxygen: { ...prev.oxygen }
+                };
                 
                 // 1. Calculate Production & Consumption
                 let energyProd = 0;
@@ -236,12 +295,7 @@ const MarsColony: React.FC = () => {
 
         try {
             const data = JSON.parse(saved);
-            const loadedResources = data.resources && typeof data.resources === 'object'
-                ? data.resources as MarsResourceState
-                : resources;
-            const loadedBuildings = Array.isArray(data.buildings)
-                ? data.buildings as MarsBuilding[]
-                : INITIAL_BUILDINGS;
+            const { resources: loadedResources, buildings: loadedBuildings } = sanitizeMarsSave(data);
 
             const nextSnapshot = {
                 resources: loadedResources,
