@@ -787,10 +787,10 @@ const GravityIdle: React.FC = () => {
              {/* OFFLINE REPORT MODAL */}
              {offlineReport && (
                  <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in">
-                     <div className="bg-stone-900 border border-neon-purple p-8 rounded-2xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(188,19,254,0.3)]">
+                     <div role="dialog" aria-modal="true" aria-labelledby="gravity-offline-title" className="bg-stone-900 border border-neon-purple p-8 rounded-2xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(188,19,254,0.3)]">
                          <div className="text-4xl mb-4">🌌</div>
-                         <h2 className="text-xl font-display font-bold text-white mb-2">SIMULATION RESUMED</h2>
-                         <p className="text-gray-400 text-xs mb-6">Matter accretion continued while you were away.</p>
+                         <h2 id="gravity-offline-title" className="text-xl font-display font-bold text-white mb-2">SIMULATION RESUMED</h2>
+                         <p className="text-gray-400 text-xs mb-6">Matter accretion continued while you were away. The generated matter below is already credited to this local save.</p>
                          
                          <div className="bg-black/40 rounded p-4 mb-6">
                              <div className="flex justify-between text-xs mb-2">
@@ -807,7 +807,7 @@ const GravityIdle: React.FC = () => {
                             onClick={() => setOfflineReport(null)}
                             className="w-full py-3 bg-neon-purple text-black font-bold rounded hover:bg-white transition-colors"
                          >
-                             ABSORB MATTER
+                             CONTINUE
                          </button>
                      </div>
                  </div>
