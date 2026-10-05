@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FloatingText, Planet, Upgrade } from '../types';
 import { formatNumber } from '../utils';
+import { PLANETS } from '../constants';
 
 interface ClickAreaProps {
   onMine: (x: number, y: number, multiplier?: number, isGeode?: boolean) => { amount: number; isCrit: boolean };
@@ -50,6 +51,8 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const hasAnyUpgrade = upgrades.some((upgrade) => upgrade.count > 0);
   const showFirstRunGuide = currency < 15 && productionRate <= 0 && !hasAnyUpgrade;
+  const currentPlanetIndex = PLANETS.findIndex((candidate) => candidate.id === planet.id);
+  const nextPlanet = currentPlanetIndex >= 0 ? PLANETS[currentPlanetIndex + 1] : undefined;
 
   // Safety check to prevent crash if planet data is missing
   if (!planet) return <div className="w-full h-full flex items-center justify-center text-red-500 font-mono">PLANET DATA CORRUPTED</div>;
@@ -374,9 +377,16 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             </div>
 
             {/* Planet Name */}
-            <p className="text-[10px] text-gray-500 tracking-widest mt-1 uppercase border-t border-white/10 pt-2 w-32 drop-shadow-md bg-black/40 rounded px-2">
-                {planet.name}
-            </p>
+            <div className="mt-1 text-center">
+              <p className="text-[10px] text-gray-400 tracking-widest uppercase border-t border-white/10 pt-2 min-w-36 drop-shadow-md bg-black/40 rounded px-2">
+                  {planet.name}
+              </p>
+              <div className="mt-1 text-[9px] font-mono tracking-wider text-neon-blue/80">
+                {nextPlanet
+                  ? `NEXT WARP: ${formatNumber(nextPlanet.threshold)} SD`
+                  : 'GALACTIC CORE REACHED'}
+              </div>
+            </div>
           </div>
 
           {/* The Planet Container - Centered Vertically */}
