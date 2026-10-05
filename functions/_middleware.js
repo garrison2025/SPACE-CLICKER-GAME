@@ -168,13 +168,12 @@ export async function onRequest(context) {
   }
 
   if (isStaticAssetRequest(pathname)) {
-    const response = await context.next();
-    const contentType = (response.headers.get('content-type') || '').toLowerCase();
-
-    // Cloudflare Pages' SPA fallback can turn a missing .html/.js/.css/etc.
-    // request into index.html with HTTP 200. Convert that HTML fallback into a
-    // real 404 while still allowing existing static assets through unchanged.
-    if (response.status === 404 || contentType.includes('text/html')) {
+    // Ask Pages' static asset binding directly instead of falling through the
+    // SPA route chain. Existing hashed assets and generated discovery files are
+    // served normally; a missing asset stays a real 404 instead of becoming the
+    // homepage with HTTP 200.
+    const response = await context.env.ASSETS.fetch(context.request);
+    if (response.status === 404) {
       return notFoundResponse(url);
     }
 
