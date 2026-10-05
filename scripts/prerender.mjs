@@ -21,6 +21,7 @@ const routes = [
   ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Experiment with gravity, matter and upgrades in a free browser-based idle simulation.', 'Gravity Idle'],
   ['/game/deep_signal', 'Deep Space Signal - Free Browser Text Adventure', 'Scan, decode and analyze strange transmissions in a free browser-based deep space signal game.', 'Deep Space Signal'],
   ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],
+  ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
   ['/spacebar-clicker', 'Spacebar Clicker - Space Bar Clicker Game & CPS', 'Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys.', 'Spacebar Clicker'],
   ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Free online Spacebar Counter with total presses, current CPS, average CPS, peak CPS and local best.', 'Spacebar Counter'],
   ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests and save your best local score.', 'Spacebar Clicker Test'],
