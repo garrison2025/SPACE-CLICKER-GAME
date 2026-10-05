@@ -43,7 +43,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   return (
-    <div className="relative w-full h-[100dvh] min-h-[520px] overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+    <div className="relative w-full h-[100dvh] min-h-[420px] sm:min-h-[520px] overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
       {/* --- TOP HUD --- */}
       <header className="h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
