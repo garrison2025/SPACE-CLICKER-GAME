@@ -411,6 +411,9 @@ const StarDefense: React.FC = () => {
             setHp(prev => {
                 const newHp = prev - remaining;
                 if (newHp <= 0) {
+                    // A defeated run is over. Remove the last in-progress snapshot
+                    // immediately so refresh cannot restore the player before death.
+                    localStorage.removeItem(DEFENSE_SAVE_KEY);
                     setGameOver(true);
                     return 0;
                 }
@@ -517,6 +520,17 @@ const StarDefense: React.FC = () => {
     };
 
     const handleRestart = () => {
+        const freshUpgrades = INITIAL_UPGRADES.map((upgrade) => ({ ...upgrade }));
+        const freshSnapshot = { scraps: 0, wave: 1, upgrades: freshUpgrades };
+
+        // Persist the new run before updating the UI so an immediate close after
+        // Restart cannot resurrect the defeated run.
+        saveStateRef.current = freshSnapshot;
+        localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({
+            ...freshSnapshot,
+            lastSaveTime: Date.now(),
+        }));
+
         setGameOver(false);
         setHp(100);
         setShield(0);
@@ -529,7 +543,7 @@ const StarDefense: React.FC = () => {
         projectilesRef.current = [];
         powerupsRef.current = [];
         particlesRef.current = [];
-        setUpgrades(INITIAL_UPGRADES);
+        setUpgrades(freshUpgrades);
         lastTimeRef.current = 0;
         if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
         animationFrameRef.current = requestAnimationFrame(gameLoop);
