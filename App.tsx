@@ -146,7 +146,7 @@ const App: React.FC = () => {
             const post = params.get('post');
             newPath = post ? `/blog/${post}/` : '/blog/';
         } else if (VALID_VIEWS.includes(legacyView as ViewMode)) {
-            newPath = `/${legacyView}`;
+            newPath = legacyView === 'home' ? '/' : `/${legacyView}/`;
         }
         
         // Perform replacement redirect
@@ -165,25 +165,37 @@ const App: React.FC = () => {
 
       if (path === '/') {
           view = 'home';
-      } else if (path.startsWith('/game')) {
+      } else if (path === '/game' || path === '/game/' || path.startsWith('/game/')) {
           view = 'game';
-          const parts = path.split('/');
-          const id = parts[2];
-          if (id && GAMES_CATALOG.some(g => g.id === id)) {
+          const segments = path.split('/').filter(Boolean);
+          const id = segments[1];
+
+          if (segments.length === 1) {
+              gameId = 'galaxy_miner';
+          } else if (
+              segments.length === 2 &&
+              id &&
+              GAMES_CATALOG.some(g => g.id === id)
+          ) {
               gameId = id as GameId;
-          } else if (id) {
-              error = true; // Invalid game ID
+          } else {
+              error = true;
           }
-      } else if (path.startsWith('/blog')) {
+      } else if (path === '/blog' || path === '/blog/' || path.startsWith('/blog/')) {
           view = 'blog';
-          const parts = path.split('/');
-          const id = parts[2];
-          if (id) {
-              if (BLOG_POST_META.some(p => p.slug === id || p.id === id)) {
-                  postId = id;
-              } else {
-                  error = true;
-              }
+          const segments = path.split('/').filter(Boolean);
+          const id = segments[1];
+
+          if (segments.length === 1) {
+              postId = null;
+          } else if (
+              segments.length === 2 &&
+              id &&
+              BLOG_POST_META.some(p => p.slug === id || p.id === id)
+          ) {
+              postId = id;
+          } else {
+              error = true;
           }
       } else {
           // Check static pages
