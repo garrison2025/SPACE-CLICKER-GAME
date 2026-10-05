@@ -83,7 +83,8 @@ const MergeShips: React.FC = () => {
     const orbitShipsRef = useRef<(MergeShip | null)[]>([]); 
     const lastTimeRef = useRef<number>(0);
     const spawnTimerRef = useRef<number>(0);
-    const fireTimersRef = useRef<number[]>([]); 
+    const fireTimersRef = useRef<number[]>([]);
+    const lastUiRenderRef = useRef<number>(0);
     
     const [_, setRenderTrigger] = useState(0); 
 
@@ -204,7 +205,10 @@ const MergeShips: React.FC = () => {
         })).filter(p => p.life > 0);
 
         requestAnimationFrame(gameLoop);
-        setRenderTrigger(prev => prev + 1); 
+        if (timestamp - lastUiRenderRef.current >= 33) {
+            lastUiRenderRef.current = timestamp;
+            setRenderTrigger(prev => prev + 1);
+        }
     }, [highestLevel]);
 
     useEffect(() => {
