@@ -127,6 +127,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const [lastGain, setLastGain] = useState(0);
   const [lastWasCrit, setLastWasCrit] = useState(false);
   const [offlineEarned, setOfflineEarned] = useState(0);
+  const [buyMode, setBuyMode] = useState<1 | 10 | 'max'>(1);
   const pressTimes = useRef<number[]>([]);
   const lastPressAt = useRef(0);
 
@@ -149,6 +150,18 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   );
 
   const prestigeGain = Math.floor(Math.sqrt(points / PRESTIGE_THRESHOLD));
+  const prestigeProgress = Math.min(100, (points / PRESTIGE_THRESHOLD) * 100);
+  const pointsToPrestige = Math.max(0, PRESTIGE_THRESHOLD - points);
+
+  const nearestUpgrade = useMemo(() => {
+    return UPGRADE_DEFS
+      .filter((def) => def.maxLevel === undefined || upgrades[def.id] < def.maxLevel)
+      .map((def) => ({
+        def,
+        cost: Math.floor(def.baseCost * Math.pow(def.costMultiplier, upgrades[def.id]))
+      }))
+      .sort((a, b) => a.cost - b.cost)[0] || null;
+  }, [upgrades]);
 
   const saveStateRef = useRef({
     points,
@@ -265,13 +278,28 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const getUpgradeCost = (def: UpgradeDef) =>
     Math.floor(def.baseCost * Math.pow(def.costMultiplier, upgrades[def.id]));
 
-  const buyUpgrade = (def: UpgradeDef) => {
+  const getPurchasePlan = (def: UpgradeDef) => {
     const level = upgrades[def.id];
-    if (def.maxLevel !== undefined && level >= def.maxLevel) return;
-    const cost = getUpgradeCost(def);
-    if (points < cost) return;
-    setPoints((value) => value - cost);
-    setUpgrades((value) => ({ ...value, [def.id]: value[def.id] + 1 }));
+    const remainingLevels = def.maxLevel === undefined ? 1000 : Math.max(0, def.maxLevel - level);
+    const targetCount = buyMode === 'max' ? remainingLevels : Math.min(buyMode, remainingLevels);
+    let totalCost = 0;
+    let count = 0;
+
+    for (let index = 0; index < targetCount; index++) {
+      const nextCost = Math.floor(def.baseCost * Math.pow(def.costMultiplier, level + index));
+      if (totalCost + nextCost > points) break;
+      totalCost += nextCost;
+      count += 1;
+    }
+
+    return { count, totalCost };
+  };
+
+  const buyUpgrade = (def: UpgradeDef) => {
+    const plan = getPurchasePlan(def);
+    if (plan.count < 1) return;
+    setPoints((value) => value - plan.totalCost);
+    setUpgrades((value) => ({ ...value, [def.id]: value[def.id] + plan.count }));
   };
 
   const prestige = () => {
@@ -340,6 +368,20 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
             <Stat label="Auto / sec" value={formatNumber(autoRate)} />
           </div>
 
+          {nearestUpgrade && (
+            <div className="mb-6 rounded-xl border border-white/10 bg-black/20 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+              <div>
+                <span className="text-gray-500">Nearest upgrade:</span>{' '}
+                <strong className="text-white">{nearestUpgrade.def.name}</strong>
+              </div>
+              <div className="font-mono text-neon-blue">
+                {points >= nearestUpgrade.cost
+                  ? 'READY • ' + formatNumber(nearestUpgrade.cost)
+                  : formatNumber(nearestUpgrade.cost - points) + ' points to go'}
+              </div>
+            </div>
+          )}
+
           <div className="text-center py-6">
             <div className="text-5xl md:text-7xl font-mono font-black text-white mb-3 tabular-nums">
               {formatNumber(points)}
@@ -383,6 +425,18 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   Reach {formatNumber(PRESTIGE_THRESHOLD)} points to convert this run into permanent Quantum Keys.
                   Each key adds +10% global production.
                 </p>
+                <div className="mt-4">
+                  <div className="flex justify-between text-[11px] font-mono text-gray-500 mb-1">
+                    <span>{prestigeProgress.toFixed(1)}%</span>
+                    <span>{pointsToPrestige > 0 ? formatNumber(pointsToPrestige) + ' points remaining' : 'Hyperdrive ready'}</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-black/40 overflow-hidden">
+                    <div
+                      className="h-full bg-neon-purple transition-all duration-300"
+                      style={{ width: `${prestigeProgress}%` }}
+                    />
+                  </div>
+                </div>
               </div>
               <button
                 type="button"
@@ -400,20 +454,37 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
         <aside className="bg-space-900/80 border border-white/10 rounded-2xl overflow-hidden">
           <div className="p-5 border-b border-white/10">
-            <h2 className="font-display text-2xl text-white">UPGRADES</h2>
-            <p className="text-xs text-gray-500 mt-1">Spend points to accelerate this run.</p>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="font-display text-2xl text-white">UPGRADES</h2>
+                <p className="text-xs text-gray-500 mt-1">Spend points to accelerate this run.</p>
+              </div>
+              <div className="flex rounded-lg border border-white/10 overflow-hidden">
+                {([1, 10, 'max'] as const).map((modeValue) => (
+                  <button
+                    key={String(modeValue)}
+                    type="button"
+                    onClick={() => setBuyMode(modeValue)}
+                    className={'px-2.5 py-1.5 text-[10px] font-bold transition-colors ' + (buyMode === modeValue ? 'bg-neon-blue text-black' : 'bg-black/20 text-gray-400 hover:text-white')}
+                  >
+                    {modeValue === 'max' ? 'MAX' : 'x' + modeValue}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
           <div className="p-4 space-y-3 max-h-[760px] overflow-y-auto">
             {UPGRADE_DEFS.map((def) => {
               const level = upgrades[def.id];
               const maxed = def.maxLevel !== undefined && level >= def.maxLevel;
               const cost = getUpgradeCost(def);
+              const plan = getPurchasePlan(def);
               return (
                 <button
                   key={def.id}
                   type="button"
                   onClick={() => buyUpgrade(def)}
-                  disabled={maxed || points < cost}
+                  disabled={maxed || plan.count < 1}
                   className="w-full text-left rounded-xl border border-white/10 bg-black/20 p-4 hover:border-neon-blue/40 disabled:opacity-45 disabled:cursor-not-allowed transition-colors"
                 >
                   <div className="flex justify-between gap-3">
@@ -423,8 +494,13 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">{def.description}</p>
-                  <div className="text-xs font-mono mt-3 text-gray-300">
-                    {maxed ? 'MAXED' : formatNumber(cost) + ' points'}
+                  <div className="flex justify-between gap-3 text-xs font-mono mt-3">
+                    <span className="text-gray-300">{maxed ? 'MAXED' : formatNumber(cost) + ' next'}</span>
+                    {!maxed && (
+                      <span className={plan.count > 0 ? 'text-neon-blue' : 'text-gray-600'}>
+                        {plan.count > 0 ? 'BUY x' + plan.count + ' • ' + formatNumber(plan.totalCost) : 'LOCKED'}
+                      </span>
+                    )}
                   </div>
                 </button>
               );
@@ -454,6 +530,12 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
         </div>
 
         <div className="flex flex-wrap gap-3 mb-12">
+          <a href="/spacebar-games/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm">
+            All Spacebar Games
+          </a>
+          <a href="/spacebar-clicker-2/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-purple text-sm">
+            Spacebar Clicker 2
+          </a>
           <a href="/spacebar-counter/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm">
             Spacebar Counter
           </a>
