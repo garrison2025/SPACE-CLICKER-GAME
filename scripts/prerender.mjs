@@ -594,41 +594,71 @@ const staticRouteContent = {
       <p>For another systems-heavy simulation, try <a href="/game/gravity_idle/">Gravity Idle</a>, or return to the main <a href="/game/galaxy_miner/">Galaxy Miner</a> clicker.</p>
     </section>`,
   '/spacebar-games': `
-    <section>
-      <h2>Choose a Spacebar mode</h2>
-      <p>Use Spacebar Clicker for an idle upgrade game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges including 1, 5, 10, 30 and 60 seconds plus a 100-click sprint.</p>
-      <ul>
-        <li><a href="/spacebar-clicker/">Spacebar Clicker — idle upgrades and prestige</a></li>
-        <li><a href="/spacebar-clicker-test/">Spacebar Clicker Test — timed CPS speed test</a></li>
-        <li><a href="/spacebar-counter/">Spacebar Counter — untimed press counter</a></li>
-        <li><a href="/spacebar-clicker-2/">Spacebar Clicker 2 — Overdrive and Nova Core progression</a></li>
-        <li><a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Play — direct browser mode</a></li>
-      </ul>
+<section>
+      <h2>Choose the right Spacebar game or tool</h2>
+      <p>The Spacebar Games hub separates several different search intents instead of forcing them into one page. Use Spacebar Clicker for an upgrade-based idle game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges.</p>
+      <h2>Spacebar Clicker</h2>
+      <p><a href="/spacebar-clicker/">Spacebar Clicker</a> turns each deliberate Space press into points. Buy manual upgrades, unlock automatic production, watch CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
+      <h2>Spacebar Counter and CPS Test</h2>
+      <p><a href="/spacebar-counter/">Spacebar Counter</a> keeps counting until you reset the session and shows total presses plus current, average, and peak CPS. <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> adds 1, 5, 10, 30, and 60 second modes, custom durations up to 300 seconds, and a 100-click sprint.</p>
+      <h2>Spacebar Clicker 2 and instant browser mode</h2>
+      <p><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression mode with Overdrive, offline production, and Nova Core ascension. <a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a> opens the classic game directly with no download or account; it does not bypass school, workplace, firewall, parental-control, or administrator restrictions.</p>
+      <p>All current Spacebar modes work in a modern browser. Desktop users can use the physical Space key where supported, while mobile users can use the large on-screen controls.</p>
     </section>`,
   '/spacebar-clicker': `
-    <section>
-      <h2>Spacebar Clicker idle game</h2>
-      <p>Press Space to earn points, buy manual and automatic upgrades, watch live CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
-      <p>Holding Space does not create valid repeated presses because browser-generated key-repeat events are ignored.</p>
-      <p>Need a different mode? Try the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>, <a href="/spacebar-counter/">Spacebar Counter</a>, or browse all <a href="/spacebar-games/">Spacebar Games</a>.</p>
+<section>
+      <h2>How to play Spacebar Clicker</h2>
+      <p>Spacebar Clicker is a free browser idle game built around deliberate Space key presses. Each valid press earns points, and those points can be reinvested into stronger manual output and automatic production. On touch devices, the large on-screen Space control provides the same basic input loop.</p>
+      <h2>Upgrades and automatic production</h2>
+      <p>The early game rewards active pressing, but upgrades gradually move the run toward passive income. Manual upgrades increase the value of each press, while automatic upgrades keep generating points without requiring constant input.</p>
+      <h2>CPS tracking and deliberate presses</h2>
+      <p>The game tracks clicks per second so you can see how quickly you are pressing during active play. Browser-generated repeat events from holding the Space key are ignored, which means the counter is based on repeated deliberate keydown events rather than a single held key.</p>
+      <h2>Hyperdrive Prestige and Quantum Keys</h2>
+      <p>Large runs can be converted through Hyperdrive Prestige. Prestige resets the current point economy and standard upgrades while retaining permanent Quantum Keys and supported lifetime records, giving later runs a stronger starting multiplier.</p>
+      <h2>Local browser save</h2>
+      <p>Current progress is stored locally in the browser rather than in a cloud account. Clearing site storage, using private browsing, or moving to another device can separate or remove that save.</p>
+      <p>For a pure speed benchmark, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>. For an endless press total without upgrades, use the <a href="/spacebar-counter/">Spacebar Counter</a>. You can also browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
     </section>`,
   '/spacebar-clicker-2': `
-    <section>
-      <h2>Spacebar Clicker 2</h2>
-      <p>This separate enhanced mode adds Overdrive, automatic production, offline earnings, upgrades and Nova Core ascension. Its save is stored locally and separately from the classic Spacebar Clicker.</p>
-      <p>Compare it with the <a href="/spacebar-clicker/">classic Spacebar Clicker</a> or browse all <a href="/spacebar-games/">Spacebar Games</a>.</p>
+<section>
+      <h2>What is Spacebar Clicker 2?</h2>
+      <p>Spacebar Clicker 2 is a separate enhanced Spacebar idle mode rather than a replacement skin for the classic game. It has its own local save and progression system, so progress in Spacebar Clicker 2 does not overwrite the classic Spacebar Clicker run.</p>
+      <h2>Overdrive and active pressing</h2>
+      <p>Manual Space presses build the early economy and interact with Overdrive, creating a faster active phase before automation becomes the dominant source of points. The on-screen Space control also supports mobile play.</p>
+      <h2>Micro Bots and Reactor Banks</h2>
+      <p>Micro Bots add passive point generation, while Reactor Banks multiply automatic production. These systems are designed to create a clearer transition from manual pressing into idle accumulation than the classic mode.</p>
+      <h2>Offline earnings</h2>
+      <p>Supported saved runs can calculate offline production when you return after time away. The offline reward is based on the saved production state and is stored locally in the current browser.</p>
+      <h2>Nova Core ascension</h2>
+      <p>Nova Ascension resets current points and standard upgrades in exchange for permanent Nova Cores. Nova Cores, lifetime records, and the permanent Nova bonus survive the reset and strengthen future runs.</p>
+      <p>Prefer the original progression loop? Open the <a href="/spacebar-clicker/">classic Spacebar Clicker</a>, or compare all available modes on the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
     </section>`,
   '/spacebar-counter': `
-    <section>
+<section>
       <h2>What is a Spacebar Counter?</h2>
-      <p>This page supports spacebar counting without a fixed timer. It records deliberate Space key presses and shows total presses, current CPS, average CPS, peak CPS and a local best count.</p>
-      <p>For a timed benchmark use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for upgrades and prestige use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
+      <p>Spacebar Counter is an untimed browser tool for counting deliberate Space key presses. It is useful when you want a running total rather than a fixed 5-second or 10-second challenge. The session continues until you choose to reset it.</p>
+      <h2>Total presses and CPS metrics</h2>
+      <p>The counter displays total presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses the full active session, and peak CPS records the strongest rolling one-second burst.</p>
+      <h2>Holding Space does not inflate the count</h2>
+      <p>Browser-generated repeat events from holding the key down are ignored. Each count is based on a new deliberate Space keydown or an intentional press on the on-screen control.</p>
+      <h2>Local best and privacy</h2>
+      <p>The best count is stored locally in the current browser. It is not uploaded to a public leaderboard, and clearing site storage can remove the saved local best.</p>
+      <h2>Counter vs Spacebar Clicker Test</h2>
+      <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige.</p>
     </section>`,
   '/spacebar-clicker-test': `
-    <section>
-      <h2>Spacebar CPS speed test</h2>
-      <p>Use the timed modes as a spacebar CPS test or a space bar click test: choose 1, 5, 10, 30 or 60 seconds, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
-      <p>For untimed counting use the <a href="/spacebar-counter/">Spacebar Counter</a>; for an upgrade-based idle game use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
+<section>
+      <h2>Spacebar Clicker Test modes</h2>
+      <p>The Spacebar Clicker Test measures deliberate Space presses over a chosen target. Timed presets include 1, 5, 10, 30, and 60 seconds. Custom mode accepts durations from 1 to 300 seconds, while the 100-click sprint measures how long it takes to reach one hundred valid presses.</p>
+      <h2>Average CPS, current CPS, and peak CPS</h2>
+      <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
+      <h2>How timed tests start and finish</h2>
+      <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. In 100-click mode, the test ends on the one-hundredth valid press and records elapsed time.</p>
+      <h2>Key-repeat protection</h2>
+      <p>Holding the Space key does not generate a valid stream of clicks because browser-generated repeat events are ignored. The test is designed around repeated deliberate presses or intentional taps on the on-screen control.</p>
+      <h2>Personal bests and sharing</h2>
+      <p>The best result for each selected mode is stored locally in the current browser. After a completed test, supported devices can use the share sheet; otherwise the result can be copied where clipboard access is available.</p>
+      <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
     </section>`,
   '/blog': `
     <section>
