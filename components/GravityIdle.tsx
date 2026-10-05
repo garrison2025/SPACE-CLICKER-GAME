@@ -82,11 +82,16 @@ const GravityIdle: React.FC = () => {
     const frameRef = useRef<number>();
     const sizeRef = useRef({ w: 0, h: 0, cx: 0, cy: 0 });
     const matterRef = useRef(matter);
+    const upgradesRef = useRef(upgrades);
     const pulseCooldownRef = useRef(pulseCooldown);
 
     useEffect(() => {
         matterRef.current = matter;
     }, [matter]);
+
+    useEffect(() => {
+        upgradesRef.current = upgrades;
+    }, [upgrades]);
 
     useEffect(() => {
         pulseCooldownRef.current = pulseCooldown;
@@ -501,10 +506,11 @@ const GravityIdle: React.FC = () => {
     const calculateCost = (key: keyof typeof UPGRADE_CONFIG, count: number) => {
         const cfg = UPGRADE_CONFIG[key];
         const currentLvl = upgrades[key];
+        const pricedCount = Math.min(Math.max(0, count), Math.max(0, cfg.max - currentLvl));
         let total = 0;
         let base = cfg.base * Math.pow(cfg.mult, currentLvl);
         
-        for(let i=0; i<count; i++) {
+        for(let i=0; i<pricedCount; i++) {
             total += Math.floor(base);
             base *= cfg.mult;
         }
@@ -529,25 +535,41 @@ const GravityIdle: React.FC = () => {
 
     const handleBuy = (key: keyof GravitySaveData['upgrades']) => {
         const cfg = UPGRADE_CONFIG[key];
-        const lvl = upgrades[key];
-        if (lvl >= cfg.max) return;
+        const currentUpgrades = upgradesRef.current;
+        const lvl = currentUpgrades[key];
+        const remaining = Math.max(0, cfg.max - lvl);
+        if (remaining < 1) return;
 
         let count = 0;
         let cost = 0;
+        let nextUnitCost = cfg.base * Math.pow(cfg.mult, lvl);
+        const availableMatter = matterRef.current;
 
         if (buyAmount === 'MAX') {
-            const res = getMaxBuy(key);
-            count = res.count;
-            cost = res.cost;
+            while (
+                count < Math.min(100, remaining) &&
+                cost + nextUnitCost <= availableMatter
+            ) {
+                cost += Math.floor(nextUnitCost);
+                nextUnitCost *= cfg.mult;
+                count += 1;
+            }
         } else {
-            count = buyAmount;
-            cost = calculateCost(key, count);
+            count = Math.min(buyAmount, remaining);
+            for (let index = 0; index < count; index++) {
+                cost += Math.floor(nextUnitCost);
+                nextUnitCost *= cfg.mult;
+            }
         }
 
-        if (matter >= cost && count > 0) {
-            setMatter(prev => prev - cost);
-            setUpgrades(prev => ({ ...prev, [key]: lvl + count }));
-        }
+        if (count < 1 || availableMatter < cost) return;
+
+        const nextMatter = availableMatter - cost;
+        const nextUpgrades = { ...currentUpgrades, [key]: lvl + count };
+        matterRef.current = nextMatter;
+        upgradesRef.current = nextUpgrades;
+        setMatter(nextMatter);
+        setUpgrades(nextUpgrades);
     };
 
     // --- LIFECYCLE ---
@@ -643,6 +665,8 @@ const GravityIdle: React.FC = () => {
             // Consume the offline window immediately so refreshing before the
             // autosave interval cannot award the same period again.
             saveStateRef.current = nextSnapshot;
+            matterRef.current = nextMatter;
+            upgradesRef.current = loadedUpgrades;
             localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: now,
