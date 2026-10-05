@@ -71,7 +71,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                 </button>
 
                 <details className="md:hidden relative">
-                  <summary className="list-none cursor-pointer px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white">
+                  <summary className="list-none cursor-pointer min-h-11 px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white flex items-center">
                     MENU
                   </summary>
                   <nav className="absolute right-0 mt-2 w-64 max-h-[72vh] overflow-y-auto rounded-xl border border-white/10 bg-space-950 shadow-2xl p-2 z-[120]">
