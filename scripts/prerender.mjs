@@ -230,6 +230,14 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             { "@type": "ListItem", "position": 4, "url": site + "/spacebar-clicker-2/", "name": "Spacebar Clicker 2" },
             { "@type": "ListItem", "position": 5, "url": site + "/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
           ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": canonical }
+          ]
         }
       ]
     };
@@ -243,34 +251,61 @@ const buildStaticRouteSchema = (route, description, canonical) => {
         : 'Spacebar Clicker';
     return {
       "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "@id": canonical + "#game",
-      "url": canonical,
-      "name": name,
-      "description": description,
-      "genre": ["Clicker", "Incremental", "Idle"],
-      "playMode": "SinglePlayer",
-      "applicationCategory": "Game",
-      "operatingSystem": "Any modern web browser",
-      "isAccessibleForFree": true,
-      "inLanguage": "en",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "@graph": [
+        {
+          "@type": "VideoGame",
+          "@id": canonical + "#game",
+          "url": canonical,
+          "name": name,
+          "description": description,
+          "genre": ["Clicker", "Incremental", "Idle"],
+          "playMode": "SinglePlayer",
+          "applicationCategory": "Game",
+          "operatingSystem": "Any modern web browser",
+          "isAccessibleForFree": true,
+          "inLanguage": "en",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": site + "/spacebar-games/" },
+            { "@type": "ListItem", "position": 3, "name": name, "item": canonical }
+          ]
+        }
+      ]
     };
   }
 
   if (route === '/spacebar-counter' || route === '/spacebar-clicker-test') {
+    const name = route === '/spacebar-counter' ? 'Spacebar Counter' : 'Spacebar Clicker Test';
     return {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "@id": canonical + "#app",
-      "url": canonical,
-      "name": route === '/spacebar-counter' ? 'Spacebar Counter' : 'Spacebar Clicker Test',
-      "description": description,
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Any modern web browser",
-      "isAccessibleForFree": true,
-      "inLanguage": "en",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": canonical + "#app",
+          "url": canonical,
+          "name": name,
+          "description": description,
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any modern web browser",
+          "isAccessibleForFree": true,
+          "inLanguage": "en",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": site + "/spacebar-games/" },
+            { "@type": "ListItem", "position": 3, "name": name, "item": canonical }
+          ]
+        }
+      ]
     };
   }
 
