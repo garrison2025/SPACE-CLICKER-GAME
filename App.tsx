@@ -37,6 +37,7 @@ const SpacebarGame = React.lazy(() => import('./components/SpacebarGame'));
 const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'));
 const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
 const SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
+const SpacebarClicker2 = React.lazy(() => import('./components/SpacebarClicker2'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -54,7 +55,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games'];
+const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games', 'spacebar-clicker-2'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -414,6 +415,51 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "Do Spacebar Clicker saves sync between devices?",
                       "acceptedAnswer": { "@type": "Answer", "text": "No. Current game progress is stored locally in the browser on the device being used." }
+                    }
+                  ]
+                }
+              ]
+          };
+      } else if (viewMode === 'spacebar-clicker-2') {
+          title = "Spacebar Clicker 2 - Upgraded Idle Space Bar Game";
+          desc = "Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.";
+          type = 'game';
+          schema = {
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "VideoGame",
+                  "name": "Spacebar Clicker 2",
+                  "description": desc,
+                  "genre": ["Clicker", "Incremental", "Idle"],
+                  "playMode": "SinglePlayer",
+                  "applicationCategory": "Game",
+                  "operatingSystem": "Any modern web browser",
+                  "url": "https://spaceclickergame.com/spacebar-clicker-2/",
+                  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+                },
+                {
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    {
+                      "@type": "Question",
+                      "name": "Is this the same as the classic Spacebar Clicker?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "No. It is a separate enhanced mode with its own mechanics and local save." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Does Spacebar Clicker 2 have auto-clickers?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Micro Bots generate passive points and Reactor Banks multiply automatic production." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "What does Nova Ascension reset?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "It resets current points and standard upgrades. Nova Cores, lifetime records and the permanent Nova bonus remain." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "Does Spacebar Clicker 2 work on mobile?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mobile players can use the on-screen Space button, while desktop players can use the physical Space key." }
                     }
                   ]
                 }
@@ -1136,6 +1182,7 @@ const App: React.FC = () => {
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
                 {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}
+                {viewMode === 'spacebar-clicker-2' && <Suspense fallback={<LoadingSimulation />}><SpacebarClicker2 /></Suspense>}
                 {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
                 {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
                 {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
