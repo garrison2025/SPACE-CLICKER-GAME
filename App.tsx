@@ -421,7 +421,7 @@ const App: React.FC = () => {
           if (activePostId) {
               const post = BLOG_POST_META.find(p => p.slug === activePostId || p.id === activePostId);
               if (post) {
-                  title = `${post.title} | Space Clicker Game Blog`;
+                  title = post.seoTitle;
                   desc = post.excerpt;
                   if (post.image) image = post.image;
                   type = 'article';
