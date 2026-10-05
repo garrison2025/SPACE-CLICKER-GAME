@@ -368,6 +368,30 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
               ? 'Play Spacebar Clicker instantly in your browser with no download or account. Press the physical Space key on desktop or use the on-screen key on mobile; progress is stored locally in this browser.'
               : 'A fast spacebar clicker game that combines manual key presses, CPS feedback, upgrades, automation and a complete prestige loop. Press Space to earn points, then turn every run into a faster one.'}
           </p>
+          <div className="mt-6 grid sm:grid-cols-3 gap-2 text-left">
+            <a
+              href={mode === 'unblocked' ? '/spacebar-clicker-unblocked/' : '/spacebar-clicker/'}
+              aria-current="page"
+              className="rounded-xl border border-neon-blue/40 bg-neon-blue/5 px-4 py-3"
+            >
+              <div className="text-[10px] font-mono text-neon-blue uppercase tracking-wider">Idle game</div>
+              <div className="mt-1 text-sm font-bold text-white">Upgrades + prestige</div>
+            </a>
+            <a
+              href="/spacebar-clicker-test/"
+              className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors"
+            >
+              <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Speed test</div>
+              <div className="mt-1 text-sm font-bold text-white">Timed CPS modes</div>
+            </a>
+            <a
+              href="/spacebar-counter/"
+              className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors"
+            >
+              <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Counter</div>
+              <div className="mt-1 text-sm font-bold text-white">Untimed press total</div>
+            </a>
+          </div>
         </div>
       </section>
 
