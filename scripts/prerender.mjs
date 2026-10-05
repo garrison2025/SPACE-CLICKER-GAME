@@ -79,6 +79,7 @@ if (!fs.existsSync(blogMetaSourcePath)) {
 const blogMetaSourceText = fs.readFileSync(blogMetaSourcePath, 'utf8');
 const lightweightSlugMatches = [...blogMetaSourceText.matchAll(/"slug":\s*"([^"]+)"/g)]
   .map((match) => ({ slug: match[1], index: match.index }));
+const lightweightBlogMeta = {};
 
 if (lightweightSlugMatches.length !== Object.keys(blogStaticMeta).length) {
   throw new Error(
@@ -104,9 +105,11 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
 
   const lightweight = {
     title: readJsonField('title'),
+    seoTitle: readJsonField('seoTitle'),
     description: readJsonField('excerpt'),
     image: readJsonField('image')
   };
+  lightweightBlogMeta[slug] = lightweight;
 
   for (const field of ['title', 'description', 'image']) {
     if (lightweight[field] !== canonical[field]) {
@@ -140,16 +143,12 @@ const routes = [
   ['/terms', 'Terms of Service | Space Clicker Game', 'Read the terms that apply when using SpaceClickerGame.com and its browser-based games and tools.', 'Terms of Service'],
   ['/cookies', 'Cookie & Local Storage Settings | Space Clicker Game', 'Learn how SpaceClickerGame.com uses browser localStorage for game progress and what clearing site storage does to local saves.', 'Cookie & Local Storage Settings'],
   ['/sitemap', 'HTML Sitemap | Space Clicker Game', 'Browse the main games, Spacebar tools, guides, support pages, and legal resources available on SpaceClickerGame.com.', 'HTML Sitemap'],
-  ['/blog/evolution-of-space-clicker-game-genre', 'The Evolution of the Space Clicker Game Genre | Space Clicker Game Blog', 'Explore how space clicker games evolved from simple counters into deeper incremental and idle systems.', 'The Evolution of the Space Clicker Game Genre'],
-  ['/blog/psychology-of-space-clicking-games', 'The Psychology of Space Clicking Games | Space Clicker Game Blog', 'A look at feedback loops, progression and player motivation in space clicking games.', 'The Psychology of Space Clicking Games'],
-  ['/blog/mastering-the-space-bar-clicking-game', 'Mastering the Space Bar Clicking Game | Space Clicker Game Blog', 'Practical techniques for space bar clicking games, active play and automation.', 'Mastering the Space Bar Clicking Game'],
-  ['/blog/top-10-space-clicking-games-features-2025', 'Features Defining Modern Space Clicking Games | Space Clicker Game Blog', 'Modern space clicking games combine visible progression, automation, offline systems, and active choices.', 'Features Defining Modern Space Clicking Games'],
-  ['/blog/mechanics-of-space-bar-clicking-game-physics', 'Mechanics of a Space Bar Clicking Game | Space Clicker Game Blog', 'Understand CPS, input feedback and progression mechanics behind space bar clicking games.', 'Mechanics of a Space Bar Clicking Game'],
-  ['/blog/strategy-guide-clicker-game-space-empire', 'Space Clicker Strategy Guide | Space Clicker Game Blog', 'Build a stronger incremental space economy with upgrades, automation and prestige strategy.', 'Space Clicker Strategy Guide'],
-  ['/blog/educational-value-of-space-clicker-games', 'Educational Value of Space Clicker Games | Space Clicker Game Blog', 'How incremental games can make exponential growth, reinvestment and systems thinking easier to visualize.', 'Educational Value of Space Clicker Games'],
-  ['/blog/active-vs-passive-space-click-game-styles', 'Active vs Passive Space Click Game Styles | Space Clicker Game Blog', 'Compare active clicking and passive automation strategies in browser-based space click games.', 'Active vs Passive Space Click Game Styles'],
-  ['/blog/narrative-design-clicker-game-space-adventure', 'Narrative Design in the Clicker Game Space Genre | Space Clicker Game Blog', 'Explore how flavor text and abstract systems create stories in incremental space games.', 'Narrative Design in Clicker Space Games'],
-  ['/blog/ultimate-hardware-guide-space-bar-click-game', 'Keyboard Factors for Space Bar Click Games | Space Clicker Game Blog', 'A practical guide to switch feel, actuation, stabilizers, durability, and ergonomics for repeated keyboard input.', 'Keyboard Factors for Space Bar Click Games']
+  ...Object.entries(blogStaticMeta).map(([route, meta]) => {
+    const slug = route.replace('/blog/', '');
+    const lightweight = lightweightBlogMeta[slug];
+    if (!lightweight) throw new Error(`Missing lightweight metadata for ${slug}`);
+    return [route, lightweight.seoTitle, meta.description, meta.title];
+  })
 ];
 
 const HIGH_VALUE_SCHEMA_ROUTES = new Set([
