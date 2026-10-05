@@ -349,6 +349,27 @@ const SpacebarClicker2: React.FC = () => {
           A separate upgraded edition with an Overdrive meter, stronger automation, Nova Core ascension and its own local save.
           Press Space, charge the reactor and turn short bursts into a permanent idle economy.
         </p>
+        <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-2 text-left max-w-5xl mx-auto">
+          <a href="/spacebar-clicker-2/" aria-current="page" className="rounded-xl border border-neon-purple/40 bg-neon-purple/5 px-4 py-3">
+            <div className="text-[10px] font-mono text-neon-purple uppercase tracking-wider">Clicker 2</div>
+            <div className="mt-1 text-sm font-bold text-white">Overdrive + ascension</div>
+          </a>
+          <a href="/spacebar-clicker/" className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors">
+            <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Classic</div>
+            <div className="mt-1 text-sm font-bold text-white">Upgrades + Hyperdrive</div>
+          </a>
+          <a href="/spacebar-clicker-test/" className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors">
+            <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Speed test</div>
+            <div className="mt-1 text-sm font-bold text-white">Timed CPS modes</div>
+          </a>
+          <a href="/spacebar-counter/" className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors">
+            <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Counter</div>
+            <div className="mt-1 text-sm font-bold text-white">Untimed press total</div>
+          </a>
+        </div>
+        <a href="/spacebar-games/" className="inline-block mt-4 text-xs font-bold text-neon-blue hover:text-white">
+          Browse all Spacebar modes →
+        </a>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-[1fr_380px] gap-6">
