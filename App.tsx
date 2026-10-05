@@ -35,7 +35,7 @@ const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
 const SpacebarGame = React.lazy(() => import('./components/SpacebarGame'));
 const SpacebarCounter = React.lazy(() => import('./components/SpacebarCounter'));
-const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));
+const SpacebarClickerTest = React.lazy(() => import('./components/SpacebarClickerTest'));\nconst SpacebarGamesPage = React.lazy(() => import('./components/SpacebarGamesPage'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -53,7 +53,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked'];
+const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -368,6 +368,30 @@ const App: React.FC = () => {
                 }
               }
             ]
+          };
+      } else if (viewMode === 'spacebar-games') {
+          title = "Spacebar Games - Clicker, Counter & CPS Tests";
+          desc = "Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.";
+          schema = {
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "CollectionPage",
+                  "name": "Spacebar Games",
+                  "description": desc,
+                  "url": "https://spaceclickergame.com/spacebar-games/"
+                },
+                {
+                  "@type": "ItemList",
+                  "name": "Spacebar Games and Tools",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "url": "https://spaceclickergame.com/spacebar-clicker/", "name": "Spacebar Clicker" },
+                    { "@type": "ListItem", "position": 2, "url": "https://spaceclickergame.com/spacebar-counter/", "name": "Spacebar Counter" },
+                    { "@type": "ListItem", "position": 3, "url": "https://spaceclickergame.com/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
+                    { "@type": "ListItem", "position": 4, "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
+                  ]
+                }
+              ]
           };
       } else if (viewMode === 'spacebar-clicker' || viewMode === 'spacebar-clicker-unblocked') {
           const unblocked = viewMode === 'spacebar-clicker-unblocked';
@@ -757,8 +781,8 @@ const App: React.FC = () => {
       }
 
       if (e.code === 'Space') {
-        e.preventDefault();
         if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+          e.preventDefault();
           const cx = window.innerWidth / 2;
           const cy = window.innerHeight / 2;
           handleMine(cx, cy);
@@ -994,7 +1018,7 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <ComparisonPage onNavigate={handleNavigate} />}
                 {viewMode === 'achievements' && <AchievementsPage onNavigate={handleNavigate} />}
-                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
+                {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}\n                {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
                 {viewMode === 'spacebar-counter' && <Suspense fallback={<LoadingSimulation />}><SpacebarCounter /></Suspense>}
                 {viewMode === 'spacebar-clicker-test' && <Suspense fallback={<LoadingSimulation />}><SpacebarClickerTest /></Suspense>}
                 {viewMode === 'spacebar-clicker-unblocked' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame mode="unblocked" /></Suspense>}
