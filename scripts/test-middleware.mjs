@@ -66,6 +66,10 @@ const gameRoot = await run('https://spaceclickergame.com/game/');
 expect(gameRoot.status === 301, 'Duplicate game root should redirect');
 expect(gameRoot.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Game root redirect target is wrong');
 
+const indexHtml = await run('https://spaceclickergame.com/index.html');
+expect(indexHtml.status === 301, 'index.html should permanently redirect to the canonical homepage');
+expect(indexHtml.headers.get('location') === 'https://spaceclickergame.com/', 'index.html redirect target is wrong');
+
 const knownBlog = await run('https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/');
 expect(knownBlog.status === 200, 'Known blog route should pass through');
 
