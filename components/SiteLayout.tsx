@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Logo } from './Logo';
 
 export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements' | 'spacebar-clicker' | 'spacebar-counter' | 'spacebar-clicker-test' | 'spacebar-clicker-unblocked' | 'spacebar-games' | 'spacebar-clicker-2';
@@ -10,6 +10,34 @@ interface SiteLayoutProps {
 }
 
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [currentView]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false);
+    };
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!mobileMenuRef.current?.contains(event.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', handlePointerDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [mobileMenuOpen]);
   
   // Helper to create SPA-friendly links that bots can also follow
   const NavLink = ({ view, label, className = "" }: { view: ViewMode, label: string, className?: string }) => {
@@ -70,39 +98,52 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                   VS IDLE GAMES
                 </button>
 
-                <details className="md:hidden relative">
-                  <summary className="list-none cursor-pointer min-h-11 px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white flex items-center">
-                    MENU
-                  </summary>
-                  <nav className="absolute right-0 mt-2 w-64 max-h-[72vh] overflow-y-auto rounded-xl border border-white/10 bg-space-950 shadow-2xl p-2 z-[120]">
-                    {[
-                      ['home', 'Home'],
-                      ['game', 'Galaxy Miner'],
-                      ['spacebar-games', 'Spacebar Games'],
-                      ['spacebar-clicker', 'Spacebar Clicker'],
-                      ['spacebar-clicker-test', 'CPS Test'],
-                      ['spacebar-counter', 'Spacebar Counter'],
-                      ['compare', 'Feature Comparison'],
-                      ['achievements', 'Milestones'],
-                      ['blog', 'Blog'],
-                      ['about', 'About']
-                    ].map(([view, label]) => (
-                      <a
-                        key={view}
-                        href={view === 'home' ? '/' : view === 'game' ? '/game/galaxy_miner/' : `/${view}/`}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          onNavigate(view as ViewMode);
-                          const details = event.currentTarget.closest('details');
-                          if (details) details.removeAttribute('open');
-                        }}
-                        className="block rounded-lg px-3 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
-                      >
-                        {label}
-                      </a>
-                    ))}
-                  </nav>
-                </details>
+                <div ref={mobileMenuRef} className="md:hidden relative">
+                  <button
+                    type="button"
+                    aria-expanded={mobileMenuOpen}
+                    aria-controls="mobile-site-navigation"
+                    aria-label={mobileMenuOpen ? 'Close site menu' : 'Open site menu'}
+                    onClick={() => setMobileMenuOpen((open) => !open)}
+                    className="min-h-11 min-w-11 px-3 py-2 rounded-lg border border-white/10 bg-space-900 text-xs font-bold text-white flex items-center justify-center gap-2"
+                  >
+                    <span aria-hidden="true">{mobileMenuOpen ? '✕' : '☰'}</span>
+                    <span>MENU</span>
+                  </button>
+                  {mobileMenuOpen && (
+                    <nav
+                      id="mobile-site-navigation"
+                      aria-label="Mobile navigation"
+                      className="absolute right-0 mt-2 w-64 max-h-[min(72vh,32rem)] overflow-y-auto overscroll-contain rounded-xl border border-white/10 bg-space-950 shadow-2xl p-2 z-[120]"
+                    >
+                      {[
+                        ['home', 'Home'],
+                        ['game', 'Galaxy Miner'],
+                        ['spacebar-games', 'Spacebar Games'],
+                        ['spacebar-clicker', 'Spacebar Clicker'],
+                        ['spacebar-clicker-test', 'CPS Test'],
+                        ['spacebar-counter', 'Spacebar Counter'],
+                        ['compare', 'Feature Comparison'],
+                        ['achievements', 'Milestones'],
+                        ['blog', 'Blog'],
+                        ['about', 'About']
+                      ].map(([view, label]) => (
+                        <a
+                          key={view}
+                          href={view === 'home' ? '/' : view === 'game' ? '/game/galaxy_miner/' : `/${view}/`}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setMobileMenuOpen(false);
+                            onNavigate(view as ViewMode);
+                          }}
+                          className="block min-h-11 rounded-lg px-3 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
+                        >
+                          {label}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
+                </div>
             </div>
         </div>
       </header>
