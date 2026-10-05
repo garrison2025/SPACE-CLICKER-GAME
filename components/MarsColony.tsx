@@ -218,24 +218,34 @@ const MarsColony: React.FC = () => {
     }, [buildings]);
 
     // --- PHYSICS LOOP (Visuals) ---
-    const visualLoop = useCallback(() => {
-        setParticles(prev => prev.map(p => ({
-            ...p,
-            x: p.x + p.vx,
-            y: p.y + p.vy,
-            vy: p.vy + 0.5, // Gravity
-            life: p.life - 0.05
-        })).filter(p => p.life > 0));
-
-        setClicks(prev => prev.filter(c => c.opacity > 0).map(c => ({...c, opacity: c.opacity - 0.02, y: c.y - 1})));
-
-        frameRef.current = requestAnimationFrame(visualLoop);
-    }, []);
-
+    // Only animate while visual effects exist. This avoids a permanent 60fps
+    // React state loop while the colony screen is sitting idle.
+    const hasVisualEffects = particles.length > 0 || clicks.length > 0;
     useEffect(() => {
+        if (!hasVisualEffects) return;
+
+        const visualLoop = () => {
+            setParticles(prev => prev.map(p => ({
+                ...p,
+                x: p.x + p.vx,
+                y: p.y + p.vy,
+                vy: p.vy + 0.5,
+                life: p.life - 0.05
+            })).filter(p => p.life > 0));
+
+            setClicks(prev => prev
+                .filter(c => c.opacity > 0)
+                .map(c => ({ ...c, opacity: c.opacity - 0.02, y: c.y - 1 }))
+            );
+
+            frameRef.current = requestAnimationFrame(visualLoop);
+        };
+
         frameRef.current = requestAnimationFrame(visualLoop);
-        return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current); };
-    }, [visualLoop]);
+        return () => {
+            if (frameRef.current) cancelAnimationFrame(frameRef.current);
+        };
+    }, [hasVisualEffects]);
 
     // --- ACTIONS ---
     const spawnParticles = (x: number, y: number, color: string, count: number = 8) => {
