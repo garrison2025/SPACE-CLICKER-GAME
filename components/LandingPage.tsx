@@ -132,7 +132,9 @@ const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
 const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
     const scrollToConsole = () => {
         const el = document.getElementById('console-anchor');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (!el) return;
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        el.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
     };
 
     return (
