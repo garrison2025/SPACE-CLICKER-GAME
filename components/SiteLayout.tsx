@@ -47,8 +47,9 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
     else if (view !== 'home') path = `/${view}/`;
     
     return (
-        <a 
+        <a
           href={path}
+          aria-current={currentView === view ? 'page' : undefined}
           onClick={(e) => { e.preventDefault(); onNavigate(view); }}
           className={`transition-colors font-bold tracking-wide text-sm ${currentView === view ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
         >
@@ -64,8 +65,10 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
       <header className="sticky top-0 z-[100] w-full bg-space-950 md:bg-space-950/80 md:backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             {/* Logo */}
-            <a 
+            <a
                 href="/"
+                aria-label="Space Clicker Game home"
+                aria-current={currentView === 'home' ? 'page' : undefined}
                 onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
                 className="group hover:opacity-90 transition-opacity"
             >
@@ -73,7 +76,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             </a>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-6 lg:gap-8">
                 <NavLink view="home" label="HOME" />
                 <NavLink view="game" label="GALAXY MINER" />
                 <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" />
@@ -85,18 +88,22 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
 
             {/* Right Actions */}
             <div className="flex items-center gap-2 md:gap-3">
-                <button
-                  onClick={() => onNavigate('spacebar-games')}
+                <a
+                  href="/spacebar-games/"
+                  aria-current={currentView === 'spacebar-games' ? 'page' : undefined}
+                  onClick={(event) => { event.preventDefault(); onNavigate('spacebar-games'); }}
                   className="hidden lg:inline-flex px-3.5 py-1.5 bg-neon-purple/10 border border-neon-purple/40 text-neon-purple hover:bg-neon-purple hover:text-black transition-all rounded-full font-mono text-xs font-bold"
                 >
                   SPACEBAR TOOLS
-                </button>
-                <button 
-                  onClick={() => onNavigate('compare')}
+                </a>
+                <a
+                  href="/compare/"
+                  aria-current={currentView === 'compare' ? 'page' : undefined}
+                  onClick={(event) => { event.preventDefault(); onNavigate('compare'); }}
                   className="hidden md:inline-flex px-3.5 py-1.5 bg-neon-blue/10 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-all rounded-full font-mono text-xs font-bold"
                 >
                   VS IDLE GAMES
-                </button>
+                </a>
 
                 <div ref={mobileMenuRef} className="md:hidden relative">
                   <button
@@ -131,12 +138,13 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                         <a
                           key={view}
                           href={view === 'home' ? '/' : view === 'game' ? '/game/galaxy_miner/' : `/${view}/`}
+                          aria-current={currentView === view ? 'page' : undefined}
                           onClick={(event) => {
                             event.preventDefault();
                             setMobileMenuOpen(false);
                             onNavigate(view as ViewMode);
                           }}
-                          className="block min-h-11 rounded-lg px-3 py-3 text-sm text-gray-300 hover:bg-white/5 hover:text-neon-blue transition-colors"
+                          className={`block min-h-11 rounded-lg px-3 py-3 text-sm transition-colors ${currentView === view ? 'bg-white/5 text-neon-blue' : 'text-gray-300 hover:bg-white/5 hover:text-neon-blue'}`}
                         >
                           {label}
                         </a>
