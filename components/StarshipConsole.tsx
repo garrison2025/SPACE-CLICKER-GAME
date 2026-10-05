@@ -60,7 +60,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       <header className="h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
          <div className="flex items-center gap-4">
             <div 
-                className="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity"
+                className="min-w-11 min-h-11 flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={onGoHome}
             >
                <Logo className="w-8 h-8" />
