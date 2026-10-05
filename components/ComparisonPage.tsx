@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
 import SEOHead from './SEOHead';
@@ -18,7 +18,6 @@ interface GameComparison {
   graphicsAndAudio: string;
   aiFeatures: string;
   bestFor: string;
-  score: number;
 }
 
 const COMPARISON_DATA: GameComparison[] = [
@@ -27,13 +26,12 @@ const COMPARISON_DATA: GameComparison[] = [
     genre: "Sci-Fi Idle / Clicker",
     theme: "Interstellar Mining & Planetary Colonization",
     activeClicking: "High (Heat Management, Critical Flux 80-99% bonus, Golden Comets)",
-    idleAutomation: "Extensive (Mining Drones, Orbital Stations, Dyson Spheres)",
-    prestigeSystem: "Quantum Supernova (Dark Matter permanent multiplier + Tech Tree)",
-    combatOrEvents: "Real-time Crisis Invasions, Comet Catches, AI Subspace Anomaly generation",
-    graphicsAndAudio: "Hardware-accelerated Starfield Canvas, Custom Particle FX, Synthwave Ambience",
+    idleAutomation: "Extensive (Mining Drones, Orbital Stations, Dyson Swarm)",
+    prestigeSystem: "Galactic Reset (Dark Matter permanent multiplier + Tech Tree)",
+    combatOrEvents: "Crisis events, Golden Comets, local procedural anomaly scans",
+    graphicsAndAudio: "Canvas starfield, particle effects, synthwave ambience",
     aiFeatures: "Local procedural anomaly scanner with dynamic events",
     bestFor: "Players seeking modern visuals, deep sci-fi themes, and active/passive hybrid strategy",
-    score: 9.8
   },
   {
     name: "Cookie Clicker",
@@ -46,7 +44,6 @@ const COMPARISON_DATA: GameComparison[] = [
     graphicsAndAudio: "2D Pixel art, classic sound effects",
     aiFeatures: "None",
     bestFor: "Nostalgic gamers who enjoy whimsical, surreal exponential number growth",
-    score: 9.5
   },
   {
     name: "Universal Paperclips",
@@ -59,7 +56,6 @@ const COMPARISON_DATA: GameComparison[] = [
     graphicsAndAudio: "Minimalist text-based spreadsheet UI",
     aiFeatures: "None (Themed around AI lore)",
     bestFor: "Fans of hard sci-fi, philosophical narratives, and tight, structured completions",
-    score: 9.6
   },
   {
     name: "Antimatter Dimensions",
@@ -72,7 +68,6 @@ const COMPARISON_DATA: GameComparison[] = [
     graphicsAndAudio: "Strictly minimalist numerical UI with dark theme",
     aiFeatures: "None",
     bestFor: "Hardcore mathematical purists who love complex prestige layers and huge notations (1e9000)",
-    score: 9.4
   },
   {
     name: "Spaceplan",
@@ -85,7 +80,6 @@ const COMPARISON_DATA: GameComparison[] = [
     graphicsAndAudio: "3D wireframe graphics with original electronic soundtrack",
     aiFeatures: "None",
     bestFor: "Players who want a humorous, completeable story-driven idle experience",
-    score: 9.2
   },
   {
     name: "Melvor Idle",
@@ -98,13 +92,10 @@ const COMPARISON_DATA: GameComparison[] = [
     graphicsAndAudio: "Clean web UI with icon inventories",
     aiFeatures: "None",
     bestFor: "MMORPG fans who enjoy deep crafting trees, equipment loadouts, and idle combat",
-    score: 9.3
   }
 ];
 
 const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
-  const [selectedGame, setSelectedGame] = useState<string>("Space Clicker Game (Cosmic Miner)");
-
   const comparisonSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -112,8 +103,8 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
         "@type": "WebPage",
         "@id": "https://spaceclickergame.com/compare",
         "url": "https://spaceclickergame.com/compare",
-        "name": "Space Clicker Game vs Cookie Clicker & Best Idle Games 2026",
-        "description": "In-depth comparison between Space Clicker Game and top incremental games like Cookie Clicker, Universal Paperclips, and Antimatter Dimensions.",
+        "name": "Space Clicker Game vs Classic Incremental Games: Feature Comparison",
+        "description": "A feature-based comparison of Space Clicker Game, Cookie Clicker, Universal Paperclips, Antimatter Dimensions, Spaceplan, and Melvor Idle.",
         "isPartOf": {
           "@type": "WebSite",
           "name": "Space Clicker Game",
@@ -133,7 +124,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
             "name": "What makes Space Clicker Game different from Cookie Clicker?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Space Clicker Game combines deep sci-fi lore with interactive heat-management mechanics (Heat Flux zone for 2x output), real-time defense crisis events, hardware-accelerated particle visuals, and procedural local space anomalies, whereas Cookie Clicker focuses on humorous confectionery escalation."
+              "text": "Galaxy Miner uses a sci-fi mining theme, a Heat Flux zone, crisis events, Golden Comets, local procedural anomaly scans, automation, and Dark Matter resets. Cookie Clicker uses a baking theme with Golden Cookies, building automation, seasonal systems, and ascension."
             }
           },
           {
@@ -141,7 +132,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
             "name": "Is Space Clicker Game completely free with no paywalls?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, Space Clicker Game is 100% free-to-play with zero pay-to-win microtransactions or gated content. All upgrades, prestige paths, and mini-games can be fully unlocked through gameplay."
+              "text": "No paid upgrade purchases are required in the current browser build. The playable simulations and Spacebar tools are available without a paid account."
             }
           },
           {
@@ -149,7 +140,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
             "name": "Can I play Space Clicker Game offline or unblocked?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, Space Clicker Game runs entirely in standard web browsers with local storage auto-saving, making it accessible on school Chromebooks, desktop PCs, and mobile devices without installation."
+              "text": "No installation is required for the browser games. Access can still be limited by school, workplace, parental-control, firewall, or network-administrator policies."
             }
           }
         ]
@@ -160,11 +151,10 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-space-950 text-gray-200 pt-24 pb-20 px-4">
       <SEOHead
-        title="Space Clicker Game vs Cookie Clicker: Best Idle Games Comparison (2026)"
-        description="Looking for games like Cookie Clicker or Universal Paperclips? Compare Space Clicker Game features, prestige mechanics, and strategy against top idle games."
+        title="Space Clicker Game vs Classic Incremental Games: Feature Comparison"
+        description="Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games."
         path="/compare"
         type="article"
-        keywords="games like cookie clicker, space clicker vs cookie clicker, best idle games 2026, universal paperclips alternatives, space clicker game comparison"
         schema={comparisonSchema}
       />
 
@@ -181,10 +171,10 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
             <span>⚡ TACTICAL EVALUATION</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white tracking-tight leading-tight">
-            SPACE CLICKER VS TOP IDLE GAMES
+            SPACE CLICKER FEATURE COMPARISON
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed font-sans">
-            How does <strong>Space Clicker Game (Cosmic Miner)</strong> compare to legendary genre pioneers like <em>Cookie Clicker</em>, <em>Universal Paperclips</em>, and <em>Antimatter Dimensions</em>? Explore our comprehensive 2026 breakdown.
+            Compare the mechanics of <strong>Galaxy Miner</strong> with well-known incremental games such as <em>Cookie Clicker</em>, <em>Universal Paperclips</em>, and <em>Antimatter Dimensions</em>. This is a feature snapshot, not a scored ranking.
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <button
@@ -207,15 +197,14 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
             <div>
               <h2 className="text-2xl font-display font-bold text-white">
-                2026 Incremental Games Comparison Matrix
+                Incremental Games Feature Matrix
               </h2>
               <p className="text-xs text-gray-400 mt-1">
-                Comparing gameplay depth, prestige loops, audio/visual presentation, and unique features.
+                Comparing themes, input style, automation, prestige loops, events, and presentation.
               </p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-neon-green">
-              <span className="w-2 h-2 rounded-full bg-neon-green animate-ping"></span>
-              <span>VERIFIED BENCHMARKS</span>
+            <div className="text-xs font-mono text-gray-500">
+              FEATURE SNAPSHOT • SYSTEMS MAY CHANGE OVER TIME
             </div>
           </div>
 
@@ -228,7 +217,6 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                   <th className="p-4">Prestige System</th>
                   <th className="p-4">Interactive Events</th>
                   <th className="p-4">Visual Fidelity</th>
-                  <th className="p-4 text-right rounded-tr-lg">Rating</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -237,24 +225,20 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                   return (
                     <tr
                       key={i}
-                      onClick={() => setSelectedGame(game.name)}
-                      className={`cursor-pointer transition-colors ${
+                      className={`transition-colors ${
                         isFeatured
-                          ? "bg-neon-blue/10 hover:bg-neon-blue/15 border-l-4 border-neon-blue"
+                          ? "bg-neon-blue/10 border-l-4 border-neon-blue"
                           : "hover:bg-white/5"
                       }`}
                     >
                       <td className="p-4 font-bold text-white flex items-center gap-2">
-                        {isFeatured && <span className="text-neon-blue">⭐</span>}
+                        {isFeatured && <span className="text-[10px] text-neon-blue border border-neon-blue/30 rounded px-1.5 py-0.5">THIS SITE</span>}
                         <span>{game.name}</span>
                       </td>
                       <td className="p-4 text-gray-300 text-xs">{game.theme}</td>
                       <td className="p-4 text-gray-300 text-xs">{game.prestigeSystem.split('(')[0]}</td>
                       <td className="p-4 text-gray-300 text-xs">{game.combatOrEvents.split(',')[0]}</td>
                       <td className="p-4 text-gray-300 text-xs">{game.graphicsAndAudio.split(',')[0]}</td>
-                      <td className="p-4 text-right font-mono font-bold text-neon-green">
-                        {game.score} / 10
-                      </td>
                     </tr>
                   );
                 })}
@@ -284,9 +268,11 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                     <h3 className="text-xl font-display font-bold text-white">
                       {game.name}
                     </h3>
-                    <span className="font-mono text-xs font-bold px-2 py-1 bg-space-950 rounded text-neon-green border border-neon-green/30">
-                      {game.score}/10
-                    </span>
+                    {game.name.includes("Space Clicker") && (
+                      <span className="font-mono text-[10px] font-bold px-2 py-1 bg-space-950 rounded text-neon-blue border border-neon-blue/30">
+                        THIS SITE
+                      </span>
+                    )}
                   </div>
 
                   <div className="text-xs text-neon-blue font-mono mb-4">
@@ -311,7 +297,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                       {game.prestigeSystem}
                     </li>
                     <li>
-                      <strong className="text-gray-400 block mb-0.5">🎮 Best Suited For:</strong>
+                      <strong className="text-gray-400 block mb-0.5">🎮 Good Fit For:</strong>
                       <span className="text-gray-200">{game.bestFor}</span>
                     </li>
                   </ul>
@@ -326,7 +312,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                   </button>
                 ) : (
                   <div className="text-[11px] text-gray-500 font-mono text-center pt-2 border-t border-white/5">
-                    Classic Third-Party Benchmark
+                    Third-party reference
                   </div>
                 )}
               </div>
@@ -338,13 +324,13 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
           <div className="bg-space-900/60 border border-white/10 rounded-2xl p-6 md:p-8 space-y-4">
             <h3 className="text-2xl font-display font-bold text-white">
-              Why Space Clicker is the Next Evolutionary Step
+              How Galaxy Miner Differs
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Traditional idle games often suffer from two major design pitfalls: <strong>mindless repetitive clicking without tactical engagement</strong>, or <strong>passive spreadsheet bloat</strong> that loses all sense of visual grandeur.
+              Incremental games emphasize different things: some focus on a single production loop, some on layered resets, and others on narrative or management. Galaxy Miner adds an active heat-management layer on top of its automation economy.
             </p>
             <p className="text-gray-300 text-sm leading-relaxed">
-              <strong>Space Clicker Game</strong> solves this through dynamic rhythm mechanics. The <em>Heat Crux</em> system rewards players who maintain their mining beam between 80% and 99% temperature without overheating, providing a 2x Flux yield. Paired with random celestial crisis events and interstellar comms, every play session stays intensely engaging.
+              In Galaxy Miner, the <em>Heat Flux</em> zone activates between 80% and 99% heat and doubles output while the beam remains below the overheat threshold. Golden Comets, crisis events, local anomaly scans, automation, and Dark Matter resets add additional decisions around that core loop.
             </p>
           </div>
 
@@ -358,15 +344,15 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                   How does Dark Matter Prestige work in Space Clicker?
                 </h4>
                 <p className="text-gray-400 text-xs leading-relaxed">
-                  Upon reaching 1 Trillion (1e12) Stardust, commanders can trigger a Quantum Supernova. This converts your stardust into permanent Dark Matter, providing a 10% compounding boost per unit plus access to specialized research trees.
+                  At 1 Trillion (1e12) Stardust, Galactic Reset becomes available. The first threshold grants 5 Dark Matter; higher runs can grant more. Stardust and standard upgrades reset, while Dark Matter and permanent technology remain. Each Dark Matter adds 10% to production.
                 </p>
               </div>
               <div className="border-b border-white/5 pb-3">
                 <h4 className="font-bold text-white mb-1">
-                  Is Space Clicker Game unblocked on Chromebooks and school networks?
+                  Does Space Clicker Game require an install or account?
                 </h4>
                 <p className="text-gray-400 text-xs leading-relaxed">
-                  Yes. Space Clicker Game requires no downloads, plugins, or third-party executable files. It runs completely inside standard HTML5 and WebGL web canvas engines.
+                  No install or account is required for the current browser build. Network administrators can still restrict access, so the site does not claim to bypass school, workplace, parental-control, or firewall policies.
                 </p>
               </div>
             </div>
