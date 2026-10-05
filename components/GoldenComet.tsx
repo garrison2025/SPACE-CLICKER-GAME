@@ -9,25 +9,18 @@ const GoldenComet: React.FC<GoldenCometProps> = ({ onCatch }) => {
   const [position, setPosition] = useState({ top: '20%', duration: '5s' });
 
   useEffect(() => {
-    // Random spawn between 30s and 90s
-    const scheduleNext = () => {
-      const delay = Math.random() * 60000 + 30000; 
-      return setTimeout(() => {
-        spawnComet();
-      }, delay);
-    };
+    if (isVisible) return;
 
-    let timer = scheduleNext();
-
-    const spawnComet = () => {
+    const delay = Math.random() * 60000 + 30000;
+    const timer = window.setTimeout(() => {
       setPosition({
         top: `${Math.random() * 60 + 10}%`, // Keep within 10-70% height to avoid UI overlap
-        duration: `${Math.random() * 2 + 3}s` 
+        duration: `${Math.random() * 2 + 3}s`
       });
       setIsVisible(true);
-    };
+    }, delay);
 
-    return () => clearTimeout(timer);
+    return () => window.clearTimeout(timer);
   }, [isVisible]);
 
   const handleAnimationEnd = () => {
