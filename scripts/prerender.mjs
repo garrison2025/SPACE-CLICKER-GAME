@@ -893,7 +893,7 @@ const staticRouteContent = {
       <p>The current production build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests can still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.</p>
       <p>Current pages may request font files from Google Fonts and editorial or social-preview images from Unsplash. Those requests are made directly by the browser to the relevant provider and can include standard network information such as IP address, user agent, and request headers.</p>
       <h2>Saving, exporting, and clearing data</h2>
-      <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save strings are portable text and should be treated as a backup rather than an encrypted secret.</p>
+      <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save codes and .scg backup files are portable data and should be treated as backups rather than encrypted secrets.</p>
       <h2>Security and contact</h2>
       <p>The production site is served over HTTPS. Questions about privacy can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>. Effective date: October 5, 2026.</p>
     </section>`,
@@ -917,7 +917,7 @@ const staticRouteContent = {
       <h2>Analytics and advertising</h2>
       <p>The current build does not include Google Analytics, Google Tag Manager, or Google AdSense scripts. If third-party analytics or advertising services are introduced later, this notice should be updated before those services are enabled.</p>
       <h2>Clearing site data</h2>
-      <p>Browser controls can clear cookies and local storage. Clearing local storage will remove supported local game progress unless you kept an available exported backup. Use the in-site reset controls only when you intend to remove saved progress.</p>
+      <p>Browser controls can clear cookies and local storage. Clearing the browser's site storage will remove supported local game progress unless you kept an exported save code or backup file. The in-site reset control removes Space Clicker Game saves, Spacebar records, and game settings without calling localStorage.clear() for unrelated origin data.</p>
     </section>`,
   '/sitemap': `
     <section>
