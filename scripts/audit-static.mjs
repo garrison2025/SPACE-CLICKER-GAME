@@ -177,8 +177,8 @@ for (const file of htmlFiles) {
         if (!schemaNodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
           throw new Error('Spacebar route schema is missing BreadcrumbList');
         }
-        if (route !== '/spacebar-games/' && !schemaNodes.some((node) => node?.['@type'] === 'FAQPage')) {
-          throw new Error('Core Spacebar route schema is missing FAQPage');
+        if (!schemaNodes.some((node) => node?.['@type'] === 'FAQPage')) {
+          throw new Error('Spacebar route schema is missing FAQPage');
         }
       }
 
