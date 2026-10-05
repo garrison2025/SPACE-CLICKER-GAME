@@ -79,7 +79,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
       <div className="absolute inset-0 pointer-events-none z-[80] animate-pulse bg-red-900/20 border-[4px] border-red-600/50 mix-blend-overlay"></div>
       
       {/* Warning Text */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 text-red-500 font-display font-black text-xl z-[90] animate-bounce text-center whitespace-nowrap">
+      <div className="absolute top-36 sm:top-8 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto text-red-500 font-display font-black text-sm sm:text-xl z-[90] animate-bounce text-center sm:whitespace-nowrap">
          ⚠️ IMPACT IMMINENT ⚠️
          <div className="text-white text-sm font-mono mt-1">{timeLeft.toFixed(1)}s</div>
       </div>
