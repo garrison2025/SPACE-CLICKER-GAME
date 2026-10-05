@@ -123,6 +123,12 @@ for (const file of htmlFiles) {
 
   if (!title) throw new Error(route + ': empty title');
   if (!description) throw new Error(route + ': empty meta description');
+  if (title.length < 25 || title.length > 70) {
+    throw new Error(route + ': title length should stay between 25 and 70 characters; found ' + title.length);
+  }
+  if (description.length < 80 || description.length > 165) {
+    throw new Error(route + ': meta description length should stay between 80 and 165 characters; found ' + description.length);
+  }
   if (!/^https:\/\//.test(ogImage)) throw new Error(route + ': og:image must be absolute');
   if (ogImageWidth !== '1200' || ogImageHeight !== '630') {
     throw new Error(route + ': social image dimensions must be 1200x630');
