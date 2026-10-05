@@ -104,6 +104,179 @@ const routes = [
   ['/blog/ultimate-hardware-guide-space-bar-click-game', 'Keyboard Factors for Space Bar Click Games | Space Clicker Game Blog', 'A practical guide to switch feel, actuation, stabilizers, durability, and ergonomics for repeated keyboard input.', 'Keyboard Factors for Space Bar Click Games']
 ];
 
+const HIGH_VALUE_SCHEMA_ROUTES = new Set([
+  '/',
+  '/game/galaxy_miner',
+  '/game/mars_colony',
+  '/game/star_defense',
+  '/game/merge_ships',
+  '/game/gravity_idle',
+  '/game/deep_signal',
+  '/spacebar-games',
+  '/spacebar-clicker',
+  '/spacebar-clicker-2',
+  '/spacebar-counter',
+  '/spacebar-clicker-test',
+  '/spacebar-clicker-unblocked'
+]);
+
+const GAME_SCHEMA_CONFIG = {
+  '/game/galaxy_miner': { name: 'Galaxy Miner', genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi'] },
+  '/game/mars_colony': { name: 'Mars Colony Idle', genres: ['Idle', 'Management', 'Strategy', 'Simulation'] },
+  '/game/star_defense': { name: 'Star Defense', genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi'] },
+  '/game/merge_ships': { name: 'Merge Spaceships', genres: ['Merge', 'Idle', 'Casual', 'Collection'] },
+  '/game/gravity_idle': { name: 'Gravity Idle', genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi'] },
+  '/game/deep_signal': { name: 'Deep Space Signal', genres: ['Text Adventure', 'Mystery', 'Sci-Fi', 'Single Player'] }
+};
+
+const buildStaticRouteSchema = (route, description, canonical) => {
+  if (route === '/') {
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": site + "/#website",
+          "url": site + "/",
+          "name": "Space Clicker Game",
+          "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Space Clicker Game"
+          }
+        },
+        {
+          "@type": "VideoGame",
+          "@id": site + "/game/galaxy_miner/#game",
+          "url": site + "/game/galaxy_miner/",
+          "name": "Galaxy Miner",
+          "alternateName": "Space Clicker Game",
+          "description": "A free browser space clicker game with Stardust mining, automation, Heat Flux, Golden Comets, offline progress, and permanent Dark Matter upgrades.",
+          "genre": ["Clicker", "Incremental", "Idle", "Sci-Fi"],
+          "playMode": "SinglePlayer",
+          "applicationCategory": "Game",
+          "operatingSystem": "Any modern web browser",
+          "isAccessibleForFree": true,
+          "inLanguage": "en",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        }
+      ]
+    };
+  }
+
+  if (GAME_SCHEMA_CONFIG[route]) {
+    const game = GAME_SCHEMA_CONFIG[route];
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "VideoGame",
+          "@id": canonical + "#game",
+          "url": canonical,
+          "name": game.name,
+          "description": description,
+          "genre": game.genres,
+          "playMode": "SinglePlayer",
+          "applicationCategory": "Game",
+          "operatingSystem": "Any modern web browser",
+          "isAccessibleForFree": true,
+          "inLanguage": "en",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Space Clicker Game",
+              "item": site + "/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": game.name,
+              "item": canonical
+            }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (route === '/spacebar-games') {
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "name": "Spacebar Games",
+          "description": description,
+          "url": canonical
+        },
+        {
+          "@type": "ItemList",
+          "name": "Spacebar Games and Tools",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "url": site + "/spacebar-clicker/", "name": "Spacebar Clicker" },
+            { "@type": "ListItem", "position": 2, "url": site + "/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
+            { "@type": "ListItem", "position": 3, "url": site + "/spacebar-counter/", "name": "Spacebar Counter" },
+            { "@type": "ListItem", "position": 4, "url": site + "/spacebar-clicker-2/", "name": "Spacebar Clicker 2" },
+            { "@type": "ListItem", "position": 5, "url": site + "/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (route === '/spacebar-clicker' || route === '/spacebar-clicker-2' || route === '/spacebar-clicker-unblocked') {
+    const name = route === '/spacebar-clicker-2'
+      ? 'Spacebar Clicker 2'
+      : route === '/spacebar-clicker-unblocked'
+        ? 'Spacebar Clicker Unblocked'
+        : 'Spacebar Clicker';
+    return {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "@id": canonical + "#game",
+      "url": canonical,
+      "name": name,
+      "description": description,
+      "genre": ["Clicker", "Incremental", "Idle"],
+      "playMode": "SinglePlayer",
+      "applicationCategory": "Game",
+      "operatingSystem": "Any modern web browser",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    };
+  }
+
+  if (route === '/spacebar-counter' || route === '/spacebar-clicker-test') {
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": canonical + "#app",
+      "url": canonical,
+      "name": route === '/spacebar-counter' ? 'Spacebar Counter' : 'Spacebar Clicker Test',
+      "description": description,
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any modern web browser",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    };
+  }
+
+  return null;
+};
+
 const escapeHtml = (value) =>
   value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
@@ -211,6 +384,14 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" content="${escapeHtml(title)}" />`);
   html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(description)}" />`);
   html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" content="${isArticle ? 'article' : 'website'}" />`);
+  if (!isArticle && HIGH_VALUE_SCHEMA_ROUTES.has(route)) {
+    const routeSchema = buildStaticRouteSchema(route, description, canonical);
+    if (routeSchema) {
+      const safeRouteSchema = JSON.stringify(routeSchema).replace(/</g, '\\u003c');
+      html = html.replace('</head>', `  <script id="prerender-route-jsonld" type="application/ld+json">${safeRouteSchema}</script>\n</head>`);
+    }
+  }
+
   if (isArticle) {
     const articleMeta = blogStaticMeta[route];
     html = html.replace('</head>', '  <meta name="author" content="SpaceClickerGame.com Editorial" />\n  <meta property="article:modified_time" content="2026-10-05T00:00:00Z" />\n</head>');
