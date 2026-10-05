@@ -385,34 +385,64 @@ const MergeShips: React.FC = () => {
     // Initial Load
     useEffect(() => {
         const saved = localStorage.getItem(MERGE_SAVE_KEY);
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                if (data.credits) setCredits(data.credits);
-                if (data.hangar) setHangar(data.hangar);
-                if (data.orbit) setOrbit(data.orbit); 
-                if (data.tech) setTech(data.tech);
-                if (data.shipsPurchased) setShipsPurchased(data.shipsPurchased);
-                if (data.highestLevel) setHighestLevel(data.highestLevel);
+        if (!saved) return;
 
-                // Offline Calc
-                if (data.lastSaveTime) {
-                    const now = Date.now();
-                    const seconds = (now - data.lastSaveTime) / 1000;
-                    if (seconds > 60) {
-                         // Calc offline dps
-                         const loadedOrbit = data.orbit || [];
-                         const dps = loadedOrbit.reduce((acc: number, s: any) => acc + (s ? Math.pow(2, s.level - 1) * 10 : 0), 0);
-                         
-                         // Efficiency factor 0.5 (asteroids need to spawn)
-                         const earning = Math.floor(dps * seconds * 0.5);
-                         if (earning > 0) {
-                             setCredits(prev => prev + earning);
-                             setOfflineProfit({ time: seconds, amount: earning });
-                         }
-                    }
-                }
-            } catch(e) {}
+        try {
+            const data = JSON.parse(saved);
+            const loadedCredits = Number.isFinite(Number(data.credits)) ? Math.max(0, Number(data.credits)) : 100;
+            const loadedHangar = Array.isArray(data.hangar) ? data.hangar : Array(HANGAR_SLOTS).fill(null);
+            const loadedOrbit = Array.isArray(data.orbit) ? data.orbit : Array(3).fill(null);
+            const loadedTech: MergeUpgradeState = data.tech && typeof data.tech === 'object'
+                ? {
+                    orbitSlots: Math.max(0, Math.floor(Number(data.tech.orbitSlots) || 0)),
+                    shipLevel: Math.max(0, Math.floor(Number(data.tech.shipLevel) || 0)),
+                    crateSpeed: Math.max(0, Math.floor(Number(data.tech.crateSpeed) || 0)),
+                  }
+                : { orbitSlots: 0, shipLevel: 0, crateSpeed: 0 };
+            const loadedShipsPurchased = Math.max(0, Math.floor(Number(data.shipsPurchased) || 0));
+            const loadedHighestLevel = Math.max(1, Math.floor(Number(data.highestLevel) || 1));
+
+            const now = Date.now();
+            const lastSaveTime = Number(data.lastSaveTime) || now;
+            const seconds = Math.min(86_400, Math.max(0, (now - lastSaveTime) / 1000));
+
+            const dps = loadedOrbit.reduce(
+                (acc: number, ship: MergeShip | null) => acc + (ship ? getShipDps(ship.level) : 0),
+                0
+            );
+            // Offline output models asteroid availability at 50% of orbit DPS.
+            const earning = seconds >= 60 ? Math.floor(dps * seconds * 0.5) : 0;
+            const nextCredits = loadedCredits + Math.max(0, earning);
+
+            const nextSnapshot = {
+                credits: nextCredits,
+                hangar: loadedHangar,
+                orbit: loadedOrbit,
+                tech: loadedTech,
+                shipsPurchased: loadedShipsPurchased,
+                highestLevel: loadedHighestLevel,
+            };
+
+            // Consume the offline window immediately so a quick refresh cannot
+            // credit the same period a second time.
+            saveStateRef.current = nextSnapshot;
+            localStorage.setItem(MERGE_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: now,
+            }));
+
+            setCredits(nextCredits);
+            setHangar(loadedHangar);
+            setOrbit(loadedOrbit);
+            setTech(loadedTech);
+            setShipsPurchased(loadedShipsPurchased);
+            setHighestLevel(loadedHighestLevel);
+
+            if (earning > 0) {
+                setOfflineProfit({ time: seconds, amount: earning });
+            }
+        } catch (error) {
+            console.warn('Could not load Merge Ships save.', error);
         }
     }, []);
 
