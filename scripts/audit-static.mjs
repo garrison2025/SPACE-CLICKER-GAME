@@ -91,6 +91,18 @@ const trustContentRoutes = new Set([
   '/cookies/'
 ]);
 
+const blogClusterTargets = new Map([
+  ['/game/galaxy_miner/', 7],
+  ['/spacebar-games/', 2],
+  ['/spacebar-clicker/', 3],
+  ['/spacebar-clicker-2/', 1],
+  ['/spacebar-counter/', 3],
+  ['/spacebar-clicker-test/', 3],
+  ['/compare/', 1],
+  ['/achievements/', 1]
+]);
+const blogClusterLinkCounts = new Map([...blogClusterTargets.keys()].map((href) => [href, 0]));
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -338,6 +350,12 @@ for (const file of htmlFiles) {
   }
 
   if (route.startsWith('/blog/') && route !== '/blog/') {
+    for (const href of blogClusterLinkCounts.keys()) {
+      const matches = html.match(new RegExp('href="' + href.replace(/[.*+?^$()|[\]\\]/g, '\\  if (route.startsWith('/blog/') && route !== '/blog/') {
+    const h2Count = (html.match(/<h2\b/gi) || []).length;') + '"', 'g')) || [];
+      blogClusterLinkCounts.set(href, blogClusterLinkCounts.get(href) + matches.length);
+    }
+
     const h2Count = (html.match(/<h2\b/gi) || []).length;
     if (h2Count < 2) throw new Error(route + ': full static blog body appears missing (H2 count ' + h2Count + ')');
     const articleSchemaMatch = html.match(/<script id="prerender-article-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/i);
@@ -366,6 +384,13 @@ for (const file of htmlFiles) {
 
 if (auditedRoutes.length !== 32) {
   throw new Error('Expected 32 prerendered routes, found ' + auditedRoutes.length);
+}
+
+for (const [href, minimum] of blogClusterTargets) {
+  const actual = blogClusterLinkCounts.get(href) || 0;
+  if (actual < minimum) {
+    throw new Error('Blog topic cluster is under-linking ' + href + ': expected at least ' + minimum + ', found ' + actual);
+  }
 }
 
 // Validate internal crawl links across every prerendered page. Internal links
@@ -445,4 +470,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, and internal link integrity.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, and internal link integrity.');
