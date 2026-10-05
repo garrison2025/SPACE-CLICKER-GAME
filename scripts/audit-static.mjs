@@ -413,6 +413,10 @@ for (const file of htmlFiles) {
       if (articleNode?.publisher?.['@id'] !== site + '/#organization') {
         throw new Error('Article publisher must reference the stable Organization @id');
       }
+      const publisherNode = nodes.find((node) => node?.['@id'] === site + '/#organization');
+      if (!publisherNode || publisherNode?.['@type'] !== 'Organization' || publisherNode?.name !== 'Space Clicker Game') {
+        throw new Error('Article graph must include the stable publisher Organization node');
+      }
       const authorNode = Array.isArray(articleNode.author) ? articleNode.author[0] : articleNode.author;
       if (authorNode?.['@id'] !== site + '/#editorial') {
         throw new Error('Article author must use the stable Editorial @id');
