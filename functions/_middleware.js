@@ -32,7 +32,8 @@ const STATIC_ROUTES = new Set([
   '/sitemap',
   '/compare',
   '/achievements',
-  '/spacebar-games',\n  '/spacebar-clicker',
+  '/spacebar-games',
+  '/spacebar-clicker',
   '/spacebar-counter',
   '/spacebar-clicker-test',
   '/spacebar-clicker-unblocked'
