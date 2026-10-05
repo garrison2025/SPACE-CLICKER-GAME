@@ -148,7 +148,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
-            💾 CLOUD SAVE / RESTORE
+            💾 EXPORT / RESTORE
           </button>
           <button
             onClick={() => setActiveTab('settings')}
@@ -207,7 +207,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     <span className="text-white font-bold">{totalClicks.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-1 sm:pl-4">
-                    <span className="text-gray-400">Critical Flux Overdrives:</span>
+                    <span className="text-gray-400">Critical Hits:</span>
                     <span className="text-amber-400 font-bold">{totalCrits.toLocaleString()} ({critRatePercent}%)</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-1">
@@ -215,7 +215,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     <span className="text-neon-blue font-bold">{cometsCaught.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-1 sm:pl-4">
-                    <span className="text-gray-400">Solar Storms Repelled:</span>
+                    <span className="text-gray-400">Impact Crises Resolved:</span>
                     <span className="text-neon-green font-bold">{crisesResolved.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between border-b border-white/5 pb-1">
@@ -239,10 +239,10 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="font-bold text-white text-xs font-mono uppercase">
-                      Export Encrypted Save String
+                      Export Base64 Save Code
                     </h3>
                     <p className="text-[11px] text-gray-400">
-                      Copy this secure string to transfer your empire to another device or browser.
+                      Copy this Base64-encoded save code to transfer progress manually. It is portable text, not encryption or cloud storage.
                     </p>
                   </div>
                   <button
@@ -270,7 +270,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     Import Save String
                   </h3>
                   <p className="text-[11px] text-gray-400">
-                    Paste your previously exported code string below to restore progress.
+                    Paste a previously exported Base64 save code below to restore progress in this browser.
                   </p>
                 </div>
                 <textarea
@@ -337,7 +337,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
               <div className="bg-red-950/20 border border-red-500/30 rounded-xl p-4 space-y-3">
                 <div className="font-bold text-red-400 text-sm">EMERGENCY DATA PURGE</div>
                 <p className="text-xs text-gray-400">
-                  Wipes all game progress and returns to fresh state. Make sure you back up your save code first!
+                  Wipes Galaxy Miner progress stored in this browser and returns the game to a fresh state. Export a save code first if you want a manual backup.
                 </p>
                 <button
                   onClick={onResetGame}
