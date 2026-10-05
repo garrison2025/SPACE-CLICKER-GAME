@@ -138,6 +138,11 @@ body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.hotkey-trigger {
+    left: max(1rem, env(safe-area-inset-left));
+    bottom: calc(6.5rem + env(safe-area-inset-bottom));
+}
+
 .game-viewport {
     height: calc(100dvh - 4rem - env(safe-area-inset-top));
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
@@ -167,6 +172,10 @@ body {
     .game-viewport {
         min-height: 500px;
         padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+    }
+
+    .hotkey-trigger {
+        bottom: calc(4.5rem + env(safe-area-inset-bottom));
     }
 
     .mining-click-area {
