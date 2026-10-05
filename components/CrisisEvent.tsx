@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface CrisisEventProps {
   onResolve: (success: boolean) => void;
@@ -8,6 +8,11 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
   const [health, setHealth] = useState(10);
   const [timeLeft, setTimeLeft] = useState(5.0);
   const [isActive, setIsActive] = useState(false);
+  const onResolveRef = useRef(onResolve);
+
+  useEffect(() => {
+    onResolveRef.current = onResolve;
+  }, [onResolve]);
 
   // Randomly start a crisis
   useEffect(() => {
@@ -42,14 +47,14 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
 
   const handleFail = () => {
     setIsActive(false);
-    onResolve(false);
+    onResolveRef.current(false);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (health <= 1) {
       setIsActive(false);
-      onResolve(true);
+      onResolveRef.current(true);
     } else {
       setHealth(prev => prev - 1);
       const target = e.currentTarget as HTMLElement;
