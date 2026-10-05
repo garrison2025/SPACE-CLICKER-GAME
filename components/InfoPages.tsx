@@ -2,6 +2,7 @@
 import React from 'react';
 import { GAMES_CATALOG } from '../constants';
 import { BLOG_POST_META } from '../content/blogMeta';
+import { clearProjectStorage } from '../utils/projectStorage';
 
 const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="w-full min-h-screen bg-space-950 text-gray-300 pt-24 pb-12 px-4">
@@ -99,7 +100,7 @@ export const PrivacyPage = () => (
 
         <h3>1. Information Collection</h3>
         <p>
-            <strong>Local Game Data:</strong> Space Clicker Game is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly export a save string.
+            <strong>Local Game Data:</strong> Space Clicker Game is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly create a portable save code or backup file.
         </p>
         <p>
             <strong>Analytics and advertising:</strong> The current site build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests may still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.
@@ -114,13 +115,13 @@ export const PrivacyPage = () => (
         </p>
         <ul>
             <li>Game progress is stored in browser localStorage for supported modes.</li>
-            <li>Manual export codes are generated only when you choose to view or copy them.</li>
-            <li>Clearing site storage can permanently remove local progress unless you kept an exported backup.</li>
+            <li>Portable save codes or backup files are generated only when you choose to create them.</li>
+            <li>Clearing site storage can permanently remove local progress unless you kept an exported save code or backup file.</li>
         </ul>
 
         <h3>3. Data Security</h3>
         <p>
-            The production site is served over HTTPS. Local save data remains subject to the security and storage behavior of your browser and device; an exported Base64 save code is portable text and is not encrypted.
+            The production site is served over HTTPS. Local save data remains subject to the security and storage behavior of your browser and device; exported save codes and .scg backup files are portable data and are not encrypted.
         </p>
 
         <h3>4. Contact Us</h3>
@@ -192,22 +193,25 @@ export const CookiesPage = () => (
 
         <h3>3. Managing Your Preferences</h3>
         <p>
-            You can choose to disable cookies through your individual browser options. However, clearing your browser's "Site Data" or "Local Storage" <strong>WILL DELETE YOUR GAME PROGRESS PERMANENTLY</strong> unless you have manually exported a save string.
+            You can choose to disable cookies through your individual browser options. However, clearing your browser's "Site Data" or "Local Storage" <strong>WILL DELETE YOUR GAME PROGRESS PERMANENTLY</strong> unless you have kept an exported save code or backup file.
         </p>
         
         <div className="mt-8 p-4 border border-red-500/50 bg-red-900/10 rounded">
             <h4 className="text-red-400 mt-0">Danger Zone</h4>
-            <p className="text-sm mb-4">If you wish to reset your consent or clear all local game data, you can do so here. This cannot be undone.</p>
-            <button 
+            <p className="text-sm mb-4">
+                This reset removes Space Clicker Game saves, Spacebar records, and game settings stored by this site. It does not clear unrelated localStorage keys on the same origin. This cannot be undone.
+            </p>
+            <button
+                type="button"
                 onClick={() => {
-                    if(window.confirm("WARNING: This will wipe all game progress across all Space Clicker Game games. Are you sure?")) {
-                        localStorage.clear();
+                    if(window.confirm("WARNING: This will wipe all Space Clicker Game progress, Spacebar records, and game settings stored in this browser. Are you sure?")) {
+                        clearProjectStorage();
                         window.location.reload();
                     }
                 }}
                 className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded transition-colors"
             >
-                PURGE ALL LOCAL DATA
+                PURGE SPACE CLICKER GAME DATA
             </button>
         </div>
     </PageContainer>
