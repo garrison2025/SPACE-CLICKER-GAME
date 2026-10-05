@@ -117,10 +117,10 @@ const App: React.FC = () => {
         let newPath = '/';
         if (legacyView === 'game') {
             const id = params.get('id');
-            newPath = id ? `/game/${id}` : '/game/galaxy_miner';
+            newPath = id ? `/game/${id}/` : '/game/galaxy_miner/';
         } else if (legacyView === 'blog') {
             const post = params.get('post');
-            newPath = post ? `/blog/${post}` : '/blog';
+            newPath = post ? `/blog/${post}/` : '/blog/';
         } else if (VALID_VIEWS.includes(legacyView as ViewMode)) {
             newPath = `/${legacyView}`;
         }
@@ -963,13 +963,13 @@ const App: React.FC = () => {
     if (target === 'home') {
         navigate('/');
     } else if (target === 'game') {
-        if (id) navigate(`/game/${id}`);
-        else navigate('/game/galaxy_miner'); // Default
+        if (id) navigate(`/game/${id}/`);
+        else navigate('/game/galaxy_miner/'); // Default
     } else if (target === 'blog') {
-        if (id) navigate(`/blog/${id}`);
-        else navigate('/blog');
+        if (id) navigate(`/blog/${id}/`);
+        else navigate('/blog/');
     } else {
-        navigate(`/${target}`);
+        navigate(`/${target}/`);
     }
   };
 
