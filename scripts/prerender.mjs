@@ -507,12 +507,14 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "@type": "ItemList",
           "@id": canonical + "#articles",
           "name": "Space Clicker Game guides and strategy articles",
-          "itemListElement": Object.entries(blogStaticMeta).map(([postRoute, meta], index) => ({
-            "@type": "ListItem",
-            "position": index + 1,
-            "name": meta.title,
-            "url": site + postRoute + "/"
-          }))
+          "itemListElement": Object.entries(blogStaticMeta)
+            .sort(([, a], [, b]) => Date.parse(b.datePublished) - Date.parse(a.datePublished))
+            .map(([postRoute, meta], index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "name": meta.title,
+              "url": site + postRoute + "/"
+            }))
         },
         {
           "@type": "BreadcrumbList",
@@ -847,7 +849,7 @@ const staticRouteContent = {
       <h2>Space clicker guides and strategy</h2>
       <p>The Mission Logs cover browser clicker mechanics, Spacebar speed tests, idle automation, prestige planning, keyboard input, progression design, and the systems behind incremental space games.</p>
       <ul>
-        ${Object.entries(blogStaticMeta).map(([postRoute, meta]) => `<li><a href="${postRoute}/">${escapeHtml(meta.title)}</a> — ${escapeHtml(meta.description)}</li>`).join('')}
+        ${Object.entries(blogStaticMeta).sort(([, a], [, b]) => Date.parse(b.datePublished) - Date.parse(a.datePublished)).map(([postRoute, meta]) => `<li><a href="${postRoute}/">${escapeHtml(meta.title)}</a> — ${escapeHtml(meta.description)}</li>`).join('')}
       </ul>
       <p>For interactive play, open <a href="/game/galaxy_miner/">Galaxy Miner</a>, <a href="/spacebar-clicker/">Spacebar Clicker</a>, or the <a href="/spacebar-clicker-test/">Spacebar CPS Test</a>.</p>
     </section>`,
@@ -1150,6 +1152,7 @@ const coreRouteRows = routes
   .join('\n');
 
 const guideRows = Object.entries(blogStaticMeta)
+  .sort(([, a], [, b]) => Date.parse(b.datePublished) - Date.parse(a.datePublished))
   .map(([route, meta]) => `- [${meta.title}](${site + route + '/'}): ${meta.description}`)
   .join('\n');
 
