@@ -527,6 +527,8 @@ const staticRouteContent = {
       <p>Galaxy Miner is the flagship space mining idle clicker on SpaceClickerGame.com. Start with manual Stardust extraction, then reinvest into Laser Drills, Mining Drones, Rovers, Lunar Bases, Orbital Stations, and Dyson Swarms. The loop shifts from active clicking toward automated production as the run grows.</p>
       <h2>Heat Flux and active mining</h2>
       <p>Every manual mining action adds Heat. Keeping Heat between 80% and 99% activates the 2x Heat Flux state, while crossing 100% overheats the mining beam and temporarily disables normal mining. Geodes can vent Heat, so active play rewards timing rather than simply holding the input.</p>
+      <h2>Planet progression and production multipliers</h2>
+      <p>The run starts on Proxima Centauri B at 1x production. Reaching 1 million Stardust unlocks Kepler-186f at 10x production, 1 billion unlocks Trappist-1e at 50x, and 1 trillion unlocks the Galactic Core at 200x. Once a planet is unlocked in the current run, spending Stardust does not move the run backward.</p>
       <h2>Automation and offline production</h2>
       <p>Automatic upgrades continue producing Stardust without repeated clicks. Supported saved runs can also credit capped offline production after time away, using the saved automation rate rather than pretending the game ran continuously in the background.</p>
       <h2>Galactic Reset and Dark Matter</h2>
