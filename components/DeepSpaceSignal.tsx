@@ -98,6 +98,12 @@ const DeepSpaceSignal: React.FC = () => {
     // Refs
     const logContainerRef = useRef<HTMLDivElement>(null);
     const spectrumCanvasRef = useRef<HTMLCanvasElement>(null);
+    const messagesRef = useRef<SignalMessage[]>(messages);
+    const rewardedMessageIdsRef = useRef<Set<string>>(new Set());
+
+    useEffect(() => {
+        messagesRef.current = messages;
+    }, [messages]);
     
     // Derived Stats
     // VOID faction increases max energy by 1% per level
@@ -179,18 +185,34 @@ const DeepSpaceSignal: React.FC = () => {
             setEnergy(prev => Math.min(maxEnergy, prev + (regenRate / 5))); 
 
             // 2. Decryption Logic
-            setMessages(prev => prev.map(msg => {
+            let rewardEarned = 0;
+            let changed = false;
+            const nextMessages = messagesRef.current.map(msg => {
                 if (msg.isDecoded) return msg;
-                // Passive decay
+
                 const newLevel = Math.max(0, msg.encryptionLevel - (decryptSpeed / 5));
-                
+                if (newLevel === msg.encryptionLevel) return msg;
+                changed = true;
+
                 if (newLevel <= 0 && msg.encryptionLevel > 0) {
-                    setDataBytes(d => d + msg.rewardData);
-                    playSound('success');
+                    if (!rewardedMessageIdsRef.current.has(msg.id)) {
+                        rewardedMessageIdsRef.current.add(msg.id);
+                        rewardEarned += msg.rewardData;
+                    }
                     return { ...msg, isDecoded: true, encryptionLevel: 0 };
                 }
+
                 return { ...msg, encryptionLevel: newLevel };
-            }));
+            });
+
+            if (changed) {
+                messagesRef.current = nextMessages;
+                setMessages(nextMessages);
+            }
+            if (rewardEarned > 0) {
+                setDataBytes(value => value + rewardEarned);
+                playSound('success');
+            }
 
             // 3. Auto Scan
             if (upgrades.ai > 0 && !isScanning && energy >= scanCost + 10 && Math.random() < 0.04) {
@@ -259,22 +281,35 @@ const DeepSpaceSignal: React.FC = () => {
     };
 
     const handleMessageClick = (msgId: string) => {
-        setMessages(prev => prev.map(msg => {
-            if (msg.id === msgId && !msg.isDecoded) {
-                playSound('decode');
-                // Manual Hack: Reduce encryption by flat 5 + processor bonus + TECH bonus
-                const hackPower = 5 + (upgrades.processor * 0.5) + (factions.TECH * 0.1);
-                const newLevel = Math.max(0, msg.encryptionLevel - hackPower);
-                
-                if (newLevel <= 0) {
-                    setDataBytes(d => d + msg.rewardData);
-                    playSound('success');
-                    return { ...msg, isDecoded: true, encryptionLevel: 0 };
+        const msg = messagesRef.current.find(item => item.id === msgId);
+        if (!msg || msg.isDecoded) return;
+
+        playSound('decode');
+        const hackPower = 5 + (upgrades.processor * 0.5) + (factions.TECH * 0.1);
+        const newLevel = Math.max(0, msg.encryptionLevel - hackPower);
+        let rewardEarned = 0;
+
+        const nextMessages = messagesRef.current.map(item => {
+            if (item.id !== msgId || item.isDecoded) return item;
+
+            if (newLevel <= 0) {
+                if (!rewardedMessageIdsRef.current.has(item.id)) {
+                    rewardedMessageIdsRef.current.add(item.id);
+                    rewardEarned = item.rewardData;
                 }
-                return { ...msg, encryptionLevel: newLevel };
+                return { ...item, isDecoded: true, encryptionLevel: 0 };
             }
-            return msg;
-        }));
+
+            return { ...item, encryptionLevel: newLevel };
+        });
+
+        messagesRef.current = nextMessages;
+        setMessages(nextMessages);
+
+        if (rewardEarned > 0) {
+            setDataBytes(value => value + rewardEarned);
+            playSound('success');
+        }
     };
 
     const handleAnalyze = (msgId: string) => {
@@ -413,6 +448,7 @@ const DeepSpaceSignal: React.FC = () => {
                 lastSaveTime: Date.now(),
             }));
 
+            messagesRef.current = loadedMessages;
             setDataBytes(loadedDataBytes);
             setEnergy(loadedEnergy);
             setUpgrades(loadedUpgrades);
