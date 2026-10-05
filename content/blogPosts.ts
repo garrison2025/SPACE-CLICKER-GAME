@@ -64,7 +64,7 @@ export const BLOG_POSTS: BlogPost[] = [
             
             <p>On SpaceClickerGame.com, that range includes quick Spacebar tests as well as longer browser simulations built around mining, colony management, defense, merging, gravity, and signal decoding.</p>
             
-            <p>Ready to start your empire? <a href="https://spaceclickergame.com">Launch the console</a> and begin mining today.</p>
+            <p>Ready to try the systems described above? <a href="/game/galaxy_miner/">Play Galaxy Miner</a> for the full mining-and-prestige loop, or browse the <a href="/spacebar-games/">Spacebar Games hub</a> for shorter keyboard-focused modes.</p>
         `
     },
     {
@@ -119,7 +119,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>The genre works well because gathering, reinvestment, automation, and expansion map naturally onto a space setting. The theme gives simple numerical systems room to grow without assuming every player responds to them in the same way.</p>
             <p>So the next time someone asks why you are staring at increasing numbers on a screen, tell them you are engaging in a complex neurological feedback loop simulating galactic conquest. Or, just tell them it's fun.</p>
             
-            <p>Experience the phenomenon yourself at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Try the feedback loop directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, or use <a href="/spacebar-clicker/">Spacebar Clicker</a> if you want a simpler press-upgrade-automation loop.</p>
         `
     },
     {
@@ -170,7 +170,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Summary</h2>
             <p>Whether you use a <strong>space bar clicking game</strong> for a short speed challenge or play a longer incremental simulation, input is only one part of the experience; upgrades, automation, timing, and resource choices determine what happens after the first presses.</p>
             
-            <p>Check your APM and start your journey at <a href="https://spaceclickergame.com">Space Clicker Game</a>.</p>
+            <p>For a pure benchmark, run the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> or keep an untimed total with the <a href="/spacebar-counter/">Spacebar Counter</a>. If you want progression instead of a benchmark, play <a href="/spacebar-clicker/">Spacebar Clicker</a> or the separate <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> mode.</p>
         `
     },
     {
@@ -226,7 +226,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Where Browser Clickers Are Going</h2>
             <p>Browser technology now supports richer incremental systems without requiring a download. Whether you prefer active input or passive optimization, the useful question is the same: does each new system create a clear decision rather than simply another number?</p>
             
-            <p>Start your journey today at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a> - No download required.</p>
+            <p>See these systems in practice in <a href="/game/galaxy_miner/">Galaxy Miner</a>, browse the <a href="/spacebar-games/">Spacebar Games hub</a>, or use the <a href="/compare/">incremental game feature comparison</a> to compare different progression structures.</p>
         `
     },
     {
@@ -275,7 +275,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion</h2>
             <p>The humble space bar is the most satisfying key on the board. It's big, it's loud, and it feels powerful. By centering a game around this input, the <strong>space bar clicking game</strong> genre taps into a primal satisfaction of cause and effect.</p>
-            <p>Ready to test your switch durability? Launch the console at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Measure deliberate key presses with the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>, or use the <a href="/spacebar-counter/">Spacebar Counter</a> when you want an untimed total plus current, average, and peak CPS.</p>
         `
     },
     {
@@ -338,7 +338,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Conclusion</h2>
             <p>Strategy in a <strong>space clicker game</strong> is about seeing the forest for the trees—or rather, the galaxy for the stars. It is about making smart investments today to reap massive rewards tomorrow.</p>
             
-            <p>Test your strategic mind at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Apply the upgrade and reset math directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, then use the <a href="/achievements/">Galaxy Miner milestones tracker</a> to check the Stardust, automation, and Dark Matter thresholds discussed in this guide.</p>
         `
     },
     {
@@ -383,7 +383,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>What These Games Can Illustrate</h2>
             <p>Space Clicker Game does not replace a textbook or formal instruction. It can provide concrete examples of changing rates, reinvestment, large-number notation, and resource constraints that a player can then compare with formal explanations.</p>
             
-            <p>Explore the mechanics directly at <a href="https://spaceclickergame.com/">SpaceClickerGame.com</a>.</p>
+            <p>Explore compounding and large-number progression in <a href="/game/galaxy_miner/">Galaxy Miner</a>, or compare a different simulation model in <a href="/game/gravity_idle/">Gravity Idle</a>.</p>
         `
     },
     {
@@ -442,7 +442,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Conclusion</h2>
             <p>Whether you want to destroy your mouse switches or optimize a spreadsheet, the <strong>clicker game space</strong> genre accommodates you. The universe doesn't care how you mine the resources, as long as the resources flow.</p>
             
-            <p>Choose your path at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Compare the two styles directly: <a href="/spacebar-clicker/">Spacebar Clicker</a> begins with active presses and grows into automation, while <a href="/game/galaxy_miner/">Galaxy Miner</a> adds Heat Flux, offline production, and Dark Matter resets.</p>
         `
     },
     {
@@ -487,7 +487,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Conclusion</h2>
             <p>Next time you play a <strong>clicker game space</strong> title, stop clicking for a moment. Read the logs. Read the item descriptions. You might find that the most exciting thing isn't the number going up, but the reason <em>why</em> it's going up.</p>
             
-            <p>Uncover the lore at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>For a text-first example, open <a href="/game/deep_signal/">Deep Space Signal</a>. For a more systems-driven incremental loop, play <a href="/game/galaxy_miner/">Galaxy Miner</a>.</p>
         `
     },
     {
@@ -531,7 +531,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Conclusion</h2>
             <p>Hardware can change comfort and feel, but technique, consistency, and avoiding fatigue matter more than the price of the keyboard. If repeated input becomes uncomfortable, stop the test and rest your hand.</p>
             
-            <p>Test your new hardware at <a href="https://spaceclickergame.com">SpaceClickerGame.com</a>.</p>
+            <p>Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS runs, or the <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total. Neither tool requires an account or download.</p>
         `
     }
 ];
