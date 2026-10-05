@@ -303,6 +303,38 @@ if (auditedRoutes.length !== 32) {
   throw new Error('Expected 32 prerendered routes, found ' + auditedRoutes.length);
 }
 
+// Validate internal crawl links across every prerendered page. Internal links
+// should point directly to a real prerendered route instead of relying on a
+// client-side fallback or silently creating a soft navigation dead end.
+const auditedRouteSet = new Set(auditedRoutes);
+for (const file of htmlFiles) {
+  const route = routeForFile(file);
+  const html = fs.readFileSync(file, 'utf8');
+  const hrefs = [...html.matchAll(/href="([^"]+)"/gi)].map((match) => match[1]);
+
+  for (const href of hrefs) {
+    if (!href.startsWith('/') || href.startsWith('//')) continue;
+
+    const pathname = href.split('#')[0].split('?')[0] || '/';
+    if (
+      pathname.startsWith('/assets/') ||
+      pathname === '/robots.txt' ||
+      pathname === '/sitemap.xml' ||
+      /\.[a-z0-9]{2,8}$/i.test(pathname)
+    ) {
+      continue;
+    }
+
+    const normalized = pathname === '/'
+      ? '/'
+      : '/' + pathname.split('/').filter(Boolean).join('/') + '/';
+
+    if (!auditedRouteSet.has(normalized)) {
+      throw new Error(route + ': broken or non-canonical internal href ' + href + ' -> ' + normalized);
+    }
+  }
+}
+
 const sitemapPath = path.join(distDir, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
 
@@ -348,4 +380,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, and internal link integrity.');
