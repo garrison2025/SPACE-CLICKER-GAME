@@ -44,14 +44,14 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
 
             {/* Floating UI Elements (Fake HUD) */}
             <div className="absolute top-4 left-4 flex flex-col gap-1 opacity-80">
-                <div className="text-[10px] text-cyan-500 font-bold tracking-widest animate-pulse">LIVE FEED</div>
-                <div className="text-2xl font-mono text-white font-black">4,829,102 <span className="text-xs text-gray-500">SD</span></div>
-                <div className="text-xs text-green-400 font-mono">+12,400/s</div>
+                <div className="text-[10px] text-cyan-500 font-bold tracking-widest">GAMEPLAY PREVIEW</div>
+                <div className="text-lg font-mono text-white font-black">STARDUST ECONOMY</div>
+                <div className="text-xs text-green-400 font-mono">Illustrative interface</div>
             </div>
 
             <div className="absolute bottom-4 right-4 text-right opacity-80">
-                <div className="text-[10px] text-purple-500 font-bold tracking-widest">DRONE FLEET</div>
-                <div className="text-xl font-mono text-white">ACTIVE</div>
+                <div className="text-[10px] text-purple-500 font-bold tracking-widest">MINING DRONES</div>
+                <div className="text-xl font-mono text-white">AUTOMATE</div>
             </div>
 
             {/* Central CTA Overlay */}
@@ -84,7 +84,45 @@ const LiveStatsTicker = () => (
   </div>
 );
 
-const BrandHero = () => {
+const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
+  <section className="bg-space-950 px-4 py-12 border-b border-white/5">
+    <div className="max-w-6xl mx-auto">
+      <div className="max-w-3xl mb-8">
+        <div className="text-[11px] font-mono tracking-[0.22em] text-neon-blue mb-3">PLAY IN YOUR BROWSER</div>
+        <h2 className="text-3xl md:text-4xl font-display font-black text-white">
+          Play Space Clicker Online: Mine, Automate, Reset
+        </h2>
+        <p className="mt-4 text-gray-400 leading-relaxed">
+          Galaxy Miner is the flagship space clicker game on this site. Click to mine Stardust, reinvest it into automatic production, manage the Heat Flux window, and use Galactic Reset for permanent Dark Matter upgrades.
+        </p>
+      </div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        {[
+          ['1', 'Mine Stardust', 'Click the central asteroid to generate your first resources.'],
+          ['2', 'Buy Automation', 'Mining Drones, Rovers, Bases, Stations, and Dyson Swarms add passive production.'],
+          ['3', 'Manage Heat Flux', 'Active mining between 80% and 99% heat doubles output until the beam overheats.'],
+          ['4', 'Reset Stronger', 'At 1 trillion Stardust, Galactic Reset can convert the run into permanent Dark Matter.']
+        ].map(([step, title, text]) => (
+          <div key={step} className="rounded-xl border border-white/10 bg-space-900/60 p-5">
+            <div className="text-neon-blue font-mono text-xs mb-2">STEP {step}</div>
+            <h3 className="font-bold text-white">{title}</h3>
+            <p className="mt-2 text-xs leading-relaxed text-gray-500">{text}</p>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-3">
+        <button onClick={onPlay} className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">
+          PLAY GALAXY MINER
+        </button>
+        <a href="/spacebar-games/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">
+          SPACEBAR GAMES & CPS TOOLS
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
     const scrollToConsole = () => {
         const el = document.getElementById('console-anchor');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -134,17 +172,25 @@ const BrandHero = () => {
                     ))}
                 </div>
 
-                {/* CTA Button */}
+                {/* Primary search-intent CTA */}
                 <div className="pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
-                    <button 
-                        onClick={scrollToConsole}
-                        className="group relative px-8 py-4 bg-white text-black font-display font-black text-xl tracking-widest hover:bg-neon-blue transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,243,255,0.6)] hover:scale-105"
-                    >
-                        START MINING
-                        <span className="absolute -bottom-2 -right-2 w-full h-full border-2 border-white/30 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
-                    </button>
-                    <div className="mt-4 text-xs text-gray-500 font-mono animate-pulse">
-                        SCROLL FOR TERMINAL ACCESS ↓
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button 
+                            onClick={onPlay}
+                            className="group relative px-8 py-4 bg-white text-black font-display font-black text-xl tracking-widest hover:bg-neon-blue transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,243,255,0.6)] hover:scale-105"
+                        >
+                            PLAY SPACE CLICKER
+                            <span className="absolute -bottom-2 -right-2 w-full h-full border-2 border-white/30 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
+                        </button>
+                        <button
+                            onClick={scrollToConsole}
+                            className="px-6 py-3.5 border border-white/15 text-gray-300 hover:text-white hover:border-neon-blue/50 rounded font-mono text-xs tracking-wider transition-colors"
+                        >
+                            SEE HOW IT WORKS ↓
+                        </button>
+                    </div>
+                    <div className="mt-4 text-xs text-gray-500 font-mono">
+                        FREE • NO ACCOUNT • LOCAL BROWSER SAVE
                     </div>
                 </div>
             </div>
@@ -335,10 +381,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
     <div className="w-full flex flex-col bg-space-900 overflow-x-hidden">
       
       {/* 1. BRAND HERO */}
-      <BrandHero />
+      <BrandHero onPlay={() => onStart('galaxy_miner')} />
       
       {/* 2. STATS TICKER */}
       <LiveStatsTicker />
+      <QuickStart onPlay={() => onStart('galaxy_miner')} />
 
       {/* 3. ACTIVE TERMINAL */}
       <section id="console-anchor" className="w-full relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-space-800 via-space-950 to-black py-24 px-4 scroll-mt-16">
@@ -371,7 +418,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                                 <span className="text-neon-blue">REMOTE ACCESS</span>
                              </h3>
                          </div>
-                         <div className="text-[10px] font-mono text-neon-blue animate-pulse">Connection: STABLE (12ms)</div>
+                         <div className="text-[10px] font-mono text-neon-blue">INTERACTIVE PREVIEW • CLICK TO LAUNCH</div>
                     </header>
 
                     <div className="relative max-w-[1400px] mx-auto bg-black rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10">
@@ -392,14 +439,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                             <div className="text-sm font-display text-white">{featuredGame?.title}</div>
                         </div>
                         <div className="hidden md:block text-center">
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">System Load</div>
-                            <div className="h-1 w-32 bg-gray-800 mx-auto rounded overflow-hidden">
-                                <div className="h-full bg-neon-green w-[45%] animate-pulse"></div>
-                            </div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Save Mode</div>
+                            <div className="text-sm font-mono text-neon-green">LOCAL BROWSER</div>
                         </div>
                         <div className="text-right">
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest">Net Worth</div>
-                            <div className="text-sm font-mono text-neon-blue">CALCULATING...</div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest">New Run</div>
+                            <div className="text-sm font-mono text-neon-blue">STARTS AT 0 SD</div>
                         </div>
                     </div>
                 </div>
