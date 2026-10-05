@@ -895,7 +895,7 @@ const staticRouteContent = {
       <h2>Saving, exporting, and clearing data</h2>
       <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save codes and .scg backup files are portable data and should be treated as backups rather than encrypted secrets.</p>
       <h2>Security and contact</h2>
-      <p>The production site is served over HTTPS. Questions about privacy can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>. Effective date: October 5, 2026.</p>
+      <p>The production site is served over HTTPS. Questions about privacy can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>. Effective date: October 6, 2026.</p>
     </section>`,
   '/terms': `
     <section>
