@@ -50,15 +50,20 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const dockScrollRef = useRef<HTMLElement | null>(null);
   const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
   const activeGameMeta = GAMES_CATALOG.find((game) => game.id === activeGame);
 
   useEffect(() => {
       if (window.innerWidth >= 640) return;
-      activeDockButtonRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
+      const scroller = dockScrollRef.current;
+      const button = activeDockButtonRef.current;
+      if (!scroller || !button) return;
+
+      const targetLeft = button.offsetLeft - (scroller.clientWidth - button.offsetWidth) / 2;
+      scroller.scrollTo({
+          left: Math.max(0, targetLeft),
+          behavior: 'smooth'
       });
   }, [activeGame]);
 
@@ -288,7 +293,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
 
       {/* --- BOTTOM DOCK --- */}
       <footer className="game-dock flex items-end bg-gradient-to-t from-black via-space-900/90 to-transparent z-50 pointer-events-none absolute bottom-0 left-0 right-0">
-          <nav aria-label="Game switcher" className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto overscroll-x-contain scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
+          <nav ref={dockScrollRef} aria-label="Game switcher" className="pointer-events-auto w-[calc(100%-1rem)] sm:w-auto mx-auto overflow-x-auto overscroll-x-contain scrollbar-hide rounded-2xl border border-white/10 bg-space-950/95 md:bg-white/5 md:backdrop-blur-xl shadow-2xl">
               <div className="min-w-max flex items-end justify-start sm:justify-center gap-2 p-2">
                   {GAMES_CATALOG.map(game => (
                       <button
