@@ -67,6 +67,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   const [importString, setImportString] = useState('');
   const [copied, setCopied] = useState(false);
   const [importError, setImportError] = useState('');
+  const [backupNotice, setBackupNotice] = useState('');
 
   if (!isOpen) return null;
 
@@ -100,16 +101,67 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     const code = generateExportString();
     if (!code) {
       setCopied(false);
+      setBackupNotice('Could not create a backup code.');
       return;
     }
 
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
+      setBackupNotice('Backup code copied to the clipboard.');
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
+      setBackupNotice('Clipboard access was blocked. Select the backup code below and copy it manually.');
     }
+  };
+
+  const handleDownloadSave = () => {
+    const code = generateExportString();
+    if (!code) {
+      setBackupNotice('Could not create a backup file.');
+      return;
+    }
+
+    try {
+      const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download = `galaxy-miner-save-${new Date().toISOString().slice(0, 10)}.scg`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+      setBackupNotice('Backup file downloaded.');
+    } catch {
+      setBackupNotice('Could not create a backup file.');
+    }
+  };
+
+  const handleLoadImportFile = () => {
+    const picker = document.createElement('input');
+    picker.type = 'file';
+    picker.accept = '.scg,.txt,text/plain';
+    picker.onchange = async () => {
+      const selected = picker.files?.[0];
+      if (!selected) return;
+      if (selected.size > 100_000) {
+        setImportError('Backup file is too large.');
+        return;
+      }
+
+      try {
+        const code = (await selected.text()).trim();
+        if (!code) throw new Error('Empty backup');
+        setImportString(code);
+        setImportError('');
+        setBackupNotice('Backup file loaded. Use Restore Saved State to apply it.');
+      } catch {
+        setImportError('Could not read that backup file.');
+      }
+    };
+    picker.click();
   };
 
   const handleApplyImport = () => {
@@ -268,25 +320,33 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
             <div className="space-y-6">
               {/* Export Box */}
               <div className="bg-space-900/80 border border-white/10 rounded-xl p-4 space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                   <div>
                     <h3 className="font-bold text-white text-xs font-mono uppercase">
                       Export Base64 Save Code
                     </h3>
                     <p className="text-[11px] text-gray-400">
-                      Copy this Base64-encoded save code to transfer progress manually. It is portable text, not encryption or cloud storage.
+                      Copy the portable code or download a local .scg backup file. Neither option is encryption or cloud storage.
                     </p>
                   </div>
-                  <button
-                    onClick={handleCopySave}
-                    className={`min-h-11 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
-                      copied 
-                        ? 'bg-neon-green text-black' 
-                        : 'bg-neon-blue text-black hover:bg-white'
-                    }`}
-                  >
-                    {copied ? 'COPIED! ✓' : 'COPY SAVE CODE'}
-                  </button>
+                  <div className="flex flex-wrap gap-2 sm:justify-end">
+                    <button
+                      onClick={handleCopySave}
+                      className={`min-h-11 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
+                        copied 
+                          ? 'bg-neon-green text-black' 
+                          : 'bg-neon-blue text-black hover:bg-white'
+                      }`}
+                    >
+                      {copied ? 'COPIED! ✓' : 'COPY SAVE CODE'}
+                    </button>
+                    <button
+                      onClick={handleDownloadSave}
+                      className="min-h-11 px-3 py-2 rounded-lg border border-white/15 text-xs font-mono font-bold text-white hover:border-neon-blue transition-colors"
+                    >
+                      DOWNLOAD BACKUP
+                    </button>
+                  </div>
                 </div>
                 <textarea
                   readOnly
@@ -297,13 +357,22 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
 
               {/* Import Box */}
               <div className="bg-space-900/80 border border-white/10 rounded-xl p-4 space-y-3">
-                <div>
-                  <h3 className="font-bold text-white text-xs font-mono uppercase">
-                    Import Save String
-                  </h3>
-                  <p className="text-[11px] text-gray-400">
-                    Paste a previously exported Base64 save code below to restore progress in this browser.
-                  </p>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                  <div>
+                    <h3 className="font-bold text-white text-xs font-mono uppercase">
+                      Import Save String
+                    </h3>
+                    <p className="text-[11px] text-gray-400">
+                      Paste a previously exported Base64 code or load a .scg backup file, then restore progress in this browser.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleLoadImportFile}
+                    className="min-h-11 shrink-0 px-3 py-2 rounded-lg border border-white/15 text-xs font-mono font-bold text-white hover:border-neon-blue transition-colors"
+                  >
+                    LOAD BACKUP FILE
+                  </button>
                 </div>
                 <textarea
                   value={importString}
@@ -311,8 +380,11 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                   placeholder="Paste your base64 save string here..."
                   className="w-full h-20 bg-black/60 border border-white/10 rounded-lg p-2.5 text-[10px] font-mono text-white resize-none focus:outline-none focus:border-neon-blue"
                 />
+                {backupNotice && (
+                  <p role="status" aria-live="polite" className="text-xs font-mono text-neon-blue">{backupNotice}</p>
+                )}
                 {importError && (
-                  <p className="text-xs font-mono text-red-400 animate-pulse">{importError}</p>
+                  <p role="alert" className="text-xs font-mono text-red-400 animate-pulse">{importError}</p>
                 )}
                 <button
                   onClick={handleApplyImport}
