@@ -342,6 +342,20 @@ const SpacebarClickerTest: React.FC = () => {
     }
   };
 
+  const enterFullscreen = async () => {
+    if (document.fullscreenElement || !document.documentElement.requestFullscreen) {
+      setShareStatus(document.fullscreenElement ? 'Fullscreen is already active.' : 'Fullscreen is not supported in this browser.');
+      return;
+    }
+
+    try {
+      await document.documentElement.requestFullscreen();
+      setShareStatus('Fullscreen enabled.');
+    } catch {
+      setShareStatus('Fullscreen request was blocked by the browser.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-space-950 text-gray-200">
       <section className="max-w-5xl mx-auto px-4 py-14">
@@ -449,13 +463,13 @@ const SpacebarClickerTest: React.FC = () => {
                   Save Result Card
                 </button>
               </div>
-              {shareStatus && <p className="mt-3 text-xs text-gray-400">{shareStatus}</p>}
+              {shareStatus && <p role="status" aria-live="polite" className="mt-3 text-xs text-gray-400">{shareStatus}</p>}
             </div>
           )}
 
           <div className="flex flex-wrap justify-center gap-3 mt-7">
             {!finished && <button type="button" onClick={() => reset()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>}
-            <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
+            <button type="button" onClick={enterFullscreen} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
             <a href="/spacebar-counter/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Counter</a>
             <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Game</a>
           </div>
