@@ -618,6 +618,14 @@ const StarDefense: React.FC = () => {
         return () => { if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current); };
     }, [gameLoop]);
 
+    // Keep the save ref synchronized before hydration runs. On the initial
+    // effect flush this writes the defaults first; the hydration effect below
+    // then replaces them with the loaded snapshot, so an immediate tab close
+    // cannot restore default progress over a valid save.
+    useEffect(() => {
+        saveStateRef.current = { scraps, wave, upgrades };
+    }, [scraps, wave, upgrades]);
+
     useEffect(() => {
         const saved = localStorage.getItem(DEFENSE_SAVE_KEY);
         if (!saved) return;
@@ -663,12 +671,6 @@ const StarDefense: React.FC = () => {
             console.warn('Could not load Star Defense save.', error);
         }
     }, []);
-
-    // --- SAVE SYSTEM FIX ---
-    // Keep ref updated
-    useEffect(() => {
-        saveStateRef.current = { scraps, wave, upgrades };
-    }, [scraps, wave, upgrades]);
 
     const saveGame = useCallback(() => {
         if (!gameOver) {
