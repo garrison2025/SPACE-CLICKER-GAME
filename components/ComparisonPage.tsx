@@ -16,8 +16,7 @@ interface GameComparison {
   prestigeSystem: string;
   combatOrEvents: string;
   graphicsAndAudio: string;
-  aiFeatures: string;
-  bestFor: string;
+  goodFitFor: string;
 }
 
 const COMPARISON_DATA: GameComparison[] = [
@@ -30,8 +29,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Galactic Reset (Dark Matter permanent multiplier + Tech Tree)",
     combatOrEvents: "Crisis events, Golden Comets, local procedural anomaly scans",
     graphicsAndAudio: "Canvas starfield, particle effects, synthwave ambience",
-    aiFeatures: "Local procedural anomaly scanner with dynamic events",
-    bestFor: "Players seeking modern visuals, deep sci-fi themes, and active/passive hybrid strategy",
+    goodFitFor: "Players seeking modern visuals, deep sci-fi themes, and active/passive hybrid strategy",
   },
   {
     name: "Cookie Clicker",
@@ -42,8 +40,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Heavenly Chips & Ascension Upgrades",
     combatOrEvents: "Wrinklers & Seasonal events",
     graphicsAndAudio: "2D Pixel art, classic sound effects",
-    aiFeatures: "None",
-    bestFor: "Nostalgic gamers who enjoy whimsical, surreal exponential number growth",
+    goodFitFor: "Nostalgic gamers who enjoy whimsical, surreal exponential number growth",
   },
   {
     name: "Universal Paperclips",
@@ -54,8 +51,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Simulated Universe resets",
     combatOrEvents: "Probe Space Combat & Hazard survival",
     graphicsAndAudio: "Minimalist text-based spreadsheet UI",
-    aiFeatures: "None (Themed around AI lore)",
-    bestFor: "Fans of hard sci-fi, philosophical narratives, and tight, structured completions",
+    goodFitFor: "Fans of hard sci-fi, philosophical narratives, and tight, structured completions",
   },
   {
     name: "Antimatter Dimensions",
@@ -66,8 +62,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Dimensional Sacrifice, Infinity, Eternity, Reality resets",
     combatOrEvents: "Challenges and Time Studies",
     graphicsAndAudio: "Strictly minimalist numerical UI with dark theme",
-    aiFeatures: "None",
-    bestFor: "Hardcore mathematical purists who love complex prestige layers and huge notations (1e9000)",
+    goodFitFor: "Hardcore mathematical purists who love complex prestige layers and huge notations (1e9000)",
   },
   {
     name: "Spaceplan",
@@ -78,8 +73,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Story progression timeline shifts",
     combatOrEvents: "Atmospheric entry and black hole exploration",
     graphicsAndAudio: "3D wireframe graphics with original electronic soundtrack",
-    aiFeatures: "None",
-    bestFor: "Players who want a humorous, completeable story-driven idle experience",
+    goodFitFor: "Players who want a humorous, completeable story-driven idle experience",
   },
   {
     name: "Melvor Idle",
@@ -90,8 +84,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Skill mastery and dungeon completion tiers",
     combatOrEvents: "Turn-based dungeon combat, bosses, slayer tasks",
     graphicsAndAudio: "Clean web UI with icon inventories",
-    aiFeatures: "None",
-    bestFor: "MMORPG fans who enjoy deep crafting trees, equipment loadouts, and idle combat",
+    goodFitFor: "MMORPG fans who enjoy deep crafting trees, equipment loadouts, and idle combat",
   }
 ];
 
@@ -114,7 +107,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
       {
         "@type": "Table",
         "about": "Idle & Clicker Game Feature Comparison Matrix",
-        "description": "Comprehensive evaluation of top browser clicker games by theme, prestige mechanics, and automation depth."
+        "description": "Feature comparison of browser clicker games by theme, prestige mechanics, automation, and interactive systems."
       },
       {
         "@type": "FAQPage",
@@ -137,7 +130,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
           },
           {
             "@type": "Question",
-            "name": "Can I play Space Clicker Game offline or unblocked?",
+            "name": "Does Space Clicker Game require installation?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "No installation is required for the browser games. Access can still be limited by school, workplace, parental-control, firewall, or network-administrator policies."
@@ -298,7 +291,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                     </li>
                     <li>
                       <strong className="text-gray-400 block mb-0.5">🎮 Good Fit For:</strong>
-                      <span className="text-gray-200">{game.bestFor}</span>
+                      <span className="text-gray-200">{game.goodFitFor}</span>
                     </li>
                   </ul>
                 </div>
