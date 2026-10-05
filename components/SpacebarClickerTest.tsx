@@ -13,6 +13,14 @@ const PRESETS: TestMode[] = [
 
 const BEST_PREFIX = 'spacebar_test_best_';
 const HISTORY_KEY = 'spacebar_test_history_v1';
+const MAX_STORED_CPS = 10_000;
+const MAX_STORED_CLICKS = Number.MAX_SAFE_INTEGER;
+const MAX_STORED_ELAPSED = 86_400;
+
+const readBestCps = (key: string) => {
+  const value = Number(localStorage.getItem(key) || 0);
+  return Number.isFinite(value) && value >= 0 ? Math.min(MAX_STORED_CPS, value) : 0;
+};
 
 type TestHistoryEntry = {
   id: string;
@@ -36,10 +44,19 @@ const loadHistory = (): TestHistoryEntry[] => {
         typeof entry.id === 'string' &&
         typeof entry.mode === 'string' &&
         Number.isFinite(entry.clicks) &&
+        entry.clicks >= 0 &&
+        entry.clicks <= MAX_STORED_CLICKS &&
         Number.isFinite(entry.elapsed) &&
+        entry.elapsed > 0 &&
+        entry.elapsed <= MAX_STORED_ELAPSED &&
         Number.isFinite(entry.averageCps) &&
+        entry.averageCps >= 0 &&
+        entry.averageCps <= MAX_STORED_CPS &&
         Number.isFinite(entry.peakCps) &&
-        Number.isFinite(entry.completedAt)
+        entry.peakCps >= 0 &&
+        entry.peakCps <= MAX_STORED_CPS &&
+        Number.isFinite(entry.completedAt) &&
+        entry.completedAt > 0
       )
       .slice(0, 10);
   } catch {
@@ -60,7 +77,7 @@ const SpacebarClickerTest: React.FC = () => {
   const [currentCps, setCurrentCps] = useState(0);
   const [peakCps, setPeakCps] = useState(0);
   const [finalElapsed, setFinalElapsed] = useState(0);
-  const [bestCps, setBestCps] = useState(() => Number(localStorage.getItem(BEST_PREFIX + modeKey(PRESETS[2])) || 0));
+  const [bestCps, setBestCps] = useState(() => readBestCps(BEST_PREFIX + modeKey(PRESETS[2])));
   const [shareStatus, setShareStatus] = useState('');
   const [history, setHistory] = useState<TestHistoryEntry[]>(loadHistory);
 
@@ -72,7 +89,7 @@ const SpacebarClickerTest: React.FC = () => {
   const finishedRef = useRef(false);
 
   const loadBest = (nextMode: TestMode) => {
-    setBestCps(Number(localStorage.getItem(BEST_PREFIX + modeKey(nextMode)) || 0));
+    setBestCps(readBestCps(BEST_PREFIX + modeKey(nextMode)));
   };
 
   const reset = (nextMode: TestMode = mode) => {
