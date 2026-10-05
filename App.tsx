@@ -482,6 +482,24 @@ const App: React.FC = () => {
       } else if (viewMode === 'achievements') {
           title = "Galaxy Miner Milestones & Progress Tracker | Space Clicker Game";
           desc = "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.";
+      } else if (viewMode === 'about') {
+          title = "About | Space Clicker Game";
+          desc = "Learn how SpaceClickerGame.com is built around free browser clicker, idle, strategy, and Spacebar experiences with local-first gameplay.";
+      } else if (viewMode === 'contact') {
+          title = "Contact | Space Clicker Game";
+          desc = "Contact SpaceClickerGame.com for player support, bug reports, feedback, business, advertising, or press questions.";
+      } else if (viewMode === 'privacy') {
+          title = "Privacy Policy | Space Clicker Game";
+          desc = "Read how SpaceClickerGame.com handles browser-local game saves, exported save codes, hosting requests, analytics, and advertising technologies.";
+      } else if (viewMode === 'terms') {
+          title = "Terms of Service | Space Clicker Game";
+          desc = "Read the terms that apply when using SpaceClickerGame.com and its browser-based games and tools.";
+      } else if (viewMode === 'cookies') {
+          title = "Cookie & Local Storage Settings | Space Clicker Game";
+          desc = "Learn how SpaceClickerGame.com uses browser localStorage for game progress and what clearing site storage does to local saves.";
+      } else if (viewMode === 'sitemap') {
+          title = "HTML Sitemap | Space Clicker Game";
+          desc = "Browse the main games, Spacebar tools, guides, support pages, and legal resources available on SpaceClickerGame.com.";
       } else if (viewMode === 'spacebar-games') {
           title = "Spacebar Games - Clicker, Counter & CPS Tests";
           desc = "Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.";
