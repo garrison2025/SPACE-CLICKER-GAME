@@ -60,8 +60,8 @@ const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-434902
 
 const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
   galaxy_miner: {
-    title: 'Galaxy Miner - Free Online Space Clicker Game',
-    description: 'Mine Stardust, automate a growing space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.',
+    title: 'Galaxy Miner – Space Mining Idle Clicker Online',
+    description: 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.',
     genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi']
   },
   mars_colony: {
@@ -360,23 +360,46 @@ const App: React.FC = () => {
               type = 'game';
               schema = {
                 "@context": "https://schema.org",
-                "@type": "VideoGame",
-                "@id": `https://spaceclickergame.com/game/${game.id}/#game`,
-                "url": `https://spaceclickergame.com/game/${game.id}/`,
-                "name": game.title,
-                "description": gameSeo.description,
-                "genre": gameSeo.genres,
-                "playMode": "SinglePlayer",
-                "applicationCategory": "Game",
-                "operatingSystem": "Any modern web browser",
-                "isAccessibleForFree": true,
-                "inLanguage": "en",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "USD",
-                  "availability": "https://schema.org/InStock"
-                }
+                "@graph": [
+                  {
+                    "@type": "VideoGame",
+                    "@id": `https://spaceclickergame.com/game/${game.id}/#game`,
+                    "url": `https://spaceclickergame.com/game/${game.id}/`,
+                    "name": game.title,
+                    "description": gameSeo.description,
+                    "genre": gameSeo.genres,
+                    "playMode": "SinglePlayer",
+                    "applicationCategory": "Game",
+                    "operatingSystem": "Any modern web browser",
+                    "isAccessibleForFree": true,
+                    "inLanguage": "en",
+                    "image": image,
+                    "offers": {
+                      "@type": "Offer",
+                      "price": "0",
+                      "priceCurrency": "USD",
+                      "availability": "https://schema.org/InStock"
+                    }
+                  },
+                  {
+                    "@type": "BreadcrumbList",
+                    "@id": `https://spaceclickergame.com/game/${game.id}/#breadcrumb`,
+                    "itemListElement": [
+                      {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Space Clicker Game",
+                        "item": "https://spaceclickergame.com/"
+                      },
+                      {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": game.title,
+                        "item": `https://spaceclickergame.com/game/${game.id}/`
+                      }
+                    ]
+                  }
+                ]
               };
           }
       } else if (viewMode === 'blog' && activePostId) {
