@@ -195,37 +195,36 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
-        "@id": "https://spaceclickergame.com/achievements",
-        "url": "https://spaceclickergame.com/achievements",
-        "name": "Galaxy Miner Progress Milestones | Space Clicker Game",
-        "description": "A browser-local tracker for Galaxy Miner mining, automation, and Dark Matter milestones.",
+        "@type": "CollectionPage",
+        "@id": "https://spaceclickergame.com/achievements/#webpage",
+        "url": "https://spaceclickergame.com/achievements/",
+        "name": "Galaxy Miner Milestones & Progress Tracker",
+        "description": "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.",
+        "dateModified": "2026-10-05",
         "isPartOf": {
           "@type": "WebSite",
+          "@id": "https://spaceclickergame.com/#website",
           "name": "Space Clicker Game",
-          "url": "https://spaceclickergame.com"
+          "url": "https://spaceclickergame.com/"
         }
       },
       {
-        "@type": "HowTo",
-        "name": "How to Progress Through Galaxy Miner Milestones",
-        "description": "A practical progression path through the milestones that this page can verify from the local Galaxy Miner save.",
-        "step": [
-          {
-            "@type": "HowToStep",
-            "name": "Mine Initial Stardust Milestones",
-            "text": "Click the planetary core to earn Stardust Initiate (1,000 SD) and Asteroid Prospector (1M SD)."
-          },
-          {
-            "@type": "HowToStep",
-            "name": "Automate Heavy Drone Fleets",
-            "text": "Purchase 25 Mining Drones and 50 Orbital Stations to unlock Drone Fleet Commander and Orbital Architect."
-          },
-          {
-            "@type": "HowToStep",
-            "name": "Complete a Galactic Reset",
-            "text": "Accumulate 1 Trillion Stardust, open Void Tech, and use Galactic Reset to earn Dark Matter while retaining permanent progression."
-          }
+        "@type": "ItemList",
+        "@id": "https://spaceclickergame.com/achievements/#milestones",
+        "name": "Galaxy Miner tracked milestones",
+        "itemListElement": ACHIEVEMENTS_DATA.map((achievement, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": achievement.title,
+          "description": achievement.unlockCondition
+        }))
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://spaceclickergame.com/achievements/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Galaxy Miner Milestones", "item": "https://spaceclickergame.com/achievements/" }
         ]
       }
     ]
@@ -237,7 +236,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
         title="Galaxy Miner Milestones & Progress Tracker | Space Clicker Game"
         description="Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save."
         path="/achievements"
-        type="article"
+        type="website"
         schema={achievementsSchema}
       />
 
