@@ -553,6 +553,13 @@ const App: React.FC = () => {
                   ]
                 },
                 {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" }
+                  ]
+                },
+                {
                   "@type": "FAQPage",
                   "mainEntity": [
                     {
@@ -594,8 +601,19 @@ const App: React.FC = () => {
                   "playMode": "SinglePlayer",
                   "applicationCategory": "Game",
                   "operatingSystem": "Any modern web browser",
+                  "@id": "https://spaceclickergame.com/spacebar-clicker-2/#game",
                   "url": "https://spaceclickergame.com/spacebar-clicker-2/",
+                  "isAccessibleForFree": true,
+                  "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" },
+                    { "@type": "ListItem", "position": 3, "name": "Spacebar Clicker 2", "item": "https://spaceclickergame.com/spacebar-clicker-2/" }
+                  ]
                 },
                 {
                   "@type": "FAQPage",
@@ -641,13 +659,30 @@ const App: React.FC = () => {
               "playMode": "SinglePlayer",
               "applicationCategory": "Game",
               "operatingSystem": "Any modern web browser",
+              "@id": `https://spaceclickergame.com/${viewMode}/#game`,
               "url": `https://spaceclickergame.com/${viewMode}/`,
+              "isAccessibleForFree": true,
+              "inLanguage": "en",
               "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+          const clickerBreadcrumbSchema = {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": unblocked ? "Spacebar Clicker Instant Play" : "Spacebar Clicker",
+                  "item": `https://spaceclickergame.com/${viewMode}/`
+                }
+              ]
           };
           schema = unblocked ? {
               "@context": "https://schema.org",
               "@graph": [
                 clickerGameSchema,
+                clickerBreadcrumbSchema,
                 {
                   "@type": "FAQPage",
                   "mainEntity": [
@@ -678,6 +713,7 @@ const App: React.FC = () => {
               "@context": "https://schema.org",
               "@graph": [
                 clickerGameSchema,
+                clickerBreadcrumbSchema,
                 {
                   "@type": "FAQPage",
                   "mainEntity": [
@@ -713,11 +749,23 @@ const App: React.FC = () => {
               "@graph": [
                 {
                   "@type": "WebApplication",
+                  "@id": "https://spaceclickergame.com/spacebar-counter/#app",
                   "name": "Spacebar Counter",
+                  "description": desc,
                   "applicationCategory": "UtilitiesApplication",
                   "operatingSystem": "Any modern web browser",
                   "url": "https://spaceclickergame.com/spacebar-counter/",
+                  "isAccessibleForFree": true,
+                  "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" },
+                    { "@type": "ListItem", "position": 3, "name": "Spacebar Counter", "item": "https://spaceclickergame.com/spacebar-counter/" }
+                  ]
                 },
                 {
                   "@type": "FAQPage",
@@ -754,11 +802,23 @@ const App: React.FC = () => {
               "@graph": [
                 {
                   "@type": "WebApplication",
+                  "@id": "https://spaceclickergame.com/spacebar-clicker-test/#app",
                   "name": "Spacebar Clicker Test",
+                  "description": desc,
                   "applicationCategory": "UtilitiesApplication",
                   "operatingSystem": "Any modern web browser",
                   "url": "https://spaceclickergame.com/spacebar-clicker-test/",
+                  "isAccessibleForFree": true,
+                  "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                    { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" },
+                    { "@type": "ListItem", "position": 3, "name": "Spacebar Clicker Test", "item": "https://spaceclickergame.com/spacebar-clicker-test/" }
+                  ]
                 },
                 {
                   "@type": "FAQPage",
