@@ -48,6 +48,24 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const [shake, setShake] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const planetRef = useRef<HTMLDivElement>(null);
+  const transientTimersRef = useRef<Set<number>>(new Set());
+
+  const scheduleTransient = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+          transientTimersRef.current.delete(timer);
+          callback();
+      }, delay);
+      transientTimersRef.current.add(timer);
+      return timer;
+  };
+
+  useEffect(() => {
+      return () => {
+          transientTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+          transientTimersRef.current.clear();
+      };
+  }, []);
+
   const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const hasAnyUpgrade = upgrades.some((upgrade) => upgrade.count > 0);
   const showFirstRunGuide = currency < 15 && productionRate <= 0 && !hasAnyUpgrade;
@@ -72,7 +90,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           if (list.length > 15) return list.slice(list.length - 15);
           return list;
       });
-      setTimeout(() => {
+      scheduleTransient(() => {
           setClicks(prev => prev.filter(c => c.id !== textObj.id));
       }, 800);
   };
@@ -125,7 +143,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
               left: 20 + Math.random() * 60
           };
           setGeodes(prev => [...prev, newGeode]);
-          setTimeout(() => setGeodes(prev => prev.filter(g => g.id !== newGeode.id)), 4000);
+          scheduleTransient(() => setGeodes(prev => prev.filter(g => g.id !== newGeode.id)), 4000);
           timer = setTimeout(spawn, schedule());
       };
       timer = setTimeout(spawn, schedule());
@@ -174,7 +192,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           width: beamWidth
       };
       setBeams(prev => [...prev, newBeam]);
-      setTimeout(() => setBeams(prev => prev.filter(b => b.id !== newBeam.id)), 150);
+      scheduleTransient(() => setBeams(prev => prev.filter(b => b.id !== newBeam.id)), 150);
     }
 
     // 3. Visual: Floating Text
