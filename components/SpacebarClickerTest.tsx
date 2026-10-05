@@ -484,6 +484,14 @@ const SpacebarClickerTest: React.FC = () => {
                 <h3 className="text-lg text-white">Can I choose a custom test duration?</h3>
                 <p>Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode.</p>
               </div>
+              <div>
+                <h3 className="text-lg text-white">What is a good Spacebar CPS score?</h3>
+                <p>There is no universal “good CPS” threshold across every keyboard and test. Compare your results using the same device, browser, duration, and input rules.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">What is the difference between CPS and PPS?</h3>
+                <p>CPS means clicks per second and PPS means presses per second. For this Spacebar test they describe the same basic rate: valid Space presses divided by elapsed time.</p>
+              </div>
             </div>
           </section>
         </article>
