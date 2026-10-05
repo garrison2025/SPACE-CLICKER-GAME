@@ -1,6 +1,6 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { BLOG_POSTS } from '../constants';
+import { BLOG_POSTS } from '../content/blogPosts';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
 import SocialShare from './SocialShare';
