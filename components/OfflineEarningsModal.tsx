@@ -32,8 +32,15 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 md:backdrop-blur-md p-3 sm:p-4 animate-in fade-in zoom-in-95 duration-300">
-      <div className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg max-h-[calc(100dvh-1.5rem)] rounded-3xl p-5 sm:p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-y-auto">
+    <div className="safe-screen-overlay fixed inset-0 z-[150] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in zoom-in-95 duration-300">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="offline-earnings-title"
+        tabIndex={-1}
+        autoFocus
+        className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg max-h-full rounded-3xl p-5 sm:p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+      >
         
         {/* Glow ambient background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-yellow-500/20 blur-3xl rounded-full pointer-events-none" />
@@ -45,7 +52,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl md:text-3xl font-display font-black text-white tracking-widest uppercase mb-1">
+        <h2 id="offline-earnings-title" className="text-2xl md:text-3xl font-display font-black text-white tracking-widest uppercase mb-1">
           Welcome Back, Commander!
         </h2>
         <p className="text-xs font-mono text-gray-400 mb-6">
