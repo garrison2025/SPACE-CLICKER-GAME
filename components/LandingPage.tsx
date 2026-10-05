@@ -231,7 +231,7 @@ const SpacebarLaunchSection = () => (
       Press the physical Space key or tap the on-screen key, build CPS, buy upgrades, automate production and reset for permanent Quantum Keys.
     </p>
     <div className="flex flex-wrap justify-center gap-3">
-      <a href="/spacebar-clicker/" className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">PLAY SPACEBAR CLICKER</a>
+      <a href="/spacebar-games/" className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">EXPLORE SPACEBAR GAMES</a>\n      <a href="/spacebar-clicker/" className="px-6 py-3 rounded border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-colors">PLAY CLICKER</a>
       <a href="/spacebar-counter/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">OPEN COUNTER</a>
       <a href="/spacebar-clicker-test/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">CPS TEST</a>
     </div>
