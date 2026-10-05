@@ -843,15 +843,23 @@ const staticRouteContent = {
   '/spacebar-clicker-unblocked': `
     <section>
       <h2>Instant browser Spacebar Clicker</h2>
-      <p>This page opens the Spacebar Clicker game directly with no download, launcher or account. “Unblocked” here does not mean bypassing school, workplace, parental-control, firewall or network-administrator restrictions.</p>
+      <p>This page opens the full Spacebar Clicker experience directly in a modern browser with no download, launcher, extension, or account step. Desktop players can press the physical Space key, while mobile players can use the large on-screen control.</p>
+      <h2>Same upgrades, automation, and prestige</h2>
+      <p>The instant-play route uses the same point economy as the main <a href="/spacebar-clicker/">Spacebar Clicker</a>: manual presses earn points, upgrades improve each press, automatic production grows over time, and Hyperdrive Prestige converts large runs into permanent Quantum Keys.</p>
+      <h2>Local saves and offline earnings</h2>
+      <p>Progress is stored locally in the current browser rather than in a cloud account. Once automatic production is available, supported saved runs can credit capped offline earnings when the player returns. Clearing site storage or changing devices can separate or remove that local save.</p>
+      <h2>What “unblocked” means here</h2>
+      <p>“Unblocked” on this page means direct browser access without an installation step. It does not bypass school, workplace, parental-control, firewall, device-management, or network-administrator restrictions. Whether the site can be reached is controlled by the device and network in use.</p>
       <h2>Spacebar Clicker Unblocked FAQ</h2>
       <h3>What does “unblocked” mean on this page?</h3>
-      <p>It means the game opens directly in a browser with no installation step. It does not bypass network restrictions.</p>
+      <p>It means the game opens directly in a browser with no installation, launcher, extension, or account step. It does not bypass network restrictions.</p>
       <h3>Can a school or workplace network still block the game?</h3>
-      <p>Yes. Access depends on the network, device, firewall, parental controls, or administrator.</p>
+      <p>Yes. Access depends on the rules applied by the network, device, firewall, parental controls, or administrator.</p>
       <h3>Does the instant-play version save progress?</h3>
       <p>Yes. Progress is stored locally in the current browser with no cloud or cross-device sync.</p>
-      <p>You can also open the canonical <a href="/spacebar-clicker/">Spacebar Clicker</a>, the <a href="/spacebar-clicker-test/">CPS Test</a>, or the full <a href="/spacebar-games/">Spacebar Games</a> hub.</p>
+      <h3>Is this the same Spacebar Clicker game?</h3>
+      <p>Yes. It uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page.</p>
+      <p>For speed testing, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for an endless total, use the <a href="/spacebar-counter/">Spacebar Counter</a>; or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
     </section>`,
   '/compare': `
     <section>
