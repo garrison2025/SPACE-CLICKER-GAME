@@ -435,7 +435,7 @@ const GravityIdle: React.FC = () => {
         }
     };
 
-    const handleCanvasClick = (e: React.MouseEvent) => {
+    const handleCanvasPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
         const now = Date.now();
         if (now - lastPulseTimeRef.current < 5000) return; // 5s Cooldown
 
@@ -632,8 +632,8 @@ const GravityIdle: React.FC = () => {
              <div className="flex-1 relative w-full h-full cursor-crosshair">
                  <canvas 
                     ref={canvasRef} 
-                    className="block w-full h-full" 
-                    onClick={handleCanvasClick}
+                    className="block w-full h-full touch-manipulation" 
+                    onPointerUp={handleCanvasPointerUp}
                  />
                  
                  {/* HUD OVERLAYS */}
