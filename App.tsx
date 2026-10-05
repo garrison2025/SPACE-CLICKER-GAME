@@ -38,6 +38,7 @@ const GravityIdle = React.lazy(() => import('./components/GravityIdle'));
 const DeepSpaceSignal = React.lazy(() => import('./components/DeepSpaceSignal'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
+const SAVE_VERSION = 3;
 
 // High-quality Open Graph images for each game
 const GAME_OG_IMAGES: Record<GameId, string> = {
@@ -229,6 +230,8 @@ const App: React.FC = () => {
   const critMultiplier = 10 + getTechBonus('crit_damage', 1);
   const passiveTechBoost = 1 + (getTechBonus('passive_boost', 0.25));
   const prestigeMultiplier = (1 + (resources[ResourceType.DarkMatter] * 0.1));
+  const prestigeGain = Math.floor(5 * Math.sqrt(resources[ResourceType.Stardust] / PRESTIGE_THRESHOLD));
+  const canPrestige = prestigeGain >= 1;
 
   const getMilestoneMultiplier = (count: number) => {
     let mult = 1;
@@ -542,6 +545,31 @@ const App: React.FC = () => {
     }
   };
 
+  const handlePrestigeReset = () => {
+    if (!canPrestige) return;
+    const confirmed = window.confirm(
+      `Reset current Stardust and standard upgrades for +${prestigeGain} Dark Matter? Permanent technology, lifetime stats, and Dark Matter are retained.`
+    );
+    if (!confirmed) return;
+
+    const resetUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => ({
+      ...acc,
+      [upgrade.id]: { ...upgrade, count: 0 }
+    }), {} as { [id: string]: Upgrade });
+
+    setResources(prev => ({
+      [ResourceType.Stardust]: 0,
+      [ResourceType.DarkMatter]: prev[ResourceType.DarkMatter] + prestigeGain
+    }));
+    setUpgrades(resetUpgrades);
+    setLevel(1);
+    setPlanetIndex(0);
+    setHeat(0);
+    setOverheated(false);
+    setShowPrestigeShop(true);
+    addLog(`GALACTIC RESET COMPLETE: +${prestigeGain} DARK MATTER`, 'success');
+  };
+
   const handleScan = async () => {
     if (resources[ResourceType.Stardust] < GEMINI_EVENT_COST) return;
     setIsScanning(true);
@@ -596,28 +624,59 @@ const App: React.FC = () => {
       const data = gameStateRef.current;
       const toSave = {
           ...data,
+          version: SAVE_VERSION,
           lastSaveTime: Date.now()
       };
       localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
   const handleImportSave = (data: any) => {
-      if (data.resources) setResources(data.resources);
-      if (data.upgrades) {
-          const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
-          setUpgrades(merged);
+      if (!data || typeof data !== 'object') {
+          addLog("IMPORT FAILED: INVALID SAVE DATA", "alert");
+          return;
       }
-      if (data.prestigeUpgrades) setPrestigeUpgrades(data.prestigeUpgrades);
-      if (data.level) setLevel(data.level);
-      if (data.planetIndex !== undefined) setPlanetIndex(data.planetIndex);
-      if (data.lifetimeEarnings !== undefined) setLifetimeEarnings(data.lifetimeEarnings);
-      if (data.totalClicks !== undefined) setTotalClicks(data.totalClicks);
-      if (data.totalCrits !== undefined) setTotalCrits(data.totalCrits);
-      if (data.cometsCaught !== undefined) setCometsCaught(data.cometsCaught);
-      if (data.crisesResolved !== undefined) setCrisesResolved(data.crisesResolved);
-      
+
+      const baseUpgrades = INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: { ...u, count: 0 } }), {} as { [id: string]: Upgrade });
+      const mergedUpgrades = { ...baseUpgrades, ...(data.upgrades || {}) };
+      const nextResources = {
+          [ResourceType.Stardust]: Math.max(0, Number(data.resources?.[ResourceType.Stardust]) || 0),
+          [ResourceType.DarkMatter]: Math.max(0, Number(data.resources?.[ResourceType.DarkMatter]) || 0)
+      };
+      const nextPrestige = data.prestigeUpgrades && typeof data.prestigeUpgrades === 'object' ? data.prestigeUpgrades : {};
+      const nextLevel = Math.max(1, Number(data.level) || 1);
+      const nextPlanetIndex = Math.min(PLANETS.length - 1, Math.max(0, Number(data.planetIndex) || 0));
+      const nextLifetime = Math.max(0, Number(data.lifetimeEarnings) || 0);
+      const nextClicks = Math.max(0, Number(data.totalClicks) || 0);
+      const nextCrits = Math.max(0, Number(data.totalCrits) || 0);
+      const nextComets = Math.max(0, Number(data.cometsCaught) || 0);
+      const nextCrises = Math.max(0, Number(data.crisesResolved) || 0);
+
+      setResources(nextResources);
+      setUpgrades(mergedUpgrades);
+      setPrestigeUpgrades(nextPrestige);
+      setLevel(nextLevel);
+      setPlanetIndex(nextPlanetIndex);
+      setLifetimeEarnings(nextLifetime);
+      setTotalClicks(nextClicks);
+      setTotalCrits(nextCrits);
+      setCometsCaught(nextComets);
+      setCrisesResolved(nextCrises);
+
+      const normalized = {
+          resources: nextResources,
+          upgrades: mergedUpgrades,
+          prestigeUpgrades: nextPrestige,
+          level: nextLevel,
+          planetIndex: nextPlanetIndex,
+          lifetimeEarnings: nextLifetime,
+          totalClicks: nextClicks,
+          totalCrits: nextCrits,
+          cometsCaught: nextComets,
+          crisesResolved: nextCrises
+      };
+      gameStateRef.current = normalized;
+      localStorage.setItem(SAVE_KEY, JSON.stringify({ ...normalized, version: SAVE_VERSION, lastSaveTime: Date.now() }));
       addLog("TELEMETRY BACKUP RESTORED SUCCESSFULLY", "success");
-      saveGame();
   };
 
   // Initialize Loading & Offline Progress
@@ -627,7 +686,11 @@ const App: React.FC = () => {
           if (saved) {
               try {
                   const data = JSON.parse(saved);
-                  if (data.resources) setResources(data.resources);
+                  if (!data || typeof data !== 'object') throw new Error('Invalid save payload');
+                  if (data.resources) setResources({
+                      [ResourceType.Stardust]: Math.max(0, Number(data.resources[ResourceType.Stardust]) || 0),
+                      [ResourceType.DarkMatter]: Math.max(0, Number(data.resources[ResourceType.DarkMatter]) || 0)
+                  });
                   if (data.upgrades) {
                       const merged = { ...INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: u }), {}), ...data.upgrades };
                       setUpgrades(merged);
@@ -781,6 +844,13 @@ const App: React.FC = () => {
                           />
                           <GoldenComet onCatch={handleCometCatch} />
                           <CrisisEvent onResolve={handleCrisisResolve} />
+                          <button
+                            type="button"
+                            onClick={() => setShowPrestigeShop(true)}
+                            className="absolute top-4 right-4 z-40 rounded-lg border border-neon-purple/50 bg-space-900/90 px-3 py-2 text-xs font-bold text-neon-purple hover:bg-neon-purple hover:text-black transition-colors"
+                          >
+                            VOID TECH {canPrestige ? `• +${prestigeGain} DM READY` : ''}
+                          </button>
                           
                           <button 
                             className="md:hidden absolute bottom-4 right-4 z-50 bg-neon-blue text-black p-3 rounded-full font-bold shadow-lg"
@@ -878,6 +948,19 @@ const App: React.FC = () => {
             productionRate={offlineEarnings.productionRate}
             onClaim={handleClaimOfflineEarnings}
         />
+
+        {showPrestigeShop && (
+            <PrestigeShop
+                darkMatter={resources[ResourceType.DarkMatter]}
+                upgrades={prestigeUpgrades}
+                prestigeGain={prestigeGain}
+                canPrestige={canPrestige}
+                thresholdLabel={formatNumber(PRESTIGE_THRESHOLD)}
+                onPrestige={handlePrestigeReset}
+                onBuy={handleBuyPrestige}
+                onClose={() => setShowPrestigeShop(false)}
+            />
+        )}
 
         {is404 ? (
             <NotFoundPage onNavigate={handleNavigate} />
