@@ -70,6 +70,7 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 };
 
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
+const SITE_CONTENT_UPDATED = '2026-10-05';
 
 const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
   galaxy_miner: {
@@ -433,6 +434,7 @@ const App: React.FC = () => {
                 "url": "https://spaceclickergame.com/",
                 "name": "Space Clicker Game",
                 "description": "Play browser-based space clicker, idle, strategy, defense, merge, physics, and text-adventure simulations.",
+                "dateModified": SITE_CONTENT_UPDATED,
                 "publisher": {
                   "@type": "Organization",
                   "name": "Space Clicker Game"
@@ -450,6 +452,7 @@ const App: React.FC = () => {
                 "applicationCategory": "Game",
                 "operatingSystem": "Any modern web browser",
                 "isAccessibleForFree": true,
+                "dateModified": SITE_CONTENT_UPDATED,
                 "inLanguage": "en",
                 "offers": {
                   "@type": "Offer",
@@ -604,6 +607,7 @@ const App: React.FC = () => {
                   "@id": "https://spaceclickergame.com/spacebar-clicker-2/#game",
                   "url": "https://spaceclickergame.com/spacebar-clicker-2/",
                   "isAccessibleForFree": true,
+                  "dateModified": SITE_CONTENT_UPDATED,
                   "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
                 },
@@ -756,6 +760,7 @@ const App: React.FC = () => {
                   "operatingSystem": "Any modern web browser",
                   "url": "https://spaceclickergame.com/spacebar-counter/",
                   "isAccessibleForFree": true,
+                  "dateModified": SITE_CONTENT_UPDATED,
                   "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
                 },
@@ -809,6 +814,7 @@ const App: React.FC = () => {
                   "operatingSystem": "Any modern web browser",
                   "url": "https://spaceclickergame.com/spacebar-clicker-test/",
                   "isAccessibleForFree": true,
+                  "dateModified": SITE_CONTENT_UPDATED,
                   "inLanguage": "en",
                   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
                 },
