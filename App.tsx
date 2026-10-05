@@ -1106,8 +1106,10 @@ const App: React.FC = () => {
   };
 
   const handleBuyUpgrade = (id: string, amountToBuy: number = 1) => {
-    const upgrade = upgrades[id];
-    if (!upgrade) return;
+    const currentSnapshot = gameStateRef.current;
+    const upgrade = currentSnapshot.upgrades[id];
+    if (!upgrade || amountToBuy < 1) return;
+
     let totalCost = 0;
     let tempCount = upgrade.count;
     for (let i = 0; i < amountToBuy; i++) {
@@ -1115,19 +1117,34 @@ const App: React.FC = () => {
         tempCount++;
     }
 
-    if (resources[ResourceType.Stardust] >= totalCost) {
-      setResources(prev => ({ ...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - totalCost }));
-      setUpgrades(prev => ({ ...prev, [id]: { ...prev[id], count: prev[id].count + amountToBuy } }));
-      
-      const newCount = upgrade.count + amountToBuy;
-      if (
-          (upgrade.count < 25 && newCount >= 25) ||
-          (upgrade.count < 50 && newCount >= 50) ||
-          (upgrade.count < 100 && newCount >= 100) ||
-          (upgrade.count < 200 && newCount >= 200)
-      ) {
-          addLog(`${upgrade.name} MILESTONE: OUTPUT DOUBLED!`, 'success');
-      }
+    const currentStardust = currentSnapshot.resources[ResourceType.Stardust];
+    if (currentStardust < totalCost) return;
+
+    const newCount = upgrade.count + amountToBuy;
+    const nextResources = {
+        ...currentSnapshot.resources,
+        [ResourceType.Stardust]: currentStardust - totalCost
+    };
+    const nextUpgrades = {
+        ...currentSnapshot.upgrades,
+        [id]: { ...upgrade, count: newCount }
+    };
+
+    gameStateRef.current = {
+        ...currentSnapshot,
+        resources: nextResources,
+        upgrades: nextUpgrades
+    };
+    setResources(nextResources);
+    setUpgrades(nextUpgrades);
+
+    if (
+        (upgrade.count < 25 && newCount >= 25) ||
+        (upgrade.count < 50 && newCount >= 50) ||
+        (upgrade.count < 100 && newCount >= 100) ||
+        (upgrade.count < 200 && newCount >= 200)
+    ) {
+        addLog(`${upgrade.name} MILESTONE: OUTPUT DOUBLED!`, 'success');
     }
   };
 
