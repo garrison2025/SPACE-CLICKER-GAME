@@ -671,7 +671,7 @@ const GravityIdle: React.FC = () => {
                              <h3 className="font-display font-black text-xl text-neon-purple tracking-wide">PHYSICS LAB</h3>
                              <p className="text-[10px] text-gray-500">UPGRADE CONSTANTS</p>
                          </div>
-                         <button onClick={() => setShowShop(false)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20">✕</button>
+                         <button onClick={() => setShowShop(false)} className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20">✕</button>
                      </div>
                      
                      {/* Buy Amount Toggle */}
@@ -680,7 +680,7 @@ const GravityIdle: React.FC = () => {
                             <button
                                 key={opt}
                                 onClick={() => setBuyAmount(opt as any)}
-                                className={`flex-1 py-1 text-[10px] font-bold rounded transition-colors ${buyAmount === opt ? 'bg-neon-purple text-black' : 'text-gray-500 hover:text-white'}`}
+                                className={`flex-1 min-h-11 py-2 text-[10px] font-bold rounded transition-colors ${buyAmount === opt ? 'bg-neon-purple text-black' : 'text-gray-500 hover:text-white'}`}
                             >
                                 x{opt}
                             </button>
