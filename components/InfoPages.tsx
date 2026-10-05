@@ -92,7 +92,7 @@ export const ContactPage = () => (
 
 export const PrivacyPage = () => (
     <PageContainer title="DATA PRIVACY PROTOCOLS">
-        <p className="text-sm font-mono text-gray-500">Effective Date: October 5, 2026</p>
+        <p className="text-sm font-mono text-gray-500">Effective Date: October 6, 2026</p>
         
         <p>
             At <strong>SpaceClickerGame.com</strong>, we take your privacy as seriously as we take our shield integrity. This Privacy Policy explains how we collect, use, and protect your information when you access our <strong>space clicker games</strong>.
