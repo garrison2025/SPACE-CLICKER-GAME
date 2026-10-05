@@ -52,7 +52,7 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "7",
     "slug": "educational-value-of-space-clicker-games",
-    "title": "Math in the Void: How Space Clicker Games Teach Exponential Growth",
+    "title": "Math in the Void: How Space Clicker Games Visualize Exponential Growth",
     "excerpt": "Incremental games can make compounding, scientific notation, and resource tradeoffs easier to visualize. They are examples to explore, not substitutes for formal math or science instruction.",
     "image": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=2000"
   },
