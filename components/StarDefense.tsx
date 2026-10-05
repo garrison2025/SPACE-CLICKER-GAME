@@ -4,6 +4,14 @@ import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } fr
 import { formatNumber } from '../utils';
 
 const DEFENSE_SAVE_KEY = 'star_defense_save_v4';
+const MAX_RESOURCE_VALUE = 1e300;
+const MAX_WAVE = 1_000_000;
+const MAX_UPGRADE_LEVEL = 1000;
+
+const safeFinite = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed >= 0 ? Math.min(max, parsed) : fallback;
+};
 
 // --- CONFIG ---
 const INITIAL_UPGRADES: DefenseUpgrade[] = [
@@ -599,12 +607,24 @@ const StarDefense: React.FC = () => {
 
         try {
             const data = JSON.parse(saved);
-            const loadedScraps = Number.isFinite(Number(data.scraps)) ? Math.max(0, Number(data.scraps)) : 0;
-            const loadedWave = Math.max(1, Math.floor(Number(data.wave) || 1));
+            if (!data || typeof data !== 'object') throw new Error('Invalid Star Defense save payload');
+
+            const loadedScraps = safeFinite(data.scraps);
+            const loadedWave = Math.min(
+                MAX_WAVE,
+                Math.max(1, Math.floor(safeFinite(data.wave, 1, MAX_WAVE)))
+            );
             const savedUpgrades = Array.isArray(data.upgrades) ? data.upgrades : [];
             const loadedUpgrades = INITIAL_UPGRADES.map((base) => {
+                if (base.id === 'repair') return { ...base, level: base.level };
+
                 const existing = savedUpgrades.find((savedUpgrade: any) => savedUpgrade?.id === base.id);
-                const level = existing ? Math.max(0, Math.floor(Number(existing.level) || 0)) : base.level;
+                const level = existing
+                    ? Math.min(
+                        MAX_UPGRADE_LEVEL,
+                        Math.max(base.level, Math.floor(safeFinite(existing.level, base.level, MAX_UPGRADE_LEVEL)))
+                    )
+                    : base.level;
                 return { ...base, level };
             });
 
@@ -615,6 +635,10 @@ const StarDefense: React.FC = () => {
             };
 
             saveStateRef.current = nextSnapshot;
+            localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: Date.now(),
+            }));
             setScraps(loadedScraps);
             setWave(loadedWave);
             setUpgrades(loadedUpgrades);
