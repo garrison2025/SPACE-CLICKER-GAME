@@ -47,6 +47,7 @@ const StarDefense: React.FC = () => {
     const [activeEffects, setActiveEffects] = useState<{[key:string]: number}>({}); 
     
     const [upgrades, setUpgrades] = useState<DefenseUpgrade[]>(INITIAL_UPGRADES);
+    const saveStateRef = useRef({ scraps, wave, upgrades });
     
     // Refs for Game Loop
     const enemiesRef = useRef<Enemy[]>([]);
@@ -411,8 +412,14 @@ const StarDefense: React.FC = () => {
             setHp(prev => {
                 const newHp = prev - remaining;
                 if (newHp <= 0) {
-                    // A defeated run is over. Remove the last in-progress snapshot
-                    // immediately so refresh cannot restore the player before death.
+                    // A defeated run is over. Point the in-memory snapshot at a
+                    // fresh run before removing storage; even if an autosave races this
+                    // state update, it can only persist Wave 1 rather than resurrect death.
+                    saveStateRef.current = {
+                        scraps: 0,
+                        wave: 1,
+                        upgrades: INITIAL_UPGRADES.map((upgrade) => ({ ...upgrade })),
+                    };
                     localStorage.removeItem(DEFENSE_SAVE_KEY);
                     setGameOver(true);
                     return 0;
@@ -569,25 +576,35 @@ const StarDefense: React.FC = () => {
 
     useEffect(() => {
         const saved = localStorage.getItem(DEFENSE_SAVE_KEY);
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                setScraps(data.scraps || 0);
-                setWave(data.wave || 1);
-                if (data.upgrades) {
-                     const merged = INITIAL_UPGRADES.map(iu => {
-                         const existing = data.upgrades.find((du:any) => du.id === iu.id);
-                         return existing ? { ...iu, level: existing.level } : iu;
-                     });
-                     setUpgrades(merged);
-                }
-            } catch(e) {}
+        if (!saved) return;
+
+        try {
+            const data = JSON.parse(saved);
+            const loadedScraps = Number.isFinite(Number(data.scraps)) ? Math.max(0, Number(data.scraps)) : 0;
+            const loadedWave = Math.max(1, Math.floor(Number(data.wave) || 1));
+            const savedUpgrades = Array.isArray(data.upgrades) ? data.upgrades : [];
+            const loadedUpgrades = INITIAL_UPGRADES.map((base) => {
+                const existing = savedUpgrades.find((savedUpgrade: any) => savedUpgrade?.id === base.id);
+                const level = existing ? Math.max(0, Math.floor(Number(existing.level) || 0)) : base.level;
+                return { ...base, level };
+            });
+
+            const nextSnapshot = {
+                scraps: loadedScraps,
+                wave: loadedWave,
+                upgrades: loadedUpgrades,
+            };
+
+            saveStateRef.current = nextSnapshot;
+            setScraps(loadedScraps);
+            setWave(loadedWave);
+            setUpgrades(loadedUpgrades);
+        } catch (error) {
+            console.warn('Could not load Star Defense save.', error);
         }
     }, []);
 
     // --- SAVE SYSTEM FIX ---
-    const saveStateRef = useRef({ scraps, wave, upgrades });
-
     // Keep ref updated
     useEffect(() => {
         saveStateRef.current = { scraps, wave, upgrades };
