@@ -50,7 +50,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 "description": post.excerpt,
                 "mainEntityOfPage": {
                     "@type": "WebPage",
-                    "@id": `https://spaceclickergame.com?view=blog&post=${post.slug}`
+                    "@id": `https://spaceclickergame.com/blog/${post.slug}`
                 }
             });
             document.head.appendChild(script);
@@ -209,7 +209,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                             {relatedPosts.map(rp => (
                                                 <a 
                                                     key={rp.id}
-                                                    href={`?view=blog&post=${rp.slug}`}
+                                                    href={`/blog/${rp.slug}`}
                                                     onClick={(e) => { e.preventDefault(); onNavigate('blog', rp.slug); }}
                                                     className="group bg-black/40 border border-white/5 rounded-lg p-4 hover:border-neon-blue/50 transition-all cursor-pointer block"
                                                 >
@@ -260,7 +260,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                     {BLOG_POSTS.map(post => (
                         <a 
                             key={post.id}
-                            href={`?view=blog&post=${post.slug}`}
+                            href={`/blog/${post.slug}`}
                             onClick={(e) => { e.preventDefault(); onNavigate('blog', post.slug); }}
                             className="group bg-space-900 border border-white/10 rounded-xl overflow-hidden hover:border-neon-blue/50 transition-all cursor-pointer hover:-translate-y-2 shadow-lg flex flex-col h-full block"
                         >
