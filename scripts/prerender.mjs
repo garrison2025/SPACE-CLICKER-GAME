@@ -1090,7 +1090,25 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace('</head>', `  <meta name="robots" data-rh="true" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="en" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="x-default" />\n  <link rel="canonical" data-rh="true" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
+    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav aria-label="Site navigation" style="margin-top:32px;line-height:1.9">
+<a href="/" style="color:#00f3ff">Home</a> ·
+<a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> ·
+<a href="/game/mars_colony/" style="color:#00f3ff">Mars Colony</a> ·
+<a href="/game/star_defense/" style="color:#00f3ff">Star Defense</a> ·
+<a href="/game/merge_ships/" style="color:#00f3ff">Merge Spaceships</a> ·
+<a href="/game/gravity_idle/" style="color:#00f3ff">Gravity Idle</a> ·
+<a href="/game/deep_signal/" style="color:#00f3ff">Deep Space Signal</a> ·
+<a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> ·
+<a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> ·
+<a href="/spacebar-clicker-2/" style="color:#00f3ff">Spacebar Clicker 2</a> ·
+<a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> ·
+<a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a> ·
+<a href="/spacebar-clicker-unblocked/" style="color:#00f3ff">Instant Play</a> ·
+<a href="/compare/" style="color:#00f3ff">Compare</a> ·
+<a href="/achievements/" style="color:#00f3ff">Milestones</a> ·
+<a href="/blog/" style="color:#00f3ff">Blog</a> ·
+<a href="/about/" style="color:#00f3ff">About</a>
+</nav></main></div>`
   );
   return html;
 };
