@@ -111,9 +111,13 @@ const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
         ))}
       </div>
       <div className="flex flex-wrap gap-3">
-        <button onClick={onPlay} className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">
+        <a
+          href="/game/galaxy_miner/"
+          onClick={(event) => { event.preventDefault(); onPlay(); }}
+          className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors"
+        >
           PLAY GALAXY MINER
-        </button>
+        </a>
         <a href="/blog/strategy-guide-clicker-game-space-empire/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">
           SPACE CLICKER STRATEGY GUIDE
         </a>
