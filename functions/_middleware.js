@@ -132,19 +132,14 @@ export async function onRequest(context) {
     } else if (legacyView === 'blog') {
       const post = url.searchParams.get('post');
       destination = post && BLOG_ROUTES.has(post) ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
+    } else if (legacyView === 'home') {
+      destination = '/';
     } else {
-      const allowed = new Set([
-        'about',
-        'contact',
-        'privacy',
-        'terms',
-        'cookies',
-        'blog',
-        'sitemap',
-        'compare',
-        'achievements'
-      ]);
-      if (allowed.has(legacyView)) destination = `/${legacyView}/`;
+      const staticPath = `/${legacyView}`;
+      if (!STATIC_ROUTES.has(staticPath) || staticPath === '/') {
+        return notFoundResponse(url);
+      }
+      destination = staticPath + '/';
     }
 
     return Response.redirect(new URL(destination, url.origin).toString(), 301);
