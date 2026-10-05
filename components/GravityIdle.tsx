@@ -66,6 +66,16 @@ const GravityIdle: React.FC = () => {
     const lastPulseTimeRef = useRef<number>(0);
     const frameRef = useRef<number>();
     const sizeRef = useRef({ w: 0, h: 0, cx: 0, cy: 0 });
+    const matterRef = useRef(matter);
+    const pulseCooldownRef = useRef(pulseCooldown);
+
+    useEffect(() => {
+        matterRef.current = matter;
+    }, [matter]);
+
+    useEffect(() => {
+        pulseCooldownRef.current = pulseCooldown;
+    }, [pulseCooldown]);
 
     // --- GAME LOOP ---
     const gameLoop = useCallback(() => {
@@ -80,7 +90,8 @@ const GravityIdle: React.FC = () => {
         const timeSincePulse = now - lastPulseTimeRef.current;
         const pulseCD = 5000; // 5s cooldown
         const pct = Math.min(100, (timeSincePulse / pulseCD) * 100);
-        if (Math.abs(pct - pulseCooldown) > 1) { // Optimize updates
+        if (Math.abs(pct - pulseCooldownRef.current) > 1) {
+            pulseCooldownRef.current = pct;
             setPulseCooldown(pct);
         }
 
@@ -182,7 +193,7 @@ const GravityIdle: React.FC = () => {
         // Draw Gravity Well (Singularity)
         const gravLevel = upgrades.gravity;
         // Visual size grows with matter (capped)
-        const matterVisual = Math.min(50, Math.log10(matter + 1) * 5); 
+        const matterVisual = Math.min(50, Math.log10(matterRef.current + 1) * 5); 
         const wellRadius = 15 + matterVisual;
         
         // Accretion Disk
@@ -371,11 +382,16 @@ const GravityIdle: React.FC = () => {
         }
 
         if (matterGained > 0) {
-            setMatter(prev => prev + Math.floor(matterGained));
+            const gained = Math.floor(matterGained);
+            setMatter(prev => {
+                const next = prev + gained;
+                matterRef.current = next;
+                return next;
+            });
         }
 
         frameRef.current = requestAnimationFrame(gameLoop);
-    }, [upgrades, matter, pulseCooldown]);
+    }, [upgrades]);
 
     // --- LOGIC HELPERS ---
     const createParticles = (x: number, y: number, color: string, count: number, speedMult: number) => {
@@ -449,6 +465,7 @@ const GravityIdle: React.FC = () => {
         const dist = Math.sqrt(Math.pow(x - cx, 2) + Math.pow(y - cy, 2));
         if (dist < 60) {
             lastPulseTimeRef.current = now;
+            pulseCooldownRef.current = 0;
             setPulseCooldown(0);
 
             bodiesRef.current.push({
