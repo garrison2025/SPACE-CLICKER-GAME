@@ -22,7 +22,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   schema,
   noindex = false
 }) => {
-  const normalizedPath = path === '/' ? '/' : '/' + path.split('/').filter(Boolean).join('/');
+  const normalizedPath = path === '/' ? '/' : '/' + path.split('/').filter(Boolean).join('/') + '/';
   const fullUrl = `https://spaceclickergame.com${normalizedPath}`;
 
   return (
