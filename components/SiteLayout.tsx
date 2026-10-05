@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from './Logo';
 
-export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements';
+export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements' | 'spacebar-clicker' | 'spacebar-counter' | 'spacebar-clicker-test' | 'spacebar-clicker-unblocked';
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -47,6 +47,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             <nav className="hidden md:flex items-center gap-6 lg:gap-8">
                 <NavLink view="home" label="HOME" />
                 <NavLink view="game" label="GAMES" />
+                <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" />
                 <NavLink view="compare" label="COMPARE" />
                 <NavLink view="achievements" label="ACHIEVEMENTS" />
                 <NavLink view="blog" label="BLOG" />
@@ -83,20 +84,18 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                  </div>
                  <p className="text-xs leading-relaxed mb-4 text-gray-500">
                      The premier destination for the <strong>space clicker game</strong> genre. 
-                     Join thousands of commanders mining the void, building colonies, and decoding signals.
+                     Play browser-based clicker games, build idle economies, and test your spacebar speed without downloads.
                  </p>
-                 <div className="flex gap-4 text-xl opacity-50">
-                     <a href="#" className="hover:text-neon-blue transition-colors" aria-label="Twitter">🐦</a>
-                     <a href="#" className="hover:text-red-500 transition-colors" aria-label="YouTube">▶️</a>
-                     <a href="#" className="hover:text-indigo-400 transition-colors" aria-label="Discord">👾</a>
                  </div>
-             </div>
              
              <div>
                  <h4 className="font-bold text-white mb-4 tracking-wider text-xs">NAVIGATION</h4>
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
                      <li><NavLink view="home" label="Home Base" className="font-normal text-xs" /></li>
                      <li><NavLink view="game" label="Game Catalog" className="font-normal text-xs" /></li>
+                     <li><NavLink view="spacebar-clicker" label="Spacebar Clicker" className="font-normal text-xs" /></li>
+                     <li><NavLink view="spacebar-counter" label="Spacebar Counter" className="font-normal text-xs" /></li>
+                     <li><NavLink view="spacebar-clicker-test" label="Spacebar Clicker Test" className="font-normal text-xs" /></li>
                      <li><NavLink view="compare" label="Game Comparisons vs Cookie Clicker" className="font-normal text-xs" /></li>
                      <li><NavLink view="achievements" label="Achievements & Trophy Guide" className="font-normal text-xs" /></li>
                      <li><NavLink view="blog" label="Mission Logs (Blog)" className="font-normal text-xs" /></li>
