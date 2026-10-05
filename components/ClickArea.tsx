@@ -357,8 +357,9 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             {geodes.map(g => (
                 <div 
                     key={g.id}
+                    onPointerDown={(e) => e.stopPropagation()}
                     onClick={(e) => handleGeodeClick(e, g.id)}
-                    className="absolute w-12 h-12 z-50 cursor-pointer animate-pulse hover:scale-125 transition-transform group"
+                    className="absolute w-12 h-12 z-50 cursor-pointer animate-pulse hover:scale-125 transition-transform group touch-manipulation"
                     style={{ top: `${g.top}%`, left: `${g.left}%` }}
                 >
                     <div className="w-full h-full bg-fuchsia-500 rotate-45 border-2 border-white shadow-[0_0_20px_fuchsia] group-hover:bg-white transition-colors"></div>
