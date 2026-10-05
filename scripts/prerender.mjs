@@ -810,7 +810,7 @@ const staticRouteContent = {
       <p>Supported saved runs can calculate offline production when you return after time away. The offline reward is based on the saved production state and is stored locally in the current browser.</p>
       <h2>Nova Core ascension</h2>
       <p>Nova Ascension resets current points and standard upgrades in exchange for permanent Nova Cores. Nova Cores, lifetime records, and the permanent Nova bonus survive the reset and strengthen future runs.</p>
-      <p>Prefer the original progression loop? Open the <a href="/spacebar-clicker/">classic Spacebar Clicker</a>, or compare all available modes on the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
+      <p>Prefer the original progression loop? Open the <a href="/spacebar-clicker/">classic Spacebar Clicker</a>. For a pure benchmark, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for an untimed total, use the <a href="/spacebar-counter/">Spacebar Counter</a>; or compare all available modes on the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
       <p>Read <a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a> for a deeper look at when manual input gives way to passive production.</p>
     </section>`,
   '/spacebar-counter': `
@@ -824,7 +824,7 @@ const staticRouteContent = {
       <h2>Local best and privacy</h2>
       <p>The best count is stored locally in the current browser. It is not uploaded to a public leaderboard, and clearing site storage can remove the saved local best.</p>
       <h2>Counter vs Spacebar Clicker Test</h2>
-      <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige.</p>
+      <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige, or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
       <p>For more detail on repeated keyboard input, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">keyboard factors guide</a>.</p>
     </section>`,
   '/spacebar-clicker-test': `
@@ -841,7 +841,7 @@ const staticRouteContent = {
       <p>Holding the Space key does not generate a valid stream of clicks because browser-generated repeat events are ignored. The test is designed around repeated deliberate presses or intentional taps on the on-screen control.</p>
       <h2>Personal bests, recent results, and sharing</h2>
       <p>The best result for each selected mode is stored locally in the current browser. The page also keeps the last 10 completed runs locally with mode, clicks, elapsed time, average CPS, peak CPS, and completion time. The history can be cleared at any time. After a completed test, supported devices can use the share sheet, copy the result where clipboard access is available, or save a locally generated 1200×630 PNG result card.</p>
-      <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
+      <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>, or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
       <p>For technique and hardware context, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> and <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">Keyboard Factors for Space Bar Click Games</a>.</p>
     </section>`,
   '/blog': `
