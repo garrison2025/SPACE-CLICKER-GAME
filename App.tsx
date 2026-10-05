@@ -1534,10 +1534,22 @@ const App: React.FC = () => {
                       </div>
 
                       {showMobileShop && (
-                          <div className="absolute inset-0 z-[100] bg-black/90 md:hidden flex flex-col animate-in slide-in-from-bottom safe-area-panel-bottom">
+                          <div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="mobile-fabricator-title"
+                            className="absolute inset-0 z-[100] bg-black/90 md:hidden flex flex-col animate-in slide-in-from-bottom safe-area-panel-bottom"
+                          >
                               <div className="p-4 flex justify-between items-center bg-space-800">
-                                  <h2 className="font-display font-bold text-white">FABRICATOR</h2>
-                                  <button onClick={() => setShowMobileShop(false)} className="text-gray-400 text-2xl">✕</button>
+                                  <h2 id="mobile-fabricator-title" className="font-display font-bold text-white">FABRICATOR</h2>
+                                  <button
+                                    type="button"
+                                    aria-label="Close upgrade fabricator"
+                                    onClick={() => setShowMobileShop(false)}
+                                    className="min-w-11 min-h-11 text-gray-400 text-2xl"
+                                  >
+                                    ✕
+                                  </button>
                               </div>
                               <div className="flex-1 overflow-hidden">
                                   <UpgradeShop 
