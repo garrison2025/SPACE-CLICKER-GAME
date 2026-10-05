@@ -224,15 +224,18 @@ const ClickArea: React.FC<ClickAreaProps> = ({
     const friction = 0.98;
 
     const update = () => {
-        setDebris(prev => prev.map(p => ({
-            ...p,
-            x: p.x + p.vx,
-            y: p.y + p.vy,
-            vx: p.vx * friction,
-            vy: p.vy * friction + gravity, 
-            rotation: p.rotation + p.vRot,
-            life: p.life - 0.02
-        })).filter(p => p.life > 0));
+        setDebris(prev => {
+            if (prev.length === 0) return prev;
+            return prev.map(p => ({
+                ...p,
+                x: p.x + p.vx,
+                y: p.y + p.vy,
+                vx: p.vx * friction,
+                vy: p.vy * friction + gravity, 
+                rotation: p.rotation + p.vRot,
+                life: p.life - 0.02
+            })).filter(p => p.life > 0);
+        });
         frameId = requestAnimationFrame(update);
     };
     update();
@@ -252,8 +255,11 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
   return (
     <div 
-      className={`relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
-      onMouseDown={(e) => handleInteraction(e.clientX, e.clientY)}
+      className={`relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible touch-manipulation ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
+      onPointerDown={(e) => {
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        handleInteraction(e.clientX, e.clientY);
+      }}
     >
       <style>{`
         @keyframes fadeUp {
