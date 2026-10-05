@@ -51,7 +51,9 @@ const highValueSchemaRoutes = new Set([
   '/spacebar-clicker-2/',
   '/spacebar-counter/',
   '/spacebar-clicker-test/',
-  '/spacebar-clicker-unblocked/'
+  '/spacebar-clicker-unblocked/',
+  '/compare/',
+  '/achievements/'
 ]);
 
 const spacebarSchemaRoutes = new Set([
@@ -133,12 +135,22 @@ for (const file of htmlFiles) {
         throw new Error('missing schema.org context');
       }
 
+      const schemaNodes = Array.isArray(parsedSchema['@graph'])
+        ? parsedSchema['@graph']
+        : [parsedSchema];
+
       if (spacebarSchemaRoutes.has(route)) {
-        const schemaNodes = Array.isArray(parsedSchema['@graph'])
-          ? parsedSchema['@graph']
-          : [parsedSchema];
         if (!schemaNodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
           throw new Error('Spacebar route schema is missing BreadcrumbList');
+        }
+      }
+
+      if (route === '/compare/' || route === '/achievements/') {
+        if (!schemaNodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
+          throw new Error('Editorial route schema is missing BreadcrumbList');
+        }
+        if (!schemaNodes.some((node) => node?.['@type'] === 'ItemList')) {
+          throw new Error('Editorial route schema is missing ItemList');
         }
       }
     } catch (error) {
@@ -152,6 +164,30 @@ for (const file of htmlFiles) {
     for (const href of requiredSpacebarHubLinks) {
       if (!html.includes('href="' + href + '"')) {
         throw new Error(route + ': missing static crawl link to ' + href);
+      }
+    }
+  }
+
+  if (route === '/compare/') {
+    const compareH2Count = (html.match(/<h2\b/gi) || []).length;
+    if (compareH2Count < 3) {
+      throw new Error(route + ': comparison prerender is too thin; expected at least three static sections');
+    }
+    for (const requiredText of ['Cookie Clicker', 'Universal Paperclips', 'Antimatter Dimensions', 'Spaceplan', 'Melvor Idle']) {
+      if (!html.includes(requiredText)) {
+        throw new Error(route + ': missing static comparison entity ' + requiredText);
+      }
+    }
+  }
+
+  if (route === '/achievements/') {
+    const achievementsH2Count = (html.match(/<h2\b/gi) || []).length;
+    if (achievementsH2Count < 4) {
+      throw new Error(route + ': milestone prerender is too thin; expected at least four static sections');
+    }
+    for (const requiredText of ['1 trillion', '25 Mining Drones', '50 Orbital Stations', '100 Dark Matter']) {
+      if (!html.includes(requiredText)) {
+        throw new Error(route + ': missing static milestone detail ' + requiredText);
       }
     }
   }
@@ -210,4 +246,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 13 core route schemas, Spacebar breadcrumbs/crawl links, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 15 core route schemas, Spacebar breadcrumbs/crawl links, full compare/milestone summaries, 6 full game summaries, 10 full blog articles.');
