@@ -208,10 +208,10 @@ const SpacebarClickerTest: React.FC = () => {
       : 0;
 
   const rating =
-    averageCps >= 12 ? 'ELITE' :
-    averageCps >= 9 ? 'FAST' :
-    averageCps >= 6 ? 'SOLID' :
-    averageCps > 0 ? 'WARMING UP' :
+    averageCps >= 12 ? '12+ CPS BURST' :
+    averageCps >= 9 ? '9+ CPS BURST' :
+    averageCps >= 6 ? '6+ CPS BURST' :
+    averageCps > 0 ? 'RESULT RECORDED' :
     'READY';
 
   const targetLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
@@ -444,6 +444,13 @@ const SpacebarClickerTest: React.FC = () => {
               One and five seconds measure burst speed. Ten seconds is a useful general benchmark. Thirty and sixty seconds reward consistency. The 100-click mode measures how quickly you can finish a fixed workload, and Custom lets you choose any duration from 1 to 300 seconds.
             </p>
           </section>
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">How to compare CPS results</h2>
+            <p>
+              There is no universal “good CPS” threshold across every keyboard and test. For a meaningful comparison, use the same device, browser, duration, and input rule between attempts. Short tests emphasize burst speed; longer tests put more weight on consistency.
+            </p>
+          </section>
+
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Personal bests and recent results</h2>
             <p>
