@@ -136,7 +136,7 @@ const SpacebarClickerTest: React.FC = () => {
         setTimeLeft(remaining);
         if (now >= deadline) finish(mode.seconds);
       }
-    }, 50);
+    }, 100);
     return () => window.clearInterval(timer);
   }, [running, mode]);
 
