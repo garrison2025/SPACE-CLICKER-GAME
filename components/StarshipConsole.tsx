@@ -43,27 +43,27 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+    <div className="relative w-full h-[100dvh] min-h-[520px] overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
       
       {/* --- TOP HUD --- */}
-      <header className="h-16 flex items-center justify-between px-6 border-b border-white/10 bg-space-900/90 backdrop-blur z-50 shrink-0">
+      <header className="h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
          <div className="flex items-center gap-4">
             <div 
                 className="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={onGoHome}
             >
                <Logo className="w-8 h-8" />
-               <div className="flex flex-col">
-                  <span className="font-display font-bold text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
-                  <span className="text-[10px] text-neon-blue font-mono tracking-wider">CONSOLE V.3.1.0</span>
+               <div className="hidden sm:flex flex-col">
+                  <span className="font-display font-bold text-sm md:text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
+                  <span className="text-[10px] text-neon-blue font-mono tracking-wider">GAME CONSOLE</span>
                </div>
             </div>
             
             <div className="h-8 w-px bg-white/10 mx-2"></div>
             
             <div className="hidden md:flex items-center gap-2 text-xs text-gray-400 font-mono">
-               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               <span>ONLINE PLAYERS: {Math.floor(Math.random() * 500 + 1200).toLocaleString()}</span>
+               <span className="w-2 h-2 rounded-full bg-green-500"></span>
+               <span>LOCAL SESSION • AUTO-SAVE</span>
             </div>
          </div>
 
@@ -171,27 +171,29 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
          {/* Side HUD (Left) */}
          <aside className="hidden lg:flex w-16 hover:w-64 transition-all duration-300 border-r border-white/5 bg-black/20 backdrop-blur flex-col z-40 group shrink-0">
              <div className="flex-1 py-8 flex flex-col gap-6 items-center group-hover:items-stretch group-hover:px-4">
-                 <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest text-center group-hover:text-left mb-2 group-hover:mb-0 transition-all">Mission Log</div>
+                 <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest text-center group-hover:text-left mb-2 group-hover:mb-0 transition-all">Simulations</div>
                  
-                 {/* Fake Achievements */}
-                 {[
-                     { id: 1, title: 'Asteroid Cracker', game: 'Galaxy Miner', done: true },
-                     { id: 2, title: 'First Breath', game: 'Mars Colony', done: false },
-                     { id: 3, title: 'Fleet Admiral', game: 'Star Defense', done: false }
-                 ].map(ach => (
-                     <div key={ach.id} className="flex items-center gap-3 opacity-50 hover:opacity-100 transition-opacity cursor-help" title={ach.title}>
-                         <div className={`w-2 h-2 rounded-full flex-shrink-0 ${ach.done ? 'bg-neon-green shadow-[0_0_5px_lime]' : 'bg-gray-600'}`}></div>
+                 {/* Playable simulation switcher */}
+                 {GAMES_CATALOG.map((game) => (
+                     <button
+                       type="button"
+                       key={game.id}
+                       onClick={() => onSwitchGame(game.id)}
+                       className={`flex items-center gap-3 transition-opacity text-left ${activeGame === game.id ? 'opacity-100' : 'opacity-45 hover:opacity-100'}`}
+                       title={game.title}
+                     >
+                         <div className={`w-2 h-2 rounded-full flex-shrink-0 ${activeGame === game.id ? 'bg-neon-green shadow-[0_0_5px_lime]' : 'bg-gray-600'}`}></div>
                          <div className="hidden group-hover:block whitespace-nowrap text-xs text-gray-300">
-                             <div className="font-bold">{ach.title}</div>
-                             <div className="text-[10px] text-gray-500">{ach.game}</div>
+                             <div className="font-bold">{game.title}</div>
+                             <div className="text-[10px] text-gray-500">{game.subtitle}</div>
                          </div>
-                     </div>
+                     </button>
                  ))}
              </div>
              
              <div className="p-4 border-t border-white/5">
                  <div className="hidden group-hover:block text-[10px] text-gray-600 text-center">
-                     CONNECTED TO <br/> GALACTIC NET
+                     LOCAL SAVE <br/> ACTIVE
                  </div>
                  <div className="group-hover:hidden text-center text-gray-700">📶</div>
              </div>
