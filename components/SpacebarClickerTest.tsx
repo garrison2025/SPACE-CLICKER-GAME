@@ -211,6 +211,15 @@ const SpacebarClickerTest: React.FC = () => {
 
   const targetLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
 
+  const historyModeLabel = mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`;
+  const recentSameMode = history.filter((entry) => entry.mode === historyModeLabel).slice(0, 5);
+  const recentAverageCps = recentSameMode.length > 0
+    ? recentSameMode.reduce((sum, entry) => sum + entry.averageCps, 0) / recentSameMode.length
+    : 0;
+  const recentBestCps = recentSameMode.length > 0
+    ? Math.max(...recentSameMode.map((entry) => entry.averageCps))
+    : 0;
+
   const clearHistory = () => {
     localStorage.removeItem(HISTORY_KEY);
     setHistory([]);
@@ -368,6 +377,20 @@ const SpacebarClickerTest: React.FC = () => {
               </button>
             )}
           </div>
+
+          {history.length > 0 && (
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              <Metric label="Runs Stored" value={String(history.length)} />
+              <Metric
+                label={`Last ${Math.min(5, recentSameMode.length)} Avg • ${historyModeLabel}`}
+                value={recentSameMode.length > 0 ? recentAverageCps.toFixed(2) : '—'}
+              />
+              <Metric
+                label={`Recent Best • ${historyModeLabel}`}
+                value={recentSameMode.length > 0 ? recentBestCps.toFixed(2) : '—'}
+              />
+            </div>
+          )}
 
           {history.length === 0 ? (
             <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-gray-500">
