@@ -43,6 +43,17 @@ const gameRoutes = new Set([
   '/game/deep_signal/'
 ]);
 
+const highValueSchemaRoutes = new Set([
+  '/',
+  ...gameRoutes,
+  '/spacebar-games/',
+  '/spacebar-clicker/',
+  '/spacebar-clicker-2/',
+  '/spacebar-counter/',
+  '/spacebar-clicker-test/',
+  '/spacebar-clicker-unblocked/'
+]);
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -77,6 +88,23 @@ for (const file of htmlFiles) {
     if (gameH2Count < 2) {
       throw new Error(route + ': expected at least two static gameplay sections, found ' + gameH2Count);
     }
+  }
+
+  if (highValueSchemaRoutes.has(route)) {
+    const schemaMatches = [...html.matchAll(/<script id="prerender-route-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/gi)];
+    if (schemaMatches.length !== 1) {
+      throw new Error(route + ': expected one static route JSON-LD block, found ' + schemaMatches.length);
+    }
+    try {
+      const parsedSchema = JSON.parse(schemaMatches[0][1]);
+      if (parsedSchema['@context'] !== 'https://schema.org') {
+        throw new Error('missing schema.org context');
+      }
+    } catch (error) {
+      throw new Error(route + ': invalid static route JSON-LD: ' + error.message);
+    }
+  } else if (html.includes('id="prerender-route-jsonld"')) {
+    throw new Error(route + ': unexpected static route JSON-LD on a non-core route');
   }
 
   if (route.startsWith('/blog/') && route !== '/blog/') {
@@ -122,4 +150,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, 6 full game summaries, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, 13 core route schemas, 6 full game summaries, 10 full blog articles.');
