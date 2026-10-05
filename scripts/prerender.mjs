@@ -380,10 +380,10 @@ const renderHtml = (route, title, description, h1) => {
   const isArticle = route.startsWith('/blog/');
   let html = baseHtml;
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
-  html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${escapeHtml(description)}">`);
-  html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" content="${escapeHtml(title)}" />`);
-  html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(description)}" />`);
-  html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" content="${isArticle ? 'article' : 'website'}" />`);
+  html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" data-rh="true" content="${escapeHtml(description)}">`);
+  html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" data-rh="true" content="${escapeHtml(title)}" />`);
+  html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" data-rh="true" content="${escapeHtml(description)}" />`);
+  html = html.replace(/<meta property="og:type"[^>]*>/i, `<meta property="og:type" data-rh="true" content="${isArticle ? 'article' : 'website'}" />`);
   if (!isArticle && HIGH_VALUE_SCHEMA_ROUTES.has(route)) {
     const routeSchema = buildStaticRouteSchema(route, description, canonical);
     if (routeSchema) {
@@ -425,21 +425,25 @@ const renderHtml = (route, title, description, h1) => {
     }
   }
   if (/<meta property="og:url"[^>]*>/i.test(html)) {
-    html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${canonical}" />`);
+    html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" data-rh="true" content="${canonical}" />`);
   } else {
-    html = html.replace('</head>', `  <meta property="og:url" content="${canonical}" />\n</head>`);
+    html = html.replace('</head>', `  <meta property="og:url" data-rh="true" content="${canonical}" />\n</head>`);
   }
   if (/<meta name="twitter:title"[^>]*>/i.test(html)) {
-    html = html.replace(/<meta name="twitter:title"[^>]*>/i, `<meta name="twitter:title" content="${escapeHtml(title)}" />`);
+    html = html.replace(/<meta name="twitter:title"[^>]*>/i, `<meta name="twitter:title" data-rh="true" content="${escapeHtml(title)}" />`);
   } else {
-    html = html.replace('</head>', `  <meta name="twitter:title" content="${escapeHtml(title)}" />\n</head>`);
+    html = html.replace('</head>', `  <meta name="twitter:title" data-rh="true" content="${escapeHtml(title)}" />\n</head>`);
   }
   if (/<meta name="twitter:description"[^>]*>/i.test(html)) {
-    html = html.replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${escapeHtml(description)}" />`);
+    html = html.replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" data-rh="true" content="${escapeHtml(description)}" />`);
   } else {
-    html = html.replace('</head>', `  <meta name="twitter:description" content="${escapeHtml(description)}" />\n</head>`);
+    html = html.replace('</head>', `  <meta name="twitter:description" data-rh="true" content="${escapeHtml(description)}" />\n</head>`);
   }
-  html = html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
+  // Mark static SEO tags as Helmet-managed so the client can reconcile them
+  // instead of appending a second canonical/meta set after React mounts.
+  html = html.replace(/<meta property="og:image"([^>]*)>/i, '<meta property="og:image" data-rh="true"$1>');
+  html = html.replace(/<meta property="og:site_name"([^>]*)>/i, '<meta property="og:site_name" data-rh="true"$1>');
+  html = html.replace('</head>', `  <meta name="robots" data-rh="true" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="en" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="x-default" />\n  <link rel="canonical" data-rh="true" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
     `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
