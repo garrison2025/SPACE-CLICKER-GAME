@@ -73,7 +73,6 @@ const html404 = (url) => `<!doctype html>
   <meta name="robots" content="noindex,nofollow">
   <title>404 - Signal Lost | Space Clicker Game</title>
   <meta name="description" content="The requested Space Clicker Game page could not be found.">
-  <link rel="canonical" href="${url.origin}/">
   <style>
     :root{color-scheme:dark}
     body{margin:0;background:#0b0d17;color:#e5e7eb;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -101,12 +100,30 @@ export async function onRequest(context) {
   const legacyGame = url.searchParams.get('game');
   const legacyPost = url.searchParams.get('post');
 
-  if (!legacyView && legacyGame && GAME_ROUTES.has(legacyGame)) {
-    return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
+  if (!legacyView && legacyGame) {
+    if (GAME_ROUTES.has(legacyGame)) {
+      return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
+    }
+    return new Response(html404(url), {
+      status: 404,
+      headers: {
+        'content-type': 'text/html; charset=UTF-8',
+        'cache-control': 'public, max-age=60'
+      }
+    });
   }
 
-  if (!legacyView && legacyPost && BLOG_ROUTES.has(legacyPost)) {
-    return Response.redirect(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
+  if (!legacyView && legacyPost) {
+    if (BLOG_ROUTES.has(legacyPost)) {
+      return Response.redirect(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
+    }
+    return new Response(html404(url), {
+      status: 404,
+      headers: {
+        'content-type': 'text/html; charset=UTF-8',
+        'cache-control': 'public, max-age=60'
+      }
+    });
   }
 
   if (legacyView) {
