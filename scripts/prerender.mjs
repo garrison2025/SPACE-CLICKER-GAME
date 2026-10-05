@@ -118,7 +118,9 @@ const HIGH_VALUE_SCHEMA_ROUTES = new Set([
   '/spacebar-clicker-2',
   '/spacebar-counter',
   '/spacebar-clicker-test',
-  '/spacebar-clicker-unblocked'
+  '/spacebar-clicker-unblocked',
+  '/compare',
+  '/achievements'
 ]);
 
 const GAME_SCHEMA_CONFIG = {
@@ -316,6 +318,108 @@ const buildStaticRouteSchema = (route, description, canonical) => {
     };
   }
 
+  if (route === '/compare') {
+    const comparedGames = [
+      'Space Clicker Game (Galaxy Miner)',
+      'Cookie Clicker',
+      'Universal Paperclips',
+      'Antimatter Dimensions',
+      'Spaceplan',
+      'Melvor Idle'
+    ];
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": canonical + "#webpage",
+          "url": canonical,
+          "name": "Space Clicker Game vs Classic Incremental Games: Feature Comparison",
+          "description": description,
+          "dateModified": SITE_CONTENT_UPDATED,
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": site + "/#website",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          }
+        },
+        {
+          "@type": "ItemList",
+          "@id": canonical + "#games",
+          "name": "Incremental games in the feature comparison",
+          "itemListElement": comparedGames.map((name, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": name
+          }))
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Feature Comparison", "item": canonical }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (route === '/achievements') {
+    const milestones = [
+      '1,000 lifetime Stardust',
+      '1 million lifetime Stardust',
+      '1 billion lifetime Stardust',
+      '1 trillion lifetime Stardust',
+      '1 quadrillion lifetime Stardust',
+      '25 Mining Drones',
+      '50 Orbital Stations',
+      '1 Dyson Swarm',
+      'First Galactic Reset',
+      '100 Dark Matter'
+    ];
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "@id": canonical + "#webpage",
+          "url": canonical,
+          "name": "Galaxy Miner Milestones & Progress Tracker",
+          "description": description,
+          "dateModified": SITE_CONTENT_UPDATED,
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": site + "/#website",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          }
+        },
+        {
+          "@type": "ItemList",
+          "@id": canonical + "#milestones",
+          "name": "Galaxy Miner tracked milestones",
+          "itemListElement": milestones.map((name, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": name
+          }))
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Galaxy Miner Milestones", "item": canonical }
+          ]
+        }
+      ]
+    };
+  }
+
   return null;
 };
 
@@ -429,6 +533,34 @@ const staticRouteContent = {
       <h3>Does the instant-play version save progress?</h3>
       <p>Yes. Progress is stored locally in the current browser with no cloud or cross-device sync.</p>
       <p>You can also open the canonical <a href="/spacebar-clicker/">Spacebar Clicker</a>, the <a href="/spacebar-clicker-test/">CPS Test</a>, or the full <a href="/spacebar-games/">Spacebar Games</a> hub.</p>
+    </section>`,
+  '/compare': `
+    <section>
+      <h2>What this clicker game comparison measures</h2>
+      <p>This page compares game structure rather than assigning a universal score. The snapshot looks at active input, idle automation, prestige or reset systems, events, theme, and presentation across Galaxy Miner, Cookie Clicker, Universal Paperclips, Antimatter Dimensions, Spaceplan, and Melvor Idle.</p>
+      <h2>How Galaxy Miner differs</h2>
+      <p>Galaxy Miner combines manual Stardust mining with automated production and an active Heat system. Keeping Heat between 80% and 99% activates the 2x Heat Flux bonus, while reaching 100% overheats the beam. Golden Comets, crisis events, anomaly scans, and a Dark Matter Galactic Reset add decisions beyond the basic production loop.</p>
+      <h2>Different incremental game archetypes</h2>
+      <ul>
+        <li><strong>Cookie Clicker</strong> centers on a baking-themed production economy, building automation, Golden Cookies, and ascension.</li>
+        <li><strong>Universal Paperclips</strong> uses a minimalist interface and a narrative strategy arc built around automated optimization.</li>
+        <li><strong>Antimatter Dimensions</strong> emphasizes mathematical growth, automation, challenges, and multiple reset layers.</li>
+        <li><strong>Spaceplan</strong> is a story-driven science-fiction idle game with a compact progression arc.</li>
+        <li><strong>Melvor Idle</strong> applies idle progression to RPG-style skills, equipment, crafting, and combat systems.</li>
+      </ul>
+      <p>The comparison is a feature snapshot, not a claim that one design is best for every player. You can <a href="/game/galaxy_miner/">play Galaxy Miner</a> directly or explore the site's <a href="/spacebar-games/">Spacebar games and tools</a>.</p>
+    </section>`,
+  '/achievements': `
+    <section>
+      <h2>How Galaxy Miner milestones are tracked</h2>
+      <p>The milestone dashboard reads supported progress from the Galaxy Miner save stored in the current browser. It tracks visible progression goals; it is not a cloud account, public leaderboard, or separate hidden-reward system.</p>
+      <h2>Mining milestones</h2>
+      <p>The lifetime Stardust ladder tracks 1,000, 1 million, 1 billion, 1 trillion, and 1 quadrillion Stardust. Reaching 1 trillion Stardust also reaches the first threshold at which Galactic Reset becomes available.</p>
+      <h2>Automation milestones</h2>
+      <p>Automation goals include owning 25 Mining Drones, 50 Orbital Stations, and at least one Dyson Swarm. The normal production system also applies upgrade milestone multipliers at key ownership thresholds, so these goals connect directly to the game's economy.</p>
+      <h2>Prestige and Dark Matter milestones</h2>
+      <p>The tracker recognizes the first Galactic Reset once Dark Matter has been earned and also tracks a 100 Dark Matter target. Dark Matter persists through Galactic Reset and contributes to permanent production progression and Void Technology purchases.</p>
+      <p>Progress is local to this browser. Clearing the site's local storage or using a reset action can remove locally saved progress. Open <a href="/game/galaxy_miner/">Galaxy Miner</a> to continue a run or read the <a href="/blog/strategy-guide-clicker-game-space-empire/">strategy guide</a> for upgrade and reset planning.</p>
     </section>`
 };
 
