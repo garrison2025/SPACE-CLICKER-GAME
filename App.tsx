@@ -391,7 +391,7 @@ const App: React.FC = () => {
                     { "@type": "ListItem", "position": 3, "url": "https://spaceclickergame.com/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
                     { "@type": "ListItem", "position": 4, "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
                   ]
-                ,
+                },
                 {
                   "@type": "FAQPage",
                   "mainEntity": [
