@@ -81,6 +81,20 @@ const SpacebarCounter: React.FC = () => {
           <p className="text-gray-400 max-w-2xl mx-auto">
             Count every deliberate spacebar press, watch live CPS, and compare your current run with the best count saved in this browser.
           </p>
+          <div className="mt-6 grid sm:grid-cols-3 gap-2 text-left max-w-3xl mx-auto">
+            <a href="/spacebar-counter/" aria-current="page" className="rounded-xl border border-neon-blue/40 bg-neon-blue/5 px-4 py-3">
+              <div className="text-[10px] font-mono text-neon-blue uppercase tracking-wider">Counter</div>
+              <div className="mt-1 text-sm font-bold text-white">Untimed press total</div>
+            </a>
+            <a href="/spacebar-clicker-test/" className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors">
+              <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Speed test</div>
+              <div className="mt-1 text-sm font-bold text-white">Timed CPS modes</div>
+            </a>
+            <a href="/spacebar-clicker/" className="rounded-xl border border-white/10 bg-space-900/60 px-4 py-3 hover:border-neon-blue/40 transition-colors">
+              <div className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Idle game</div>
+              <div className="mt-1 text-sm font-bold text-white">Upgrades + prestige</div>
+            </a>
+          </div>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-space-900/80 p-6 md:p-10">
