@@ -120,7 +120,9 @@ const HIGH_VALUE_SCHEMA_ROUTES = new Set([
   '/spacebar-clicker-test',
   '/spacebar-clicker-unblocked',
   '/compare',
-  '/achievements'
+  '/achievements',
+  '/blog',
+  '/about'
 ]);
 
 const GAME_SCHEMA_CONFIG = {
@@ -312,6 +314,83 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
             { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": site + "/spacebar-games/" },
             { "@type": "ListItem", "position": 3, "name": name, "item": canonical }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (route === '/blog') {
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "@id": canonical + "#webpage",
+          "url": canonical,
+          "name": "Space Clicker Game Blog - Guides & Strategy",
+          "description": description,
+          "dateModified": SITE_CONTENT_UPDATED,
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": site + "/#website",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          }
+        },
+        {
+          "@type": "ItemList",
+          "@id": canonical + "#articles",
+          "name": "Space Clicker Game guides and strategy articles",
+          "itemListElement": Object.entries(blogStaticMeta).map(([postRoute, meta], index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": meta.title,
+            "url": site + postRoute + "/"
+          }))
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog", "item": canonical }
+          ]
+        }
+      ]
+    };
+  }
+
+  if (route === '/about') {
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "AboutPage",
+          "@id": canonical + "#webpage",
+          "url": canonical,
+          "name": "About Space Clicker Game",
+          "description": description,
+          "dateModified": SITE_CONTENT_UPDATED,
+          "about": {
+            "@type": "Organization",
+            "@id": site + "/#organization",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": site + "/#website",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": canonical + "#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
+            { "@type": "ListItem", "position": 2, "name": "About", "item": canonical }
           ]
         }
       ]
@@ -520,6 +599,61 @@ const staticRouteContent = {
       <h2>Spacebar CPS speed test</h2>
       <p>Use the timed modes as a spacebar CPS test or a space bar click test: choose 1, 5, 10, 30 or 60 seconds, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
       <p>For untimed counting use the <a href="/spacebar-counter/">Spacebar Counter</a>; for an upgrade-based idle game use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
+    </section>`,
+  '/blog': `
+    <section>
+      <h2>Space clicker guides and strategy</h2>
+      <p>The Mission Logs cover browser clicker mechanics, Spacebar speed tests, idle automation, prestige planning, keyboard input, progression design, and the systems behind incremental space games.</p>
+      <ul>
+        ${Object.entries(blogStaticMeta).map(([postRoute, meta]) => `<li><a href="${postRoute}/">${escapeHtml(meta.title)}</a> — ${escapeHtml(meta.description)}</li>`).join('')}
+      </ul>
+      <p>For interactive play, open <a href="/game/galaxy_miner/">Galaxy Miner</a>, <a href="/spacebar-clicker/">Spacebar Clicker</a>, or the <a href="/spacebar-clicker-test/">Spacebar CPS Test</a>.</p>
+    </section>`,
+  '/about': `
+    <section>
+      <h2>What SpaceClickerGame.com is</h2>
+      <p>SpaceClickerGame.com is a browser-based collection of clicker, idle, strategy, and Spacebar experiences. The goal is to make games and tools that start quickly, explain their mechanics clearly, and do not require an account to begin playing.</p>
+      <h2>Games and tools on the site</h2>
+      <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
+      <h2>Technology and local saves</h2>
+      <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
+      <p>Site and policy review date: October 5, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
+    </section>`,
+  '/sitemap': `
+    <section>
+      <h2>Games</h2>
+      <ul>
+        <li><a href="/game/galaxy_miner/">Galaxy Miner</a></li>
+        <li><a href="/game/mars_colony/">Mars Colony Idle</a></li>
+        <li><a href="/game/star_defense/">Star Defense</a></li>
+        <li><a href="/game/merge_ships/">Merge Spaceships</a></li>
+        <li><a href="/game/gravity_idle/">Gravity Idle</a></li>
+        <li><a href="/game/deep_signal/">Deep Space Signal</a></li>
+      </ul>
+      <h2>Spacebar games and tools</h2>
+      <ul>
+        <li><a href="/spacebar-games/">Spacebar Games Hub</a></li>
+        <li><a href="/spacebar-clicker/">Spacebar Clicker</a></li>
+        <li><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a></li>
+        <li><a href="/spacebar-counter/">Spacebar Counter</a></li>
+        <li><a href="/spacebar-clicker-test/">Spacebar Clicker Test</a></li>
+        <li><a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a></li>
+      </ul>
+      <h2>Guides and site pages</h2>
+      <ul>
+        <li><a href="/compare/">Game Feature Comparison</a></li>
+        <li><a href="/achievements/">Galaxy Miner Milestones</a></li>
+        <li><a href="/blog/">Mission Logs</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/privacy/">Privacy Policy</a></li>
+        <li><a href="/terms/">Terms of Service</a></li>
+        <li><a href="/cookies/">Cookie & Local Storage Settings</a></li>
+      </ul>
+      <h2>Blog articles</h2>
+      <ul>
+        ${Object.entries(blogStaticMeta).map(([postRoute, meta]) => `<li><a href="${postRoute}/">${escapeHtml(meta.title)}</a></li>`).join('')}
+      </ul>
     </section>`,
   '/spacebar-clicker-unblocked': `
     <section>
