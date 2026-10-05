@@ -360,7 +360,9 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           ['What is a space bar click test?', 'It measures how many intentional Space presses you can make during a selected time window and converts the result into clicks per second.'],
           ['What does CPS mean in a spacebar speed test?', 'CPS means clicks per second. Average CPS uses all valid presses over elapsed time, while peak CPS tracks the strongest rolling one-second burst.'],
           ['Can I run a 100-click spacebar test?', 'Yes. Select the 100-click mode and the result records how long it takes to reach one hundred valid presses.'],
-          ['Can I choose a custom test duration?', 'Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode.']
+          ['Can I choose a custom test duration?', 'Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode.'],
+          ['What is a good Spacebar CPS score?', 'There is no universal good CPS threshold across every keyboard and test. Compare results using the same device, browser, test duration, and input rules.'],
+          ['What is the difference between CPS and PPS?', 'CPS means clicks per second and PPS means presses per second. For a Spacebar test they describe the same basic rate here: valid Space presses divided by time.']
         ];
 
     return {
@@ -746,7 +748,7 @@ const staticRouteContent = {
       <h2>Spacebar Clicker Test modes</h2>
       <p>The Spacebar Clicker Test measures deliberate Space presses over a chosen target. Timed presets include 1, 5, 10, 30, and 60 seconds. Custom mode accepts durations from 1 to 300 seconds, while the 100-click sprint measures how long it takes to reach one hundred valid presses.</p>
       <h2>Average CPS, current CPS, and peak CPS</h2>
-      <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
+      <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Some tools call the same Spacebar rate PPS, or presses per second. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
       <h2>How timed tests start and finish</h2>
       <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. In 100-click mode, the test ends on the one-hundredth valid press and records elapsed time.</p>
       <h2>How to compare CPS results</h2>
