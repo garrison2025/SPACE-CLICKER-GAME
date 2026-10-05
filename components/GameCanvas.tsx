@@ -34,7 +34,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ children, title }) => {
              {title}
           </h1>
           <p className="text-neon-blue/80 text-sm font-bold tracking-widest mt-2 uppercase">
-             The #1 Space Clicker Game
+             Browser Space Simulation
           </p>
        </div>
 
@@ -57,7 +57,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({ children, title }) => {
        <div className="mt-4 flex flex-wrap items-center justify-between gap-4 bg-space-800/50 border border-white/10 rounded-lg p-3 backdrop-blur-sm">
           <div className="flex items-center gap-2">
              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-             <span className="text-xs text-gray-400 font-mono">SERVER STATUS: ONLINE</span>
+             <span className="text-xs text-gray-400 font-mono">BROWSER SIMULATION: READY</span>
           </div>
           
           <div className="flex items-center gap-3">
