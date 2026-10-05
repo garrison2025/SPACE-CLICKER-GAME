@@ -56,8 +56,15 @@ const defaultSave = (): SaveData => ({
   lastSaveTime: Date.now(),
 });
 
-const num = (value: unknown, fallback = 0) =>
-  typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : fallback;
+const MAX_RESOURCE_VALUE = 1e300;
+const MAX_COUNTER_VALUE = Number.MAX_SAFE_INTEGER;
+const MAX_NOVA_CORES = 1e12;
+const MAX_CPS_VALUE = 10_000;
+
+const num = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0
+    ? Math.min(value, max)
+    : fallback;
 
 const sanitize = (raw: unknown): SaveData => {
   if (!raw || typeof raw !== 'object') return defaultSave();
@@ -76,10 +83,10 @@ const sanitize = (raw: unknown): SaveData => {
     version: SAVE_VERSION,
     points: num(data.points),
     lifetimePoints: num(data.lifetimePoints),
-    presses: Math.floor(num(data.presses)),
-    novaCores: Math.floor(num(data.novaCores)),
+    presses: Math.floor(num(data.presses, 0, MAX_COUNTER_VALUE)),
+    novaCores: Math.floor(num(data.novaCores, 0, MAX_NOVA_CORES)),
     upgrades,
-    bestCps: num(data.bestCps),
+    bestCps: num(data.bestCps, 0, MAX_CPS_VALUE),
     lastSaveTime: num(data.lastSaveTime, Date.now()),
   };
 };
