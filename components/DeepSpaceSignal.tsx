@@ -100,10 +100,21 @@ const DeepSpaceSignal: React.FC = () => {
     const spectrumCanvasRef = useRef<HTMLCanvasElement>(null);
     const messagesRef = useRef<SignalMessage[]>(messages);
     const rewardedMessageIdsRef = useRef<Set<string>>(new Set());
+    const energyRef = useRef(energy);
+    const isScanningRef = useRef(isScanning);
+    const handleScanRef = useRef<() => void>(() => undefined);
 
     useEffect(() => {
         messagesRef.current = messages;
     }, [messages]);
+
+    useEffect(() => {
+        energyRef.current = energy;
+    }, [energy]);
+
+    useEffect(() => {
+        isScanningRef.current = isScanning;
+    }, [isScanning]);
     
     // Derived Stats
     // VOID faction increases max energy by 1% per level
@@ -182,7 +193,9 @@ const DeepSpaceSignal: React.FC = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             // 1. Energy Regen
-            setEnergy(prev => Math.min(maxEnergy, prev + (regenRate / 5))); 
+            const nextEnergy = Math.min(maxEnergy, energyRef.current + (regenRate / 5));
+            energyRef.current = nextEnergy;
+            setEnergy(nextEnergy); 
 
             // 2. Decryption Logic
             let rewardEarned = 0;
@@ -215,13 +228,18 @@ const DeepSpaceSignal: React.FC = () => {
             }
 
             // 3. Auto Scan
-            if (upgrades.ai > 0 && !isScanning && energy >= scanCost + 10 && Math.random() < 0.04) {
-                handleScan();
+            if (
+                upgrades.ai > 0 &&
+                !isScanningRef.current &&
+                energyRef.current >= scanCost + 10 &&
+                Math.random() < 0.04
+            ) {
+                handleScanRef.current();
             }
 
         }, 200);
         return () => clearInterval(interval);
-    }, [maxEnergy, regenRate, decryptSpeed, upgrades.ai, isScanning, energy, scanCost]);
+    }, [maxEnergy, regenRate, decryptSpeed, upgrades.ai, scanCost]);
 
     // Auto-scroll
     useEffect(() => {
@@ -232,13 +250,16 @@ const DeepSpaceSignal: React.FC = () => {
 
     // --- ACTIONS ---
     const handleScan = async () => {
-        if (isScanning || energy < scanCost) {
-            if(energy < scanCost) playSound('error');
+        if (isScanningRef.current || energyRef.current < scanCost) {
+            if (energyRef.current < scanCost) playSound('error');
             return;
         }
-        
+
+        isScanningRef.current = true;
         setIsScanning(true);
-        setEnergy(prev => prev - scanCost);
+        const nextEnergy = Math.max(0, energyRef.current - scanCost);
+        energyRef.current = nextEnergy;
+        setEnergy(nextEnergy);
         playSound('scan');
 
         // Visual "Scanning..." effect
@@ -276,9 +297,12 @@ const DeepSpaceSignal: React.FC = () => {
         } catch (e) {
             console.error(e);
         } finally {
+            isScanningRef.current = false;
             setIsScanning(false);
         }
     };
+
+    handleScanRef.current = handleScan;
 
     const handleMessageClick = (msgId: string) => {
         const msg = messagesRef.current.find(item => item.id === msgId);
@@ -319,7 +343,9 @@ const DeepSpaceSignal: React.FC = () => {
             return;
         }
 
-        setEnergy(prev => prev - 10);
+        const nextEnergy = Math.max(0, energyRef.current - 10);
+        energyRef.current = nextEnergy;
+        setEnergy(nextEnergy);
         playSound('analyze');
         
         // Grant Faction XP
@@ -449,6 +475,7 @@ const DeepSpaceSignal: React.FC = () => {
             }));
 
             messagesRef.current = loadedMessages;
+            energyRef.current = loadedEnergy;
             setDataBytes(loadedDataBytes);
             setEnergy(loadedEnergy);
             setUpgrades(loadedUpgrades);
