@@ -114,6 +114,15 @@ const MergeShips: React.FC = () => {
     const fireTimersRef = useRef<number[]>([]);
     const lastUiRenderRef = useRef<number>(0);
     const animationFrameRef = useRef<number>();
+    const bossWarningTimerRef = useRef<number>();
+
+    useEffect(() => {
+        return () => {
+            if (bossWarningTimerRef.current !== undefined) {
+                window.clearTimeout(bossWarningTimerRef.current);
+            }
+        };
+    }, []);
     
     const [_, setRenderTrigger] = useState(0); 
 
@@ -159,7 +168,13 @@ const MergeShips: React.FC = () => {
             
             if (isBoss) {
                 setBossWarning(true);
-                setTimeout(() => setBossWarning(false), 3000);
+                if (bossWarningTimerRef.current !== undefined) {
+                    window.clearTimeout(bossWarningTimerRef.current);
+                }
+                bossWarningTimerRef.current = window.setTimeout(() => {
+                    bossWarningTimerRef.current = undefined;
+                    setBossWarning(false);
+                }, 3000);
             }
 
             const hpScale = Math.pow(2, highestLevel - 1) * 20;
