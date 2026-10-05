@@ -84,7 +84,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div className="max-w-7xl mx-auto px-4 pt-12 pb-28 md:pb-32 grid grid-cols-1 lg:grid-cols-12 gap-12">
        
        {/* Left Column (Main Content) */}
        <div className="lg:col-span-8 space-y-12">
