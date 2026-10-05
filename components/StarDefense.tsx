@@ -481,7 +481,7 @@ const StarDefense: React.FC = () => {
 
     const addFloatingText = (x: number, y: number, text: string, color: string = '#fff', isCrit: boolean = false, isDamage: boolean = false) => {
         const id = Math.random();
-        floatTextRef.current.push({ id, x, y, text, opacity: 1, isCrit, isDamage });
+        floatTextRef.current.push({ id, x, y, text, opacity: 1, color, isCrit, isDamage });
         scheduleTransient(() => {
             floatTextRef.current = floatTextRef.current.filter(t => t.id !== id);
         }, isDamage ? 500 : 1000);
@@ -891,7 +891,7 @@ const StarDefense: React.FC = () => {
                         key={t.id}
                         className={`absolute pointer-events-none font-bold whitespace-nowrap animate-float 
                             ${t.isDamage ? 'text-xs text-red-200' : t.isCrit ? 'text-xl z-50' : 'text-sm z-40'}`}
-                        style={{ left: `${t.x}%`, top: `${t.y}%`, color: t.isCrit ? '#fbbf24' : t.isDamage ? '#ffaaaa' : '#fff', transform: 'translate(-50%, -50%)', textShadow: '0 0 2px black' }}
+                        style={{ left: `${t.x}%`, top: `${t.y}%`, color: t.color || (t.isDamage ? '#ffaaaa' : '#fff'), transform: 'translate(-50%, -50%)', textShadow: '0 0 2px black' }}
                      >
                          {t.text}
                      </div>
