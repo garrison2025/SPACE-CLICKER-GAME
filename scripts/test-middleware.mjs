@@ -52,6 +52,17 @@ const legacyBlog = await run('https://spaceclickergame.com/?view=blog&post=evolu
 expect(legacyBlog.status === 301, 'Legacy blog URL should redirect');
 expect(legacyBlog.headers.get('location') === 'https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/', 'Legacy blog redirect target is wrong');
 
+const legacySpacebar = await run('https://spaceclickergame.com/?view=spacebar-clicker');
+expect(legacySpacebar.status === 301, 'Legacy Spacebar Clicker view should redirect');
+expect(legacySpacebar.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/', 'Legacy Spacebar Clicker redirect target is wrong');
+
+const legacySpacebarTest = await run('https://spaceclickergame.com/?view=spacebar-clicker-test');
+expect(legacySpacebarTest.status === 301, 'Legacy Spacebar test view should redirect');
+expect(legacySpacebarTest.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker-test/', 'Legacy Spacebar test redirect target is wrong');
+
+const invalidLegacyView = await run('https://spaceclickergame.com/?view=not-a-real-view');
+expect(invalidLegacyView.status === 404, 'Unknown legacy view must return HTTP 404 instead of redirecting to home');
+
 const supportRoutes = ['/about/', '/contact/', '/privacy/', '/terms/', '/cookies/', '/sitemap/', '/compare/', '/achievements/'];
 for (const route of supportRoutes) {
   const response = await run('https://spaceclickergame.com' + route);
