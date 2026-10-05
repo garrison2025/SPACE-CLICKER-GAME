@@ -22,6 +22,19 @@ const SEOHead: React.FC<SEOHeadProps> = ({
 }) => {
   const normalizedPath = path === '/' ? '/' : '/' + path.split('/').filter(Boolean).join('/') + '/';
   const fullUrl = `https://spaceclickergame.com${normalizedPath}`;
+  let socialImage = image;
+  try {
+    const parsedImage = new URL(image);
+    if (parsedImage.hostname === 'images.unsplash.com') {
+      parsedImage.searchParams.set('w', '1200');
+      parsedImage.searchParams.set('h', '630');
+      parsedImage.searchParams.set('fit', 'crop');
+      parsedImage.searchParams.set('q', '80');
+      socialImage = parsedImage.toString();
+    }
+  } catch {
+    socialImage = image;
+  }
 
   // Prerendered HTML exposes route schema to no-JS crawlers. Once React owns
   // the document, remove that static copy so Helmet remains the single runtime source.
@@ -52,14 +65,18 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={fullUrl} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={socialImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
       <meta property="og:site_name" content="Space Clicker Game" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={socialImage} />
+      <meta name="twitter:image:alt" content={title} />
 
       {/* JSON-LD Structured Data */}
       {schema && (
