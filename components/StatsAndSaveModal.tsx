@@ -174,8 +174,19 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     try {
       const decoded = decodeBase64Utf8(importString.trim());
       const parsed = JSON.parse(decoded);
-      if (!parsed.resources && !parsed.upgrades) {
-        throw new Error('Corrupted format');
+      const validShape =
+        parsed &&
+        typeof parsed === 'object' &&
+        parsed.resources &&
+        typeof parsed.resources === 'object' &&
+        !Array.isArray(parsed.resources) &&
+        parsed.upgrades &&
+        typeof parsed.upgrades === 'object' &&
+        !Array.isArray(parsed.upgrades) &&
+        Object.prototype.hasOwnProperty.call(parsed, 'planetIndex') &&
+        Object.prototype.hasOwnProperty.call(parsed, 'lifetimeEarnings');
+      if (!validShape) {
+        throw new Error('Wrong game or corrupted format');
       }
       if (!window.confirm('Replace the current Galaxy Miner save with this imported backup?')) {
         setBackupNotice('Restore cancelled.');
