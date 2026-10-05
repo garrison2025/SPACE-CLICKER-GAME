@@ -116,6 +116,7 @@ const MergeShips: React.FC = () => {
     const animationFrameRef = useRef<number>();
     const bossWarningTimerRef = useRef<number>();
     const floatingTextTimersRef = useRef<Set<number>>(new Set());
+    const openedCrateIdsRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         return () => {
@@ -352,15 +353,18 @@ const MergeShips: React.FC = () => {
     };
 
     const openCrate = (index: number) => {
+        const item = hangar[index];
+        if (!item?.isCrate || openedCrateIdsRef.current.has(item.id)) return;
+
+        openedCrateIdsRef.current.add(item.id);
         setHangar(prev => {
+            const current = prev[index];
+            if (!current?.isCrate || current.id !== item.id) return prev;
             const next = [...prev];
-            const item = next[index];
-            if (item && item.isCrate) {
-                next[index] = { ...item, isCrate: false };
-                showFloatText(50, 50, `Lv.${item.level} FOUND!`, '#10b981');
-            }
+            next[index] = { ...current, isCrate: false };
             return next;
         });
+        showFloatText(50, 50, `Lv.${item.level} FOUND!`, '#10b981');
     };
 
     const handleShipClick = (ship: MergeShip, index: number, region: 'hangar' | 'orbit') => {
