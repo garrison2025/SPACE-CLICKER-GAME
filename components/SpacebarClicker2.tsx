@@ -197,9 +197,18 @@ const SpacebarClicker2: React.FC = () => {
   }, [initial]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setClock(Date.now()), 100);
+    const now = Date.now();
+    setClock(now);
+    if (overdriveUntil <= now) return;
+
+    const timer = window.setInterval(() => {
+      const tick = Date.now();
+      setClock(tick);
+      if (tick >= overdriveUntil) window.clearInterval(timer);
+    }, 200);
+
     return () => window.clearInterval(timer);
-  }, []);
+  }, [overdriveUntil]);
 
   useEffect(() => {
     if (autoRate <= 0) return;
