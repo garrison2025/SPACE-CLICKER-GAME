@@ -72,11 +72,11 @@ if (Object.keys(blogStaticContent).length !== 10) {
 const routes = [
   ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
   ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
-  ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with resources, production and idle progression.', 'Mars Colony Idle'],
-  ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend the sector in a browser-based space defense clicker with upgrades and waves.', 'Star Defense'],
-  ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge ships, expand your orbit and build passive production in a free browser game.', 'Merge Spaceships'],
-  ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Experiment with gravity, matter and upgrades in a free browser-based idle simulation.', 'Gravity Idle'],
-  ['/game/deep_signal', 'Deep Space Signal - Free Browser Text Adventure', 'Scan, decode and analyze strange transmissions in a free browser-based deep space signal game.', 'Deep Space Signal'],
+  ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and idle resource progression.', 'Mars Colony Idle'],
+  ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.', 'Star Defense'],
+  ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Drag and combine matching ships, evolve higher-level vessels, and place your fleet in orbit for passive income.', 'Merge Spaceships'],
+  ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Launch projectiles into gravity wells, automate firing, upgrade orbital mechanics, and break apart asteroid layers in your browser.', 'Gravity Idle'],
+  ['/game/deep_signal', 'Deep Space Signal - Free Browser Text Adventure', 'Send signals, manage energy, decode strange transmissions, and uncover a text-based deep-space mystery in your browser.', 'Deep Space Signal'],
   ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],
   ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
   ['/spacebar-clicker', 'Spacebar Clicker - Space Bar Clicker Game & CPS', 'Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys.', 'Spacebar Clicker'],
@@ -126,6 +126,41 @@ const staticRouteContent = {
       <p>Galaxy Miner is a browser-based space mining idle clicker. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, respond to crisis events, and reset large runs for Dark Matter.</p>
       <h2>Permanent progression</h2>
       <p>Galactic Reset becomes available from 1 trillion Stardust. Stardust and standard upgrades reset while Dark Matter and permanent Void Technology remain.</p>
+    </section>`,
+  '/game/mars_colony': `
+    <section>
+      <h2>Mars Colony gameplay</h2>
+      <p>Build a browser-based Mars settlement by balancing Minerals, Credits, Colonists, Energy, Food, and Oxygen. Construction choices change production, consumption, storage, and population growth.</p>
+      <h2>Colony management</h2>
+      <p>Expand with miners, power systems, habitats, greenhouses, and later infrastructure while keeping life-support resources from becoming bottlenecks.</p>
+    </section>`,
+  '/game/star_defense': `
+    <section>
+      <h2>Star Defense gameplay</h2>
+      <p>Defend the mothership from incoming alien waves. Click enemies for direct damage, collect Scrap, purchase upgrades, and combine manual fire with automated turrets and tactical abilities.</p>
+      <h2>Wave progression</h2>
+      <p>Enemy pressure increases across waves, with shield, hull, repair, damage, fire-rate, and other upgrades shaping each run.</p>
+    </section>`,
+  '/game/merge_ships': `
+    <section>
+      <h2>Merge Spaceships gameplay</h2>
+      <p>Buy or open ships, combine matching levels to create stronger vessels, and place ships in orbit to generate passive combat income.</p>
+      <h2>Hangar and orbit</h2>
+      <p>The hangar is used for collecting and merging ships while orbit slots turn deployed vessels into automatic asteroid damage and Credits.</p>
+    </section>`,
+  '/game/gravity_idle': `
+    <section>
+      <h2>Gravity Idle gameplay</h2>
+      <p>Launch projectiles into a gravity field, break apart asteroids and geodes, collect Matter, and improve gravity, launchers, fire rate, impact power, and piercing.</p>
+      <h2>Physics idle progression</h2>
+      <p>Automation increases projectile output while upgrades change how quickly the simulation generates Matter and clears incoming objects.</p>
+    </section>`,
+  '/game/deep_signal': `
+    <section>
+      <h2>Deep Space Signal gameplay</h2>
+      <p>Spend Energy to scan for transmissions, decode messages, collect Data, and improve antenna, processor, battery, solar, and automation systems.</p>
+      <h2>Signal factions</h2>
+      <p>Decoded transmissions can interact with BIO, TECH, MIL, and VOID progression, which modifies parts of the signal-decoding economy.</p>
     </section>`,
   '/spacebar-games': `
     <section>
