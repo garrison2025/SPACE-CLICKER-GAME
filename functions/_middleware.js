@@ -172,7 +172,10 @@ export async function onRequest(context) {
     // SPA route chain. Existing hashed assets and generated discovery files are
     // served normally; a missing asset stays a real 404 instead of becoming the
     // homepage with HTTP 200.
-    const response = await context.env.ASSETS.fetch(context.request);
+    const assetFetch = context.env?.ASSETS?.fetch
+      ? context.env.ASSETS.fetch.bind(context.env.ASSETS)
+      : context.next;
+    const response = await assetFetch(context.request);
     if (response.status === 404) {
       return notFoundResponse(url);
     }
