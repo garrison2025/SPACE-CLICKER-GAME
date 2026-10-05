@@ -46,7 +46,7 @@ const GoldenComet: React.FC<GoldenCometProps> = ({ onCatch }) => {
     <div
       onClick={handleClick}
       onAnimationEnd={handleAnimationEnd}
-      className="absolute z-[40] cursor-pointer w-10 h-10 md:w-14 md:h-14"
+      className="absolute z-[40] cursor-pointer w-11 h-11 md:w-14 md:h-14 touch-manipulation"
       style={{
         top: position.top,
         left: '-100px', // Start off-screen relative to container
