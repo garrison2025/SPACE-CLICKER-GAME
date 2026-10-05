@@ -748,4 +748,4 @@ export const PRESTIGE_UPGRADES: PrestigeUpgrade[] = [
 
 export const SAVE_KEY = 'cosmic-miner-save-v2'; 
 export const AUTO_SAVE_INTERVAL = 10000; 
-export const GEMINI_EVENT_COST = 500;
+export const EVENT_SCAN_COST = 500;
