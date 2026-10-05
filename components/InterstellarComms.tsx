@@ -11,6 +11,10 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
   const [message, setMessage] = useState<{ text: string; targetGame: GameId; type: 'alert' | 'info' } | null>(null);
 
   useEffect(() => {
+    // A transmission belongs to the simulation that scheduled it.
+    // Clear any visible message immediately when the active simulation changes.
+    setMessage(null);
+
     let scheduleTimer: number | undefined;
     let dismissTimer: number | undefined;
     let disposed = false;
