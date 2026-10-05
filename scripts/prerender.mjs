@@ -247,6 +247,32 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": site + "/" },
             { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": canonical }
           ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": canonical + "#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are these spacebar games free?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Yes. The current Spacebar games and tools can be used in a modern browser without a paid account or download." }
+            },
+            {
+              "@type": "Question",
+              "name": "Which page measures spacebar CPS?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Use Spacebar Clicker Test for timed CPS challenges, peak CPS, average CPS, custom durations and the 100-click sprint." }
+            },
+            {
+              "@type": "Question",
+              "name": "Which page only counts presses?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Use Spacebar Counter for an endless press total without a fixed timer or upgrade economy." }
+            },
+            {
+              "@type": "Question",
+              "name": "Do Spacebar Clicker saves sync between devices?",
+              "acceptedAnswer": { "@type": "Answer", "text": "No. Current game progress is stored locally in the browser on the device being used." }
+            }
+          ]
         }
       ]
     };
