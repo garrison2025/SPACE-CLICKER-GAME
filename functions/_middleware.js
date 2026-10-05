@@ -98,6 +98,16 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname;
   const legacyView = url.searchParams.get('view');
+  const legacyGame = url.searchParams.get('game');
+  const legacyPost = url.searchParams.get('post');
+
+  if (!legacyView && legacyGame && GAME_ROUTES.has(legacyGame)) {
+    return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
+  }
+
+  if (!legacyView && legacyPost && BLOG_ROUTES.has(legacyPost)) {
+    return Response.redirect(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
+  }
 
   if (legacyView) {
     let destination = '/';
