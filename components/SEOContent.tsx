@@ -1,5 +1,5 @@
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { GameMeta } from '../types';
 import { INITIAL_UPGRADES } from '../constants';
 import { BLOG_POST_META } from '../content/blogMeta';
@@ -50,89 +50,6 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
           .map(slug => BLOG_POST_META.find(post => post.slug === slug))
           .filter((post): post is NonNullable<typeof post> => Boolean(post));
   }, [game.id]);
-
-  // Inject Specific VideoGame Schema (More specific than SoftwareApplication)
-  useEffect(() => {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      
-      const structuredData = {
-          "@context": "https://schema.org",
-          "@graph": [
-              {
-                  "@type": "BreadcrumbList",
-                  "itemListElement": [
-                      {
-                          "@type": "ListItem",
-                          "position": 1,
-                          "name": "Home",
-                          "item": "https://spaceclickergame.com"
-                      },
-                      {
-                          "@type": "ListItem",
-                          "position": 2,
-                          "name": "Games",
-                          "item": "https://spaceclickergame.com/game"
-                      },
-                      {
-                          "@type": "ListItem",
-                          "position": 3,
-                          "name": game.title,
-                          "item": `https://spaceclickergame.com/game/${game.id}`
-                      }
-                  ]
-              },
-              {
-                  "@type": "VideoGame",
-                  "name": game.title,
-                  "description": game.description,
-                  "genre": [game.tags[0], "Simulation", "Idle Game"],
-                  "gamePlatform": "Web Browser",
-                  "applicationCategory": "Game",
-                  "playMode": "SinglePlayer",
-                  "operatingSystem": "Any",
-                  "offers": {
-                      "@type": "Offer",
-                      "price": "0",
-                      "priceCurrency": "USD",
-                      "availability": "https://schema.org/InStock"
-                  },
-                  "author": {
-                      "@type": "Organization",
-                      "name": "Space Clicker Game"
-                  }
-              },
-              {
-                  "@type": "FAQPage",
-                  "mainEntity": [
-                      {
-                          "@type": "Question",
-                          "name": `How do I play ${game.title}?`,
-                          "acceptedAnswer": {
-                              "@type": "Answer",
-                              "text": game.manual.replace(/\n/g, ' ')
-                          }
-                      },
-                      {
-                          "@type": "Question",
-                          "name": `Is ${game.title} free to play?`,
-                          "acceptedAnswer": {
-                              "@type": "Answer",
-                              "text": `Yes, ${game.title} is completely free to play directly in your browser with no downloads required.`
-                          }
-                      }
-                  ]
-              }
-          ]
-      };
-
-      script.text = JSON.stringify(structuredData);
-      document.head.appendChild(script);
-
-      return () => {
-          document.head.removeChild(script);
-      };
-  }, [game]);
 
   // Helper to render wiki tables based on game ID
   const renderWikiTable = () => {
@@ -213,7 +130,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                      <ul className="space-y-2">
                          {relatedGuides.map(guide => (
                              <li key={guide.id}>
-                                 <a href={`/blog/${guide.slug}`} className="text-white hover:text-neon-green transition-colors font-bold underline decoration-neon-blue/50">
+                                 <a href={`/blog/${guide.slug}/`} className="text-white hover:text-neon-green transition-colors font-bold underline decoration-neon-blue/50">
                                      📄 {guide.title}
                                  </a>
                              </li>
@@ -264,7 +181,7 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
           <div>
              <h3 className="font-bold text-sm text-gray-500 mb-3">POPULAR TAGS</h3>
              <div className="flex flex-wrap gap-2">
-                {['Space', 'Idle', 'Clicker', 'Strategy', 'Simulation', 'Unblocked', 'Free', 'Mining', 'Sci-Fi'].map(tag => (
+                {['Space', 'Idle', 'Clicker', 'Strategy', 'Simulation', 'Free', 'Mining', 'Sci-Fi'].map(tag => (
                     <span key={tag} className="text-xs bg-space-800 border border-white/5 text-gray-400 px-3 py-1 rounded-full">
                         #{tag}
                     </span>
