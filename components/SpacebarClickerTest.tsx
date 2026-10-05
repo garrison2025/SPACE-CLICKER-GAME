@@ -102,18 +102,23 @@ const SpacebarClickerTest: React.FC = () => {
     }
   };
 
+  const pressRef = useRef(press);
+  useEffect(() => {
+    pressRef.current = press;
+  });
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
       if (event.code === 'Space' && !event.repeat) {
         event.preventDefault();
-        press();
+        pressRef.current();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  });
+  }, []);
 
   useEffect(() => {
     if (!running || startedAt.current === null) return;
