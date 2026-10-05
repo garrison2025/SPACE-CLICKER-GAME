@@ -38,7 +38,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                 </h1>
                 
                 <p className="text-gray-400 mb-8 font-mono text-sm leading-relaxed">
-                    The coordinates you entered do not correspond to any known sector in the Void Expanse. The navigation computer assumes this is a user error or a corrupted hyperlane.
+                    The coordinates you entered do not correspond to any known sector in the Space Clicker Game. The navigation computer assumes this is a user error or a corrupted hyperlane.
                 </p>
 
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
