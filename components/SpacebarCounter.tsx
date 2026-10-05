@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { playSound } from '../services/audioService';
 
 const BEST_KEY = 'spacebar_counter_best_v1';
 
@@ -9,11 +10,13 @@ const SpacebarCounter: React.FC = () => {
   const [currentCps, setCurrentCps] = useState(0);
   const [peakCps, setPeakCps] = useState(0);
   const [bestCount, setBestCount] = useState(() => Number(localStorage.getItem(BEST_KEY) || 0));
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
 
   const press = () => {
     const now = performance.now();
+    if (soundEnabled) playSound('click');
     if (!running) {
       setRunning(true);
       startedAt.current = now;
@@ -106,6 +109,7 @@ const SpacebarCounter: React.FC = () => {
           <div className="flex flex-wrap justify-center gap-3 mt-7">
             <button type="button" onClick={reset} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>
             <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
+            <button type="button" onClick={() => setSoundEnabled((value) => !value)} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">{soundEnabled ? 'Sound On' : 'Sound Off'}</button>
             <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Spacebar Clicker</a>
             <a href="/spacebar-clicker-test/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Speed Test</a>
           </div>
