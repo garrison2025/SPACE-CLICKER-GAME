@@ -653,7 +653,7 @@ const GravityIdle: React.FC = () => {
                  <div className="absolute bottom-4 right-4 z-10 flex gap-2">
                      <button 
                         onClick={() => setShowShop(!showShop)}
-                        className={`px-6 py-3 rounded-xl font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 border ${showShop ? 'bg-white text-black border-white' : 'bg-black/60 backdrop-blur border-neon-purple text-neon-purple'}`}
+                        className={`px-4 sm:px-6 py-3 min-h-11 rounded-xl font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 border ${showShop ? 'bg-white text-black border-white' : 'bg-black/60 backdrop-blur border-neon-purple text-neon-purple'}`}
                      >
                          {showShop ? 'CLOSE LAB' : 'PHYSICS LAB'}
                      </button>
@@ -662,7 +662,7 @@ const GravityIdle: React.FC = () => {
 
              {/* UPGRADE SHOP PANEL */}
              <div className={`
-                absolute top-0 right-0 bottom-0 w-80 bg-stone-950/95 border-l border-neon-purple/30 backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
+                absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
                 ${showShop ? 'translate-x-0' : 'translate-x-full'}
              `}>
                  <div className="p-6 border-b border-white/10 bg-black/40">
@@ -671,7 +671,7 @@ const GravityIdle: React.FC = () => {
                              <h3 className="font-display font-black text-xl text-neon-purple tracking-wide">PHYSICS LAB</h3>
                              <p className="text-[10px] text-gray-500">UPGRADE CONSTANTS</p>
                          </div>
-                         <button onClick={() => setShowShop(false)} className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20">✕</button>
+                         <button onClick={() => setShowShop(false)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20">✕</button>
                      </div>
                      
                      {/* Buy Amount Toggle */}
