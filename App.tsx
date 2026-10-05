@@ -388,9 +388,10 @@ const App: React.FC = () => {
                   "name": "Spacebar Games and Tools",
                   "itemListElement": [
                     { "@type": "ListItem", "position": 1, "url": "https://spaceclickergame.com/spacebar-clicker/", "name": "Spacebar Clicker" },
-                    { "@type": "ListItem", "position": 2, "url": "https://spaceclickergame.com/spacebar-counter/", "name": "Spacebar Counter" },
-                    { "@type": "ListItem", "position": 3, "url": "https://spaceclickergame.com/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
-                    { "@type": "ListItem", "position": 4, "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
+                    { "@type": "ListItem", "position": 2, "url": "https://spaceclickergame.com/spacebar-clicker-2/", "name": "Spacebar Clicker 2" },
+                    { "@type": "ListItem", "position": 3, "url": "https://spaceclickergame.com/spacebar-counter/", "name": "Spacebar Counter" },
+                    { "@type": "ListItem", "position": 4, "url": "https://spaceclickergame.com/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
+                    { "@type": "ListItem", "position": 5, "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
                   ]
                 },
                 {
