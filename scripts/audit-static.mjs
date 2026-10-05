@@ -432,6 +432,8 @@ for (const [href, minimum] of blogClusterTargets) {
 // should point directly to a real prerendered route instead of relying on a
 // client-side fallback or silently creating a soft navigation dead end.
 const auditedRouteSet = new Set(auditedRoutes);
+const incomingLinkCounts = new Map(auditedRoutes.map((route) => [route, 0]));
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
@@ -457,8 +459,28 @@ for (const file of htmlFiles) {
     if (!auditedRouteSet.has(normalized)) {
       throw new Error(route + ': broken or non-canonical internal href ' + href + ' -> ' + normalized);
     }
+
+    if (normalized !== route) {
+      incomingLinkCounts.set(normalized, (incomingLinkCounts.get(normalized) || 0) + 1);
+    }
   }
 }
+
+const orphanedRoutes = [...incomingLinkCounts.entries()]
+  .filter(([route, count]) => route !== '/' && count === 0)
+  .map(([route]) => route);
+
+if (orphanedRoutes.length > 0) {
+  throw new Error('Orphaned prerendered routes with no cross-page internal links: ' + orphanedRoutes.join(', '));
+}
+
+console.log(
+  'Incoming internal links: ' +
+  [...incomingLinkCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([route, count]) => route + '=' + count)
+    .join(' | ')
+);
 
 const sitemapPath = path.join(distDir, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
