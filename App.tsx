@@ -877,7 +877,7 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'spacebar-clicker-test') {
           title = "Spacebar Clicker Test - Space Bar CPS & Speed Test";
-          desc = "Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. See clicks, average CPS, peak CPS and your best local score.";
+          desc = "Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. Track clicks, average and peak CPS, personal bests and recent local results.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
