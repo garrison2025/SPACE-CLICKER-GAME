@@ -907,26 +907,40 @@ const renderHtml = (route, title, description, h1) => {
     if (articleMeta) {
       const articleSchema = {
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": articleMeta.title,
-        "image": [articleMeta.image],
-        "datePublished": articleMeta.datePublished,
-        "dateModified": articleMeta.dateModified,
-        "author": [{
-          "@type": "Organization",
-          "name": articleMeta.author,
-          "url": "https://spaceclickergame.com/about/"
-        }],
-        "publisher": {
-          "@type": "Organization",
-          "name": "Space Clicker Game",
-          "url": "https://spaceclickergame.com/"
-        },
-        "description": articleMeta.description,
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": canonical
-        }
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": canonical + "#article",
+            "headline": articleMeta.title,
+            "image": [articleMeta.image],
+            "datePublished": articleMeta.datePublished,
+            "dateModified": articleMeta.dateModified,
+            "author": [{
+              "@type": "Organization",
+              "name": articleMeta.author,
+              "url": "https://spaceclickergame.com/about/"
+            }],
+            "publisher": {
+              "@type": "Organization",
+              "name": "Space Clicker Game",
+              "url": "https://spaceclickergame.com/"
+            },
+            "description": articleMeta.description,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": canonical
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": canonical + "#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Mission Logs", "item": "https://spaceclickergame.com/blog/" },
+              { "@type": "ListItem", "position": 3, "name": articleMeta.title, "item": canonical }
+            ]
+          }
+        ]
       };
       const safeSchema = JSON.stringify(articleSchema).replace(/</g, '\\u003c');
       html = html.replace('</head>', `  <script id="prerender-article-jsonld" type="application/ld+json">${safeSchema}</script>\n</head>`);
