@@ -1726,7 +1726,7 @@ const App: React.FC = () => {
                 onOpenStats={() => setShowStatsModal(true)}
             >
                 <div className="w-full relative flex flex-col">
-                    <div className="game-viewport relative h-[calc(100dvh-theme(spacing.16))] min-h-0 w-full flex flex-col">
+                    <div className="game-viewport relative min-h-0 w-full flex flex-col">
                         <div className="flex-1 relative overflow-hidden">
                             <Suspense fallback={<LoadingSimulation />}>
                                 {renderActiveGame()}
