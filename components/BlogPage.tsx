@@ -424,7 +424,10 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 />
                                 
                                 {/* Social Share Widget */}
-                                <SocialShare title={post.title} />
+                                <SocialShare
+                                    title={post.title}
+                                    url={`https://spaceclickergame.com/blog/${post.slug}/`}
+                                />
 
                                 {/* Useful interactive destinations */}
                                 <div className="mt-12 rounded-2xl border border-neon-blue/20 bg-neon-blue/5 p-6">
