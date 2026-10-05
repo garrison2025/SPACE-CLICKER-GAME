@@ -93,7 +93,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                  <ul className="space-y-2 text-xs text-gray-500 flex flex-col">
                      <li><NavLink view="home" label="Home Base" className="font-normal text-xs" /></li>
                      <li><NavLink view="game" label="Game Catalog" className="font-normal text-xs" /></li>
-                     <li><NavLink view="spacebar-games" label="Spacebar Games" className="font-normal text-xs" /></li>\n                     <li><NavLink view="spacebar-clicker" label="Spacebar Clicker" className="font-normal text-xs" /></li>
+                     <li><NavLink view="spacebar-games" label="Spacebar Games" className="font-normal text-xs" /></li>
+                     <li><NavLink view="spacebar-clicker" label="Spacebar Clicker" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-counter" label="Spacebar Counter" className="font-normal text-xs" /></li>
                      <li><NavLink view="spacebar-clicker-test" label="Spacebar Clicker Test" className="font-normal text-xs" /></li>
                      <li><NavLink view="compare" label="Game Comparisons vs Cookie Clicker" className="font-normal text-xs" /></li>
