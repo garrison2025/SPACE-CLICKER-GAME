@@ -271,6 +271,16 @@ const App: React.FC = () => {
     productionRate: 0,
   });
 
+  useEffect(() => {
+    if (activeGame === 'galaxy_miner') return;
+
+    setShowStatsModal(false);
+    setShowPrestigeShop(false);
+    setShowHotkeysOverlay(false);
+    setShowMobileShop(false);
+    setOfflineEarnings(prev => prev.isOpen ? { ...prev, isOpen: false } : prev);
+  }, [activeGame]);
+
   const toggleHaptic = () => {
     setHapticEnabled(prev => {
       const next = !prev;
@@ -1735,7 +1745,7 @@ const App: React.FC = () => {
                 activeGame={activeGame} 
                 onSwitchGame={(id) => handleNavigate('game', id)}
                 onGoHome={() => handleNavigate('home')}
-                onOpenStats={() => setShowStatsModal(true)}
+                onOpenStats={activeGame === 'galaxy_miner' ? () => setShowStatsModal(true) : undefined}
             >
                 <div className="w-full relative flex flex-col">
                     <div className="game-viewport relative min-h-0 w-full flex flex-col">
