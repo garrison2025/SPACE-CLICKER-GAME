@@ -1014,7 +1014,9 @@ const coreLastModified = '2026-10-05';
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc><lastmod>${coreLastModified}</lastmod></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
-const rssItems = Object.entries(blogStaticMeta).map(([route, meta]) => {
+const rssItems = Object.entries(blogStaticMeta)
+  .sort(([, a], [, b]) => Date.parse(b.datePublished) - Date.parse(a.datePublished))
+  .map(([route, meta]) => {
   const url = site + route + '/';
   return [
     '    <item>',
