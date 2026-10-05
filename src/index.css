@@ -149,4 +149,12 @@ body {
     .game-viewport {
         padding-bottom: calc(4rem + env(safe-area-inset-bottom));
     }
+
+    .mining-click-area {
+        min-height: 220px !important;
+    }
+
+    .first-run-guide {
+        display: none;
+    }
 }
