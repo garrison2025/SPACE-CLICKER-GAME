@@ -342,27 +342,38 @@ const staticRouteContent = {
     <section>
       <h2>Choose a Spacebar mode</h2>
       <p>Use Spacebar Clicker for an idle upgrade game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges including 1, 5, 10, 30 and 60 seconds plus a 100-click sprint.</p>
+      <ul>
+        <li><a href="/spacebar-clicker/">Spacebar Clicker — idle upgrades and prestige</a></li>
+        <li><a href="/spacebar-clicker-test/">Spacebar Clicker Test — timed CPS speed test</a></li>
+        <li><a href="/spacebar-counter/">Spacebar Counter — untimed press counter</a></li>
+        <li><a href="/spacebar-clicker-2/">Spacebar Clicker 2 — Overdrive and Nova Core progression</a></li>
+        <li><a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Play — direct browser mode</a></li>
+      </ul>
     </section>`,
   '/spacebar-clicker': `
     <section>
       <h2>Spacebar Clicker idle game</h2>
       <p>Press Space to earn points, buy manual and automatic upgrades, watch live CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
       <p>Holding Space does not create valid repeated presses because browser-generated key-repeat events are ignored.</p>
+      <p>Need a different mode? Try the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>, <a href="/spacebar-counter/">Spacebar Counter</a>, or browse all <a href="/spacebar-games/">Spacebar Games</a>.</p>
     </section>`,
   '/spacebar-clicker-2': `
     <section>
       <h2>Spacebar Clicker 2</h2>
       <p>This separate enhanced mode adds Overdrive, automatic production, offline earnings, upgrades and Nova Core ascension. Its save is stored locally and separately from the classic Spacebar Clicker.</p>
+      <p>Compare it with the <a href="/spacebar-clicker/">classic Spacebar Clicker</a> or browse all <a href="/spacebar-games/">Spacebar Games</a>.</p>
     </section>`,
   '/spacebar-counter': `
     <section>
       <h2>What is a Spacebar Counter?</h2>
       <p>This page records deliberate Space key presses without a fixed timer. It shows total presses, current CPS, average CPS, peak CPS and a local best count.</p>
+      <p>For a timed benchmark use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>; for upgrades and prestige use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
     </section>`,
   '/spacebar-clicker-test': `
     <section>
       <h2>Spacebar CPS speed test</h2>
       <p>Choose a 1, 5, 10, 30 or 60 second test, set a custom duration from 1 to 300 seconds, or race to 100 presses. Results include total clicks, average CPS, peak CPS and the best result stored locally for the selected mode.</p>
+      <p>For untimed counting use the <a href="/spacebar-counter/">Spacebar Counter</a>; for an upgrade-based idle game use <a href="/spacebar-clicker/">Spacebar Clicker</a>.</p>
     </section>`,
   '/spacebar-clicker-unblocked': `
     <section>
@@ -375,6 +386,7 @@ const staticRouteContent = {
       <p>Yes. Access depends on the network, device, firewall, parental controls, or administrator.</p>
       <h3>Does the instant-play version save progress?</h3>
       <p>Yes. Progress is stored locally in the current browser with no cloud or cross-device sync.</p>
+      <p>You can also open the canonical <a href="/spacebar-clicker/">Spacebar Clicker</a>, the <a href="/spacebar-clicker-test/">CPS Test</a>, or the full <a href="/spacebar-games/">Spacebar Games</a> hub.</p>
     </section>`
 };
 
