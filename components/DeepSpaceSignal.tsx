@@ -15,6 +15,50 @@ const UPGRADE_CONFIG = {
     ai: { name: 'Auto-Scan AI', desc: 'Automated signal hunting.', base: 1000, mult: 3.0, max: 1 },
 };
 
+const MAX_RESOURCE_VALUE = 1e300;
+const MAX_FACTION_LEVEL = 1_000_000;
+const MAX_MESSAGE_REWARD = 1e9;
+const SIGNAL_TYPES = new Set(['BIO', 'TECH', 'VOID', 'MIL']);
+
+const safeFinite = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed >= 0 ? Math.min(max, parsed) : fallback;
+};
+
+const safeUpgradeLevel = (
+    value: unknown,
+    key: keyof typeof UPGRADE_CONFIG,
+    minimum: number
+) => Math.min(
+    UPGRADE_CONFIG[key].max,
+    Math.max(minimum, Math.floor(safeFinite(value, minimum, UPGRADE_CONFIG[key].max)))
+);
+
+const sanitizeMessage = (raw: unknown): SignalMessage | null => {
+    if (!raw || typeof raw !== 'object') return null;
+    const msg = raw as Partial<SignalMessage>;
+    const id = typeof msg.id === 'string' ? msg.id.slice(0, 120) : '';
+    const sender = typeof msg.sender === 'string' ? msg.sender.slice(0, 120) : '';
+    const content = typeof msg.content === 'string' ? msg.content.slice(0, 2000) : '';
+    if (!id || !sender || !content) return null;
+
+    const type = typeof msg.type === 'string' && SIGNAL_TYPES.has(msg.type)
+        ? msg.type as SignalMessage['type']
+        : undefined;
+
+    return {
+        id,
+        timestamp: typeof msg.timestamp === 'string' ? msg.timestamp.slice(0, 80) : '',
+        sender,
+        content,
+        isDecoded: msg.isDecoded === true,
+        encryptionLevel: Math.min(100, safeFinite(msg.encryptionLevel, 0, 100)),
+        rewardData: safeFinite(msg.rewardData, 0, MAX_MESSAGE_REWARD),
+        ...(type ? { type } : {}),
+        ...(msg.analyzed === true ? { analyzed: true } : {}),
+    };
+};
+
 const TYPE_COLORS = {
     BIO: 'text-green-400',
     TECH: 'text-cyan-400',
@@ -321,30 +365,36 @@ const DeepSpaceSignal: React.FC = () => {
 
         try {
             const data = JSON.parse(saved);
+            if (!data || typeof data !== 'object') throw new Error('Invalid Deep Space Signal save payload');
+
             const loadedUpgrades: DeepSignalSaveData['upgrades'] = {
-                antenna: Math.max(1, Math.floor(Number(data.upgrades?.antenna) || 1)),
-                processor: Math.max(1, Math.floor(Number(data.upgrades?.processor) || 1)),
-                battery: Math.max(1, Math.floor(Number(data.upgrades?.battery) || 1)),
-                solar: Math.max(1, Math.floor(Number(data.upgrades?.solar) || 1)),
-                ai: Math.max(0, Math.floor(Number(data.upgrades?.ai) || 0)),
+                antenna: safeUpgradeLevel(data.upgrades?.antenna, 'antenna', 1),
+                processor: safeUpgradeLevel(data.upgrades?.processor, 'processor', 1),
+                battery: safeUpgradeLevel(data.upgrades?.battery, 'battery', 1),
+                solar: safeUpgradeLevel(data.upgrades?.solar, 'solar', 1),
+                ai: safeUpgradeLevel(data.upgrades?.ai, 'ai', 0),
             };
             const loadedFactions: DeepSignalSaveData['factions'] = {
-                BIO: Math.max(0, Math.floor(Number(data.factions?.BIO) || 0)),
-                TECH: Math.max(0, Math.floor(Number(data.factions?.TECH) || 0)),
-                MIL: Math.max(0, Math.floor(Number(data.factions?.MIL) || 0)),
-                VOID: Math.max(0, Math.floor(Number(data.factions?.VOID) || 0)),
+                BIO: Math.floor(safeFinite(data.factions?.BIO, 0, MAX_FACTION_LEVEL)),
+                TECH: Math.floor(safeFinite(data.factions?.TECH, 0, MAX_FACTION_LEVEL)),
+                MIL: Math.floor(safeFinite(data.factions?.MIL, 0, MAX_FACTION_LEVEL)),
+                VOID: Math.floor(safeFinite(data.factions?.VOID, 0, MAX_FACTION_LEVEL)),
             };
 
             const loadedMaxEnergy =
                 (100 * Math.pow(1.2, loadedUpgrades.battery - 1)) *
                 (1 + loadedFactions.VOID * 0.01);
-            const loadedEnergy = Number.isFinite(Number(data.energy))
-                ? Math.min(loadedMaxEnergy, Math.max(0, Number(data.energy)))
-                : 100;
-            const loadedDataBytes = Number.isFinite(Number(data.dataBytes))
-                ? Math.max(0, Number(data.dataBytes))
-                : 0;
-            const loadedMessages = Array.isArray(data.messages) ? data.messages.slice(-50) : [];
+            const loadedEnergy = Math.min(
+                loadedMaxEnergy,
+                safeFinite(data.energy, 100, loadedMaxEnergy)
+            );
+            const loadedDataBytes = safeFinite(data.dataBytes);
+            const loadedMessages = Array.isArray(data.messages)
+                ? data.messages
+                    .slice(-50)
+                    .map(sanitizeMessage)
+                    .filter((message): message is SignalMessage => message !== null)
+                : [];
 
             const nextSnapshot = {
                 dataBytes: loadedDataBytes,
