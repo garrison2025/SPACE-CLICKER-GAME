@@ -170,8 +170,23 @@ const SpacebarClicker2: React.FC = () => {
 
     if (awaySeconds >= 60 && initialRate > 0) {
       const earned = Math.floor(initialRate * awaySeconds);
-      setPoints((value) => value + earned);
-      setLifetimePoints((value) => value + earned);
+      const nextSnapshot = {
+        ...saveRef.current,
+        points: initial.points + earned,
+        lifetimePoints: initial.lifetimePoints + earned,
+      };
+
+      // Credit and persist offline production immediately. Refreshing before the
+      // next autosave must not award the same away period a second time.
+      saveRef.current = nextSnapshot;
+      localStorage.setItem(SAVE_KEY, JSON.stringify({
+        version: SAVE_VERSION,
+        ...nextSnapshot,
+        lastSaveTime: Date.now(),
+      }));
+
+      setPoints(nextSnapshot.points);
+      setLifetimePoints(nextSnapshot.lifetimePoints);
       setOfflineEarned(earned);
     }
   }, [initial]);
@@ -262,9 +277,28 @@ const SpacebarClicker2: React.FC = () => {
   const ascend = () => {
     if (ascensionGain < 1) return;
     if (!window.confirm(`Ascend this run for +${ascensionGain} Nova Core${ascensionGain > 1 ? 's' : ''}? Points and standard upgrades reset.`)) return;
-    setNovaCores((value) => value + ascensionGain);
+
+    const nextNovaCores = novaCores + ascensionGain;
+    const nextUpgrades = emptyUpgrades();
+    const nextSnapshot = {
+      ...saveRef.current,
+      points: 0,
+      novaCores: nextNovaCores,
+      upgrades: nextUpgrades,
+    };
+
+    // Persist permanent Nova Cores before updating the UI so an immediate close
+    // cannot restore the pre-ascension run and duplicate the same reward.
+    saveRef.current = nextSnapshot;
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      version: SAVE_VERSION,
+      ...nextSnapshot,
+      lastSaveTime: Date.now(),
+    }));
+
+    setNovaCores(nextNovaCores);
     setPoints(0);
-    setUpgrades(emptyUpgrades());
+    setUpgrades(nextUpgrades);
     setEnergy(0);
     setOverdriveUntil(0);
   };
