@@ -387,19 +387,19 @@ const MarsColony: React.FC = () => {
             <div className="flex-1 min-h-[460px] md:min-h-0 flex flex-col relative z-10">
                 
                 {/* Top HUD */}
-                <div className="h-16 bg-black/50 border-b border-orange-500/30 flex items-center justify-between px-3 md:px-6 md:backdrop-blur-md">
-                    <div className="flex gap-3 md:gap-6">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] text-orange-400 font-bold uppercase tracking-widest">MINERALS</span>
-                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">{formatNumber(resources.minerals)}</span>
+                <div className="min-h-16 bg-black/50 border-b border-orange-500/30 px-2 md:px-6 py-2 md:backdrop-blur-md">
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-3 md:gap-6 h-full items-center">
+                        <div className="min-w-0 flex flex-col">
+                            <span className="text-[9px] sm:text-[10px] text-orange-400 font-bold uppercase tracking-wide sm:tracking-widest">MINERALS</span>
+                            <span className="text-base sm:text-xl md:text-2xl font-mono font-bold text-white truncate">{formatNumber(resources.minerals)}</span>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-[10px] text-yellow-400 font-bold uppercase tracking-widest">CREDITS</span>
-                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">${formatNumber(resources.credits)}</span>
+                        <div className="min-w-0 flex flex-col">
+                            <span className="text-[9px] sm:text-[10px] text-yellow-400 font-bold uppercase tracking-wide sm:tracking-widest">CREDITS</span>
+                            <span className="text-base sm:text-xl md:text-2xl font-mono font-bold text-white truncate">${formatNumber(resources.credits)}</span>
                         </div>
-                         <div className="flex flex-col">
-                            <span className="text-[10px] text-blue-400 font-bold uppercase tracking-widest">COLONISTS</span>
-                            <span className="text-lg sm:text-xl md:text-2xl font-mono font-bold text-white">{formatNumber(resources.population)}</span>
+                        <div className="min-w-0 flex flex-col">
+                            <span className="text-[9px] sm:text-[10px] text-blue-400 font-bold uppercase tracking-wide sm:tracking-widest">COLONISTS</span>
+                            <span className="text-base sm:text-xl md:text-2xl font-mono font-bold text-white truncate">{formatNumber(resources.population)}</span>
                         </div>
                     </div>
                 </div>
