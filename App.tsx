@@ -45,6 +45,19 @@ const StarshipConsole = React.lazy(() => import('./components/StarshipConsole'))
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
+const MAX_SAFE_UPGRADE_COUNT = 1000;
+const MAX_SAFE_UNBOUNDED_TECH_LEVEL = 1000;
+
+const finiteNonNegative = (value: unknown, fallback = 0) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
+};
+
+const safeNonNegativeInt = (value: unknown, fallback = 0, max = Number.MAX_SAFE_INTEGER) => {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return fallback;
+    return Math.min(max, Math.max(0, Math.floor(parsed)));
+};
 
 // High-quality Open Graph images for each game
 const GAME_OG_IMAGES: Record<GameId, string> = {
@@ -990,20 +1003,33 @@ const App: React.FC = () => {
           return;
       }
 
-      const baseUpgrades = INITIAL_UPGRADES.reduce((acc, u) => ({ ...acc, [u.id]: { ...u, count: 0 } }), {} as { [id: string]: Upgrade });
-      const mergedUpgrades = { ...baseUpgrades, ...(data.upgrades || {}) };
+      const mergedUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => {
+          const savedUpgrade = data.upgrades?.[upgrade.id];
+          acc[upgrade.id] = {
+              ...upgrade,
+              count: safeNonNegativeInt(savedUpgrade?.count, 0, MAX_SAFE_UPGRADE_COUNT)
+          };
+          return acc;
+      }, {} as { [id: string]: Upgrade });
+
       const nextResources = {
-          [ResourceType.Stardust]: Math.max(0, Number(data.resources?.[ResourceType.Stardust]) || 0),
-          [ResourceType.DarkMatter]: Math.max(0, Number(data.resources?.[ResourceType.DarkMatter]) || 0)
+          [ResourceType.Stardust]: finiteNonNegative(data.resources?.[ResourceType.Stardust]),
+          [ResourceType.DarkMatter]: finiteNonNegative(data.resources?.[ResourceType.DarkMatter])
       };
-      const nextPrestige = data.prestigeUpgrades && typeof data.prestigeUpgrades === 'object' ? data.prestigeUpgrades : {};
-      const nextLevel = Math.max(1, Number(data.level) || 1);
-      const nextPlanetIndex = Math.min(PLANETS.length - 1, Math.max(0, Number(data.planetIndex) || 0));
-      const nextLifetime = Math.max(0, Number(data.lifetimeEarnings) || 0);
-      const nextClicks = Math.max(0, Number(data.totalClicks) || 0);
-      const nextCrits = Math.max(0, Number(data.totalCrits) || 0);
-      const nextComets = Math.max(0, Number(data.cometsCaught) || 0);
-      const nextCrises = Math.max(0, Number(data.crisesResolved) || 0);
+
+      const nextPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
+          const maxLevel = tech.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : tech.maxLevel;
+          acc[tech.id] = safeNonNegativeInt(data.prestigeUpgrades?.[tech.id], 0, maxLevel);
+          return acc;
+      }, {} as { [id: string]: number });
+
+      const nextLevel = Math.max(1, safeNonNegativeInt(data.level, 1, 1_000_000));
+      const nextPlanetIndex = safeNonNegativeInt(data.planetIndex, 0, PLANETS.length - 1);
+      const nextLifetime = finiteNonNegative(data.lifetimeEarnings);
+      const nextClicks = safeNonNegativeInt(data.totalClicks);
+      const nextCrits = safeNonNegativeInt(data.totalCrits);
+      const nextComets = safeNonNegativeInt(data.cometsCaught);
+      const nextCrises = safeNonNegativeInt(data.crisesResolved);
 
       setResources(nextResources);
       setUpgrades(mergedUpgrades);
@@ -1043,30 +1069,30 @@ const App: React.FC = () => {
           if (!data || typeof data !== 'object') throw new Error('Invalid save payload');
 
           const loadedResources = {
-              [ResourceType.Stardust]: Math.max(0, Number(data.resources?.[ResourceType.Stardust]) || 0),
-              [ResourceType.DarkMatter]: Math.max(0, Number(data.resources?.[ResourceType.DarkMatter]) || 0)
+              [ResourceType.Stardust]: finiteNonNegative(data.resources?.[ResourceType.Stardust]),
+              [ResourceType.DarkMatter]: finiteNonNegative(data.resources?.[ResourceType.DarkMatter])
           };
 
           const loadedUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => {
               const savedUpgrade = data.upgrades?.[upgrade.id];
-              const count = Math.max(0, Math.floor(Number(savedUpgrade?.count) || 0));
+              const count = safeNonNegativeInt(savedUpgrade?.count, 0, MAX_SAFE_UPGRADE_COUNT);
               acc[upgrade.id] = { ...upgrade, count };
               return acc;
           }, {} as { [id: string]: Upgrade });
 
           const loadedPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
-              const rawLevel = Math.max(0, Math.floor(Number(data.prestigeUpgrades?.[tech.id]) || 0));
-              acc[tech.id] = tech.maxLevel === -1 ? rawLevel : Math.min(rawLevel, tech.maxLevel);
+              const maxLevel = tech.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : tech.maxLevel;
+              acc[tech.id] = safeNonNegativeInt(data.prestigeUpgrades?.[tech.id], 0, maxLevel);
               return acc;
           }, {} as { [id: string]: number });
 
-          const nextLevel = Math.max(1, Math.floor(Number(data.level) || 1));
-          const nextPlanetIndex = Math.min(PLANETS.length - 1, Math.max(0, Math.floor(Number(data.planetIndex) || 0)));
-          const nextClicks = Math.max(0, Math.floor(Number(data.totalClicks) || 0));
-          const nextCrits = Math.max(0, Math.floor(Number(data.totalCrits) || 0));
-          const nextComets = Math.max(0, Math.floor(Number(data.cometsCaught) || 0));
-          const nextCrises = Math.max(0, Math.floor(Number(data.crisesResolved) || 0));
-          const savedLifetime = Math.max(0, Number(data.lifetimeEarnings) || 0);
+          const nextLevel = Math.max(1, safeNonNegativeInt(data.level, 1, 1_000_000));
+          const nextPlanetIndex = safeNonNegativeInt(data.planetIndex, 0, PLANETS.length - 1);
+          const nextClicks = safeNonNegativeInt(data.totalClicks);
+          const nextCrits = safeNonNegativeInt(data.totalCrits);
+          const nextComets = safeNonNegativeInt(data.cometsCaught);
+          const nextCrises = safeNonNegativeInt(data.crisesResolved);
+          const savedLifetime = finiteNonNegative(data.lifetimeEarnings);
 
           const now = Date.now();
           const elapsedSeconds = data.lastSaveTime
