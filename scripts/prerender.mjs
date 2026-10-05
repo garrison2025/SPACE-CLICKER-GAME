@@ -44,10 +44,27 @@ const escapeHtml = (value) =>
   value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
 const renderHtml = (route, title, description, h1) => {
-  const canonical = site + (route === '/' ? '/' : route);
+  const canonical = site + (route === '/' ? '/' : route + '/');
   let html = baseHtml;
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" content="${escapeHtml(description)}">`);
+  html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" content="${escapeHtml(title)}" />`);
+  html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" content="${escapeHtml(description)}" />`);
+  if (/<meta property="og:url"[^>]*>/i.test(html)) {
+    html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${canonical}" />`);
+  } else {
+    html = html.replace('</head>', `  <meta property="og:url" content="${canonical}" />\n</head>`);
+  }
+  if (/<meta name="twitter:title"[^>]*>/i.test(html)) {
+    html = html.replace(/<meta name="twitter:title"[^>]*>/i, `<meta name="twitter:title" content="${escapeHtml(title)}" />`);
+  } else {
+    html = html.replace('</head>', `  <meta name="twitter:title" content="${escapeHtml(title)}" />\n</head>`);
+  }
+  if (/<meta name="twitter:description"[^>]*>/i.test(html)) {
+    html = html.replace(/<meta name="twitter:description"[^>]*>/i, `<meta name="twitter:description" content="${escapeHtml(description)}" />`);
+  } else {
+    html = html.replace('</head>', `  <meta name="twitter:description" content="${escapeHtml(description)}" />\n</head>`);
+  }
   html = html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
@@ -67,7 +84,7 @@ for (const [route, title, description, h1] of routes) {
 }
 
 const sitemapRoutes = routes.map(([route]) => route);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route}</loc></url>`).join('\n')}\n</urlset>\n`;
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
 console.log(`Prerendered ${routes.length} indexable routes and generated sitemap.xml`);
