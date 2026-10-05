@@ -14,6 +14,21 @@ const UPGRADE_CONFIG = {
     pierce: { name: 'Quantum Drill', desc: 'Projectiles pierce & split geodes.', base: 1000, mult: 3.0, max: 8 },
 };
 
+const MAX_RESOURCE_VALUE = 1e300;
+const safeFinite = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) => {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) && parsed >= 0 ? Math.min(max, parsed) : fallback;
+};
+
+const safeUpgradeLevel = (
+    value: unknown,
+    key: keyof typeof UPGRADE_CONFIG,
+    minimum: number
+) => Math.min(
+    UPGRADE_CONFIG[key].max,
+    Math.max(minimum, Math.floor(safeFinite(value, minimum, UPGRADE_CONFIG[key].max)))
+);
+
 // Physics Constants
 const G = 0.8; 
 const CENTER_MASS_BASE = 800;
@@ -602,13 +617,15 @@ const GravityIdle: React.FC = () => {
 
         try {
             const data = JSON.parse(saved);
-            const loadedMatter = Number.isFinite(Number(data.matter)) ? Math.max(0, Number(data.matter)) : 0;
+            if (!data || typeof data !== 'object') throw new Error('Invalid Gravity Idle save payload');
+
+            const loadedMatter = safeFinite(data.matter);
             const loadedUpgrades: GravitySaveData['upgrades'] = {
-                gravity: Math.max(1, Math.floor(Number(data.upgrades?.gravity) || 1)),
-                launchers: Math.max(1, Math.floor(Number(data.upgrades?.launchers) || 1)),
-                fireRate: Math.max(1, Math.floor(Number(data.upgrades?.fireRate) || 1)),
-                power: Math.max(1, Math.floor(Number(data.upgrades?.power) || 1)),
-                pierce: Math.max(0, Math.floor(Number(data.upgrades?.pierce) || 0)),
+                gravity: safeUpgradeLevel(data.upgrades?.gravity, 'gravity', 1),
+                launchers: safeUpgradeLevel(data.upgrades?.launchers, 'launchers', 1),
+                fireRate: safeUpgradeLevel(data.upgrades?.fireRate, 'fireRate', 1),
+                power: safeUpgradeLevel(data.upgrades?.power, 'power', 1),
+                pierce: safeUpgradeLevel(data.upgrades?.pierce, 'pierce', 0),
             };
 
             const now = Date.now();
@@ -620,7 +637,7 @@ const GravityIdle: React.FC = () => {
             const efficiency = Math.min(1, loadedUpgrades.launchers * 0.15);
             const rate = 30 * powerMult * efficiency;
             const earned = seconds >= 60 ? Math.floor(rate * seconds) : 0;
-            const nextMatter = loadedMatter + Math.max(0, earned);
+            const nextMatter = Math.min(MAX_RESOURCE_VALUE, loadedMatter + Math.max(0, earned));
             const nextSnapshot = { matter: nextMatter, upgrades: loadedUpgrades };
 
             // Consume the offline window immediately so refreshing before the
