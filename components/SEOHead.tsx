@@ -6,7 +6,7 @@ interface SEOHeadProps {
   description: string;
   path: string;
   image?: string;
-  type?: 'website' | 'article' | 'game';
+  type?: 'website' | 'article';
   schema?: Record<string, any> | Record<string, any>[];
   noindex?: boolean;
 }
