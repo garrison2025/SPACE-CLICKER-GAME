@@ -23,8 +23,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Rajdhani', 'sans-serif'],
-        display: ['Orbitron', 'sans-serif'],
+        sans: ['Rajdhani', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        display: ['Orbitron', 'Arial Black', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       animation: {
