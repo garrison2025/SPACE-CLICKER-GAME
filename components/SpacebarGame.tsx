@@ -528,7 +528,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                     key={String(modeValue)}
                     type="button"
                     onClick={() => setBuyMode(modeValue)}
-                    className={'px-2.5 py-1.5 text-[10px] font-bold transition-colors ' + (buyMode === modeValue ? 'bg-neon-blue text-black' : 'bg-black/20 text-gray-400 hover:text-white')}
+                    className={'min-h-11 px-3 py-2 text-[10px] font-bold transition-colors ' + (buyMode === modeValue ? 'bg-neon-blue text-black' : 'bg-black/20 text-gray-400 hover:text-white')}
                   >
                     {modeValue === 'max' ? 'MAX' : 'x' + modeValue}
                   </button>
