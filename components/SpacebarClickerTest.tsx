@@ -230,6 +230,79 @@ const SpacebarClickerTest: React.FC = () => {
     setHistory([]);
   };
 
+  const downloadResultCard = () => {
+    if (!finished) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 1200;
+    canvas.height = 630;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      setShareStatus('Could not create the result image.');
+      return;
+    }
+
+    const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+    gradient.addColorStop(0, '#0b0d17');
+    gradient.addColorStop(0.55, '#12182f');
+    gradient.addColorStop(1, '#07161d');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 1200, 630);
+
+    ctx.strokeStyle = 'rgba(0,243,255,0.45)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(36, 36, 1128, 558);
+
+    ctx.fillStyle = '#00f3ff';
+    ctx.font = '700 28px system-ui, sans-serif';
+    ctx.fillText('SPACEBAR CLICKER TEST', 78, 105);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 96px system-ui, sans-serif';
+    ctx.fillText(`${averageCps.toFixed(2)} CPS`, 78, 235);
+
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = '600 30px system-ui, sans-serif';
+    ctx.fillText(`${targetLabel} • ${clicks} presses • ${finalElapsed.toFixed(2)}s elapsed`, 82, 300);
+
+    const stats = [
+      ['PEAK CPS', peakCps.toFixed(1)],
+      ['MODE', targetLabel],
+      ['PERSONAL BEST', bestCps.toFixed(2)]
+    ];
+
+    stats.forEach(([label, value], index) => {
+      const x = 82 + index * 350;
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '700 20px system-ui, sans-serif';
+      ctx.fillText(label, x, 390);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 38px system-ui, sans-serif';
+      ctx.fillText(value, x, 438);
+    });
+
+    ctx.fillStyle = '#00f3ff';
+    ctx.font = '700 26px system-ui, sans-serif';
+    ctx.fillText('SpaceClickerGame.com/spacebar-clicker-test/', 82, 535);
+
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        setShareStatus('Could not create the result image.');
+        return;
+      }
+
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download = `spacebar-clicker-test-${targetLabel.replace(/\s+/g, '-')}-${averageCps.toFixed(2)}-cps.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+      setShareStatus('Result card saved as PNG.');
+    }, 'image/png');
+  };
+
   const shareResult = async () => {
     if (!finished) return;
     const text = `I scored ${averageCps.toFixed(2)} CPS in the ${targetLabel} Spacebar Clicker Test on SpaceClickerGame.com.`;
@@ -351,6 +424,9 @@ const SpacebarClickerTest: React.FC = () => {
                 </button>
                 <button type="button" onClick={shareResult} className="px-6 py-2 rounded border border-neon-blue/50 text-neon-blue hover:bg-neon-blue hover:text-black">
                   Share Result
+                </button>
+                <button type="button" onClick={downloadResultCard} className="px-6 py-2 rounded border border-white/15 text-white hover:border-neon-blue">
+                  Save Result Card
                 </button>
               </div>
               {shareStatus && <p className="mt-3 text-xs text-gray-400">{shareStatus}</p>}
