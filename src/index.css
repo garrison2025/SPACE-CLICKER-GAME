@@ -108,7 +108,8 @@ body {
     padding-top: env(safe-area-inset-top);
 }
 
-.game-settings-overlay {
+.game-settings-overlay,
+.safe-screen-overlay {
     padding-top: max(0.75rem, env(safe-area-inset-top));
     padding-right: max(0.75rem, env(safe-area-inset-right));
     padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
