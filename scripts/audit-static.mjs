@@ -433,6 +433,32 @@ for (const file of htmlFiles) {
 const sitemapPath = path.join(distDir, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
 
+const feedPath = path.join(distDir, 'feed.xml');
+if (!fs.existsSync(feedPath)) throw new Error('dist/feed.xml is missing');
+const feed = fs.readFileSync(feedPath, 'utf8');
+const rssItemCount = (feed.match(/<item>/g) || []).length;
+if (rssItemCount !== 10) throw new Error('Expected 10 RSS items, found ' + rssItemCount);
+if (!feed.includes('<link>https://spaceclickergame.com/blog/</link>')) {
+  throw new Error('RSS channel link is missing or incorrect');
+}
+if (!feed.includes('<title>Space Clicker Game Blog</title>')) {
+  throw new Error('RSS channel title is missing or incorrect');
+}
+
+const llmsPath = path.join(distDir, 'llms.txt');
+if (!fs.existsSync(llmsPath)) throw new Error('dist/llms.txt is missing');
+const llms = fs.readFileSync(llmsPath, 'utf8');
+for (const required of [
+  '# Space Clicker Game',
+  'https://spaceclickergame.com/game/galaxy_miner/',
+  'https://spaceclickergame.com/spacebar-clicker/',
+  'https://spaceclickergame.com/spacebar-clicker-test/',
+  'https://spaceclickergame.com/privacy/',
+  'https://spaceclickergame.com/feed.xml'
+]) {
+  if (!llms.includes(required)) throw new Error('llms.txt is missing ' + required);
+}
+
 const sitemap = fs.readFileSync(sitemapPath, 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((match) => match[1]);
@@ -475,4 +501,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, and internal link integrity.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
