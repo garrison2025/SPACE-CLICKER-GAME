@@ -34,6 +34,14 @@ const getOne = (html, regex, label, route) => {
 
 const titles = new Map();
 const auditedRoutes = [];
+const gameRoutes = new Set([
+  '/game/galaxy_miner/',
+  '/game/mars_colony/',
+  '/game/star_defense/',
+  '/game/merge_ships/',
+  '/game/gravity_idle/',
+  '/game/deep_signal/'
+]);
 
 for (const file of htmlFiles) {
   const route = routeForFile(file);
@@ -63,6 +71,13 @@ for (const file of htmlFiles) {
     throw new Error(route + ': duplicate title with ' + titles.get(title) + ': ' + title);
   }
   titles.set(title, route);
+
+  if (gameRoutes.has(route)) {
+    const gameH2Count = (html.match(/<h2\b/gi) || []).length;
+    if (gameH2Count < 2) {
+      throw new Error(route + ': expected at least two static gameplay sections, found ' + gameH2Count);
+    }
+  }
 
   if (route.startsWith('/blog/') && route !== '/blog/') {
     const h2Count = (html.match(/<h2\b/gi) || []).length;
@@ -107,4 +122,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, 10 full blog articles.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs, 6 full game summaries, 10 full blog articles.');
