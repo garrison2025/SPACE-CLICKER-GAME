@@ -252,7 +252,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
 
   return (
     <div 
-      className={`relative w-full h-full min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
+      className={`relative w-full h-full min-h-[360px] sm:min-h-[400px] flex flex-col items-center justify-center select-none overflow-visible ${overheated ? 'cursor-not-allowed' : 'cursor-crosshair'}`}
       onMouseDown={(e) => handleInteraction(e.clientX, e.clientY)}
     >
       <style>{`
@@ -306,26 +306,26 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           )}
 
           {/* MAIN HUD: Resources, Production, and Heat - Centered Top */}
-          <div className="absolute top-8 text-center z-30 pointer-events-none w-full flex flex-col items-center gap-3">
+          <div className="absolute top-4 sm:top-8 text-center z-30 pointer-events-none w-full flex flex-col items-center gap-2 sm:gap-3 px-2">
             
             {/* Currency (Total) */}
-            <div className="relative group bg-black/60 px-8 py-3 rounded-2xl backdrop-blur-md border border-white/10 shadow-2xl">
+            <div className="relative group bg-black/60 px-4 sm:px-8 py-2 sm:py-3 rounded-2xl sm:backdrop-blur-md border border-white/10 shadow-xl sm:shadow-2xl">
                 <div className="text-[10px] text-gray-400 font-bold tracking-[0.2em] mb-1">RESOURCES</div>
-                <div className="text-5xl md:text-7xl font-black text-white drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">
-                    {formatNumber(currency)} <span className="text-xl md:text-3xl text-yellow-400">SD</span>
+                <div className="text-4xl sm:text-5xl md:text-7xl font-black text-white drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">
+                    {formatNumber(currency)} <span className="text-lg sm:text-xl md:text-3xl text-yellow-400">SD</span>
                 </div>
             </div>
 
             {/* Production Rate (Per Second) */}
             <div className="flex items-center gap-2 bg-black/60 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-sm shadow-lg">
                 <span className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></span>
-                <p className="text-base md:text-xl font-mono text-neon-blue">
+                <p className="text-sm sm:text-base md:text-xl font-mono text-neon-blue">
                     +{formatNumber(productionRate)}/s
                 </p>
             </div>
 
             {/* Horizontal Heat Gauge */}
-            <div className="flex flex-col items-center gap-1 w-64 md:w-80">
+            <div className="flex flex-col items-center gap-1 w-52 sm:w-64 md:w-80">
                 <div className="flex justify-between w-full text-[9px] font-bold tracking-widest text-gray-500">
                     <span>HEAT</span>
                     <span className={heat > 80 ? 'text-red-500 animate-pulse' : 'text-gray-400'}>{Math.floor(heat)}%</span>
@@ -346,7 +346,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           </div>
 
           {/* The Planet Container - Centered Vertically */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-64 h-64 md:w-[26rem] md:h-[26rem] max-w-[80vw] max-h-[80vh] aspect-square flex items-center justify-center">
+          <div className="absolute top-[55%] sm:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-48 h-48 sm:w-64 sm:h-64 md:w-[26rem] md:h-[26rem] max-w-[80vw] max-h-[80vh] aspect-square flex items-center justify-center">
             {/* Geodes */}
             {geodes.map(g => (
                 <div 
@@ -370,7 +370,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
                     <div key={`rover-${i}`} className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-3 bg-orange-400 rounded-sm" style={{ transform: `rotate(${i * (360/roverCount)}deg) translateY(15px)` }}></div>
                 ))}
             </div>
-            <div className="absolute -inset-16 pointer-events-none animate-[spin_60s_linear_infinite]">
+            <div className="absolute -inset-10 sm:-inset-16 pointer-events-none animate-[spin_60s_linear_infinite]">
                  {Array.from({ length: stationCount }).map((_, i) => (
                     <div key={`station-${i}`} className="absolute top-1/2 right-0 w-8 h-8 border border-neon-blue bg-black/80 rounded-full flex items-center justify-center text-[10px] shadow-[0_0_15px_blue]" style={{ transform: `rotate(${i * (360/stationCount)}deg) translateX(50%)` }}>🛰️</div>
                 ))}
