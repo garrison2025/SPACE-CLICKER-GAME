@@ -612,10 +612,10 @@ const App: React.FC = () => {
           const unblocked = viewMode === 'spacebar-clicker-unblocked';
           title = unblocked
               ? "Spacebar Clicker Unblocked - Play Instantly in Your Browser"
-              : "Spacebar Clicker - Space Bar Clicker Game & CPS";
+              : "Spacebar Clicker – Free Space Bar Clicker Game Online";
           desc = unblocked
               ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
-              : "Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys. Free on desktop and mobile.";
+              : "Play Spacebar Clicker free online. Press Space for points, buy upgrades, automate production, track CPS, and prestige for permanent Quantum Keys.";
           type = 'game';
           const clickerGameSchema = {
               "@type": "VideoGame",
