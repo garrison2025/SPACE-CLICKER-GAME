@@ -11,19 +11,20 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
   const [message, setMessage] = useState<{ text: string; targetGame: GameId; type: 'alert' | 'info' } | null>(null);
 
   useEffect(() => {
-    // Schedule random transmissions
+    let scheduleTimer: number | undefined;
+    let dismissTimer: number | undefined;
+    let disposed = false;
+
     const schedule = () => {
-      // 30s to 2min interval
+      if (disposed) return;
       const delay = Math.random() * 90000 + 30000;
-      return setTimeout(() => {
-        triggerRandomMessage();
-      }, delay);
+      scheduleTimer = window.setTimeout(triggerRandomMessage, delay);
     };
 
-    let timer = schedule();
-
     const triggerRandomMessage = () => {
-      // Pick a game that is NOT the current one
+      if (disposed) return;
+
+      // Pick a game that is NOT the current one.
       const others = GAMES_CATALOG.filter(g => g.id !== activeGame);
       if (others.length === 0) return;
       const target = others[Math.floor(Math.random() * others.length)];
@@ -33,22 +34,30 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
         { text: `Switch simulations: ${target.title} is available from the game dock.`, type: 'info' },
         { text: `Explore ${target.title} without leaving SpaceClickerGame.com.`, type: 'info' },
       ];
-      
+
       const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-      
+
       setMessage({
         text: scenario.text,
         targetGame: target.id,
         type: scenario.type as 'alert' | 'info'
       });
 
-      // Auto dismiss after 8s
-      setTimeout(() => setMessage(null), 8000);
-      
-      timer = schedule();
+      if (dismissTimer !== undefined) window.clearTimeout(dismissTimer);
+      dismissTimer = window.setTimeout(() => {
+        if (!disposed) setMessage(null);
+      }, 8000);
+
+      schedule();
     };
 
-    return () => clearTimeout(timer);
+    schedule();
+
+    return () => {
+      disposed = true;
+      if (scheduleTimer !== undefined) window.clearTimeout(scheduleTimer);
+      if (dismissTimer !== undefined) window.clearTimeout(dismissTimer);
+    };
   }, [activeGame]);
 
   if (!message) return null;
