@@ -25,7 +25,7 @@ export const BLOG_POST_META: BlogPostMeta[] = [
     "id": "3",
     "slug": "mastering-the-space-bar-clicking-game",
     "title": "Mastering the Space Bar: From Speed Tests to Interstellar Conquest",
-    "excerpt": "The humble space bar is your primary weapon. Learn how to optimize your inputs, save your keyboard, and transition from a manual space bar clicking game to full automation.",
+    "excerpt": "Learn how deliberate Space-key input, CPS tests, upgrades, and automation fit together in space bar clicking games without relying on unsupported speed claims.",
     "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=2000"
   },
   {
@@ -39,7 +39,7 @@ export const BLOG_POST_META: BlogPostMeta[] = [
     "id": "5",
     "slug": "mechanics-of-space-bar-clicking-game-physics",
     "title": "The Mechanics of the Space Bar Clicking Game: Physics, Input, and Endurance",
-    "excerpt": "Is it a test of skill or a test of hardware? We break down the technical side of the space bar clicking game sub-genre, from switch actuation points to the physical limits of human speed.",
+    "excerpt": "A technical look at Space-key input, switch and firmware behavior, browser key-repeat rules, CPS measurement, latency, and repeatable speed testing.",
     "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
   },
   {
@@ -60,7 +60,7 @@ export const BLOG_POST_META: BlogPostMeta[] = [
     "id": "8",
     "slug": "active-vs-passive-space-click-game-styles",
     "title": "Active Clicking vs. Passive Mining: Finding Your Style in a Space Click Game",
-    "excerpt": "Are you a button masher or a spreadsheet manager? We analyze the two dominant playstyles in the genre and how to optimize your build for your personality.",
+    "excerpt": "Compare active clicking with passive automation, including the tradeoffs between manual input, idle production, offline progress, and hybrid play.",
     "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
   },
   {
