@@ -33,18 +33,18 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
 
       {/* Modal View */}
       {isOpen && (
-        <div className="fixed inset-0 z-[140] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-space-850 border border-white/20 w-full max-w-md rounded-2xl p-6 shadow-2xl overflow-hidden">
+        <div className="fixed inset-0 z-[140] flex items-center justify-center bg-black/85 md:backdrop-blur-sm p-3 sm:p-4 animate-in fade-in">
+          <div role="dialog" aria-modal="true" aria-labelledby="hotkey-dialog-title" className="bg-space-850 border border-white/20 w-full max-w-md max-h-[calc(100dvh-1.5rem)] rounded-2xl p-4 sm:p-6 shadow-2xl overflow-y-auto">
             <div className="flex justify-between items-center mb-5 pb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <span className="text-xl">⌨️</span>
-                <h3 className="font-display font-bold text-white text-base tracking-wider uppercase">
+                <h3 id="hotkey-dialog-title" className="font-display font-bold text-white text-sm sm:text-base tracking-wider uppercase">
                   Keyboard Pilot Controls
                 </h3>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-white text-sm bg-white/5 hover:bg-white/10 px-2 py-1 rounded transition-colors"
+                className="w-11 h-11 shrink-0 text-gray-400 hover:text-white text-sm bg-white/5 hover:bg-white/10 rounded transition-colors"
               >
                 ✕
               </button>
