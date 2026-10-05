@@ -305,9 +305,28 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const prestige = () => {
     if (prestigeGain < 1) return;
     if (!window.confirm('Initiate Hyperdrive Reset? Current points and standard upgrades will reset, but Quantum Keys and records stay.')) return;
-    setQuantumKeys((value) => value + prestigeGain);
+
+    const nextQuantumKeys = quantumKeys + prestigeGain;
+    const nextUpgrades = emptyUpgrades();
+    const nextSnapshot: Omit<SpacebarSave, 'version' | 'lastSaveTime'> = {
+      ...saveStateRef.current,
+      points: 0,
+      quantumKeys: nextQuantumKeys,
+      upgrades: nextUpgrades,
+    };
+
+    // Persist permanent currency before the UI update so closing immediately after
+    // prestige cannot restore the pre-reset run and award the same keys twice.
+    saveStateRef.current = nextSnapshot;
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      version: SAVE_VERSION,
+      ...nextSnapshot,
+      lastSaveTime: Date.now(),
+    }));
+
+    setQuantumKeys(nextQuantumKeys);
     setPoints(0);
-    setUpgrades(emptyUpgrades());
+    setUpgrades(nextUpgrades);
     setCombo(0);
     pressTimes.current = [];
   };
