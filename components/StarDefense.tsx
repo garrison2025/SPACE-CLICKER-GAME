@@ -646,10 +646,10 @@ const StarDefense: React.FC = () => {
                 onMouseDown={handleFieldClick}
             >
                  {/* Moving Starfield Background */}
-                 <div className="absolute inset-0 opacity-50">
+                 <div className="absolute inset-0 opacity-40">
                       <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20"></div>
                       {Array.from({length: 30}).map((_, i) => (
-                          <div key={i} className="absolute w-1 h-1 bg-white rounded-full animate-[float_3s_linear_infinite]" 
+                          <div key={i} className="hidden sm:block absolute w-1 h-1 bg-white rounded-full animate-[float_3s_linear_infinite]" 
                                style={{ left: `${Math.random()*100}%`, top: '-10px', animationDuration: `${Math.random()*3+1}s`, opacity: Math.random() }}></div>
                       ))}
                  </div>
