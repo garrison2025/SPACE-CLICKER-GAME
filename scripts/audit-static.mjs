@@ -113,9 +113,24 @@ for (const file of htmlFiles) {
   const h1Count = (html.match(/<h1\b/gi) || []).length;
   const robotsMatches = [...html.matchAll(/<meta\s+name="robots"[^>]*content="([^"]*)"/gi)];
   const hreflangMatches = [...html.matchAll(/<link\s+rel="alternate"[^>]*href="([^"]+)"[^>]*hreflang="([^"]+)"/gi)];
+  const ogImage = getOne(html, /<meta\s+[^>]*property="og:image"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image', route).trim();
+  const ogImageWidth = getOne(html, /<meta\s+[^>]*property="og:image:width"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:width', route).trim();
+  const ogImageHeight = getOne(html, /<meta\s+[^>]*property="og:image:height"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:height', route).trim();
+  const ogImageAlt = getOne(html, /<meta\s+[^>]*property="og:image:alt"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:alt', route).trim();
+  const twitterCard = getOne(html, /<meta\s+[^>]*name="twitter:card"[^>]*content="([^"]+)"[^>]*>/gi, 'twitter:card', route).trim();
+  const twitterImage = getOne(html, /<meta\s+[^>]*name="twitter:image"[^>]*content="([^"]+)"[^>]*>/gi, 'twitter:image', route).trim();
+  const twitterImageAlt = getOne(html, /<meta\s+[^>]*name="twitter:image:alt"[^>]*content="([^"]+)"[^>]*>/gi, 'twitter:image:alt', route).trim();
 
   if (!title) throw new Error(route + ': empty title');
   if (!description) throw new Error(route + ': empty meta description');
+  if (!/^https:\/\//.test(ogImage)) throw new Error(route + ': og:image must be absolute');
+  if (ogImageWidth !== '1200' || ogImageHeight !== '630') {
+    throw new Error(route + ': social image dimensions must be 1200x630');
+  }
+  if (ogImageAlt !== title) throw new Error(route + ': og:image:alt must match the page title');
+  if (twitterCard !== 'summary_large_image') throw new Error(route + ': twitter:card must be summary_large_image');
+  if (twitterImage !== ogImage) throw new Error(route + ': twitter:image must match og:image');
+  if (twitterImageAlt !== title) throw new Error(route + ': twitter:image:alt must match the page title');
   if (canonical !== site + route) {
     throw new Error(route + ': canonical mismatch; expected ' + site + route + ', found ' + canonical);
   }
@@ -501,4 +516,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
