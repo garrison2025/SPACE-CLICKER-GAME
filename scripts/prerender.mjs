@@ -1125,10 +1125,16 @@ for (const [route, title, description, h1] of routes) {
 }
 
 const sitemapRoutes = routes.map(([route]) => route);
-// Update this date only when the core indexable pages receive a meaningful
-// content, gameplay, metadata, or routing change. Do not stamp every build.
-const coreLastModified = '2026-10-05';
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc><lastmod>${coreLastModified}</lastmod></url>`).join('\n')}\n</urlset>\n`;
+// Update this date only when core non-article pages receive a meaningful
+// content, gameplay, metadata, or routing change. Article dates come from
+// their own updatedDate metadata.
+const coreLastModified = SITE_CONTENT_UPDATED;
+const getSitemapLastModified = (route) => {
+  const articleMeta = blogStaticMeta[route];
+  if (!articleMeta) return coreLastModified;
+  return articleMeta.dateModified.slice(0, 10);
+};
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapRoutes.map((route) => `  <url><loc>${site}${route === '/' ? '/' : route + '/'}</loc><lastmod>${getSitemapLastModified(route)}</lastmod></url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemap);
 
 const rssItems = Object.entries(blogStaticMeta)
