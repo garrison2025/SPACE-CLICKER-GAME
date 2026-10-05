@@ -65,6 +65,7 @@ const StarDefense: React.FC = () => {
     const turretAnglesRef = useRef<{[key:string]: number}>({ turret_alpha: 0, turret_beta: 0 }); 
     const muzzleFlashRef = useRef<number>(0); // Opacity of muzzle flash
     const animationFrameRef = useRef<number>();
+    const lastUiRenderRef = useRef<number>(0);
     
     // Force Render for UI
     const [_, setRenderTrigger] = useState(0);
@@ -327,7 +328,10 @@ const StarDefense: React.FC = () => {
         const stunActive = activeEffects['emp'] > 0;
         enemiesRef.current.forEach(e => e.isStunned = stunActive);
 
-        setRenderTrigger(prev => prev + 1);
+        if (timestamp - lastUiRenderRef.current >= 33) {
+            lastUiRenderRef.current = timestamp;
+            setRenderTrigger(prev => prev + 1);
+        }
         animationFrameRef.current = requestAnimationFrame(gameLoop);
     }, [gameOver, upgrades, wave, maxHp, maxShield, activeEffects]);
 
