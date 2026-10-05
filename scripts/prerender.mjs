@@ -20,7 +20,7 @@ const routes = [
   ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge ships, expand your orbit and build passive production in a free browser game.', 'Merge Spaceships'],
   ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Experiment with gravity, matter and upgrades in a free browser-based idle simulation.', 'Gravity Idle'],
   ['/game/deep_signal', 'Deep Space Signal - Free Browser Text Adventure', 'Scan, decode and analyze strange transmissions in a free browser-based deep space signal game.', 'Deep Space Signal'],
-  ['/spacebar-clicker', 'Spacebar Clicker - Space Bar Clicker Game & CPS', 'Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys.', 'Spacebar Clicker'],
+  ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],\n  ['/spacebar-clicker', 'Spacebar Clicker - Space Bar Clicker Game & CPS', 'Play Spacebar Clicker online: press Space, build CPS, buy upgrades, automate points and prestige for permanent Quantum Keys.', 'Spacebar Clicker'],
   ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Free online Spacebar Counter with total presses, current CPS, average CPS, peak CPS and local best.', 'Spacebar Counter'],
   ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests and save your best local score.', 'Spacebar Clicker Test'],
   ['/spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked - Play Instantly in Your Browser', 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls with local save.', 'Spacebar Clicker Unblocked'],
@@ -68,7 +68,7 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p><nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
+    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p><nav><a href="/" style="color:#00f3ff">Space Clicker Game</a> · <a href="/spacebar-games/" style="color:#00f3ff">Spacebar Games</a> · <a href="/spacebar-clicker/" style="color:#00f3ff">Spacebar Clicker</a> · <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> · <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a></nav></main></div>`
   );
   return html;
 };
