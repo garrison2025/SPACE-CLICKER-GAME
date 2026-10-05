@@ -31,7 +31,7 @@ const COMPARISON_DATA: GameComparison[] = [
     prestigeSystem: "Quantum Supernova (Dark Matter permanent multiplier + Tech Tree)",
     combatOrEvents: "Real-time Crisis Invasions, Comet Catches, AI Subspace Anomaly generation",
     graphicsAndAudio: "Hardware-accelerated Starfield Canvas, Custom Particle FX, Synthwave Ambience",
-    aiFeatures: "Integrated Gemini Subspace Scanner with dynamic procedural events",
+    aiFeatures: "Local procedural anomaly scanner with dynamic events",
     bestFor: "Players seeking modern visuals, deep sci-fi themes, and active/passive hybrid strategy",
     score: 9.8
   },
@@ -133,7 +133,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
             "name": "What makes Space Clicker Game different from Cookie Clicker?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Space Clicker Game combines deep sci-fi lore with interactive heat-management mechanics (Heat Flux zone for 2x output), real-time defense crisis events, hardware-accelerated particle visuals, and procedural Gemini AI space anomalies, whereas Cookie Clicker focuses on humorous confectionery escalation."
+              "text": "Space Clicker Game combines deep sci-fi lore with interactive heat-management mechanics (Heat Flux zone for 2x output), real-time defense crisis events, hardware-accelerated particle visuals, and procedural local space anomalies, whereas Cookie Clicker focuses on humorous confectionery escalation."
             }
           },
           {
