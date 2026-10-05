@@ -6,6 +6,7 @@ import { playSound } from '../services/audioService';
 import { formatNumber } from '../utils';
 
 const DEEP_SIGNAL_SAVE_KEY = 'deep_signal_save_v3';
+const MAX_LIVE_MESSAGES = 100;
 
 const UPGRADE_CONFIG = {
     antenna: { name: 'Antenna Array', desc: 'Unlock deeper frequencies.', base: 100, mult: 2.0, max: 10 },
@@ -115,6 +116,14 @@ const DeepSpaceSignal: React.FC = () => {
     useEffect(() => {
         isScanningRef.current = isScanning;
     }, [isScanning]);
+
+    const commitMessages = (nextMessages: SignalMessage[]) => {
+        const capped = nextMessages.length > MAX_LIVE_MESSAGES
+            ? nextMessages.slice(-MAX_LIVE_MESSAGES)
+            : nextMessages;
+        messagesRef.current = capped;
+        setMessages(capped);
+    };
     
     // Derived Stats
     // VOID faction increases max energy by 1% per level
@@ -219,8 +228,7 @@ const DeepSpaceSignal: React.FC = () => {
             });
 
             if (changed) {
-                messagesRef.current = nextMessages;
-                setMessages(nextMessages);
+                commitMessages(nextMessages);
             }
             if (rewardEarned > 0) {
                 setDataBytes(value => value + rewardEarned);
@@ -264,23 +272,27 @@ const DeepSpaceSignal: React.FC = () => {
 
         // Visual "Scanning..." effect
         const tempId = Date.now().toString();
-        setMessages(prev => [...prev, {
-            id: tempId,
-            timestamp: new Date().toLocaleTimeString(),
-            sender: "SYSTEM",
-            content: `Scanning Sector ${frequency.toFixed(2)} MHz...`,
-            isDecoded: true,
-            encryptionLevel: 0,
-            rewardData: 0
-        }]);
+        commitMessages([
+            ...messagesRef.current,
+            {
+                id: tempId,
+                timestamp: new Date().toLocaleTimeString(),
+                sender: "SYSTEM",
+                content: `Scanning Sector ${frequency.toFixed(2)} MHz...`,
+                isDecoded: true,
+                encryptionLevel: 0,
+                rewardData: 0
+            }
+        ]);
 
         try {
             const result = await generateAlienMessage(frequency, upgrades.antenna);
             
             // Replace placeholder
-            setMessages(prev => {
-                const filtered = prev.filter(m => m.id !== tempId);
-                return [...filtered, {
+            const filtered = messagesRef.current.filter(m => m.id !== tempId);
+            commitMessages([
+                ...filtered,
+                {
                     id: Date.now().toString(),
                     timestamp: new Date().toLocaleTimeString(),
                     sender: result.sender,
@@ -289,8 +301,8 @@ const DeepSpaceSignal: React.FC = () => {
                     encryptionLevel: result.encryption,
                     rewardData: result.dataValue,
                     type: result.type
-                }];
-            });
+                }
+            ]);
 
             setFrequency(prev => prev + (Math.random() * 5 - 2));
 
@@ -327,8 +339,7 @@ const DeepSpaceSignal: React.FC = () => {
             return { ...item, encryptionLevel: newLevel };
         });
 
-        messagesRef.current = nextMessages;
-        setMessages(nextMessages);
+        commitMessages(nextMessages);
 
         if (rewardEarned > 0) {
             setDataBytes(value => value + rewardEarned);
@@ -337,8 +348,8 @@ const DeepSpaceSignal: React.FC = () => {
     };
 
     const handleAnalyze = (msgId: string) => {
-        const msg = messages.find(m => m.id === msgId);
-        if (!msg || !msg.isDecoded || msg.analyzed || energy < 10) {
+        const msg = messagesRef.current.find(m => m.id === msgId);
+        if (!msg || !msg.isDecoded || msg.analyzed || energyRef.current < 10) {
             playSound('error');
             return;
         }
@@ -357,10 +368,12 @@ const DeepSpaceSignal: React.FC = () => {
             }));
         }
 
-        setDataBytes(prev => prev + Math.floor(msg.rewardData * 0.5)); 
-        
-        setMessages(prev => prev.map(m => 
-            m.id === msgId ? { ...m, analyzed: true, content: `${m.content} [UPLOADED TO ${m.type || 'ARCHIVE'}]` } : m
+        setDataBytes(prev => prev + Math.floor(msg.rewardData * 0.5));
+
+        commitMessages(messagesRef.current.map(m =>
+            m.id === msgId
+                ? { ...m, analyzed: true, content: `${m.content} [UPLOADED TO ${m.type || 'ARCHIVE'}]` }
+                : m
         ));
     };
 
@@ -380,7 +393,8 @@ const DeepSpaceSignal: React.FC = () => {
     };
 
     const clearLogs = () => {
-        setMessages([]);
+        commitMessages([]);
+        rewardedMessageIdsRef.current.clear();
         playSound('click');
     };
 
@@ -474,12 +488,11 @@ const DeepSpaceSignal: React.FC = () => {
                 lastSaveTime: Date.now(),
             }));
 
-            messagesRef.current = loadedMessages;
             energyRef.current = loadedEnergy;
             setDataBytes(loadedDataBytes);
             setEnergy(loadedEnergy);
             setUpgrades(loadedUpgrades);
-            setMessages(loadedMessages);
+            commitMessages(loadedMessages);
             setFactions(loadedFactions);
         } catch (error) {
             console.warn('Could not load Deep Space Signal save.', error);
