@@ -523,6 +523,22 @@ console.log(
     .join(' | ')
 );
 
+const notFoundPath = path.join(distDir, '404.html');
+if (!fs.existsSync(notFoundPath)) throw new Error('dist/404.html is missing');
+const notFound = fs.readFileSync(notFoundPath, 'utf8');
+if (!/<meta\s+name="robots"\s+content="noindex,nofollow"/i.test(notFound)) {
+  throw new Error('404.html must include a noindex,nofollow robots directive');
+}
+if (!/<title>404 - Signal Lost \| Space Clicker Game<\/title>/i.test(notFound)) {
+  throw new Error('404.html is missing the expected title');
+}
+if (!/href="\/"/i.test(notFound)) {
+  throw new Error('404.html must include a link back to the homepage');
+}
+if (/<link\s+[^>]*rel="canonical"/i.test(notFound)) {
+  throw new Error('404.html must not advertise an indexable canonical URL');
+}
+
 const sitemapPath = path.join(distDir, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) throw new Error('dist/sitemap.xml is missing');
 
@@ -620,4 +636,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
