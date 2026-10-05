@@ -22,7 +22,7 @@ const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({
 export const AboutPage = () => (
     <PageContainer title="ABOUT SPACE CLICKER GAME">
         <p className="lead text-xl text-gray-200">
-            Welcome to <strong>SpaceClickerGame.com</strong>, the premier destination for high-fidelity browser-based strategy simulations.
+            Welcome to <strong>SpaceClickerGame.com</strong>, a browser-based collection of clicker, idle, strategy, and Spacebar experiences.
         </p>
         
         <h3>Our Mission</h3>
@@ -41,9 +41,9 @@ export const AboutPage = () => (
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
-                <li>Current Date: 2025-12-29</li>
-                <li>Playable simulations and tools: 9+</li>
-                <li>Galaxies Explored: 6</li>
+                <li>Policy / site review: October 5, 2026</li>
+                <li>Game simulations in the main catalog: 6</li>
+                <li>Required paid API for gameplay: None</li>
             </ul>
         </div>
     </PageContainer>
@@ -81,7 +81,7 @@ export const ContactPage = () => (
 
 export const PrivacyPage = () => (
     <PageContainer title="DATA PRIVACY PROTOCOLS">
-        <p className="text-sm font-mono text-gray-500">Effective Date: December 29, 2025</p>
+        <p className="text-sm font-mono text-gray-500">Effective Date: October 5, 2026</p>
         
         <p>
             At <strong>SpaceClickerGame.com</strong>, we take your privacy as seriously as we take our shield integrity. This Privacy Policy explains how we collect, use, and protect your information when you access our <strong>space clicker games</strong>.
@@ -92,22 +92,22 @@ export const PrivacyPage = () => (
             <strong>Local Game Data:</strong> Space Clicker Game is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly export a save string.
         </p>
         <p>
-            <strong>Analytics:</strong> We use anonymous third-party analytics (such as Google Analytics 4) to understand how commanders interact with the website. This helps us optimize gameplay balance and server performance. We do not collect Personally Identifiable Information (PII) like your name or physical address.
+            <strong>Analytics and advertising:</strong> The current site build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests may still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.
         </p>
 
         <h3>2. Use of Information</h3>
         <p>
-            Any data collected is used strictly for:
+            Local game data is used by the browser to restore progress, calculate offline earnings where supported, and display local statistics. The current build does not send upgrade histories or save-state contents to a site analytics database.
         </p>
         <ul>
-            <li>Ensuring the stability and performance of the game engine.</li>
-            <li>Analyzing gameplay trends to develop new features (e.g., "Which upgrades are most popular?").</li>
-            <li>Serving non-intrusive, relevant advertisements to keep the game free to play.</li>
+            <li>Game progress is stored in browser localStorage for supported modes.</li>
+            <li>Manual export codes are generated only when you choose to view or copy them.</li>
+            <li>Clearing site storage can permanently remove local progress unless you kept an exported backup.</li>
         </ul>
 
         <h3>3. Data Security</h3>
         <p>
-            We implement standard encryption protocols (HTTPS) to ensure your connection to <strong>spaceclickergame.com</strong> is secure. However, please remember that no transmission over the interstellar network (Internet) is 100% secure.
+            The production site is served over HTTPS. Local save data remains subject to the security and storage behavior of your browser and device; an exported Base64 save code is portable text and is not encrypted.
         </p>
 
         <h3>4. Contact Us</h3>
@@ -119,7 +119,7 @@ export const PrivacyPage = () => (
 
 export const TermsPage = () => (
     <PageContainer title="TERMS OF SERVICE">
-        <p className="text-sm font-mono text-gray-500">Last Updated: December 29, 2025</p>
+        <p className="text-sm font-mono text-gray-500">Last Updated: October 5, 2026</p>
 
         <h3>1. Acceptance of Terms</h3>
         <p>
@@ -148,7 +148,7 @@ export const TermsPage = () => (
 
         <h3>5. Governing Law</h3>
         <p>
-            These terms are governed by and construed in accordance with the laws of Planet Earth, and you irrevocably submit to the exclusive jurisdiction of the courts in that location.
+            These terms do not designate a fictional or universal jurisdiction. Applicable law and any non-waivable consumer rights depend on the circumstances and the jurisdiction that legally applies to the site operator and user.
         </p>
     </PageContainer>
 );
@@ -156,23 +156,25 @@ export const TermsPage = () => (
 export const CookiesPage = () => (
     <PageContainer title="COOKIE & STORAGE SETTINGS">
         <p>
-            Unlike the "cookies" you might find in a mess hall, digital cookies are small text files stored on your device. <strong>SpaceClickerGame.com</strong> uses these technologies to ensure your game progress is saved and to provide a seamless experience.
+            Browsers provide several storage technologies. <strong>SpaceClickerGame.com</strong> primarily uses localStorage for game progress and settings; localStorage is different from an HTTP cookie.
         </p>
 
         <h3>1. Essential Local Storage</h3>
         <p>
             We use the browser's <code>localStorage</code> API to save your game state. This is critical for the functionality of our <strong>idle game</strong> mechanics. Without this, your empire would vanish every time you closed the tab.
         </p>
+        <p>Examples of functional localStorage keys include:</p>
         <ul>
-            <li><strong>Key:</strong> <code>cosmic-miner-save-v2</code> (Main Game Data)</li>
-            <li><strong>Key:</strong> <code>mars_colony_save_v2</code> (Mars Colony Data)</li>
-            <li><strong>Key:</strong> <code>star_defense_save_v4</code> (Defense Data)</li>
+            <li><strong>Key:</strong> <code>cosmic-miner-save-v2</code> (Galaxy Miner)</li>
+            <li><strong>Key:</strong> <code>spacebar_clicker_save_v1</code> (Spacebar Clicker)</li>
+            <li><strong>Key:</strong> <code>spacebar_clicker_2_save_v1</code> (Spacebar Clicker 2)</li>
+            <li><strong>Keys / prefixes:</strong> Spacebar Counter and CPS Test local-best records</li>
         </ul>
-        <p><em>These files are strictly functional and contain no personal tracking data.</em></p>
+        <p><em>This is an illustrative list rather than a guarantee that no other functional localStorage keys are used by individual simulations.</em></p>
 
-        <h3>2. Analytics Cookies</h3>
+        <h3>2. Analytics and Advertising</h3>
         <p>
-            We may use trusted third-party services (like Google Analytics) that set cookies to help us analyze traffic. These cookies track anonymous data such as session duration, pages visited, and general geographic region.
+            The current build does not include Google Analytics, Google Tag Manager, or Google AdSense scripts. If those services are introduced later, this notice should be updated to describe the relevant cookies or identifiers before they are enabled.
         </p>
 
         <h3>3. Managing Your Preferences</h3>
