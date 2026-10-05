@@ -916,6 +916,16 @@ const App: React.FC = () => {
       };
   }, [resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings, totalClicks, totalCrits, cometsCaught, crisesResolved]);
 
+  // Keyboard listeners live outside the render cycle. Keep refs pointed at the
+  // newest gameplay handlers so Space/number hotkeys never use stale Heat,
+  // Flux, prestige, resource, or planet state.
+  const handleMineRef = useRef(handleMine);
+  const handleBuyUpgradeRef = useRef(handleBuyUpgrade);
+  useEffect(() => {
+      handleMineRef.current = handleMine;
+      handleBuyUpgradeRef.current = handleBuyUpgrade;
+  });
+
   const handleBuyPrestige = (id: string) => {
     const u = PRESTIGE_UPGRADES.find(p => p.id === id);
     if (!u) return;
@@ -1223,39 +1233,60 @@ const App: React.FC = () => {
       }
       if (viewMode !== 'game' || activeGame !== 'galaxy_miner') return;
 
+      const hasOpenLayer =
+        showStatsModal ||
+        showPrestigeShop ||
+        showHotkeysOverlay ||
+        showMobileShop ||
+        offlineEarnings.isOpen;
+
+      if (e.key === 'Escape') {
+        if (showStatsModal) setShowStatsModal(false);
+        else if (showPrestigeShop) setShowPrestigeShop(false);
+        else if (showHotkeysOverlay) setShowHotkeysOverlay(false);
+        else if (showMobileShop) setShowMobileShop(false);
+        else if (offlineEarnings.isOpen) setOfflineEarnings(prev => ({ ...prev, isOpen: false }));
+        return;
+      }
+
+      // Do not let gameplay shortcuts fire through a modal or mobile drawer.
+      if (hasOpenLayer) return;
+
       if (e.code === 'Space') {
-        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
-          e.preventDefault();
-          const cx = window.innerWidth / 2;
-          const cy = window.innerHeight / 2;
-          handleMine(cx, cy);
-        }
+        e.preventDefault();
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        handleMineRef.current(cx, cy);
       } else if (e.key >= '1' && e.key <= '8') {
-        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
-          const index = parseInt(e.key) - 1;
-          const upgradeList = Object.values(upgrades);
-          if (upgradeList[index]) {
-            handleBuyUpgrade(upgradeList[index].id, 1);
-          }
+        const index = parseInt(e.key) - 1;
+        const upgradeList = Object.values(gameStateRef.current.upgrades);
+        if (upgradeList[index]) {
+          handleBuyUpgradeRef.current(upgradeList[index].id, 1);
         }
       } else if (e.key === 'm' || e.key === 'M') {
         const nextMute = !getMuteState();
         toggleMute(nextMute);
         addLog(`AUDIO ${nextMute ? 'MUTED' : 'UNMUTED'}`, 'info');
       } else if (e.key === 'p' || e.key === 'P') {
-        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
-          setShowPrestigeShop(prev => !prev);
-        }
+        setShowPrestigeShop(true);
       } else if (e.key === 's' || e.key === 'S') {
-        setShowStatsModal(prev => !prev);
+        setShowStatsModal(true);
       } else if (e.key === 'h' || e.key === 'H' || e.key === '?') {
-        setShowHotkeysOverlay(prev => !prev);
+        setShowHotkeysOverlay(true);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [viewMode, activeGame, upgrades]);
+  }, [
+    viewMode,
+    activeGame,
+    showStatsModal,
+    showPrestigeShop,
+    showHotkeysOverlay,
+    showMobileShop,
+    offlineEarnings.isOpen
+  ]);
 
   // Save Interval & Event Listeners
   useEffect(() => {
