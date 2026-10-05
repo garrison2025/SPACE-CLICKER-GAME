@@ -131,6 +131,27 @@ const SpacebarCounter: React.FC = () => {
               Spacebar Clicker Test. For an incremental game with upgrades and prestige, use Spacebar Clicker.
             </p>
           </section>
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">Spacebar Counter FAQ</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg text-white">Does the space bar counter have a time limit?</h3>
+                <p>No. It keeps counting deliberate Space presses until you reset the current session.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">Can I use this as a spacebar CPS counter?</h3>
+                <p>Yes. The page shows current CPS, average CPS and peak CPS while also keeping the total press count.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">Does holding the Space key increase the count?</h3>
+                <p>No. Browser-generated repeat events from holding the key are ignored, so the counter tracks intentional presses.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">Is my best count saved?</h3>
+                <p>Yes. The best count is stored locally in this browser. It is not uploaded to a public leaderboard.</p>
+              </div>
+            </div>
+          </section>
         </article>
       </section>
     </div>
