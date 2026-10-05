@@ -31,14 +31,14 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <p>The interesting design shift happens when manual input stops being the only meaningful source of progress and the player starts optimizing an automated system instead.</p>
 
-            <h2>Why "Space" Fits the Clicker Genre Perfectly</h2>
-            <p>Why are there so many <strong>space clicker games</strong> compared to, say, farming clickers? The answer lies in <em>scale</em>.</p>
+            <h2>Why Space Fits Incremental Progression</h2>
+            <p>A space setting is a natural thematic fit for <strong>space clicker games</strong> because the same resource loop can expand across increasingly large fictional scales.</p>
             <p>A space theme makes very large numerical scales easier to represent: progression can move from an asteroid to planets, stations, stellar infrastructure, and other fictional large-scale systems without changing the basic incremental loop.</p>
             <p>Space gives incremental games a natural sense of scale. Designers can move from a single mining action to planets, nebulae, black holes, and large resource economies without changing the basic progression language. For real astronomy background, NASA's <a href="https://www.nasa.gov/universe" target="_blank" rel="noopener noreferrer">Universe</a> resources are a useful reference.</p>
 
-            <h2>The Rise of the Space Bar Clicking Game</h2>
-            <p>While most modern idle games use the mouse, the <strong>space bar clicking game</strong> sub-genre holds a nostalgic place in history. Early browser tests often asked players to "mash the space bar" to power up a ship.</p>
-            <p>Today, rapid keyboard input appears in speed tests, mini-games, and clickers. Repeated input can become tiring, so automation provides an alternative to continuous manual pressing. If repeated input becomes uncomfortable, stop and rest.</p>
+            <h2>Space Bar Input in Clicker Games</h2>
+            <p>A <strong>space bar clicking game</strong> uses keyboard input instead of, or alongside, pointer clicks. The same input pattern also appears in browser speed tests and short mini-games.</p>
+            <p>Repeated input can become tiring, so automation provides an alternative to continuous manual pressing. If repeated input becomes uncomfortable, stop and rest.</p>
 
             <h3>Top Features of a Modern Space Clicker</h3>
             <ol>
@@ -116,7 +116,7 @@ export const BLOG_POSTS: BlogPost[] = [
             </ul>
 
             <h2>Conclusion: A Universe in Your Pocket</h2>
-            <p>The genre works well because gathering, reinvestment, automation, and expansion map naturally onto a space setting. The theme gives simple numerical systems room to grow without assuming every player responds to them in the same way.</p>
+            <p>Space themes can work well with gathering, reinvestment, automation, and expansion because the setting gives simple numerical systems room to grow without assuming every player responds to them in the same way.</p>
             <p>In practice, the appeal is simpler: an action produces visible progress, the next milestone is understandable, and the player can decide whether to keep clicking, automate, or change strategy.</p>
             
             <p>Try the feedback loop directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, or use <a href="/spacebar-clicker/">Spacebar Clicker</a> if you want a simpler press-upgrade-automation loop.</p>
@@ -148,7 +148,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
 
             <h2>Transitioning to Automation</h2>
-            <p>The defining moment of a <strong>clicker game space</strong> adventure is when your passive generation (stardust per second) exceeds your active generation (stardust per click).</p>
+            <p>A useful transition point in a <strong>clicker game space</strong> adventure is when passive generation becomes more important than another burst of manual input.</p>
             <p>In an incremental game, that transition happens when the production added by automation becomes more important than another burst of manual input. The exact point depends on the current upgrades, multipliers, and how actively the player is pressing.</p>
             
             <h3>Math Breakdown: Click vs. Idle</h3>
@@ -300,7 +300,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>The lower the ratio, the faster an upgrade pays for itself. Early in a run, manual upgrades can matter because the player is actively pressing. As automatic production grows, compare the next manual purchase with the next automation purchase instead of assuming one category is always superior.</p>
 
             <h2>Prestige: The Art of Starting Over</h2>
-            <p>The defining feature of the genre. Resetting your progress to gain a permanent multiplier. In our <strong>space click game</strong>, this is represented by "Dark Matter."</p>
+            <p>Many incremental games use a prestige layer: reset part of the current run in exchange for a permanent advantage. In our <strong>space click game</strong>, this is represented by Dark Matter.</p>
             <p><strong>When should you prestige?</strong></p>
             <ul>
                 <li><strong>Too Early:</strong> You haven't earned enough Dark Matter to make the next run significantly faster.</li>
