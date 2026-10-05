@@ -369,7 +369,7 @@ const DeepSpaceSignal: React.FC = () => {
 
     // --- RENDER ---
     return (
-        <div className="w-full h-full bg-black font-mono text-green-500 relative overflow-hidden flex flex-col p-4 md:p-6 select-none">
+        <div className="w-full h-full bg-black font-mono text-green-500 relative overflow-hidden flex flex-col p-2.5 sm:p-4 md:p-6 select-none">
             {/* CRT Effects */}
             <style>{`
                 .scanline {
@@ -388,7 +388,7 @@ const DeepSpaceSignal: React.FC = () => {
                 .hex-column { mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); }
             `}</style>
 
-            <div className="absolute inset-0 border-[20px] border-stone-900 rounded-[2rem] pointer-events-none z-30 shadow-[inset_0_0_50px_black]"></div>
+            <div className="absolute inset-0 border-[8px] sm:border-[12px] md:border-[20px] border-stone-900 rounded-xl sm:rounded-2xl md:rounded-[2rem] pointer-events-none z-30 shadow-[inset_0_0_50px_black]"></div>
             <div className="scanline"></div>
 
             {/* Background Hex Rain (Right Side) */}
@@ -406,15 +406,15 @@ const DeepSpaceSignal: React.FC = () => {
                 
                 <div className="relative flex justify-between items-end px-2">
                     <div>
-                        <h1 className="text-3xl font-black tracking-widest text-glow">DEEP_SIGNAL</h1>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wide sm:tracking-widest text-glow">DEEP_SIGNAL</h1>
                         <div className="text-xs text-green-700 font-bold flex gap-4">
                             <span>ENCRYPTION: {isScanning ? 'BYPASSING...' : 'SECURE'}</span>
                             <span className="hidden md:inline">FREQ: {frequency.toFixed(4)} MHz</span>
                         </div>
                     </div>
-                    <div className="text-right bg-black/60 p-2 rounded border border-green-900/30 backdrop-blur-sm">
+                    <div className="text-right bg-black/60 p-1.5 sm:p-2 rounded border border-green-900/30 md:backdrop-blur-sm min-w-0">
                         <div className="text-[10px] text-green-600 uppercase tracking-widest">CACHE STORAGE</div>
-                        <div className="text-2xl font-bold text-white text-glow font-mono">{formatNumber(dataBytes)} <span className="text-sm text-green-500">DAT</span></div>
+                        <div className="text-lg sm:text-xl md:text-2xl font-bold text-white text-glow font-mono truncate">{formatNumber(dataBytes)} <span className="text-sm text-green-500">DAT</span></div>
                     </div>
                 </div>
             </header>
