@@ -92,6 +92,7 @@ const MarsColony: React.FC = () => {
     
     const [buildings, setBuildings] = useState<MarsBuilding[]>(INITIAL_BUILDINGS);
     const [lastSaved, setLastSaved] = useState(Date.now());
+    const stateRef = useRef({ resources, buildings });
     
     // Visual State
     const [clicks, setClicks] = useState<FloatingText[]>([]);
@@ -231,17 +232,33 @@ const MarsColony: React.FC = () => {
     // Init Load
     useEffect(() => {
         const saved = localStorage.getItem(MARS_SAVE_KEY);
-        if (saved) {
-             try {
-                 const data = JSON.parse(saved);
-                 if (data.resources) setResources(data.resources);
-                 if (data.buildings) setBuildings(data.buildings);
-             } catch(e) {}
+        if (!saved) return;
+
+        try {
+            const data = JSON.parse(saved);
+            const loadedResources = data.resources && typeof data.resources === 'object'
+                ? data.resources as MarsResourceState
+                : resources;
+            const loadedBuildings = Array.isArray(data.buildings)
+                ? data.buildings as MarsBuilding[]
+                : INITIAL_BUILDINGS;
+
+            const nextSnapshot = {
+                resources: loadedResources,
+                buildings: loadedBuildings,
+            };
+
+            // Keep the persistence ref synchronized in the same turn as hydration
+            // so an immediate close cannot overwrite a valid save with defaults.
+            stateRef.current = nextSnapshot;
+            setResources(loadedResources);
+            setBuildings(loadedBuildings);
+        } catch (error) {
+            console.warn('Could not load Mars Colony save.', error);
         }
     }, []);
 
     // Refs for saving logic to avoid closure staleness
-    const stateRef = useRef({ resources, buildings });
     useEffect(() => { stateRef.current = { resources, buildings }; }, [resources, buildings]);
 
     const saveGame = useCallback(() => {
