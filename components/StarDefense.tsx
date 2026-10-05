@@ -889,9 +889,19 @@ const StarDefense: React.FC = () => {
                         return (
                             <div 
                                 key={u.id}
+                                role="button"
+                                tabIndex={canAfford ? 0 : -1}
+                                aria-disabled={!canAfford}
+                                aria-label={`${u.name}, level ${u.level}, cost ${formatNumber(cost)} scrap`}
+                                onKeyDown={(event) => {
+                                    if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
+                                        event.preventDefault();
+                                        handleBuyUpgrade(u.id);
+                                    }
+                                }}
                                 onClick={() => canAfford && handleBuyUpgrade(u.id)}
                                 className={`
-                                    p-3 rounded border flex items-center gap-3 transition-all select-none
+                                    p-3 rounded border flex items-center gap-3 transition-all select-none touch-manipulation focus:outline-none focus:ring-2 focus:ring-yellow-400/60
                                     ${canAfford 
                                         ? 'bg-space-800 border-gray-600 hover:bg-space-700 hover:border-yellow-400 cursor-pointer active:scale-95' 
                                         : 'bg-black/40 border-white/5 opacity-50 cursor-not-allowed'}
