@@ -59,8 +59,8 @@ for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
 
   const title = getOne(html, /<title>([^<]+)<\/title>/gi, 'title', route).trim();
-  const description = getOne(html, /<meta\s+name="description"\s+content="([^"]*)"/gi, 'meta description', route).trim();
-  const canonical = getOne(html, /<link\s+rel="canonical"\s+href="([^"]+)"/gi, 'canonical', route).trim();
+  const description = getOne(html, /<meta\s+[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/gi, 'meta description', route).trim();
+  const canonical = getOne(html, /<link\s+[^>]*rel="canonical"[^>]*href="([^"]+)"[^>]*>/gi, 'canonical', route).trim();
   const h1Count = (html.match(/<h1\b/gi) || []).length;
   const robotsMatches = [...html.matchAll(/<meta\s+name="robots"[^>]*content="([^"]*)"/gi)];
   const hreflangMatches = [...html.matchAll(/<link\s+rel="alternate"[^>]*href="([^"]+)"[^>]*hreflang="([^"]+)"/gi)];
