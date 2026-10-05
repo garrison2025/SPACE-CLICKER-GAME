@@ -780,7 +780,7 @@ const staticRouteContent = {
   '/spacebar-games': `
 <section>
       <h2>Choose the right Spacebar game or tool</h2>
-      <p>The Spacebar Games hub separates several different search intents instead of forcing them into one page. Use Spacebar Clicker for an upgrade-based idle game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges.</p>
+      <p>Choose the mode that matches what you want to do. Use Spacebar Clicker for an upgrade-based idle game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges.</p>
       <h2>Spacebar Clicker</h2>
       <p><a href="/spacebar-clicker/">Spacebar Clicker</a> turns each deliberate Space press into points. Buy manual upgrades, unlock automatic production, watch CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
       <h2>Spacebar Counter and CPS Test</h2>
