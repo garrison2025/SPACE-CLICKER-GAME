@@ -662,7 +662,7 @@ const MergeShips: React.FC = () => {
                             draggable={!!ship && !ship.isCrate}
                             onDragStart={() => handleDragStart('hangar', i)}
                             className={`
-                                aspect-square rounded-xl border-2 flex items-center justify-center relative transition-all
+                                aspect-square rounded-xl border-2 flex items-center justify-center relative transition-all touch-manipulation focus:outline-none focus:ring-2 focus:ring-neon-blue/60
                                 ${dragOver?.target === 'hangar' && dragOver?.index === i ? 'bg-white/10 border-white scale-105' : 'border-slate-800 bg-slate-900'}
                                 ${ship?.isCrate ? 'cursor-pointer hover:scale-105 animate-bounce border-yellow-500/50' : ship ? 'cursor-pointer hover:bg-slate-800' : ''}
                             `}
