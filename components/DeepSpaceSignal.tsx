@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DeepSignalSaveData, SignalMessage } from '../types';
-import { generateAlienMessage } from '../services/geminiService';
+import { generateAlienMessage } from '../services/eventService';
 import { playSound } from '../services/audioService';
 import { formatNumber } from '../utils';
 
