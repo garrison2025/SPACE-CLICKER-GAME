@@ -3,22 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG } from './constants';
 import { BLOG_POST_META } from './content/blogMeta';
-import StarField from './components/StarField';
-import UpgradeShop from './components/UpgradeShop';
-import ClickArea from './components/ClickArea';
-import GoldenComet from './components/GoldenComet';
-import CrisisEvent from './components/CrisisEvent';
-import PrestigeShop from './components/PrestigeShop';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
-import GameCanvas from './components/GameCanvas';
-import GameCarousel from './components/GameCarousel';
-import InterstellarComms from './components/InterstellarComms';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
-import StatsAndSaveModal from './components/StatsAndSaveModal';
-import OfflineEarningsModal from './components/OfflineEarningsModal';
-import HotkeyOverlay from './components/HotkeyOverlay';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
@@ -44,6 +32,16 @@ const PrivacyPage = React.lazy(() => import('./components/InfoPages').then(modul
 const TermsPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.TermsPage })));
 const CookiesPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.CookiesPage })));
 const SitemapPage = React.lazy(() => import('./components/InfoPages').then(module => ({ default: module.SitemapPage })));
+const UpgradeShop = React.lazy(() => import('./components/UpgradeShop'));
+const ClickArea = React.lazy(() => import('./components/ClickArea'));
+const GoldenComet = React.lazy(() => import('./components/GoldenComet'));
+const CrisisEvent = React.lazy(() => import('./components/CrisisEvent'));
+const PrestigeShop = React.lazy(() => import('./components/PrestigeShop'));
+const InterstellarComms = React.lazy(() => import('./components/InterstellarComms'));
+const StatsAndSaveModal = React.lazy(() => import('./components/StatsAndSaveModal'));
+const OfflineEarningsModal = React.lazy(() => import('./components/OfflineEarningsModal'));
+const HotkeyOverlay = React.lazy(() => import('./components/HotkeyOverlay'));
+const StarshipConsole = React.lazy(() => import('./components/StarshipConsole'));
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
@@ -71,7 +69,6 @@ const LoadingSimulation = () => (
     </div>
 );
 
-import StarshipConsole from './components/StarshipConsole';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -278,21 +275,28 @@ const App: React.FC = () => {
     const rate = getProductionRate();
     if (rate <= 0) return;
 
-    // Run 10 times a second for smooth number updates
-    const ticksPerSecond = 10;
-    const intervalTime = 1000 / ticksPerSecond;
-    const amountPerTick = rate / ticksPerSecond;
+    // Keep the active game visually responsive without forcing 10 React updates/sec
+    // across the homepage, blog, and Spacebar tools. Delta-time accounting also
+    // avoids losing production when the browser throttles timers.
+    const intervalTime = viewMode === 'game' && activeGame === 'galaxy_miner' ? 250 : 1000;
+    let lastTick = Date.now();
 
     const timer = setInterval(() => {
+        const now = Date.now();
+        const elapsedSeconds = Math.min(86400, Math.max(0, (now - lastTick) / 1000));
+        lastTick = now;
+        const earned = rate * elapsedSeconds;
+        if (earned <= 0) return;
+
         setResources(prev => ({
             ...prev,
-            [ResourceType.Stardust]: prev[ResourceType.Stardust] + amountPerTick
+            [ResourceType.Stardust]: prev[ResourceType.Stardust] + earned
         }));
-        setLifetimeEarnings(prev => prev + amountPerTick);
+        setLifetimeEarnings(prev => prev + earned);
     }, intervalTime);
 
     return () => clearInterval(timer);
-  }, [getProductionRate]);
+  }, [getProductionRate, viewMode, activeGame]);
 
   // --- SEO METADATA CALCULATION ---
   const getSEOProps = () => {
@@ -668,13 +672,13 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    if (viewMode !== 'game' || activeGame !== 'galaxy_miner' || overheated || heat <= 0) return;
+
     const timer = setInterval(() => {
-        if (!overheated && heat > 0) {
-            setHeat(prev => Math.max(0, prev - 2)); 
-        }
+        setHeat(prev => Math.max(0, prev - 2));
     }, 100);
     return () => clearInterval(timer);
-  }, [heat, overheated]);
+  }, [viewMode, activeGame, heat, overheated]);
 
   const handleCometCatch = () => {
     setCometsCaught(prev => prev + 1);
@@ -955,6 +959,7 @@ const App: React.FC = () => {
       if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
         return;
       }
+      if (viewMode !== 'game' || activeGame !== 'galaxy_miner') return;
 
       if (e.code === 'Space') {
         if (viewMode === 'game' && activeGame === 'galaxy_miner') {
@@ -1103,64 +1108,66 @@ const App: React.FC = () => {
             noindex={is404}
         />
 
-        {/* Global Hotkey Overlay Trigger & Modal */}
-        <HotkeyOverlay 
-            isOpen={showHotkeysOverlay}
-            onClose={() => setShowHotkeysOverlay(false)}
-            onToggle={() => setShowHotkeysOverlay(prev => !prev)}
-        />
+        {viewMode === 'game' && !is404 && (
+            <Suspense fallback={null}>
+                <HotkeyOverlay 
+                    isOpen={showHotkeysOverlay}
+                    onClose={() => setShowHotkeysOverlay(false)}
+                    onToggle={() => setShowHotkeysOverlay(prev => !prev)}
+                />
 
-        {/* Global Player Telemetry & Save Management Modal */}
-        <StatsAndSaveModal
-            isOpen={showStatsModal}
-            onClose={() => setShowStatsModal(false)}
-            resources={resources}
-            lifetimeEarnings={lifetimeEarnings}
-            totalClicks={totalClicks}
-            totalCrits={totalCrits}
-            cometsCaught={cometsCaught}
-            crisesResolved={crisesResolved}
-            productionRate={getProductionRate()}
-            clickPower={getClickPower()}
-            currentPlanet={currentPlanet}
-            upgrades={upgrades}
-            prestigeUpgrades={prestigeUpgrades}
-            hapticEnabled={hapticEnabled}
-            onToggleHaptic={toggleHaptic}
-            screenShakeEnabled={screenShakeEnabled}
-            onToggleScreenShake={toggleScreenShake}
-            onImportSave={handleImportSave}
-            onResetGame={() => {
-                localStorage.removeItem(SAVE_KEY);
-                window.location.reload();
-            }}
-        />
+                <StatsAndSaveModal
+                    isOpen={showStatsModal}
+                    onClose={() => setShowStatsModal(false)}
+                    resources={resources}
+                    lifetimeEarnings={lifetimeEarnings}
+                    totalClicks={totalClicks}
+                    totalCrits={totalCrits}
+                    cometsCaught={cometsCaught}
+                    crisesResolved={crisesResolved}
+                    productionRate={getProductionRate()}
+                    clickPower={getClickPower()}
+                    currentPlanet={currentPlanet}
+                    upgrades={upgrades}
+                    prestigeUpgrades={prestigeUpgrades}
+                    hapticEnabled={hapticEnabled}
+                    onToggleHaptic={toggleHaptic}
+                    screenShakeEnabled={screenShakeEnabled}
+                    onToggleScreenShake={toggleScreenShake}
+                    onImportSave={handleImportSave}
+                    onResetGame={() => {
+                        localStorage.removeItem(SAVE_KEY);
+                        window.location.reload();
+                    }}
+                />
 
-        {/* Offline Earnings Welcome Back Modal */}
-        <OfflineEarningsModal 
-            isOpen={offlineEarnings.isOpen}
-            awayTimeSeconds={offlineEarnings.awayTimeSeconds}
-            earnedStardust={offlineEarnings.earnedStardust}
-            productionRate={offlineEarnings.productionRate}
-            onClaim={handleClaimOfflineEarnings}
-        />
+                <OfflineEarningsModal 
+                    isOpen={offlineEarnings.isOpen}
+                    awayTimeSeconds={offlineEarnings.awayTimeSeconds}
+                    earnedStardust={offlineEarnings.earnedStardust}
+                    productionRate={offlineEarnings.productionRate}
+                    onClaim={handleClaimOfflineEarnings}
+                />
 
-        {showPrestigeShop && (
-            <PrestigeShop
-                darkMatter={resources[ResourceType.DarkMatter]}
-                upgrades={prestigeUpgrades}
-                prestigeGain={prestigeGain}
-                canPrestige={canPrestige}
-                thresholdLabel={formatNumber(PRESTIGE_THRESHOLD)}
-                onPrestige={handlePrestigeReset}
-                onBuy={handleBuyPrestige}
-                onClose={() => setShowPrestigeShop(false)}
-            />
+                {showPrestigeShop && (
+                    <PrestigeShop
+                        darkMatter={resources[ResourceType.DarkMatter]}
+                        upgrades={prestigeUpgrades}
+                        prestigeGain={prestigeGain}
+                        canPrestige={canPrestige}
+                        thresholdLabel={formatNumber(PRESTIGE_THRESHOLD)}
+                        onPrestige={handlePrestigeReset}
+                        onBuy={handleBuyPrestige}
+                        onClose={() => setShowPrestigeShop(false)}
+                    />
+                )}
+            </Suspense>
         )}
 
         {is404 ? (
             <NotFoundPage onNavigate={handleNavigate} />
         ) : viewMode === 'game' ? (
+            <Suspense fallback={<LoadingSimulation />}>
             <StarshipConsole 
                 activeGame={activeGame} 
                 onSwitchGame={(id) => handleNavigate('game', id)}
@@ -1173,7 +1180,9 @@ const App: React.FC = () => {
                             <Suspense fallback={<LoadingSimulation />}>
                                 {renderActiveGame()}
                             </Suspense>
-                            <InterstellarComms activeGame={activeGame} onSwitchGame={(id) => handleNavigate('game', id)} />
+                            <Suspense fallback={null}>
+                                <InterstellarComms activeGame={activeGame} onSwitchGame={(id) => handleNavigate('game', id)} />
+                            </Suspense>
                         </div>
                     </div>
                     
@@ -1182,6 +1191,7 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </StarshipConsole>
+            </Suspense>
         ) : (
             <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
                 {viewMode === 'home' && (
