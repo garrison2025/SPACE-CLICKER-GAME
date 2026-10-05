@@ -148,6 +148,14 @@ for (const file of htmlFiles) {
     if (visibleText.length < 900) {
       throw new Error(route + ': static gameplay copy is too thin (' + visibleText.length + ' chars)');
     }
+
+    if (route === '/game/galaxy_miner/') {
+      for (const requiredText of ['1 million Stardust', '1 billion', '1 trillion', '200x']) {
+        if (!html.includes(requiredText)) {
+          throw new Error(route + ': missing planet progression detail ' + requiredText);
+        }
+      }
+    }
   }
 
   if (highValueSchemaRoutes.has(route)) {
