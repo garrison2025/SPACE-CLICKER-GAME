@@ -40,6 +40,14 @@ const legacyGame = await run('https://spaceclickergame.com/?view=game&id=galaxy_
 expect(legacyGame.status === 301, 'Legacy game URL should redirect');
 expect(legacyGame.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Legacy game redirect target is wrong');
 
+const legacyGameParam = await run('https://spaceclickergame.com/?game=galaxy_miner');
+expect(legacyGameParam.status === 301, 'Legacy ?game URL should redirect');
+expect(legacyGameParam.headers.get('location') === 'https://spaceclickergame.com/game/galaxy_miner/', 'Legacy ?game redirect target is wrong');
+
+const legacyPostParam = await run('https://spaceclickergame.com/?post=evolution-of-space-clicker-game-genre');
+expect(legacyPostParam.status === 301, 'Legacy ?post URL should redirect');
+expect(legacyPostParam.headers.get('location') === 'https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/', 'Legacy ?post redirect target is wrong');
+
 const legacyBlog = await run('https://spaceclickergame.com/?view=blog&post=evolution-of-space-clicker-game-genre');
 expect(legacyBlog.status === 301, 'Legacy blog URL should redirect');
 expect(legacyBlog.headers.get('location') === 'https://spaceclickergame.com/blog/evolution-of-space-clicker-game-genre/', 'Legacy blog redirect target is wrong');
