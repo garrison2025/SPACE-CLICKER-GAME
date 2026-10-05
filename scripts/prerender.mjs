@@ -881,6 +881,7 @@ const staticRouteContent = {
       <p>SpaceClickerGame.com is primarily a client-side browser experience. Supported games store progress, settings, local records, upgrades, and offline-progression timestamps in browser localStorage. This game-state data is not sent to a site analytics database by the current build.</p>
       <h2>Analytics, advertising, and network requests</h2>
       <p>The current production build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests can still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.</p>
+      <p>Current pages may request font files from Google Fonts and editorial or social-preview images from Unsplash. Those requests are made directly by the browser to the relevant provider and can include standard network information such as IP address, user agent, and request headers.</p>
       <h2>Saving, exporting, and clearing data</h2>
       <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save strings are portable text and should be treated as a backup rather than an encrypted secret.</p>
       <h2>Security and contact</h2>
