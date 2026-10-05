@@ -1044,14 +1044,17 @@ const App: React.FC = () => {
     return { amount: finalAmount, isCrit };
   };
 
+  const hasHeat = heat > 0;
+
   useEffect(() => {
-    if (viewMode !== 'game' || activeGame !== 'galaxy_miner' || overheated || heat <= 0) return;
+    if (viewMode !== 'game' || activeGame !== 'galaxy_miner' || overheated || !hasHeat) return;
 
     const timer = setInterval(() => {
         setHeat(prev => Math.max(0, prev - 2));
     }, 100);
+
     return () => clearInterval(timer);
-  }, [viewMode, activeGame, heat, overheated]);
+  }, [viewMode, activeGame, hasHeat, overheated]);
 
   const handleCometCatch = () => {
     setCometsCaught(prev => prev + 1);
