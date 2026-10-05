@@ -104,6 +104,9 @@ export const PrivacyPage = () => (
         <p>
             <strong>Analytics and advertising:</strong> The current site build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests may still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.
         </p>
+        <p>
+            <strong>External assets:</strong> Current pages may request font files from Google Fonts and editorial or social-preview images from Unsplash. Those requests are made directly by the browser to the relevant provider and can include standard network information such as IP address, user agent, and request headers.
+        </p>
 
         <h3>2. Use of Information</h3>
         <p>
