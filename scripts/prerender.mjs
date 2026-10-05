@@ -855,6 +855,9 @@ const staticRouteContent = {
     <section>
       <h2>What SpaceClickerGame.com is</h2>
       <p>SpaceClickerGame.com is a browser-based collection of clicker, idle, strategy, and Spacebar experiences. The goal is to make games and tools that start quickly, explain their mechanics clearly, and do not require an account to begin playing.</p>
+      <h2>Editorial and testing principles</h2>
+      <p>Guides and mechanics articles are checked against the current browser implementation whenever they describe this site's own games or tools. We avoid presenting unsupported averages, hardware claims, or universal performance thresholds as facts. Device-, browser-, duration-, and input-rule differences are stated when they materially affect a result.</p>
+      <p>Upgrade costs, prestige thresholds, local save rules, CPS counting, offline progress, and milestone requirements are checked against the current code before publication or revision. External factual references are linked when they materially support a claim.</p>
       <h2>Games and tools on the site</h2>
       <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
       <h2>Technology and local saves</h2>
