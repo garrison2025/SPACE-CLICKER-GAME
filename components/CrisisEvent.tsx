@@ -9,6 +9,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
   const [timeLeft, setTimeLeft] = useState(5.0);
   const [isActive, setIsActive] = useState(false);
   const onResolveRef = useRef(onResolve);
+  const resolvedRef = useRef(false);
 
   useEffect(() => {
     onResolveRef.current = onResolve;
@@ -20,6 +21,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
 
     const delay = Math.random() * 360000 + 120000;
     const timer = window.setTimeout(() => {
+      resolvedRef.current = false;
       setIsActive(true);
       setHealth(10);
       setTimeLeft(5.0);
@@ -31,30 +33,30 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
   useEffect(() => {
     if (!isActive) return;
 
-    const interval = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 0.1) {
-          clearInterval(interval);
-          handleFail();
-          return 0;
-        }
-        return prev - 0.1;
-      });
+    const interval = window.setInterval(() => {
+      setTimeLeft(prev => Math.max(0, prev - 0.1));
     }, 100);
 
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [isActive]);
 
-  const handleFail = () => {
+  const resolveCrisis = (success: boolean) => {
+    if (resolvedRef.current) return;
+    resolvedRef.current = true;
     setIsActive(false);
-    onResolveRef.current(false);
+    onResolveRef.current(success);
   };
+
+  useEffect(() => {
+    if (isActive && timeLeft <= 0) {
+      resolveCrisis(false);
+    }
+  }, [isActive, timeLeft]);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (health <= 1) {
-      setIsActive(false);
-      onResolveRef.current(true);
+      resolveCrisis(true);
     } else {
       setHealth(prev => prev - 1);
       const target = e.currentTarget as HTMLElement;
