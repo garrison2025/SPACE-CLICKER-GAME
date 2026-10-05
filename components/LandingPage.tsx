@@ -1,8 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { GAMES_CATALOG } from '../constants';
 import { GameId } from '../types';
-import { formatNumber } from '../utils';
 
 interface LandingPageProps {
   onStart: (gameId: GameId) => void;
@@ -73,30 +72,17 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
 
 // --- SUB-COMPONENTS ---
 
-const LiveStatsTicker = () => {
-  return (
-    <div className="w-full bg-space-950 border-y border-white/10 overflow-hidden py-2 relative z-20">
-       <div className="absolute inset-0 bg-neon-blue/5"></div>
-       <div className="flex gap-12 items-center animate-[scroll_40s_linear_infinite] whitespace-nowrap text-xs font-mono text-gray-400">
-          <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> SYSTEM STATUS: NOMINAL</span>
-          <span className="flex items-center gap-2 text-neon-blue"><span>★</span> COMMANDERS ACTIVE: 14,203</span>
-          <span className="flex items-center gap-2"><span>⛏️</span> TOTAL STARDUST MINED: {formatNumber(84932000000000)}</span>
-          <span className="flex items-center gap-2 text-yellow-400"><span>⚠</span> SECTOR 7 WARNING: HIGH RADIATION</span>
-          <span className="flex items-center gap-2"><span>🚀</span> NEW COLONIES ESTABLISHED: 842</span>
-          {/* Duplicate for smooth loop */}
-          <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> SYSTEM STATUS: NOMINAL</span>
-          <span className="flex items-center gap-2 text-neon-blue"><span>★</span> COMMANDERS ACTIVE: 14,203</span>
-          <span className="flex items-center gap-2"><span>⛏️</span> TOTAL STARDUST MINED: {formatNumber(84932000000000)}</span>
-       </div>
-       <style>{`
-         @keyframes scroll {
-           0% { transform: translateX(0); }
-           100% { transform: translateX(-50%); }
-         }
-       `}</style>
+const LiveStatsTicker = () => (
+  <div className="w-full bg-space-950 border-y border-white/10 overflow-hidden py-2 relative z-20">
+    <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 px-4 text-xs font-mono text-gray-400">
+      <span className="text-neon-green">● SYSTEM STATUS: NOMINAL</span>
+      <span>6 PLAYABLE SIMULATIONS</span>
+      <span className="text-neon-blue">LOCAL BROWSER SAVE</span>
+      <span>NO DOWNLOAD</span>
+      <span className="text-neon-purple">SPACEBAR TOOLS ONLINE</span>
     </div>
-  );
-};
+  </div>
+);
 
 const BrandHero = () => {
     const scrollToConsole = () => {
@@ -127,7 +113,7 @@ const BrandHero = () => {
 
                 {/* Subtitle - SEO OPTIMIZED */}
                 <p className="text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-                    Enter the <strong>Void Expanse</strong>. <br className="hidden md:block"/>
+                    Enter a connected universe of browser-based space simulations. <br className="hidden md:block"/>
                     Build your fleet, manage colonies, and dominate the galaxy in the ultimate browser-based idle strategy experience.
                     <br/>
                     <span className="text-sm text-neon-blue mt-4 inline-block font-mono tracking-widest border border-neon-blue/30 px-3 py-1 rounded bg-neon-blue/5">NO DOWNLOAD • FREE TO PLAY</span>
@@ -137,7 +123,7 @@ const BrandHero = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-white/5 bg-black/20 backdrop-blur-sm animate-in fade-in duration-1000 delay-300">
                     {[
                         { label: 'Universes', val: '6+' },
-                        { label: 'Active Players', val: '14k' },
+                        { label: 'Save', val: 'Local' },
                         { label: 'Price', val: 'Free' },
                         { label: 'Genre', val: 'Idle RPG' },
                     ].map((stat, i) => (
@@ -180,8 +166,8 @@ const WhyChooseUs = () => (
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-                { title: 'True Idle Strategy', desc: 'Most space clicker games require constant attention. We focus on automation. Build your drone fleet and let the game play itself while you sleep.' },
-                { title: 'Cross-Platform Progress', desc: 'Access your space clicker game empire from any device. Our browser-based engine ensures smooth performance on mobile and desktop without downloads.' },
+                { title: 'True Idle Strategy', desc: 'Automation is a core part of Galaxy Miner. Build your drone fleet and earn capped offline progress when you return after time away.' },
+                { title: 'Local Browser Progress', desc: 'Your Galaxy Miner progress auto-saves in this browser. The game works on desktop and mobile without requiring a download or account.' },
                 { title: 'Evolving Universe', desc: 'This is not just a mining simulator. It is a full space clicker game RPG with combat, colonization, and text-based mystery adventures.' }
             ].map((item, i) => (
                 <div key={i} className="bg-space-800/40 p-6 rounded-xl border border-white/10 hover:border-neon-blue/50 transition-colors">
@@ -237,73 +223,35 @@ const HowToPlay = () => (
     </section>
 );
 
-const NewsletterSection = () => {
-    const [email, setEmail] = useState('');
-    const [status, setStatus] = useState<'idle' | 'success'>('idle');
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setStatus('success');
-        setEmail('');
-    };
-
-    return (
-        <section className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-4xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-blue to-transparent"></div>
-            <div className="relative z-10">
-                <div className="text-4xl mb-4">📡</div>
-                <h3 className="text-2xl font-display font-bold text-white mb-2">SUBSPACE TRANSMISSION</h3>
-                <p className="text-gray-400 mb-8 max-w-lg mx-auto">
-                    Receive encrypted coordinates for new galaxies, patch notes, and exclusive artifact codes directly to your datalink.
-                </p>
-                
-                {status === 'success' ? (
-                    <div className="bg-green-500/10 border border-green-500 text-green-400 py-3 px-6 rounded inline-block animate-in fade-in zoom-in">
-                        ✓ SIGNAL LOCKED. STANDBY FOR TRANSMISSION.
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 justify-center max-w-md mx-auto">
-                        <input 
-                            type="email" 
-                            placeholder="commander@starfleet.com" 
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="flex-1 bg-black/50 border border-white/20 rounded px-4 py-3 text-white focus:outline-none focus:border-neon-blue transition-colors"
-                        />
-                        <button type="submit" className="bg-neon-blue hover:bg-white text-black font-bold px-6 py-3 rounded transition-colors uppercase tracking-wider">
-                            Connect
-                        </button>
-                    </form>
-                )}
-                <p className="text-xs text-gray-600 mt-4">No spam. Only high-priority intel.</p>
-            </div>
-        </section>
-    );
-};
-
-const CommunitySection = () => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-        {[
-            { user: "Cmdr. Shepard", role: "Elite Miner", text: "The automation depth in Galaxy Miner is insane. I've been running my Dyson Swarm for 3 weeks straight." },
-            { user: "Xeno_Hunter_99", role: "Defense Specialist", text: "Star Defense wave 50 boss is brutal. Make sure you upgrade your EMP cooldowns first!" },
-            { user: "Red_Planet_Architect", role: "Colony Governor", text: "Mars Colony perfectly captures the balance of resources. One dust storm nearly wiped me out." }
-        ].map((review, i) => (
-            <div key={i} className="bg-space-800/30 border border-white/5 p-6 rounded-xl hover:bg-space-800/50 transition-colors">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-lg border border-white/10">
-                        {['👨‍🚀', '👽', '🤖'][i]}
-                    </div>
-                    <div>
-                        <div className="font-bold text-white text-sm">{review.user}</div>
-                        <div className="text-xs text-neon-blue">{review.role}</div>
-                    </div>
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed italic">"{review.text}"</p>
-                <div className="mt-4 flex gap-1 text-yellow-500 text-xs">★★★★★</div>
-            </div>
-        ))}
+const SpacebarLaunchSection = () => (
+  <section className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-4xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
+    <div className="text-xs font-mono text-neon-blue tracking-[0.3em] mb-3">NEW SIMULATION</div>
+    <h3 className="text-3xl font-display font-black text-white mb-3">SPACEBAR CLICKER</h3>
+    <p className="text-gray-400 max-w-2xl mx-auto mb-7">
+      Press the physical Space key or tap the on-screen key, build CPS, buy upgrades, automate production and reset for permanent Quantum Keys.
+    </p>
+    <div className="flex flex-wrap justify-center gap-3">
+      <a href="/spacebar-clicker/" className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">PLAY SPACEBAR CLICKER</a>
+      <a href="/spacebar-counter/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">OPEN COUNTER</a>
+      <a href="/spacebar-clicker-test/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">CPS TEST</a>
     </div>
+  </section>
+);
+
+const SystemHighlights = () => (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+    {[
+      { icon: '⛏️', title: 'Galaxy Miner', text: 'Mine Stardust, automate production, manage heat and reset for permanent Dark Matter upgrades.' },
+      { icon: '⌨️', title: 'Spacebar Suite', text: 'Play the incremental Spacebar Clicker, count presses, or run a timed CPS speed test.' },
+      { icon: '💾', title: 'Browser First', text: 'No account or download is required. Supported games save progress locally in the current browser.' }
+    ].map((item) => (
+      <div key={item.title} className="bg-space-800/30 border border-white/5 p-6 rounded-xl hover:border-neon-blue/30 transition-colors">
+        <div className="text-3xl mb-3">{item.icon}</div>
+        <h3 className="font-bold text-white mb-2">{item.title}</h3>
+        <p className="text-gray-400 text-sm leading-relaxed">{item.text}</p>
+      </div>
+    ))}
+  </div>
 );
 
 const GalacticArchives = () => (
@@ -328,7 +276,7 @@ const GalacticArchives = () => (
                 <ul className="space-y-2 list-disc pl-4">
                     <li><strong>Instant Access:</strong> Start your <strong>space clicker game</strong> adventure instantly in Chrome, Firefox, or Safari without large downloads.</li>
                     <li><strong>Passive Progression:</strong> The best <strong>space clicker game</strong> respects your time. Your miners work 24/7, even when you are offline.</li>
-                    <li><strong>Infinite Scale:</strong> From a single asteroid to a Dyson Sphere, the scale of our <strong>space clicker game</strong> is mathematically infinite.</li>
+                    <li><strong>Infinite Scale:</strong> From a single asteroid to a Dyson Sphere, the progression is designed to scale across increasingly large resource milestones.</li>
                 </ul>
             </div>
         </div>
@@ -375,65 +323,6 @@ const TacticalDatabank = () => (
 const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave, heroSlot }) => {
   const featuredGame = GAMES_CATALOG.find(g => g.id === 'galaxy_miner');
 
-  // Inject Structured Data (Schema.org)
-  useEffect(() => {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      
-      const structuredData = {
-          "@context": "https://schema.org",
-          "@graph": [
-              {
-                  "@type": "WebSite",
-                  "name": "Space Clicker Game",
-                  "url": "https://spaceclickergame.com",
-                  "potentialAction": {
-                      "@type": "SearchAction",
-                      "target": "https://spaceclickergame.com?search={search_term_string}",
-                      "query-input": "required name=search_term_string"
-                  }
-              },
-              {
-                  "@type": "Organization",
-                  "name": "Void Expanse Games",
-                  "url": "https://spaceclickergame.com",
-                  "logo": "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=200",
-                  "sameAs": [
-                      "https://twitter.com/spaceclicker",
-                      "https://discord.gg/spaceclicker"
-                  ]
-              },
-              {
-                  "@type": "FAQPage",
-                  "mainEntity": [
-                      {
-                          "@type": "Question",
-                          "name": "Is this space clicker game free to play?",
-                          "acceptedAnswer": {
-                              "@type": "Answer",
-                              "text": "Yes. Our Space Clicker Game is 100% free with no paywalls blocking your galactic progression."
-                          }
-                      },
-                      {
-                          "@type": "Question",
-                          "name": "Does the game save my progress?",
-                          "acceptedAnswer": {
-                              "@type": "Answer",
-                              "text": "The system auto-saves to your local browser storage every 10 seconds, ensuring your space clicker game empire is always safe."
-                          }
-                      }
-                  ]
-              }
-          ]
-      };
-
-      script.text = JSON.stringify(structuredData);
-      document.head.appendChild(script);
-
-      return () => {
-          document.head.removeChild(script);
-      };
-  }, []);
 
   return (
     <div className="w-full flex flex-col bg-space-900 overflow-x-hidden">
@@ -526,7 +415,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                {GAMES_CATALOG.filter(g => g.id !== 'galaxy_miner').map((game) => (
                   <a 
                     key={game.id}
-                    href={`?view=game&id=${game.id}`}
+                    href={`/game/${game.id}`}
                     className="group relative h-64 perspective-1000 cursor-pointer block"
                     onClick={(e) => {
                         e.preventDefault();
@@ -579,13 +468,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
             <HowToPlay />
             <section>
                 <div className="flex items-center gap-4 mb-8">
-                     <h2 className="text-xl font-display font-bold text-white tracking-widest">GALACTIC FEDERATION</h2>
+                     <h2 className="text-xl font-display font-bold text-white tracking-widest">SYSTEM HIGHLIGHTS</h2>
                      <div className="h-px flex-1 bg-white/10"></div>
                 </div>
-                <CommunitySection />
+                <SystemHighlights />
             </section>
             <TacticalDatabank />
-            <NewsletterSection />
+            <SpacebarLaunchSection />
             <GalacticArchives />
 
             {/* Bottom CTA */}
