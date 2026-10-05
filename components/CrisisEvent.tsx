@@ -11,25 +11,16 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
 
   // Randomly start a crisis
   useEffect(() => {
-    // Spawns between 2 and 8 minutes
-    const scheduleNext = () => Math.random() * 360000 + 120000;
-    
-    let timer: ReturnType<typeof setTimeout>;
-    
-    const startCrisis = () => {
-       setIsActive(true);
-       setHealth(10); 
-       setTimeLeft(5.0);
-    };
+    if (isActive) return;
 
-    const loop = () => {
-        timer = setTimeout(() => {
-            startCrisis();
-        }, scheduleNext());
-    };
+    const delay = Math.random() * 360000 + 120000;
+    const timer = window.setTimeout(() => {
+      setIsActive(true);
+      setHealth(10);
+      setTimeLeft(5.0);
+    }, delay);
 
-    loop();
-    return () => clearTimeout(timer);
+    return () => window.clearTimeout(timer);
   }, [isActive]);
 
   useEffect(() => {
