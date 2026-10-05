@@ -409,8 +409,18 @@ const MarsColony: React.FC = () => {
                     
                     {/* The Interactive Planet */}
                     <div 
+                        role="button"
+                        tabIndex={0}
+                        aria-label="Excavate Mars for minerals"
                         onClick={(e) => handleExcavate(e, 0)}
-                        className="relative w-56 h-56 md:w-72 md:h-72 rounded-full cursor-pointer group active:scale-95 transition-transform duration-100 z-20"
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                event.preventDefault();
+                                const synthetic = { clientX: 0, clientY: 0, stopPropagation() {} } as unknown as React.MouseEvent;
+                                handleExcavate(synthetic, 0);
+                            }
+                        }}
+                        className="relative w-56 h-56 md:w-72 md:h-72 rounded-full cursor-pointer group active:scale-95 transition-transform duration-100 z-20 touch-manipulation focus:outline-none focus:ring-2 focus:ring-orange-400/70"
                     >
                         {/* Planet Surface */}
                         <div className={`absolute inset-0 rounded-full bg-gradient-to-tr transition-colors duration-1000 ${population > 100 ? 'from-orange-700 to-emerald-900' : 'from-orange-800 to-red-600'} shadow-[0_0_60px_rgba(234,88,12,0.4)] overflow-hidden border-4 border-orange-900/50 group-hover:border-orange-400/50 transition-colors`}>
@@ -530,6 +540,15 @@ const MarsColony: React.FC = () => {
                         return (
                             <div 
                                 key={b.id}
+                                role="button"
+                                tabIndex={canAfford ? 0 : -1}
+                                aria-disabled={!canAfford}
+                                onKeyDown={(event) => {
+                                    if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
+                                        event.preventDefault();
+                                        handleBuy(b.id);
+                                    }
+                                }}
                                 onClick={() => canAfford && handleBuy(b.id)}
                                 className={`p-3 rounded border flex items-center gap-3 transition-all select-none
                                     ${canAfford ? 'bg-orange-900/40 border-orange-500/50 hover:bg-orange-800 cursor-pointer active:scale-95' : 'opacity-50 grayscale cursor-not-allowed border-transparent bg-black/20'}
