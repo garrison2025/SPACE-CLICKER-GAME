@@ -171,6 +171,46 @@ for (const file of htmlFiles) {
         }
       }
 
+      if (gameRoutes.has(route) && !schemaNodes.some((node) => node?.['@type'] === 'VideoGame')) {
+        throw new Error('Game route schema is missing VideoGame');
+      }
+
+      if (
+        (route === '/spacebar-clicker/' ||
+          route === '/spacebar-clicker-2/' ||
+          route === '/spacebar-clicker-unblocked/') &&
+        !schemaNodes.some((node) => node?.['@type'] === 'VideoGame')
+      ) {
+        throw new Error('Spacebar game route schema is missing VideoGame');
+      }
+
+      if (
+        (route === '/spacebar-counter/' || route === '/spacebar-clicker-test/') &&
+        !schemaNodes.some((node) => node?.['@type'] === 'WebApplication')
+      ) {
+        throw new Error('Spacebar utility route schema is missing WebApplication');
+      }
+
+      if (
+        (route === '/spacebar-games/' || route === '/blog/') &&
+        !schemaNodes.some((node) => node?.['@type'] === 'ItemList')
+      ) {
+        throw new Error('Collection route schema is missing ItemList');
+      }
+
+      if (route === '/about/' && !schemaNodes.some((node) => node?.['@type'] === 'AboutPage')) {
+        throw new Error('About route schema is missing AboutPage');
+      }
+
+      if (route === '/') {
+        if (!schemaNodes.some((node) => node?.['@type'] === 'WebSite')) {
+          throw new Error('Homepage schema is missing WebSite');
+        }
+        if (!schemaNodes.some((node) => node?.['@type'] === 'VideoGame')) {
+          throw new Error('Homepage schema is missing flagship VideoGame');
+        }
+      }
+
       if (route === '/compare/' || route === '/achievements/') {
         if (!schemaNodes.some((node) => node?.['@type'] === 'BreadcrumbList')) {
           throw new Error('Editorial route schema is missing BreadcrumbList');
