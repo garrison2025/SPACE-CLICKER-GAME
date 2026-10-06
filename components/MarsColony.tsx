@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MarsBuilding, MarsResourceState, FloatingText } from '../types';
 import { formatNumber } from '../utils';
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const MARS_SAVE_KEY = 'mars_colony_save_v2';
 const MAX_RESOURCE_VALUE = 1e300;
@@ -376,7 +377,7 @@ const MarsColony: React.FC = () => {
 
     // Init Load
     useEffect(() => {
-        const saved = localStorage.getItem(MARS_SAVE_KEY);
+        const saved = safeGetStorageItem(MARS_SAVE_KEY);
         if (!saved) return;
 
         try {
@@ -397,7 +398,7 @@ const MarsColony: React.FC = () => {
     }, []);
 
     const saveGame = useCallback(() => {
-        localStorage.setItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current));
+        safeSetStorageItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current));
         setLastSaved(Date.now());
     }, []);
 
