@@ -91,6 +91,7 @@ const SpacebarClickerTest: React.FC = () => {
   const finishedRef = useRef(false);
   const bestCpsRef = useRef(bestCps);
   const historyRef = useRef(history);
+  const hiddenAtRef = useRef<number | null>(null);
 
   const loadBest = (nextMode: TestMode) => {
     const nextBest = readBestCps(BEST_PREFIX + modeKey(nextMode));
@@ -203,8 +204,9 @@ const SpacebarClickerTest: React.FC = () => {
   useEffect(() => {
     if (!running || startedAt.current === null) return;
     const timer = window.setInterval(() => {
+      if (document.hidden) return;
+
       const now = performance.now();
-      const elapsed = (now - (startedAt.current || now)) / 1000;
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
       setCurrentCps(cps);
@@ -220,6 +222,39 @@ const SpacebarClickerTest: React.FC = () => {
     }, 100);
     return () => window.clearInterval(timer);
   }, [running, mode]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const now = performance.now();
+
+      if (document.hidden) {
+        hiddenAtRef.current = running ? now : null;
+        pressTimes.current = [];
+        setCurrentCps(0);
+        return;
+      }
+
+      if (
+        running &&
+        hiddenAtRef.current !== null &&
+        startedAt.current !== null
+      ) {
+        const hiddenDuration = Math.max(0, now - hiddenAtRef.current);
+        startedAt.current += hiddenDuration;
+        if (deadlineAt.current !== null) {
+          deadlineAt.current += hiddenDuration;
+          setTimeLeft(Math.max(0, (deadlineAt.current - now) / 1000));
+        }
+      }
+
+      hiddenAtRef.current = null;
+      pressTimes.current = [];
+      setCurrentCps(0);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [running]);
 
   const averageCps = finished && finalElapsed > 0
     ? clicks / finalElapsed
