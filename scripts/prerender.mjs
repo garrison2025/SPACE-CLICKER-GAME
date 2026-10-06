@@ -11,6 +11,7 @@ if (!fs.existsSync(basePath)) {
 const baseHtml = fs.readFileSync(basePath, 'utf8');
 const site = 'https://spaceclickergame.com';
 const ORGANIZATION_ID = site + '/#organization';
+const ORGANIZATION_LOGO = site + '/favicon.svg';
 const EDITORIAL_ID = site + '/#editorial';
 const SITE_CONTENT_UPDATED = '2026-10-06';
 
@@ -272,7 +273,11 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "@type": "Organization",
           "@id": ORGANIZATION_ID,
           "name": "Space Clicker Game",
-          "url": site + "/"
+          "url": site + "/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": ORGANIZATION_LOGO
+          }
         },
         {
           "@type": "VideoGame",
@@ -635,7 +640,11 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             "@type": "Organization",
             "@id": ORGANIZATION_ID,
             "name": "Space Clicker Game",
-            "url": site + "/"
+            "url": site + "/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": ORGANIZATION_LOGO
+            }
           },
           "isPartOf": {
             "@type": "WebSite",
@@ -1174,7 +1183,11 @@ const renderHtml = (route, title, description, h1) => {
             "@type": "Organization",
             "@id": ORGANIZATION_ID,
             "name": "Space Clicker Game",
-            "url": site + "/"
+            "url": site + "/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": ORGANIZATION_LOGO
+            }
           },
           {
             "@type": "BreadcrumbList",
