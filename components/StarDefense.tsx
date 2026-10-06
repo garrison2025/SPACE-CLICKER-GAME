@@ -648,7 +648,10 @@ const StarDefense: React.FC = () => {
         setShield(0);
         setWave(1);
         setScraps(0);
+        comboRef.current = 0;
+        comboTimerRef.current = 0;
         setCombo(0);
+        setComboTimer(0);
         skillCooldownsRef.current = {};
         activeEffectsRef.current = {};
         statusUiActiveRef.current = false;
