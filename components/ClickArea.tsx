@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { FloatingText, Planet, Upgrade } from '../types';
 import { formatNumber } from '../utils';
 import { PLANETS } from '../constants';
@@ -307,11 +307,21 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const stationCount = Math.min(upgrades.find(u => u.id === 'station')?.count || 0, 3);
   const roverCount = Math.min(upgrades.find(u => u.id === 'rover')?.count || 0, 5);
 
-  // Shake Style
-  const containerStyle = { 
-      transform: `translate(${Math.random() * shake - shake/2}px, ${Math.random() * shake - shake/2}px)`,
-      filter: !reduceMotion && (isFlux || shake > 10) ? `drop-shadow(${Math.random()*4-2}px 0 0 rgba(255,0,0,0.5)) drop-shadow(${Math.random()*-4+2}px 0 0 rgba(0,0,255,0.5))` : 'none'
-  };
+  // Shake Style: randomize only when the actual shake/flux state changes,
+  // not on unrelated React renders.
+  const containerStyle = useMemo(() => {
+      const offsetX = reduceMotion ? 0 : Math.random() * shake - shake / 2;
+      const offsetY = reduceMotion ? 0 : Math.random() * shake - shake / 2;
+      const redShift = Math.random() * 4 - 2;
+      const blueShift = Math.random() * -4 + 2;
+
+      return {
+          transform: `translate(${offsetX}px, ${offsetY}px)`,
+          filter: !reduceMotion && (isFlux || shake > 10)
+              ? `drop-shadow(${redShift}px 0 0 rgba(255,0,0,0.5)) drop-shadow(${blueShift}px 0 0 rgba(0,0,255,0.5))`
+              : 'none'
+      };
+  }, [shake, isFlux, reduceMotion]);
 
   return (
     <div 
