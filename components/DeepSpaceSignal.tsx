@@ -117,6 +117,8 @@ const DeepSpaceSignal: React.FC = () => {
     const energyRef = useRef(energy);
     const isScanningRef = useRef(isScanning);
     const handleScanRef = useRef<() => void>(() => undefined);
+    const mountedRef = useRef(true);
+    const pendingScanCostRef = useRef(0);
     const saveStateRef = useRef({ dataBytes, energy, upgrades, messages, factions });
 
     useEffect(() => {
@@ -168,6 +170,41 @@ const DeepSpaceSignal: React.FC = () => {
     
     // MIL faction reduces scan cost (Base 20, Min 5)
     const scanCost = Math.max(5, 20 * (1 - (factions.MIL * 0.01)));
+
+    useEffect(() => {
+        mountedRef.current = true;
+
+        return () => {
+            mountedRef.current = false;
+
+            const pendingCost = pendingScanCostRef.current;
+            if (pendingCost <= 0) return;
+
+            pendingScanCostRef.current = 0;
+            isScanningRef.current = false;
+
+            const currentUpgrades = upgradesRef.current;
+            const currentFactions = factionsRef.current;
+            const currentMaxEnergy =
+                (100 * Math.pow(1.2, currentUpgrades.battery - 1)) *
+                (1 + currentFactions.VOID * 0.01);
+            const refundedEnergy = Math.min(
+                currentMaxEnergy,
+                energyRef.current + pendingCost
+            );
+
+            energyRef.current = refundedEnergy;
+            const refundedSnapshot = {
+                ...saveStateRef.current,
+                energy: refundedEnergy,
+            };
+            saveStateRef.current = refundedSnapshot;
+            safeSetStorageItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({
+                ...refundedSnapshot,
+                lastSaveTime: Date.now(),
+            }));
+        };
+    }, []);
 
     // --- VISUALIZER LOOP ---
     // The spectrum is decorative, so it does not need a permanent 60fps loop.
@@ -301,6 +338,7 @@ const DeepSpaceSignal: React.FC = () => {
         }
 
         isScanningRef.current = true;
+        pendingScanCostRef.current = scanCost;
         setIsScanning(true);
         const nextEnergy = Math.max(0, energyRef.current - scanCost);
         energyRef.current = nextEnergy;
@@ -308,28 +346,13 @@ const DeepSpaceSignal: React.FC = () => {
         setEnergy(nextEnergy);
         playSound('scan');
 
-        // Visual "Scanning..." effect
-        const tempId = Date.now().toString();
-        commitMessages([
-            ...messagesRef.current,
-            {
-                id: tempId,
-                timestamp: new Date().toLocaleTimeString(),
-                sender: "SYSTEM",
-                content: `Scanning Sector ${frequency.toFixed(2)} MHz...`,
-                isDecoded: true,
-                encryptionLevel: 0,
-                rewardData: 0
-            }
-        ]);
-
         try {
             const result = await generateAlienMessage(frequency, upgradesRef.current.antenna);
-            
-            // Replace placeholder
-            const filtered = messagesRef.current.filter(m => m.id !== tempId);
+            if (!mountedRef.current) return;
+
+            pendingScanCostRef.current = 0;
             commitMessages([
-                ...filtered,
+                ...messagesRef.current,
                 {
                     id: Date.now().toString(),
                     timestamp: new Date().toLocaleTimeString(),
@@ -345,14 +368,18 @@ const DeepSpaceSignal: React.FC = () => {
             setFrequency(prev => prev + (Math.random() * 5 - 2));
 
         } catch {
-            const refundedEnergy = Math.min(maxEnergy, energyRef.current + scanCost);
+            if (!mountedRef.current) return;
+
+            const pendingCost = pendingScanCostRef.current;
+            pendingScanCostRef.current = 0;
+            const refundedEnergy = Math.min(maxEnergy, energyRef.current + pendingCost);
             energyRef.current = refundedEnergy;
             saveStateRef.current = { ...saveStateRef.current, energy: refundedEnergy };
             setEnergy(refundedEnergy);
 
             const failedAt = Date.now();
             commitMessages([
-                ...messagesRef.current.filter(message => message.id !== tempId),
+                ...messagesRef.current,
                 {
                     id: `scan-error-${failedAt}`,
                     timestamp: new Date(failedAt).toLocaleTimeString(),
@@ -365,8 +392,10 @@ const DeepSpaceSignal: React.FC = () => {
             ]);
             playSound('error');
         } finally {
-            isScanningRef.current = false;
-            setIsScanning(false);
+            if (mountedRef.current) {
+                isScanningRef.current = false;
+                setIsScanning(false);
+            }
         }
     };
 
