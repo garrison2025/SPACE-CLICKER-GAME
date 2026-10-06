@@ -216,6 +216,15 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                <span className="hidden md:inline">{isFullscreen ? 'EXIT FULLSCREEN' : 'FULLSCREEN'}</span>
             </button>
             <span role="status" aria-live="polite" className="sr-only">{systemStatus}</span>
+            <span role="status" aria-live="polite" className="sr-only">
+              {saveStatus === 'saving'
+                ? 'Saving game.'
+                : saveStatus === 'saved'
+                  ? 'Game saved.'
+                  : saveStatus === 'failed'
+                    ? 'Game save failed.'
+                    : ''}
+            </span>
          </div>
       </header>
 
