@@ -150,8 +150,13 @@ expect(builtManifest.display === 'standalone', 'Manifest display must remain sta
 expect(builtManifest.theme_color === '#0b0d17', 'Manifest theme color must match the site shell');
 expect(
   Array.isArray(builtManifest.icons) &&
-  builtManifest.icons.some((icon) => icon.src === '/favicon.svg' && icon.type === 'image/svg+xml'),
-  'Manifest must reference the shipped SVG app icon'
+  builtManifest.icons.some(
+    (icon) =>
+      icon.src === '/favicon.svg' &&
+      icon.type === 'image/svg+xml' &&
+      String(icon.purpose || '').split(/\s+/).includes('maskable')
+  ),
+  'Manifest must reference the shipped SVG app icon as maskable'
 );
 
 const robots = await run('https://spaceclickergame.com/robots.txt');
