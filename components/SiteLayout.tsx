@@ -12,6 +12,7 @@ interface SiteLayoutProps {
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -21,7 +22,10 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
     if (!mobileMenuOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMobileMenuOpen(false);
+      if (event.key === 'Escape') {
+        setMobileMenuOpen(false);
+        window.requestAnimationFrame(() => mobileMenuButtonRef.current?.focus());
+      }
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -113,7 +117,9 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
 
                 <div ref={mobileMenuRef} className="md:hidden relative">
                   <button
+                    ref={mobileMenuButtonRef}
                     type="button"
+                    aria-haspopup="true"
                     aria-expanded={mobileMenuOpen}
                     aria-controls="mobile-site-navigation"
                     aria-label={mobileMenuOpen ? 'Close site menu' : 'Open site menu'}
