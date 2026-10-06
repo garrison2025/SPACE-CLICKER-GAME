@@ -100,6 +100,7 @@ const loadSave = (): SaveData => {
     const raw = safeGetStorageItem(SAVE_KEY);
     return raw ? sanitize(JSON.parse(raw)) : defaultSave();
   } catch {
+    safeRemoveStorageItem(SAVE_KEY);
     return defaultSave();
   }
 };
