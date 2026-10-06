@@ -629,7 +629,9 @@ const GravityIdle: React.FC = () => {
 
     // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
-        const t = setInterval(saveGame, 5000);
+        const t = setInterval(() => {
+            if (!document.hidden) saveGame();
+        }, 5000);
 
         const creditHiddenProgress = () => {
             const hiddenAt = hiddenAtRef.current;
@@ -669,7 +671,9 @@ const GravityIdle: React.FC = () => {
             creditHiddenProgress();
         };
 
-        const handlePageHide = () => saveGame();
+        const handlePageHide = () => {
+            if (!document.hidden) saveGame();
+        };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
         window.addEventListener('pagehide', handlePageHide);
@@ -678,7 +682,7 @@ const GravityIdle: React.FC = () => {
             clearInterval(t);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('pagehide', handlePageHide);
-            saveGame();
+            if (!document.hidden) saveGame();
         };
     }, [saveGame]);
 
