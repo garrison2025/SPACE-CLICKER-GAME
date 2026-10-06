@@ -18,4 +18,5 @@ jobs:
           package-manager-cache: false
       - run: npm install --no-audit --no-fund
       - run: npm run build
+      - run: node scripts/test-project-storage.mjs
       - run: node scripts/test-middleware.mjs
