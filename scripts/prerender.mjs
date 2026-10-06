@@ -931,7 +931,7 @@ const staticRouteContent = {
       <h2>What is a Spacebar Counter?</h2>
       <p>Spacebar Counter is an untimed browser tool for counting deliberate Space key presses. It is useful when you want a running total rather than a fixed 5-second or 10-second challenge. The session continues until you choose to reset it.</p>
       <h2>Total presses and CPS metrics</h2>
-      <p>The counter displays total presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses the full active session, and peak CPS records the strongest rolling one-second burst.</p>
+      <p>The counter displays total presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses the full active session, and peak CPS records the strongest rolling one-second burst. When the page is hidden or backgrounded, active timing pauses and resumes when the page becomes visible again, so hidden time does not dilute average CPS.</p>
       <h2>Holding Space does not inflate the count</h2>
       <p>Browser-generated repeat events from holding the key down are ignored. Each count is based on a new deliberate Space keydown or an intentional press on the on-screen control.</p>
       <h2>Local best and privacy</h2>
@@ -947,7 +947,7 @@ const staticRouteContent = {
       <h2>Average CPS, current CPS, and peak CPS</h2>
       <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Some tools call the same Spacebar rate PPS, or presses per second. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
       <h2>How timed tests start and finish</h2>
-      <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. In 100-click mode, the test ends on the one-hundredth valid press and records elapsed time.</p>
+      <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. If the page is hidden or backgrounded, the clock pauses until the page becomes visible again. In 100-click mode, the test ends on the one-hundredth valid press and records active elapsed time.</p>
       <h2>How to compare CPS results</h2>
       <p>There is no universal “good CPS” threshold across every keyboard and test. For a meaningful comparison, keep the device, browser, duration, and input rule the same between attempts. Short tests emphasize burst speed, while longer tests put more weight on consistency.</p>
       <h2>Key-repeat protection</h2>
