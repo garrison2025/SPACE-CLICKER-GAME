@@ -1357,7 +1357,7 @@ ${guideRows}
 - Primary game: Galaxy Miner
 - Current simulation count: 6
 - Spacebar tools include an incremental clicker, an untimed counter, timed CPS tests, a 100-click sprint and a separate Spacebar Clicker 2 progression mode.
-- Supported saves and personal records use local browser storage rather than cloud sync.
+- Supported saves and personal records use local browser storage rather than automatic cloud sync. Spacebar Clicker and Spacebar Clicker 2 can export and import manual save backups.
 - Privacy: ${site}/privacy/
 - About: ${site}/about/
 - HTML sitemap: ${site}/sitemap/
