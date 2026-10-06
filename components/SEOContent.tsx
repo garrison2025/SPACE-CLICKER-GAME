@@ -71,7 +71,9 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                                   <td className="py-2 font-bold text-neon-blue">{u.name}</td>
                                   <td className="py-2">{u.type === 'manual' ? 'Click' : 'Automation'}</td>
                                   <td className="py-2 font-mono">{formatNumber(u.baseCost)}</td>
-                                  <td className="py-2 font-mono">+{formatNumber(u.baseProduction)}/s</td>
+                                  <td className="py-2 font-mono">
+                                      +{formatNumber(u.baseProduction)}{u.type === 'manual' ? '/click' : '/s'}
+                                  </td>
                               </tr>
                           ))}
                       </tbody>
