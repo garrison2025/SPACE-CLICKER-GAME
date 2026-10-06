@@ -481,6 +481,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                         loading="eager"
                                         fetchPriority="high"
                                         decoding="async"
+                                        onError={(event) => {
+                                            event.currentTarget.style.display = 'none';
+                                        }}
                                         className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700 opacity-80"
                                     />
                                 </div>
@@ -649,6 +652,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                         loading={index === 0 ? 'eager' : 'lazy'}
                                         fetchPriority={index === 0 ? 'high' : 'auto'}
                                         decoding="async"
+                                        onError={(event) => {
+                                            event.currentTarget.style.display = 'none';
+                                        }}
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
                                     />
                                 </div>
