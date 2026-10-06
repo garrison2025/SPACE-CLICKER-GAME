@@ -160,7 +160,8 @@ const MarsColony: React.FC = () => {
     }));
     
     const [buildings, setBuildings] = useState<MarsBuilding[]>(INITIAL_BUILDINGS);
-    const [lastSaved, setLastSaved] = useState(Date.now());
+    const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'failed'>('idle');
+    const manualSaveTimerRef = useRef<number>();
     const stateRef = useRef({ resources, buildings });
     
     // Visual State
@@ -397,30 +398,36 @@ const MarsColony: React.FC = () => {
         }
     }, []);
 
-    const saveGame = useCallback(() => {
-        safeSetStorageItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current));
-        setLastSaved(Date.now());
-    }, []);
+    const saveGame = useCallback(() =>
+        safeSetStorageItem(MARS_SAVE_KEY, JSON.stringify(stateRef.current)), []);
 
-    // Save Loop & Events
+    const handleManualSave = () => {
+        if (manualSaveTimerRef.current !== undefined) {
+            window.clearTimeout(manualSaveTimerRef.current);
+        }
+        const persisted = saveGame();
+        setSaveStatus(persisted ? 'saved' : 'failed');
+        manualSaveTimerRef.current = window.setTimeout(() => {
+            manualSaveTimerRef.current = undefined;
+            setSaveStatus('idle');
+        }, 1800);
+    };
+
+    // Save Loop & Browser Exit Persistence
     useEffect(() => {
         const timer = setInterval(saveGame, 5000);
-        
-        const handleForceSave = () => {
-            saveGame();
-        };
-
         const handleBeforeUnload = () => {
             saveGame();
         };
 
-        window.addEventListener('game-save-trigger', handleForceSave);
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
             clearInterval(timer);
-            window.removeEventListener('game-save-trigger', handleForceSave);
             window.removeEventListener('beforeunload', handleBeforeUnload);
+            if (manualSaveTimerRef.current !== undefined) {
+                window.clearTimeout(manualSaveTimerRef.current);
+            }
             saveGame();
         };
     }, [saveGame]);
@@ -622,10 +629,16 @@ const MarsColony: React.FC = () => {
                     <h2 className="font-display font-bold text-xl text-orange-400 tracking-wider">CONSTRUCTION</h2>
                     <button
                         type="button"
-                        onClick={saveGame} 
-                        className="min-h-11 px-3 py-2 text-[10px] border border-orange-500/50 text-orange-300 rounded hover:bg-orange-900 transition-colors"
+                        onClick={handleManualSave}
+                        className={`min-h-11 min-w-20 px-3 py-2 text-[10px] border rounded transition-colors ${
+                            saveStatus === 'saved'
+                                ? 'border-green-500/60 text-green-300 bg-green-900/20'
+                                : saveStatus === 'failed'
+                                  ? 'border-red-500/60 text-red-300 bg-red-900/20'
+                                  : 'border-orange-500/50 text-orange-300 hover:bg-orange-900'
+                        }`}
                     >
-                        SAVE
+                        {saveStatus === 'saved' ? 'SAVED ✓' : saveStatus === 'failed' ? 'FAILED' : 'SAVE'}
                     </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
