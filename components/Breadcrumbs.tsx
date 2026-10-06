@@ -10,9 +10,9 @@ interface BreadcrumbsProps {
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigate }) => {
     const getItemPath = (view?: ViewMode, id?: string) => {
         if (!view || view === 'home') return '/';
-        if (view === 'game') return id ? `/game/${id}` : '/game/galaxy_miner';
-        if (view === 'blog') return id ? `/blog/${id}` : '/blog';
-        return `/${view}`;
+        if (view === 'game') return id ? `/game/${id}/` : '/game/galaxy_miner/';
+        if (view === 'blog') return id ? `/blog/${id}/` : '/blog/';
+        return `/${view}/`;
     };
 
     return (
@@ -22,7 +22,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigate }) => {
                     <a 
                         href="/" 
                         onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
-                        className="hover:text-neon-blue transition-colors flex items-center gap-2"
+                        className="min-h-11 inline-flex items-center gap-2 rounded px-1 hover:text-neon-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                     >
                         <span>⌂</span> COMMAND
                     </a>
@@ -33,12 +33,12 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigate }) => {
 
                     return (
                         <li key={index} className="flex items-center">
-                            <span className="mx-2 text-gray-700">/</span>
+                            <span className="mx-2 text-gray-700" aria-hidden="true">/</span>
                             {item.view && !isLast ? (
                                 <a 
                                     href={path}
                                     onClick={(e) => { e.preventDefault(); item.view && onNavigate(item.view, item.id); }}
-                                    className="hover:text-neon-blue transition-colors"
+                                    className="min-h-11 inline-flex items-center rounded px-1 hover:text-neon-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                                 >
                                     {item.label}
                                 </a>
