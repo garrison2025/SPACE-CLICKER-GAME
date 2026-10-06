@@ -135,10 +135,10 @@ const SpacebarClickerTest: React.FC = () => {
     const entry: TestHistoryEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       mode: mode.type === 'time' ? `${mode.seconds}s` : `${mode.clicks} clicks`,
-      clicks: clicksRef.current,
-      elapsed: safeElapsed,
-      averageCps: average,
-      peakCps: peak,
+      clicks: Math.min(MAX_STORED_CLICKS, clicksRef.current),
+      elapsed: Math.min(MAX_STORED_ELAPSED, safeElapsed),
+      averageCps: Math.min(MAX_STORED_CPS, average),
+      peakCps: Math.min(MAX_STORED_CPS, peak),
       completedAt: Date.now(),
     };
 
