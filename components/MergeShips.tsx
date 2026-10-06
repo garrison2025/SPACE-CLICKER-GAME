@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MergeShip, FloatingText, MergeUpgradeState, Particle } from '../types';
 import { formatNumber } from '../utils';
 import { trapDialogFocus } from '../utils/dialogFocus';
-import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 const MERGE_SAVE_KEY = 'merge_ships_save_v3';
 const HANGAR_SLOTS = 12; // 4x3 Grid
@@ -658,8 +658,8 @@ const MergeShips: React.FC = () => {
             if (credited > 0) {
                 setOfflineProfit({ time: seconds, amount: credited });
             }
-        } catch (error) {
-            console.warn('Could not load Merge Ships save.', error);
+        } catch {
+            safeRemoveStorageItem(MERGE_SAVE_KEY);
         }
     }, []);
 
