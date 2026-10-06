@@ -1894,8 +1894,8 @@ const App: React.FC = () => {
                   productionRate: effectiveRate
               });
           }
-      } catch (error) {
-          console.error("Failed to load save", error);
+      } catch {
+          safeRemoveStorageItem(SAVE_KEY);
       }
   }, []);
 
