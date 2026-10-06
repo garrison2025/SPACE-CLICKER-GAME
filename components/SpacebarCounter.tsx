@@ -19,6 +19,7 @@ const loadCurrentCount = () => loadCounterValue(CURRENT_KEY);
 const SpacebarCounter: React.FC = () => {
   const [count, setCount] = useState(loadCurrentCount);
   const [elapsedMs, setElapsedMs] = useState(0);
+  const [sessionPresses, setSessionPresses] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentCps, setCurrentCps] = useState(0);
   const [peakCps, setPeakCps] = useState(0);
@@ -29,6 +30,7 @@ const SpacebarCounter: React.FC = () => {
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
   const countRef = useRef(count);
+  const sessionPressesRef = useRef(0);
   const bestCountRef = useRef(bestCount);
   const hiddenAtRef = useRef<number | null>(null);
 
@@ -44,9 +46,12 @@ const SpacebarCounter: React.FC = () => {
 
     const nextCount = Math.min(Number.MAX_SAFE_INTEGER, countRef.current + 1);
     const nextBest = Math.max(bestCountRef.current, nextCount);
+    const nextSessionPresses = Math.min(Number.MAX_SAFE_INTEGER, sessionPressesRef.current + 1);
     countRef.current = nextCount;
+    sessionPressesRef.current = nextSessionPresses;
     bestCountRef.current = nextBest;
     setCount(nextCount);
+    setSessionPresses(nextSessionPresses);
     setBestCount(nextBest);
     safeSetStorageItem(CURRENT_KEY, String(nextCount));
     safeSetStorageItem(BEST_KEY, String(nextBest));
@@ -109,6 +114,8 @@ const SpacebarCounter: React.FC = () => {
   }, [running]);
 
   const resetSessionMetrics = () => {
+    sessionPressesRef.current = 0;
+    setSessionPresses(0);
     setElapsedMs(0);
     setRunning(false);
     setCurrentCps(0);
@@ -128,10 +135,13 @@ const SpacebarCounter: React.FC = () => {
 
   const decrement = () => {
     const nextCount = Math.max(0, countRef.current - 1);
+    const nextSessionPresses = Math.max(0, sessionPressesRef.current - 1);
     countRef.current = nextCount;
+    sessionPressesRef.current = nextSessionPresses;
     setCount(nextCount);
+    setSessionPresses(nextSessionPresses);
     safeSetStorageItem(CURRENT_KEY, String(nextCount));
-    setStatusMessage(nextCount === 0 ? 'Current count is zero.' : 'Removed one from the current total.');
+    setStatusMessage(nextCount === 0 ? 'Current count is zero.' : 'Removed one from the current total and active-session tally.');
   };
 
   const applyManualCount = () => {
@@ -161,7 +171,7 @@ const SpacebarCounter: React.FC = () => {
   };
 
   const seconds = elapsedMs / 1000;
-  const average = seconds > 0 ? count / seconds : 0;
+  const average = seconds > 0 ? sessionPresses / seconds : 0;
 
   const enterFullscreen = async () => {
     if (document.fullscreenElement || !document.documentElement.requestFullscreen) {
@@ -226,7 +236,8 @@ const SpacebarCounter: React.FC = () => {
             <span className="block mt-2 text-xs text-neon-blue font-mono">PRESS OR TAP</span>
           </button>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-8">
+            <Metric label="Session Presses" value={String(sessionPresses)} />
             <Metric label="Time" value={seconds.toFixed(1) + 's'} />
             <Metric label="Current CPS" value={currentCps.toFixed(1)} />
             <Metric label="Average CPS" value={average.toFixed(2)} />
@@ -291,7 +302,7 @@ const SpacebarCounter: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Counter vs speed test</h2>
             <p>
-              The counter runs until you reset it. If you switch to another tab or background the browser, active timing pauses and resumes when the page is visible again, so hidden time does not dilute average CPS. For a timed challenge such as five, ten, thirty, or sixty seconds, use the dedicated Spacebar Clicker Test. For an incremental game with upgrades and prestige, use Spacebar Clicker.
+              The total counter persists until you reset it. CPS metrics use only deliberate presses made during the current active timing session, so a restored or manually set starting total does not inflate your speed. If you switch to another tab or background the browser, active timing pauses and resumes when the page is visible again, so hidden time does not dilute average CPS. For a timed challenge such as five, ten, thirty, or sixty seconds, use the dedicated Spacebar Clicker Test. For an incremental game with upgrades and prestige, use Spacebar Clicker.
             </p>
           </section>
           <section>
