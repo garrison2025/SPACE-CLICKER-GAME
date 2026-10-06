@@ -328,7 +328,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
               "name": "Does Galaxy Miner save my progress?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save."
+                "text": "Galaxy Miner auto-saves to local browser storage. The Telemetry & Backup panel can also copy a portable save code or download a .scg backup file for manual safekeeping. Clearing site data, using private browsing, or changing devices can remove or separate the local save."
               }
             },
             {
@@ -824,6 +824,8 @@ const staticRouteContent = {
       <p>The run starts on Proxima Centauri B at 1x production. Reaching 1 million Stardust unlocks Kepler-186f at 10x production, 1 billion unlocks Trappist-1e at 50x, and 1 trillion unlocks the Galactic Core at 200x. Once a planet is unlocked in the current run, spending Stardust does not move the run backward.</p>
       <h2>Automation and offline production</h2>
       <p>Automatic upgrades continue producing Stardust without repeated clicks. Supported saved runs can also credit capped offline production after time away, using the saved automation rate rather than pretending the game ran continuously in the background.</p>
+      <h2>Local save and portable backup</h2>
+      <p>Galaxy Miner auto-saves to local browser storage. The Telemetry & Backup panel can copy a portable Base64 save code or download a .scg backup file, and either format can be restored manually after validation. These backups are not cloud sync or encryption.</p>
       <h2>Galactic Reset and Dark Matter</h2>
       <p>Galactic Reset becomes available from 1 trillion Stardust. A reset removes current Stardust and standard upgrades but keeps Dark Matter, permanent Void Technology, and lifetime progress. Larger runs can award more Dark Matter, so reset timing becomes a long-term efficiency decision.</p>
       <p>For upgrade planning, see the <a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker strategy guide</a> or track thresholds on the <a href="/achievements/">Galaxy Miner milestones page</a>.</p>
