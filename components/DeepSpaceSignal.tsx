@@ -471,19 +471,15 @@ const DeepSpaceSignal: React.FC = () => {
         }));
     }, []);
 
-    // Auto Save & Event Listeners
+    // Auto Save & Browser Exit Persistence
     useEffect(() => {
         const t = setInterval(saveGame, 5000);
-        
-        const handleForceSave = () => saveGame();
         const handleBeforeUnload = () => saveGame();
 
-        window.addEventListener('game-save-trigger', handleForceSave);
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
             clearInterval(t);
-            window.removeEventListener('game-save-trigger', handleForceSave);
             window.removeEventListener('beforeunload', handleBeforeUnload);
             saveGame();
         };
