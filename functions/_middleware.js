@@ -93,13 +93,29 @@ const html404 = (url) => `<!doctype html>
 </body>
 </html>`;
 
+const applySecurityHeaders = (headers) => {
+  headers.set('referrer-policy', 'strict-origin-when-cross-origin');
+  headers.set('x-content-type-options', 'nosniff');
+  headers.set('permissions-policy', 'camera=(), microphone=(), geolocation=()');
+  return headers;
+};
+
+const withSecurityHeaders = (response) => new Response(response.body, {
+  status: response.status,
+  statusText: response.statusText,
+  headers: applySecurityHeaders(new Headers(response.headers))
+});
+
+const redirectResponse = (destination, status = 301) =>
+  withSecurityHeaders(Response.redirect(destination, status));
+
 const notFoundResponse = (url) => new Response(html404(url), {
   status: 404,
-  headers: {
+  headers: applySecurityHeaders(new Headers({
     'content-type': 'text/html; charset=UTF-8',
     'cache-control': 'public, max-age=60',
     'x-robots-tag': 'noindex, nofollow'
-  }
+  }))
 });
 
 export async function onRequest(context) {
@@ -111,19 +127,19 @@ export async function onRequest(context) {
 
   if (pathname === '/index.html') {
     const homeUrl = new URL('/', url.origin);
-    return Response.redirect(homeUrl.toString(), 301);
+    return redirectResponse(homeUrl.toString(), 301);
   }
 
   if (!legacyView && legacyGame) {
     if (GAME_ROUTES.has(legacyGame)) {
-      return Response.redirect(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
+      return redirectResponse(new URL(`/game/${encodeURIComponent(legacyGame)}/`, url.origin).toString(), 301);
     }
     return notFoundResponse(url);
   }
 
   if (!legacyView && legacyPost) {
     if (BLOG_ROUTES.has(legacyPost)) {
-      return Response.redirect(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
+      return redirectResponse(new URL(`/blog/${encodeURIComponent(legacyPost)}/`, url.origin).toString(), 301);
     }
     return notFoundResponse(url);
   }
@@ -147,11 +163,11 @@ export async function onRequest(context) {
       destination = staticPath + '/';
     }
 
-    return Response.redirect(new URL(destination, url.origin).toString(), 301);
+    return redirectResponse(new URL(destination, url.origin).toString(), 301);
   }
 
   if (normalizePath(pathname) === '/game') {
-    return Response.redirect(new URL('/game/galaxy_miner/', url.origin).toString(), 301);
+    return redirectResponse(new URL('/game/galaxy_miner/', url.origin).toString(), 301);
   }
 
   if (isKnownRoute(pathname) && pathname !== '/') {
@@ -159,12 +175,12 @@ export async function onRequest(context) {
     if (pathname !== canonicalPath) {
       const canonicalUrl = new URL(url.toString());
       canonicalUrl.pathname = canonicalPath;
-      return Response.redirect(canonicalUrl.toString(), 301);
+      return redirectResponse(canonicalUrl.toString(), 301);
     }
   }
 
   if (isKnownRoute(pathname)) {
-    return context.next();
+    return withSecurityHeaders(await context.next());
   }
 
   if (isStaticAssetRequest(pathname)) {
@@ -180,7 +196,7 @@ export async function onRequest(context) {
       return notFoundResponse(url);
     }
 
-    return response;
+    return withSecurityHeaders(response);
   }
 
   return notFoundResponse(url);
