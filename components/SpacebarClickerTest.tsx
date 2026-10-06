@@ -263,6 +263,8 @@ const SpacebarClickerTest: React.FC = () => {
       ? clicks / Math.max(0.001, (performance.now() - startedAt.current) / 1000)
       : 0;
 
+  const averageIntervalMs = averageCps > 0 ? 1000 / averageCps : 0;
+
   const rating =
     averageCps >= 12 ? '12+ CPS BURST' :
     averageCps >= 9 ? '9+ CPS BURST' :
@@ -328,7 +330,7 @@ const SpacebarClickerTest: React.FC = () => {
 
     const stats = [
       ['PEAK CPS', peakCps.toFixed(1)],
-      ['MODE', targetLabel],
+      ['AVG INTERVAL', averageIntervalMs > 0 ? `${averageIntervalMs.toFixed(1)} ms` : '—'],
       ['PERSONAL BEST', bestCps.toFixed(2)]
     ];
 
@@ -366,7 +368,7 @@ const SpacebarClickerTest: React.FC = () => {
 
   const shareResult = async () => {
     if (!finished) return;
-    const text = `I scored ${averageCps.toFixed(2)} CPS in the ${targetLabel} Spacebar Clicker Test on SpaceClickerGame.com.`;
+    const text = `I scored ${averageCps.toFixed(2)} CPS (${averageIntervalMs.toFixed(1)} ms per press) in the ${targetLabel} Spacebar Clicker Test on SpaceClickerGame.com.`;
     const url = 'https://spaceclickergame.com/spacebar-clicker-test/';
 
     try {
@@ -495,10 +497,11 @@ const SpacebarClickerTest: React.FC = () => {
               <div className="text-xs tracking-[0.25em] text-neon-green">RESULT</div>
               <div className="text-4xl font-display font-black text-white mt-2">{averageCps.toFixed(2)} CPS</div>
               <div className="mt-2 text-neon-blue font-mono">{rating}</div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-6">
                 <Metric label="Clicks" value={String(clicks)} />
                 <Metric label="Elapsed" value={finalElapsed.toFixed(2) + 's'} />
                 <Metric label="Average CPS" value={averageCps.toFixed(2)} />
+                <Metric label="Avg Interval" value={averageIntervalMs > 0 ? averageIntervalMs.toFixed(1) + 'ms' : '—'} />
                 <Metric label="Peak CPS" value={peakCps.toFixed(1)} />
                 <Metric label="Personal Best" value={bestCps.toFixed(2)} />
               </div>
@@ -595,7 +598,7 @@ const SpacebarClickerTest: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">How the Spacebar Clicker Test works</h2>
             <p>
-              Choose a duration or the 100-click sprint and start with your first intentional Space press. Use the timed modes as a spacebar CPS test, or use the 100-click sprint as a fixed-workload space bar click test. Browser key-repeat is ignored, so holding the key down does not inflate the result. If the page is hidden or sent to the background, the test clock pauses and resumes when the page becomes visible again. Average CPS is valid presses divided by active elapsed time, while peak CPS measures the strongest rolling one-second burst.
+              Choose a duration or the 100-click sprint and start with your first intentional Space press. Use the timed modes as a spacebar CPS test, or use the 100-click sprint as a fixed-workload space bar click test. Browser key-repeat is ignored, so holding the key down does not inflate the result. If the page is hidden or sent to the background, the test clock pauses and resumes when the page becomes visible again. Average CPS is valid presses divided by active elapsed time, while peak CPS measures the strongest rolling one-second burst. Average interval is 1000 divided by average CPS and reports the mean spacing between presses in milliseconds.
             </p>
           </section>
           <section>
@@ -647,6 +650,10 @@ const SpacebarClickerTest: React.FC = () => {
               <div>
                 <h3 className="text-lg text-white">What is a good Spacebar CPS score?</h3>
                 <p>There is no universal “good CPS” threshold across every keyboard and test. Compare your results using the same device, browser, duration, and input rules.</p>
+              </div>
+              <div>
+                <h3 className="text-lg text-white">How do I convert Spacebar CPS to milliseconds per press?</h3>
+                <p>Divide 1000 by your average CPS. For example, 8 CPS corresponds to an average interval of 125 milliseconds per valid press. The result card calculates this automatically.</p>
               </div>
               <div>
                 <h3 className="text-lg text-white">What is the difference between CPS and PPS?</h3>
