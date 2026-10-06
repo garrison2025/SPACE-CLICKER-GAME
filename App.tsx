@@ -68,6 +68,27 @@ const safeNonNegativeInt = (value: unknown, fallback = 0, max = Number.MAX_SAFE_
     return Math.min(max, Math.max(0, Math.floor(parsed)));
 };
 
+const hasUsableGalaxyMinerSave = () => {
+    const raw = safeGetStorageItem(SAVE_KEY);
+    if (!raw) return false;
+
+    try {
+        const data = JSON.parse(raw);
+        return Boolean(
+            data &&
+            typeof data === 'object' &&
+            data.resources &&
+            typeof data.resources === 'object' &&
+            !Array.isArray(data.resources) &&
+            data.upgrades &&
+            typeof data.upgrades === 'object' &&
+            !Array.isArray(data.upgrades)
+        );
+    } catch {
+        return false;
+    }
+};
+
 // High-quality Open Graph images for each game
 const GAME_OG_IMAGES: Record<GameId, string> = {
     'galaxy_miner': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
@@ -231,6 +252,7 @@ const App: React.FC = () => {
   const [activePostId, setActivePostId] = useState<string | null>(currentRoute.postId);
   const [is404, setIs404] = useState(currentRoute.error);
   const [storageWriteFailed, setStorageWriteFailed] = useState(false);
+  const [hasGalaxyMinerSave, setHasGalaxyMinerSave] = useState(hasUsableGalaxyMinerSave);
 
   useEffect(() => {
       const handleStorageWriteFailure = () => setStorageWriteFailed(true);
@@ -254,6 +276,10 @@ const App: React.FC = () => {
               );
               target?.focus();
           });
+      }
+
+      if (route.view === 'home' && !route.error) {
+          setHasGalaxyMinerSave(hasUsableGalaxyMinerSave());
       }
   }, [location.pathname]);
 
@@ -2264,6 +2290,7 @@ const App: React.FC = () => {
                     <LandingPage
                         onStart={(id) => handleNavigate('game', id)}
                         onNavigate={handleNavigate}
+                        hasSave={hasGalaxyMinerSave}
                         heroSlot={undefined}
                     />
                 )}
