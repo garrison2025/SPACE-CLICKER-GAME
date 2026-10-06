@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, MAX_PRESTIGE_TECH_LEVEL } from './constants';
 import { BLOG_POST_META } from './content/blogMeta';
-import { CORE_ROUTE_META_BY_PATH, GAME_ROUTE_META_BY_ID, SITE_CONTENT_UPDATED, VIEW_ROUTE_PATHS } from './content/routeSeo';
+import { CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, GAME_ROUTE_META_BY_ID, SITE_CONTENT_UPDATED, VIEW_ROUTE_PATHS } from './content/routeSeo';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
@@ -88,26 +88,6 @@ const hasUsableGalaxyMinerSave = () => {
     } catch {
         return false;
     }
-};
-
-// High-quality Open Graph images for each game
-const GAME_OG_IMAGES: Record<GameId, string> = {
-    'galaxy_miner': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-    'mars_colony': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-    'star_defense': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200',
-    'merge_ships': 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
-    'gravity_idle': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
-    'deep_signal': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200'
-};
-
-const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
-const SPACEBAR_OG_IMAGES: Record<string, string> = {
-    'spacebar-games': 'https://spaceclickergame.com/og/spacebar-games.svg',
-    'spacebar-clicker': 'https://spaceclickergame.com/og/spacebar-clicker.svg',
-    'spacebar-clicker-2': 'https://spaceclickergame.com/og/spacebar-clicker-2.svg',
-    'spacebar-counter': 'https://spaceclickergame.com/og/spacebar-counter.svg',
-    'spacebar-clicker-test': 'https://spaceclickergame.com/og/spacebar-clicker-test.svg',
-    'spacebar-clicker-unblocked': 'https://spaceclickergame.com/og/spacebar-clicker-unblocked.svg'
 };
 
 const normalizeSocialImage = (source: string) => {
@@ -539,7 +519,7 @@ const App: React.FC = () => {
               title: "404 - Signal Lost | Space Clicker Game",
               description: "The requested page could not be found.",
               path: location.pathname,
-              image: normalizeSocialImage(DEFAULT_OG_IMAGE),
+              image: normalizeSocialImage(DEFAULT_SOCIAL_IMAGE),
               type: 'website' as const,
               schema: undefined
           };
@@ -551,7 +531,7 @@ const App: React.FC = () => {
       const routeMeta = CORE_ROUTE_META_BY_PATH[routePath] || CORE_ROUTE_META_BY_PATH['/'];
       let title = routeMeta.title;
       let desc = routeMeta.description;
-      let image = normalizeSocialImage(SPACEBAR_OG_IMAGES[viewMode] || DEFAULT_OG_IMAGE);
+      let image = normalizeSocialImage(routeMeta.socialImage || DEFAULT_SOCIAL_IMAGE);
       let type: 'website' | 'article' = 'website';
       let schema: any = undefined;
 
@@ -559,7 +539,6 @@ const App: React.FC = () => {
           const game = GAMES_CATALOG.find(g => g.id === activeGame);
           if (game) {
               const gameSeo = GAME_ROUTE_META_BY_ID[game.id];
-              image = normalizeSocialImage(GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE);
               type = 'website';
               schema = {
                 "@context": "https://schema.org",
