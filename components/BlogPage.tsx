@@ -26,6 +26,13 @@ const prefetchBlogPosts = () => {
     void preloadBlogPosts().catch(() => undefined);
 };
 
+const FEATURED_GUIDE_SLUGS = new Set([
+    'strategy-guide-clicker-game-space-empire',
+    'active-vs-passive-space-click-game-styles',
+    'mastering-the-space-bar-clicking-game',
+    'mechanics-of-space-bar-clicking-game-physics'
+]);
+
 const sanitizeArticleHtml = (html: string) => {
     if (typeof DOMParser === 'undefined') return html;
 
@@ -82,6 +89,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             (a, b) => Date.parse(b.publishedDate) - Date.parse(a.publishedDate)
         ),
         []
+    );
+
+    const featuredGuides = useMemo(
+        () => sortedBlogPosts.filter(post => FEATURED_GUIDE_SLUGS.has(post.slug)),
+        [sortedBlogPosts]
     );
 
     useEffect(() => {
@@ -628,6 +640,41 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         Guides to clicker mechanics, Spacebar tests, idle strategy, browser performance, and the design of incremental space games.
                     </p>
                 </header>
+
+                <section className="mb-14 rounded-2xl border border-neon-blue/20 bg-neon-blue/5 p-6 md:p-8">
+                    <div className="text-[10px] font-mono uppercase tracking-[0.28em] text-neon-blue mb-3">
+                        Start Here
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-3">
+                        High-intent Space Clicker guides
+                    </h2>
+                    <p className="text-gray-400 max-w-3xl leading-relaxed mb-6">
+                        Start with the pages that answer the most practical search intents: upgrade and prestige strategy, active-vs-idle progression, deliberate Space-key input, and CPS mechanics.
+                    </p>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {featuredGuides.map((guide) => (
+                            <a
+                                key={guide.id}
+                                href={`/blog/${guide.slug}/`}
+                                onMouseEnter={prefetchBlogPosts}
+                                onFocus={prefetchBlogPosts}
+                                onClick={(event) => { event.preventDefault(); onNavigate('blog', guide.slug); }}
+                                className="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-neon-blue/50 transition-colors"
+                            >
+                                <div className="text-[10px] font-mono text-neon-blue uppercase tracking-wider mb-2">
+                                    Practical guide
+                                </div>
+                                <h3 className="font-bold text-white leading-snug">{guide.title}</h3>
+                                <p className="mt-2 text-xs leading-relaxed text-gray-500">{guide.excerpt}</p>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+
+                <div className="flex items-center gap-4 mb-8">
+                    <h2 className="text-xl font-display font-bold text-white tracking-widest">ALL MISSION LOGS</h2>
+                    <div className="h-px flex-1 bg-white/10"></div>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {sortedBlogPosts.map((post, index) => (
