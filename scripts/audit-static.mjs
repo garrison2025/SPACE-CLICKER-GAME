@@ -262,6 +262,15 @@ const blogClusterTargets = new Map([
 ]);
 const blogClusterLinkCounts = new Map([...blogClusterTargets.keys()].map((href) => [href, 0]));
 
+const forbiddenStaleTrustClaims = [
+  '14,203',
+  'commanders active',
+  'xeno_hunter',
+  'red_planet',
+  'subspace transmission',
+  'premier destination for space clicker'
+];
+
 // Comparison source parity contract:
 // The interactive comparison cards and prerendered no-JS comparison must cite
 // the same external product/source URLs.
@@ -296,6 +305,13 @@ for (const sourceUrl of runtimeComparisonSources) {
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
+  const normalizedHtml = html.toLowerCase();
+
+  for (const staleClaim of forbiddenStaleTrustClaims) {
+    if (normalizedHtml.includes(staleClaim)) {
+      throw new Error(route + ': stale or unverified trust claim reintroduced: ' + staleClaim);
+    }
+  }
 
   const title = getOne(html, /<title\s+data-rh="true">([^<]+)<\/title>/gi, 'title', route).trim();
   const description = getOne(html, /<meta\s+[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/gi, 'meta description', route).trim();
