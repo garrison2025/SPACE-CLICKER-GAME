@@ -186,6 +186,12 @@ body {
     }
 }
 
+@media (min-width: 1024px) {
+    .hotkey-trigger {
+        bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+}
+
 @media (max-height: 480px) and (max-width: 900px) {
     .game-dock {
         height: calc(4rem + env(safe-area-inset-bottom));
