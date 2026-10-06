@@ -159,6 +159,35 @@ const blogClusterTargets = new Map([
 ]);
 const blogClusterLinkCounts = new Map([...blogClusterTargets.keys()].map((href) => [href, 0]));
 
+// Comparison source parity contract:
+// The interactive comparison cards and prerendered no-JS comparison must cite
+// the same external product/source URLs.
+const comparisonSourcePath = path.join(componentsDir, 'ComparisonPage.tsx');
+const comparisonSource = fs.readFileSync(comparisonSourcePath, 'utf8');
+const runtimeComparisonSources = [
+  ...comparisonSource.matchAll(/sourceUrl:\s*"([^"]+)"/g)
+].map((match) => match[1]);
+
+if (runtimeComparisonSources.length !== 5) {
+  throw new Error(
+    'ComparisonPage.tsx: expected exactly 5 third-party comparison source URLs, found ' +
+    runtimeComparisonSources.length
+  );
+}
+
+const prerenderedComparisonPath = path.join(distDir, 'compare', 'index.html');
+if (!fs.existsSync(prerenderedComparisonPath)) {
+  throw new Error('/compare/: prerendered comparison page is missing');
+}
+const prerenderedComparisonHtml = fs.readFileSync(prerenderedComparisonPath, 'utf8');
+for (const sourceUrl of runtimeComparisonSources) {
+  if (!prerenderedComparisonHtml.includes(`href="${sourceUrl}"`)) {
+    throw new Error(
+      '/compare/: prerender source drift; missing runtime comparison source ' + sourceUrl
+    );
+  }
+}
+
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
