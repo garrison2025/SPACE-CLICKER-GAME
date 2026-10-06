@@ -152,12 +152,28 @@ expect(
   Array.isArray(builtManifest.icons) &&
   builtManifest.icons.some(
     (icon) =>
-      icon.src === '/favicon.svg' &&
-      icon.type === 'image/svg+xml' &&
+      icon.src === '/icon-192.png' &&
+      icon.type === 'image/png' &&
+      icon.sizes === '192x192'
+  ),
+  'Manifest must reference the shipped 192x192 PNG app icon'
+);
+expect(
+  builtManifest.icons.some(
+    (icon) =>
+      icon.src === '/icon-512.png' &&
+      icon.type === 'image/png' &&
+      icon.sizes === '512x512' &&
       String(icon.purpose || '').split(/\s+/).includes('maskable')
   ),
-  'Manifest must reference the shipped SVG app icon as maskable'
+  'Manifest must reference the shipped 512x512 PNG app icon as maskable'
 );
+
+const installIcon = await run('https://spaceclickergame.com/icon-192.png');
+expect(installIcon.status === 200, '192x192 install icon should pass through');
+
+const appleTouchIcon = await run('https://spaceclickergame.com/apple-touch-icon.png');
+expect(appleTouchIcon.status === 200, 'Apple touch icon should pass through');
 
 const robots = await run('https://spaceclickergame.com/robots.txt');
 expect(robots.status === 200, 'robots.txt should pass through');
