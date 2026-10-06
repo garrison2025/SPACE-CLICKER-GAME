@@ -741,16 +741,21 @@ const StarDefense: React.FC = () => {
         }
     }, [gameOver]);
 
-    // Auto Save & Browser Exit Persistence
+    // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
         const t = setInterval(saveGame, 5000);
-        const handleBeforeUnload = () => saveGame();
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') saveGame();
+        };
+        const handlePageHide = () => saveGame();
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('pagehide', handlePageHide);
 
         return () => {
             clearInterval(t);
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('pagehide', handlePageHide);
             saveGame();
         };
     }, [saveGame]);
