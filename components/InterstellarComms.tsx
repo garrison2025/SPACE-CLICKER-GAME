@@ -68,13 +68,24 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
 
   return (
     <div className="fixed bottom-28 left-4 right-4 sm:left-auto sm:max-w-sm z-[90] animate-in slide-in-from-right duration-500">
-      <div className={`
-        relative p-4 rounded-lg border bg-space-900/95 md:backdrop-blur-md shadow-2xl cursor-pointer md:hover:scale-105 transition-transform
+      <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${GAMES_CATALOG.find(game => game.id === message.targetGame)?.title || 'suggested simulation'}`}
+      className={`
+        relative p-4 rounded-lg border bg-space-900/95 md:backdrop-blur-md shadow-2xl cursor-pointer md:hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue
         ${message.type === 'alert' ? 'border-red-500 text-red-100' : 'border-neon-blue text-blue-100'}
       `}
       onClick={() => {
         onSwitchGame(message.targetGame);
         setMessage(null);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSwitchGame(message.targetGame);
+          setMessage(null);
+        }
       }}
       >
         <div className="flex items-start gap-3">
