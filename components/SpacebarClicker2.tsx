@@ -728,6 +728,12 @@ const SpacebarClicker2: React.FC = () => {
                 event.preventDefault();
                 press();
               }}
+              onKeyDown={(event) => {
+                if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+                  event.preventDefault();
+                  press();
+                }
+              }}
               className="w-full min-h-[145px] rounded-2xl border-2 border-neon-purple bg-gradient-to-b from-space-700 to-black text-white shadow-[0_12px_0_#3b145d,0_0_35px_rgba(180,80,255,0.16)] active:translate-y-2 active:shadow-[0_4px_0_#3b145d] transition-all select-none touch-manipulation"
             >
               <span className="block text-4xl md:text-5xl font-display font-black tracking-[0.35em]">SPACE</span>
