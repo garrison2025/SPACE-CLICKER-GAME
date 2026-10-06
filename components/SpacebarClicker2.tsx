@@ -238,6 +238,7 @@ const SpacebarClicker2: React.FC = () => {
     if (overdriveUntil <= now) return;
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return;
       const tick = Date.now();
       setClock(tick);
       if (tick >= overdriveUntil) window.clearInterval(timer);
@@ -295,6 +296,7 @@ const SpacebarClicker2: React.FC = () => {
     if (!cpsTrackingActive) return;
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return;
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
