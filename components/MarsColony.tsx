@@ -172,6 +172,8 @@ const MarsColony: React.FC = () => {
     // --- GAME LOOP (Logic) ---
     useEffect(() => {
         const timer = window.setInterval(() => {
+            if (document.hidden) return;
+
             const snapshot = stateRef.current;
             const prev = snapshot.resources;
             const currentBuildings = snapshot.buildings;
