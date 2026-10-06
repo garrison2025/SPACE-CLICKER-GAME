@@ -96,6 +96,8 @@ const html404 = (url) => `<!doctype html>
 const applySecurityHeaders = (headers) => {
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
   headers.set('x-content-type-options', 'nosniff');
+  headers.set('x-frame-options', 'DENY');
+  headers.set('x-permitted-cross-domain-policies', 'none');
   headers.set('permissions-policy', 'camera=(), microphone=(), geolocation=()');
   return headers;
 };
@@ -105,6 +107,16 @@ const withSecurityHeaders = (response) => new Response(response.body, {
   statusText: response.statusText,
   headers: applySecurityHeaders(new Headers(response.headers))
 });
+
+const withImmutableAssetCache = (response) => {
+  const headers = new Headers(response.headers);
+  headers.set('cache-control', 'public, max-age=31536000, immutable');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: applySecurityHeaders(headers)
+  });
+};
 
 const redirectResponse = (destination, status = 301) =>
   withSecurityHeaders(Response.redirect(destination, status));
@@ -198,7 +210,9 @@ export async function onRequest(context) {
       return notFoundResponse(url);
     }
 
-    return withSecurityHeaders(response);
+    return pathname.startsWith('/assets/')
+      ? withImmutableAssetCache(response)
+      : withSecurityHeaders(response);
   }
 
   return notFoundResponse(url);
