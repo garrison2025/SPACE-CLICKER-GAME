@@ -38,8 +38,8 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Combat', 'Defense', 'Action'],
     briefing: "Long-range scanners detect an incoming fleet. Defend the Mothership through escalating waves by combining direct fire, automated turrets, shields, repairs, and timed combat abilities.",
-    manual: "1. CLICK enemy ships to deal direct damage.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss-class enemies on fifth-wave cycles.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
-    changelog: ["v1.0: Systems Online. Weapons free."]
+    manual: "1. CLICK the battle space for direct fire, or press Space / Enter to auto-target the enemy closest to the mothership.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss-class enemies on fifth-wave cycles.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
+    changelog: ["v1.1: Added Space / Enter main-fire controls and keyboard-accessible combat targets.", "v1.0: Systems Online. Weapons free."]
   },
   {
     id: 'merge_ships',
