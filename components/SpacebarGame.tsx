@@ -1063,6 +1063,14 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                 </p>
               </section>
               <section>
+                <h2 className="text-2xl font-display text-white mb-3">Version-specific mechanics</h2>
+                <p>
+                  This page is SpaceClickerGame.com&apos;s own Spacebar Clicker implementation. Its upgrade prices, Hyperdrive Prestige,
+                  Quantum Keys, offline-production rules, achievements, and save format describe this version only. Other websites can use
+                  the same Spacebar Clicker name for different builds with different upgrade lists or reset rules.
+                </p>
+              </section>
+              <section>
                 <h2 className="text-2xl font-display text-white mb-3">Upgrades, automation and prestige</h2>
                 <p>
                   Spend points on manual power or automatic production. Stronger Key and Mechanical Switch reward active play, while
@@ -1094,7 +1102,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   <div><h3 className="text-lg text-white">Does progress sync between devices?</h3><p>No. Progress is saved locally in the current browser.</p></div>
                   <div><h3 className="text-lg text-white">What survives a prestige reset?</h3><p>Quantum Keys, lifetime presses, best CPS and achievement progress remain.</p></div>
                   <div><h3 className="text-lg text-white">How much offline production can Spacebar Clicker recover?</h3><p>Once automation is producing points, a supported saved run can recover up to 24 hours of offline production when you return.</p></div>
-          <div><h3 className="text-lg text-white">Can I move my Spacebar Clicker save to another browser?</h3><p>Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported data is validated before it replaces the local save.</p></div>
+                  <div><h3 className="text-lg text-white">Is this the same Spacebar Clicker implementation used on every website?</h3><p>No. This is SpaceClickerGame.com&apos;s own implementation. Hyperdrive, Quantum Keys, upgrade values, achievements, and offline rules on this page apply to this version.</p></div>
+                  <div><h3 className="text-lg text-white">Can I move my Spacebar Clicker save to another browser?</h3><p>Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported data is validated before it replaces the local save.</p></div>
                 </div>
               </section>
             </>
