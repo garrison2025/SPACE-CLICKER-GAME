@@ -310,6 +310,12 @@ const strategyGuideRequiredHeadings = [
   'Space Clicker on Mobile: What Changes'
 ];
 
+const geoExtractionRequirements = new Map([
+  ['/spacebar-games/', ['Spacebar mode comparison', '<table>']],
+  ['/spacebar-clicker-test/', ['How CPS and press interval are calculated', 'valid presses ÷ active elapsed seconds', '1000 ÷ average CPS']],
+  ['/about/', ['Editorial and testing principles']]
+]);
+
 const blogClusterTargets = new Map([
   ['/game/galaxy_miner/', 7],
   ['/spacebar-games/', 2],
@@ -380,6 +386,7 @@ for (const file of htmlFiles) {
   const robotsMatches = [...html.matchAll(/<meta\s+name="robots"[^>]*content="([^"]*)"/gi)];
   const hreflangMatches = [...html.matchAll(/<link\s+rel="alternate"[^>]*href="([^"]+)"[^>]*hreflang="([^"]+)"/gi)];
   const ogImage = getOne(html, /<meta\s+[^>]*property="og:image"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image', route).trim();
+  const ogLocale = getOne(html, /<meta\s+[^>]*property="og:locale"[^>]*content="([^"]+)"[^>]*>/gi, 'og:locale', route).trim();
   const ogImageWidth = getOne(html, /<meta\s+[^>]*property="og:image:width"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:width', route).trim();
   const ogImageHeight = getOne(html, /<meta\s+[^>]*property="og:image:height"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:height', route).trim();
   const ogImageAlt = getOne(html, /<meta\s+[^>]*property="og:image:alt"[^>]*content="([^"]+)"[^>]*>/gi, 'og:image:alt', route).trim();
@@ -400,6 +407,7 @@ for (const file of htmlFiles) {
     throw new Error(route + ': social image dimensions must be 1200x630');
   }
   if (ogImageAlt !== title) throw new Error(route + ': og:image:alt must match the page title');
+  if (ogLocale !== 'en_US') throw new Error(route + ': monolingual English pages must declare og:locale=en_US');
   if (twitterCard !== 'summary_large_image') throw new Error(route + ': twitter:card must be summary_large_image');
   if (twitterImage !== ogImage) throw new Error(route + ': twitter:image must match og:image');
   if (twitterImageAlt !== title) throw new Error(route + ': twitter:image:alt must match the page title');
@@ -418,9 +426,8 @@ for (const file of htmlFiles) {
   if (robotsMatches.length !== 1 || !/\bindex\b/i.test(robotsMatches[0][1]) || !/\bfollow\b/i.test(robotsMatches[0][1])) {
     throw new Error(route + ': expected one index,follow robots directive');
   }
-  const hreflangs = new Map(hreflangMatches.map((match) => [match[2].toLowerCase(), match[1]]));
-  if (hreflangs.get('en') !== canonical || hreflangs.get('x-default') !== canonical) {
-    throw new Error(route + ': en/x-default hreflang links must match canonical');
+  if (hreflangMatches.length !== 0) {
+    throw new Error(route + ': monolingual site must not emit hreflang/x-default until real localized equivalents exist');
   }
   if (h1Count !== 1) {
     throw new Error(route + ': expected one prerendered H1, found ' + h1Count);
@@ -551,6 +558,14 @@ for (const file of htmlFiles) {
     }
   } else if (html.includes('id="prerender-route-jsonld"')) {
     throw new Error(route + ': unexpected static route JSON-LD on a non-core route');
+  }
+
+  if (geoExtractionRequirements.has(route)) {
+    for (const snippet of geoExtractionRequirements.get(route)) {
+      if (!html.includes(snippet)) {
+        throw new Error(route + ': GEO extraction requirement is missing: ' + snippet);
+      }
+    }
   }
 
   if (deepSpacebarContentRoutes.has(route)) {
@@ -970,4 +985,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO/GEO audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
