@@ -638,6 +638,10 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   const hardReset = () => {
     if (!window.confirm('Erase all Spacebar Clicker progress on this browser?')) return;
+    if (!safeRemoveStorageItem(SAVE_KEY)) {
+      setSaveTransferStatus('Could not clear the saved game because browser storage is unavailable.');
+      return;
+    }
 
     const nextUpgrades = emptyUpgrades();
     saveStateRef.current = {
