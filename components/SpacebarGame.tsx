@@ -905,6 +905,18 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
           ))}
         </div>
 
+        {mode === 'unblocked' && (
+          <section className="mb-8 rounded-2xl border border-neon-blue/20 bg-neon-blue/5 p-5 sm:p-6">
+            <h2 className="font-display text-xl text-white">What “unblocked” means here</h2>
+            <p className="mt-2 text-sm leading-relaxed text-gray-400">
+              This route opens the same Spacebar Clicker game directly in a modern browser with no download,
+              launcher, extension, or account step. It does not bypass school, workplace, parental-control,
+              firewall, device-management, or network-administrator restrictions. Access still depends on the
+              rules applied to the device and network you are using.
+            </p>
+          </section>
+        )}
+
         <div className="flex flex-wrap gap-3 mb-12">
           <a href="/spacebar-games/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm">
             All Spacebar Games
