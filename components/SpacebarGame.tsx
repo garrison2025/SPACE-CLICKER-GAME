@@ -293,6 +293,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     if (!cpsTrackingActive) return;
 
     const timer = window.setInterval(() => {
+      if (document.hidden) return;
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
