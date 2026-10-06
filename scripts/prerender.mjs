@@ -972,13 +972,16 @@ const staticRouteContent = {
   '/terms': `
     <section>
       <h2>Use of the site</h2>
-      <p>By using SpaceClickerGame.com, you agree to use its browser games, tools, and site materials lawfully and without intentionally degrading the service for other visitors. Access is provided for personal browser use unless a separate permission or agreement applies.</p>
-      <h2>Software and content restrictions</h2>
-      <p>The site license does not transfer ownership of the games or site materials. Do not commercially redistribute game assets, attempt malicious exploitation, or operate scripts or bots designed to disrupt availability or other users' access.</p>
+      <p>By using SpaceClickerGame.com, you agree to use its browser games, tools, guides, and related materials lawfully. Do not intentionally interfere with service operation, attempt unauthorized access to systems or data, or generate abusive automated traffic that disrupts normal use.</p>
+      <h2>Content and redistribution</h2>
+      <p>Using the site does not transfer ownership of its games, code, editorial content, or protected assets. Do not commercially redistribute protected site materials without permission from the applicable rights holder.</p>
       <h2>Local saves and availability</h2>
-      <p>The service is provided on an as-is basis. Browser storage can be cleared by the user, browser, device, or privacy tools, and local save loss can occur. Availability, compatibility, and uninterrupted operation are not guaranteed.</p>
-      <h2>Limitations and applicable law</h2>
-      <p>To the extent permitted by applicable law, Space Clicker Game is not responsible for indirect losses caused by use of or inability to use the site. Non-waivable consumer rights and governing law depend on the jurisdiction that legally applies. Last updated: October 5, 2026.</p>
+      <p>Supported game progress is stored locally in the current browser. Local storage can be cleared by the user, browser, device, or privacy settings, and private-browsing sessions may not persist data. Where a portable backup option exists, keeping a separate backup is the user's responsibility.</p>
+      <p>The site may be changed, updated, interrupted, or discontinued without guaranteeing uninterrupted availability of every game, feature, or locally stored save.</p>
+      <h2>Disclaimer and limitations</h2>
+      <p>The site is provided on an "as is" and "as available" basis to the extent permitted by applicable law. We do not guarantee that every feature will be error-free or compatible with every browser or device. To the extent permitted by law, Space Clicker Game is not liable for indirect, incidental, special, consequential, or similar losses arising from use of, or inability to use, the site, including loss of locally stored progress.</p>
+      <h2>Applicable law and consumer rights</h2>
+      <p>Applicable law, jurisdiction, and any non-waivable consumer rights depend on the circumstances and the laws that legally apply to the site operator and user. Nothing in these terms is intended to exclude rights that cannot lawfully be excluded. Last updated: October 6, 2026.</p>
     </section>`,
   '/cookies': `
     <section>
