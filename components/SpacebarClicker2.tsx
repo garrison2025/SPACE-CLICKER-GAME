@@ -269,8 +269,16 @@ const SpacebarClicker2: React.FC = () => {
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
+      const snapshot = saveRef.current;
+      const nextBestCps = Math.min(
+        MAX_CPS_VALUE,
+        Math.max(snapshot.bestCps, cps)
+      );
+      if (nextBestCps !== snapshot.bestCps) {
+        saveRef.current = { ...snapshot, bestCps: nextBestCps };
+        setBestCps(nextBestCps);
+      }
       setCurrentCps(cps);
-      setBestCps((value) => Math.max(value, cps));
       if (cps === 0) setCpsTrackingActive(false);
     }, 200);
 
