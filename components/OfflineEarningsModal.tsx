@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { formatNumber } from '../utils';
-import { trapDialogFocus } from '../utils/dialogFocus';
+import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
 interface OfflineEarningsModalProps {
   isOpen: boolean;
@@ -17,13 +17,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
   productionRate,
   onClaim,
 }) => {
-  useEffect(() => {
-    if (!isOpen || earnedStardust <= 0) return;
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-    return () => previousFocus?.focus();
-  }, [isOpen, earnedStardust]);
+  const dialogRef = useDialogFocus<HTMLDivElement>(isOpen && earnedStardust > 0);
 
   if (!isOpen || earnedStardust <= 0) return null;
 
@@ -43,11 +37,11 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
   return (
     <div className="safe-screen-overlay fixed inset-0 z-[150] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in zoom-in-95 duration-300">
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="offline-earnings-title"
         tabIndex={-1}
-        autoFocus
         onKeyDown={trapDialogFocus}
         className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg max-h-full rounded-3xl p-5 sm:p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
       >
