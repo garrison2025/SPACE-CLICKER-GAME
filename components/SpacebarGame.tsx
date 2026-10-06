@@ -997,6 +997,9 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
               onChange={(event) => setSaveImportText(event.target.value)}
               placeholder="Paste SCG1 save code here..."
               spellCheck={false}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="off"
               className="mt-4 h-28 w-full resize-y rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-xs text-gray-200 outline-none focus:border-neon-blue"
             />
             <div className="mt-3 flex flex-wrap gap-2">
