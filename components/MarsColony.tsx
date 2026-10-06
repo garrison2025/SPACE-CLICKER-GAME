@@ -7,6 +7,8 @@ const MARS_SAVE_KEY = 'mars_colony_save_v2';
 const MAX_RESOURCE_VALUE = 1e300;
 const MAX_BUILDING_COUNT = 1000;
 const MAX_POPULATION = 1_000_000;
+const MAX_VISUAL_PARTICLES = 300;
+const MAX_FLOATING_TEXTS = 80;
 
 interface MarsParticle {
     id: number;
@@ -293,7 +295,12 @@ const MarsColony: React.FC = () => {
                 size: Math.random() * 4 + 2
             });
         }
-        setParticles(prev => [...prev, ...newParticles]);
+        setParticles(prev => {
+            const next = [...prev, ...newParticles];
+            return next.length > MAX_VISUAL_PARTICLES
+                ? next.slice(-MAX_VISUAL_PARTICLES)
+                : next;
+        });
     };
 
     const handleExcavate = (e: React.MouseEvent | null, bonus: number = 0, color: string = '#fdba74') => {
@@ -318,13 +325,18 @@ const MarsColony: React.FC = () => {
         setResources(nextResources);
         
         // Visuals
-        setClicks(prev => [...prev, {
-            id: Math.random(),
-            x: clientX,
-            y: clientY - 20,
-            text: `+${amount} MINERALS`,
-            opacity: 1
-        }]);
+        setClicks(prev => {
+            const next = [...prev, {
+                id: Math.random(),
+                x: clientX,
+                y: clientY - 20,
+                text: `+${amount} MINERALS`,
+                opacity: 1
+            }];
+            return next.length > MAX_FLOATING_TEXTS
+                ? next.slice(-MAX_FLOATING_TEXTS)
+                : next;
+        });
 
         spawnParticles(clientX, clientY, color);
     };
