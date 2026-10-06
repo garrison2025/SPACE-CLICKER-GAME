@@ -335,7 +335,14 @@ const App: React.FC = () => {
   const critMultiplier = 10 + getTechBonus('crit_damage', 1);
   const passiveTechBoost = 1 + (getTechBonus('passive_boost', 0.25));
   const prestigeMultiplier = (1 + (resources[ResourceType.DarkMatter] * 0.1));
-  const prestigeGain = Math.floor(5 * Math.sqrt(resources[ResourceType.Stardust] / PRESTIGE_THRESHOLD));
+  const remainingDarkMatterCapacity = Math.max(
+    0,
+    MAX_SAFE_DARK_MATTER - resources[ResourceType.DarkMatter]
+  );
+  const prestigeGain = Math.min(
+    Math.floor(5 * Math.sqrt(resources[ResourceType.Stardust] / PRESTIGE_THRESHOLD)),
+    remainingDarkMatterCapacity
+  );
   const canPrestige = prestigeGain >= 1;
 
   const getMilestoneMultiplier = (count: number) => {
