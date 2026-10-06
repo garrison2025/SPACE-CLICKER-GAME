@@ -509,7 +509,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {sortedBlogPosts.map(post => (
+                    {sortedBlogPosts.map((post, index) => (
                         <a 
                             key={post.id}
                             href={`/blog/${post.slug}/`}
@@ -526,7 +526,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                         width={720}
                                         height={405}
                                         alt={post.title}
-                                        loading="lazy"
+                                        loading={index === 0 ? 'eager' : 'lazy'}
+                                        fetchPriority={index === 0 ? 'high' : 'auto'}
                                         decoding="async"
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
                                     />
