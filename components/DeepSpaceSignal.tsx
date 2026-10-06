@@ -103,9 +103,11 @@ const DeepSpaceSignal: React.FC = () => {
     const rewardedMessageIdsRef = useRef<Set<string>>(new Set());
     const dataBytesRef = useRef(dataBytes);
     const upgradesRef = useRef(upgrades);
+    const factionsRef = useRef(factions);
     const energyRef = useRef(energy);
     const isScanningRef = useRef(isScanning);
     const handleScanRef = useRef<() => void>(() => undefined);
+    const saveStateRef = useRef({ dataBytes, energy, upgrades, messages, factions });
 
     useEffect(() => {
         messagesRef.current = messages;
@@ -120,6 +122,10 @@ const DeepSpaceSignal: React.FC = () => {
     }, [upgrades]);
 
     useEffect(() => {
+        factionsRef.current = factions;
+    }, [factions]);
+
+    useEffect(() => {
         energyRef.current = energy;
     }, [energy]);
 
@@ -132,6 +138,7 @@ const DeepSpaceSignal: React.FC = () => {
             ? nextMessages.slice(-MAX_LIVE_MESSAGES)
             : nextMessages;
         messagesRef.current = capped;
+        saveStateRef.current = { ...saveStateRef.current, messages: capped };
         setMessages(capped);
     };
     
@@ -214,6 +221,7 @@ const DeepSpaceSignal: React.FC = () => {
             // 1. Energy Regen
             const nextEnergy = Math.min(maxEnergy, energyRef.current + (regenRate / 5));
             energyRef.current = nextEnergy;
+            saveStateRef.current = { ...saveStateRef.current, energy: nextEnergy };
             setEnergy(nextEnergy); 
 
             // 2. Decryption Logic
@@ -243,6 +251,7 @@ const DeepSpaceSignal: React.FC = () => {
             if (rewardEarned > 0) {
                 const nextDataBytes = dataBytesRef.current + rewardEarned;
                 dataBytesRef.current = nextDataBytes;
+                saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
                 setDataBytes(nextDataBytes);
                 playSound('success');
             }
@@ -279,6 +288,7 @@ const DeepSpaceSignal: React.FC = () => {
         setIsScanning(true);
         const nextEnergy = Math.max(0, energyRef.current - scanCost);
         energyRef.current = nextEnergy;
+        saveStateRef.current = { ...saveStateRef.current, energy: nextEnergy };
         setEnergy(nextEnergy);
         playSound('scan');
 
@@ -298,7 +308,7 @@ const DeepSpaceSignal: React.FC = () => {
         ]);
 
         try {
-            const result = await generateAlienMessage(frequency, upgrades.antenna);
+            const result = await generateAlienMessage(frequency, upgradesRef.current.antenna);
             
             // Replace placeholder
             const filtered = messagesRef.current.filter(m => m.id !== tempId);
@@ -333,7 +343,10 @@ const DeepSpaceSignal: React.FC = () => {
         if (!msg || msg.isDecoded) return;
 
         playSound('decode');
-        const hackPower = 5 + (upgrades.processor * 0.5) + (factions.TECH * 0.1);
+        const hackPower =
+            5 +
+            (upgradesRef.current.processor * 0.5) +
+            (factionsRef.current.TECH * 0.1);
         const newLevel = Math.max(0, msg.encryptionLevel - hackPower);
         let rewardEarned = 0;
 
@@ -356,6 +369,7 @@ const DeepSpaceSignal: React.FC = () => {
         if (rewardEarned > 0) {
             const nextDataBytes = dataBytesRef.current + rewardEarned;
             dataBytesRef.current = nextDataBytes;
+            saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
             setDataBytes(nextDataBytes);
             playSound('success');
         }
@@ -370,21 +384,26 @@ const DeepSpaceSignal: React.FC = () => {
 
         const nextEnergy = Math.max(0, energyRef.current - 10);
         energyRef.current = nextEnergy;
+        saveStateRef.current = { ...saveStateRef.current, energy: nextEnergy };
         setEnergy(nextEnergy);
         playSound('analyze');
         
         // Grant Faction XP
         if (msg.type) {
             const type = msg.type;
-            setFactions(prev => ({
-                ...prev,
-                [type]: (prev[type] || 0) + 1
-            }));
+            const nextFactions = {
+                ...factionsRef.current,
+                [type]: (factionsRef.current[type] || 0) + 1
+            };
+            factionsRef.current = nextFactions;
+            saveStateRef.current = { ...saveStateRef.current, factions: nextFactions };
+            setFactions(nextFactions);
         }
 
         const analysisReward = Math.floor(msg.rewardData * 0.5);
         const nextDataBytes = dataBytesRef.current + analysisReward;
         dataBytesRef.current = nextDataBytes;
+        saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
         setDataBytes(nextDataBytes);
 
         commitMessages(messagesRef.current.map(m =>
@@ -410,6 +429,11 @@ const DeepSpaceSignal: React.FC = () => {
         const nextUpgrades = { ...currentUpgrades, [key]: lvl + 1 };
         dataBytesRef.current = nextDataBytes;
         upgradesRef.current = nextUpgrades;
+        saveStateRef.current = {
+            ...saveStateRef.current,
+            dataBytes: nextDataBytes,
+            upgrades: nextUpgrades,
+        };
         playSound('click');
         setDataBytes(nextDataBytes);
         setUpgrades(nextUpgrades);
@@ -422,8 +446,6 @@ const DeepSpaceSignal: React.FC = () => {
     };
 
     // --- SAVE SYSTEM FIX ---
-    const saveStateRef = useRef({ dataBytes, energy, upgrades, messages, factions });
-
     // Keep ref updated
     useEffect(() => {
         saveStateRef.current = { dataBytes, energy, upgrades, messages, factions };
@@ -514,6 +536,7 @@ const DeepSpaceSignal: React.FC = () => {
             dataBytesRef.current = loadedDataBytes;
             energyRef.current = loadedEnergy;
             upgradesRef.current = loadedUpgrades;
+            factionsRef.current = loadedFactions;
             setDataBytes(loadedDataBytes);
             setEnergy(loadedEnergy);
             setUpgrades(loadedUpgrades);
