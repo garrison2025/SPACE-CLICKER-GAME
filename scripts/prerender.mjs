@@ -698,11 +698,26 @@ const staticRouteContent = {
         <li>Keep active mining between 80% and 99% Heat to use the 2x Heat Flux bonus without overheating.</li>
         <li>Reach 1 trillion Stardust to unlock Galactic Reset and permanent Dark Matter upgrades.</li>
       </ol>
+
+      <h2>What Space Clicker Game includes</h2>
+      <p>SpaceClickerGame.com combines the flagship Galaxy Miner progression loop with five separate browser simulations and a dedicated Spacebar tool suite. The six simulations use different mechanics instead of presenting the same click loop under different names.</p>
+      <p>You can manage life support in <a href="/game/mars_colony/">Mars Colony Idle</a>, defend a mothership in <a href="/game/star_defense/">Star Defense</a>, merge and deploy ships in <a href="/game/merge_ships/">Merge Spaceships</a>, experiment with orbital projectiles in <a href="/game/gravity_idle/">Gravity Idle</a>, or decode transmissions in <a href="/game/deep_signal/">Deep Space Signal</a>.</p>
+
+      <h2>The Space Clicker progression loop</h2>
+      <p>Galaxy Miner starts as an active space clicker: each deliberate input produces Stardust and raises Heat. As automation upgrades accumulate, passive production becomes a larger part of the run. Heat Flux rewards active timing between 80% and 99% Heat, while Galactic Reset turns sufficiently large runs into permanent Dark Matter progression.</p>
+      <p>The dedicated <a href="/game/galaxy_miner/">Galaxy Miner page</a> explains its Heat, planet, automation, offline-production and Dark Matter systems in more detail.</p>
+
+      <h2>Spacebar games, counters and CPS tests</h2>
+      <p>The <a href="/spacebar-games/">Spacebar Games hub</a> separates several different keyboard intents. <a href="/spacebar-clicker/">Spacebar Clicker</a> is an upgrade-based incremental game, <a href="/spacebar-counter/">Spacebar Counter</a> keeps an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> measures timed or click-target CPS. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> uses a separate progression tree with Overdrive and Nova Core ascension.</p>
+
       <h2>Play instantly in your browser</h2>
-      <p>No account or download is required. Galaxy Miner stores supported progress locally in the current browser.</p>
+      <p>No account or download is required for the current games and tools. Supported progress is stored locally in the current browser rather than a cloud account, so clearing site storage or changing devices can separate or remove local progress. Portable backup options are available in supported clicker modes.</p>
+
       <h2>Idle progression and mobile play</h2>
-      <p>Galaxy Miner begins with manual mining and shifts toward automated production. Returning after time away can credit up to 24 hours of saved automatic production. Touch controls work in modern mobile browsers.</p>
-      <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning.</p>
+      <p>Galaxy Miner begins with manual mining and shifts toward automated production. Returning after time away can credit up to 24 hours of saved automatic production. Touch controls are available in modern mobile browsers, while Spacebar tools provide on-screen controls for devices without a physical keyboard.</p>
+
+      <h2>Strategy and progress references</h2>
+      <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning, or use the <a href="/achievements/">Galaxy Miner milestones page</a> to review visible Stardust, automation and Dark Matter thresholds.</p>
     </section>`,
   '/game/galaxy_miner': `
 <section>
