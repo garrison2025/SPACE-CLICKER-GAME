@@ -4,6 +4,7 @@ import { DeepSignalSaveData, SignalMessage } from '../types';
 import { generateAlienMessage } from '../services/eventService';
 import { playSound } from '../services/audioService';
 import { formatNumber } from '../utils';
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const DEEP_SIGNAL_SAVE_KEY = 'deep_signal_save_v3';
 const MAX_LIVE_MESSAGES = 100;
@@ -464,7 +465,7 @@ const DeepSpaceSignal: React.FC = () => {
     const saveGame = useCallback(() => {
         // Only save last 50 messages to prevent storage bloat
         const stateToSave = { ...saveStateRef.current, messages: saveStateRef.current.messages.slice(-50) };
-        localStorage.setItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({ 
+        safeSetStorageItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({ 
             ...stateToSave,
             lastSaveTime: Date.now() 
         }));
@@ -490,7 +491,7 @@ const DeepSpaceSignal: React.FC = () => {
 
     // Initial Load
     useEffect(() => {
-        const saved = localStorage.getItem(DEEP_SIGNAL_SAVE_KEY);
+        const saved = safeGetStorageItem(DEEP_SIGNAL_SAVE_KEY);
         if (!saved) return;
 
         try {
@@ -538,7 +539,7 @@ const DeepSpaceSignal: React.FC = () => {
             // an immediate close from writing the component's default values over
             // a valid loaded save, including a legitimate energy value of zero.
             saveStateRef.current = nextSnapshot;
-            localStorage.setItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({
+            safeSetStorageItem(DEEP_SIGNAL_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: Date.now(),
             }));
