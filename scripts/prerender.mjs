@@ -170,7 +170,7 @@ const routes = [
   ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Use a free untimed Spacebar Counter to track total presses, current CPS, average CPS, peak CPS and local best. Keyboard and mobile touch supported.', 'Spacebar Counter'],
   ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. Track clicks, average and peak CPS, personal bests and recent local results.', 'Spacebar Clicker Test'],
   ['/spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked - Play Instantly in Your Browser', 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.', 'Spacebar Clicker Unblocked'],
-  ['/compare', 'Space Clicker Game vs Classic Incremental Games: Feature Comparison', 'Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games.', 'Space Clicker Feature Comparison'],
+  ['/compare', 'Space Clicker Game vs Classic Incremental Games: Feature Comparison', 'Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.', 'Space Clicker Feature Comparison'],
   ['/achievements', 'Galaxy Miner Milestones & Progress Tracker | Space Clicker Game', 'Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.', 'Galaxy Miner Milestones'],
   ['/blog', 'Space Clicker Game Blog - Guides & Strategy', 'Read guides, mechanics explainers and strategy articles for space clicker and incremental browser games.', 'Space Clicker Game Blog'],
   ['/about', 'About | Space Clicker Game', 'Learn about SpaceClickerGame.com and its free browser-based clicker, idle and spacebar experiences.', 'About Space Clicker Game'],
@@ -1085,18 +1085,19 @@ const staticRouteContent = {
   '/compare': `
     <section>
       <h2>What this clicker game comparison measures</h2>
-      <p>This page compares game structure rather than assigning a universal score. The snapshot looks at active input, idle automation, prestige or reset systems, events, theme, and presentation across Galaxy Miner, Cookie Clicker, Universal Paperclips, Antimatter Dimensions, Spaceplan, and Melvor Idle.</p>
+      <p>This page compares game structure rather than assigning a universal score. The snapshot looks at active input, idle automation, progression or reset structure, events, theme, and presentation across Galaxy Miner, Cookie Clicker, Universal Paperclips, Antimatter Dimensions, SPACEPLAN, and Melvor Idle.</p>
       <h2>How Galaxy Miner differs</h2>
       <p>Galaxy Miner combines manual Stardust mining with automated production and an active Heat system. Keeping Heat between 80% and 99% activates the 2x Heat Flux bonus, while reaching 100% overheats the beam. Golden Comets, crisis events, anomaly scans, and a Dark Matter Galactic Reset add decisions beyond the basic production loop.</p>
-      <h2>Different incremental game archetypes</h2>
+      <h2>Different incremental game structures</h2>
       <ul>
-        <li><strong>Cookie Clicker</strong> centers on a baking-themed production economy, building automation, Golden Cookies, and ascension.</li>
-        <li><strong>Universal Paperclips</strong> uses a minimalist interface and a narrative strategy arc built around automated optimization.</li>
-        <li><strong>Antimatter Dimensions</strong> emphasizes mathematical growth, automation, challenges, and multiple reset layers.</li>
-        <li><strong>Spaceplan</strong> is a story-driven science-fiction idle game with a compact progression arc.</li>
-        <li><strong>Melvor Idle</strong> applies idle progression to RPG-style skills, equipment, crafting, and combat systems.</li>
+        <li><strong><a href="https://orteil.dashnet.org/cookieclicker/">Cookie Clicker</a></strong> combines manual cookie input, automated buildings, Golden Cookies, and ascension.</li>
+        <li><strong><a href="https://www.decisionproblem.com/paperclips/">Universal Paperclips</a></strong> uses staged narrative progression, automation, autonomous probes, and late-game probe hazards and combat rather than a conventional repeating prestige loop.</li>
+        <li><strong><a href="https://antimatter-dimensions.github.io/">Antimatter Dimensions</a></strong> emphasizes automation and layered progression through Infinity, Eternity, and Reality.</li>
+        <li><strong><a href="https://store.steampowered.com/app/616110/SPACEPLAN/">SPACEPLAN</a></strong> is a story-driven science-fiction clicker built around potato-based devices, probes, and staged discoveries rather than a repeatable prestige economy.</li>
+        <li><strong><a href="https://melvoridle.com/">Melvor Idle</a></strong> centers on skills, mastery, equipment, crafting, dungeons, and combat instead of one global prestige-reset loop.</li>
       </ul>
-      <p>The comparison is a feature snapshot, not a claim that one design is best for every player. You can <a href="/game/galaxy_miner/">play Galaxy Miner</a> directly or explore the site's <a href="/spacebar-games/">Spacebar games and tools</a>.</p>
+      <p>The comparison is a feature snapshot, not a ranking. Third-party names and trademarks belong to their respective owners; SpaceClickerGame.com is not affiliated with those projects. External game features can change, so the linked primary pages should be used for current product details.</p>
+      <p>You can <a href="/game/galaxy_miner/">play Galaxy Miner</a> directly or explore the site's <a href="/spacebar-games/">Spacebar games and tools</a>.</p>
     </section>`,
   '/achievements': `
     <section>
