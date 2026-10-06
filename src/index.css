@@ -144,6 +144,12 @@ body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+.safe-side-panel {
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+}
+
 
 /* Mobile gameplay ergonomics: keep scroll momentum inside the game shell,
    avoid pull-to-refresh/bounce stealing gestures, and reserve exactly the
