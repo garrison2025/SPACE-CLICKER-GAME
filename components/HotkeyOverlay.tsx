@@ -14,7 +14,7 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
     { key: 'SPACE', desc: 'Pulse Mining Laser (Manual Tap)', color: 'border-neon-blue text-neon-blue' },
     { key: '1 - 8', desc: 'Quick-Buy Upgrades (Tier 1 to 8)', color: 'border-yellow-400 text-yellow-400' },
     { key: 'P', desc: 'Toggle Dark Matter Prestige Chamber', color: 'border-purple-400 text-purple-400' },
-    { key: 'S', desc: 'Open Fleet Telemetry & Save Backup', color: 'border-neon-green text-neon-green' },
+    { key: 'S', desc: 'Toggle Fleet Telemetry & Save Backup', color: 'border-neon-green text-neon-green' },
     { key: 'M', desc: 'Toggle Audio Synthesis Sound FX', color: 'border-pink-400 text-pink-400' },
     { key: 'H or ?', desc: 'Toggle this Hotkeys Reference', color: 'border-gray-400 text-gray-300' },
   ];
