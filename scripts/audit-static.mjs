@@ -43,6 +43,18 @@ for (const requiredSize of ['192x192', '512x512']) {
   }
 }
 
+const readPngDimensions = (filePath) => {
+  const buffer = fs.readFileSync(filePath);
+  const pngSignature = '89504e470d0a1a0a';
+  if (buffer.length < 24 || buffer.subarray(0, 8).toString('hex') !== pngSignature) {
+    throw new Error(path.basename(filePath) + ': expected a valid PNG file.');
+  }
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20)
+  };
+};
+
 for (const icon of manifest.icons) {
   const src = String(icon?.src || '');
   if (!src.startsWith('/')) {
@@ -52,11 +64,35 @@ for (const icon of manifest.icons) {
   if (!fs.existsSync(iconPath) || fs.statSync(iconPath).size === 0) {
     throw new Error('manifest.webmanifest icon is missing from dist/: ' + src);
   }
+
+  if (icon.type === 'image/png' && /^\d+x\d+$/.test(String(icon.sizes || ''))) {
+    const [expectedWidth, expectedHeight] = String(icon.sizes).split('x').map(Number);
+    const dimensions = readPngDimensions(iconPath);
+    if (dimensions.width !== expectedWidth || dimensions.height !== expectedHeight) {
+      throw new Error(
+        src + ': declared ' + icon.sizes + ' but PNG is ' +
+        dimensions.width + 'x' + dimensions.height
+      );
+    }
+  }
 }
 
 const appleTouchIconPath = path.join(distDir, 'apple-touch-icon.png');
 if (!fs.existsSync(appleTouchIconPath) || fs.statSync(appleTouchIconPath).size === 0) {
   throw new Error('apple-touch-icon.png is missing from dist/.');
+}
+const appleTouchDimensions = readPngDimensions(appleTouchIconPath);
+if (appleTouchDimensions.width !== 180 || appleTouchDimensions.height !== 180) {
+  throw new Error(
+    'apple-touch-icon.png must be 180x180; found ' +
+    appleTouchDimensions.width + 'x' + appleTouchDimensions.height
+  );
+}
+
+const rootHtmlPath = path.join(distDir, 'index.html');
+const rootHtml = fs.readFileSync(rootHtmlPath, 'utf8');
+if (!/<link\s+rel="apple-touch-icon"\s+sizes="180x180"\s+href="\/apple-touch-icon\.png">/i.test(rootHtml)) {
+  throw new Error('index.html must reference /apple-touch-icon.png as a 180x180 Apple touch icon.');
 }
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
