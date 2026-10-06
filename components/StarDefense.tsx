@@ -1054,8 +1054,16 @@ const StarDefense: React.FC = () => {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                     {upgrades.map(u => {
                         let cost = Math.floor(u.cost * Math.pow(u.costMult, u.level));
-                        if(u.id === 'repair') cost = u.cost;
-                        const canAfford = scraps >= cost;
+                        if (u.id === 'repair') cost = u.cost;
+
+                        const isMaxed = u.id !== 'repair' && u.level >= MAX_UPGRADE_LEVEL;
+                        const hullFull = u.id === 'repair' && hp >= maxHp;
+                        const canAfford = !isMaxed && !hullFull && scraps >= cost;
+                        const statusText = isMaxed
+                            ? 'MAXED'
+                            : hullFull
+                              ? 'HULL FULL'
+                              : `${formatNumber(cost)} SCRAP`;
 
                         return (
                             <div 
@@ -1063,7 +1071,13 @@ const StarDefense: React.FC = () => {
                                 role="button"
                                 tabIndex={canAfford ? 0 : -1}
                                 aria-disabled={!canAfford}
-                                aria-label={`${u.name}, level ${u.level}, cost ${formatNumber(cost)} scrap`}
+                                aria-label={
+                                    isMaxed
+                                        ? `${u.name}, maximum level reached`
+                                        : hullFull
+                                          ? `${u.name}, hull is already full`
+                                          : `${u.name}, level ${u.level}, cost ${formatNumber(cost)} scrap`
+                                }
                                 onKeyDown={(event) => {
                                     if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
                                         event.preventDefault();
@@ -1088,7 +1102,7 @@ const StarDefense: React.FC = () => {
                                     </div>
                                     <p className="text-[10px] text-gray-500 mb-2 leading-tight">{u.description}</p>
                                     <div className={`text-xs font-mono font-bold ${canAfford ? 'text-yellow-400' : 'text-red-400'}`}>
-                                        {formatNumber(cost)} SCRAP
+                                        {statusText}
                                     </div>
                                 </div>
                             </div>
