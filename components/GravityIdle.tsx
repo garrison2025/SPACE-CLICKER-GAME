@@ -30,6 +30,12 @@ const safeUpgradeLevel = (
     Math.max(minimum, Math.floor(safeFinite(value, minimum, UPGRADE_CONFIG[key].max)))
 );
 
+const getOfflineMatterRate = (upgrades: GravitySaveData['upgrades']) => {
+    const powerMult = Math.pow(1.1, upgrades.power);
+    const efficiency = Math.min(1, upgrades.launchers * 0.15);
+    return 30 * powerMult * efficiency;
+};
+
 // Physics Constants
 const G = 0.8; 
 const CENTER_MASS_BASE = 800;
@@ -85,6 +91,7 @@ const GravityIdle: React.FC = () => {
     const matterRef = useRef(matter);
     const upgradesRef = useRef(upgrades);
     const pulseCooldownRef = useRef(pulseCooldown);
+    const hiddenAtRef = useRef<number | null>(null);
 
     useEffect(() => {
         matterRef.current = matter;
@@ -100,6 +107,11 @@ const GravityIdle: React.FC = () => {
 
     // --- GAME LOOP ---
     const gameLoop = useCallback(() => {
+        if (document.hidden) {
+            frameRef.current = requestAnimationFrame(gameLoop);
+            return;
+        }
+
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d', { alpha: false }); // Opt for speed
         if (!canvas || !ctx) return;
@@ -657,9 +669,7 @@ const GravityIdle: React.FC = () => {
             const seconds = Math.min(86_400, Math.max(0, (now - lastSaveTime) / 1000));
 
             // Approximate offline output from launcher count and kinetic power.
-            const powerMult = Math.pow(1.1, loadedUpgrades.power);
-            const efficiency = Math.min(1, loadedUpgrades.launchers * 0.15);
-            const rate = 30 * powerMult * efficiency;
+            const rate = getOfflineMatterRate(loadedUpgrades);
             const earned = seconds >= 60 ? Math.floor(rate * seconds) : 0;
             const nextMatter = Math.min(MAX_RESOURCE_VALUE, loadedMatter + Math.max(0, earned));
             const credited = Math.max(0, nextMatter - loadedMatter);
