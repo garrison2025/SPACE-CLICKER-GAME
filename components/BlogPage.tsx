@@ -23,6 +23,38 @@ const formatBlogDate = (publishedDate: string) =>
 
 const preloadBlogPosts = () => import('../content/blogPosts');
 
+const sanitizeArticleHtml = (html: string) => {
+    if (typeof DOMParser === 'undefined') return html;
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll(
+        'script, iframe, object, embed, form, input, button, textarea, select, option, style, link, meta, base, svg, math'
+    ).forEach((node) => node.remove());
+
+    doc.body.querySelectorAll('*').forEach((element) => {
+        Array.from(element.attributes).forEach((attribute) => {
+            const name = attribute.name.toLowerCase();
+            const value = attribute.value.trim();
+
+            if (
+                name.startsWith('on') ||
+                name === 'srcdoc' ||
+                name === 'style' ||
+                ((name === 'href' || name === 'src' || name === 'formaction') &&
+                    /^(?:javascript:|data:text\/html)/i.test(value))
+            ) {
+                element.removeAttribute(attribute.name);
+            }
+        });
+
+        if (element.tagName === 'A' && element.getAttribute('target') === '_blank') {
+            element.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+
+    return doc.body.innerHTML;
+};
+
 const optimizeUnsplash = (url: string, width: number, height?: number) => {
     if (!url.includes('images.unsplash.com')) return url;
     try {
@@ -362,14 +394,17 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             );
         }
 
-        // Process content to add IDs for TOC
+        // Process content to add IDs for TOC, then sanitize the trusted editorial HTML.
         let processedContent = post.content;
         toc.forEach((item) => {
-            // Replace the first occurrence of the header text with the ID injected
-            // Note: This is fragile if multiple headers have exact same text, but sufficient for this scale
-            const regex = new RegExp(`(<h${item.level}>)(${item.text})(</h${item.level}>)`);
-            processedContent = processedContent.replace(regex, `$1<span id="${item.id}" tabindex="-1" class="scroll-mt-24 relative focus:outline-none">$2</span>$3`);
+            const escapedText = item.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(<h${item.level}>)(\${escapedText})(</h${item.level}>)`);
+            processedContent = processedContent.replace(
+                regex,
+                `$1<span id="${item.id}" tabindex="-1" class="scroll-mt-24 relative focus:outline-none">$2</span>$3`
+            );
         });
+        processedContent = sanitizeArticleHtml(processedContent);
 
         return (
             <div className="min-h-screen bg-space-950 pt-24 pb-16 px-4">
