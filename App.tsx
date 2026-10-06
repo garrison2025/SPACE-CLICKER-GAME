@@ -7,6 +7,7 @@ import SiteLayout, { ViewMode } from './components/SiteLayout';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
+import RouteErrorBoundary from './components/RouteErrorBoundary';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
@@ -2334,6 +2335,7 @@ const App: React.FC = () => {
             </Suspense>
         )}
 
+        <RouteErrorBoundary resetKey={location.pathname}>
         {is404 ? (
             <NotFoundPage onNavigate={handleNavigate} />
         ) : viewMode === 'game' ? (
@@ -2398,6 +2400,7 @@ const App: React.FC = () => {
                 {viewMode === 'sitemap' && <Suspense fallback={<LoadingSimulation />}><SitemapPage /></Suspense>}
             </SiteLayout>
         )}
+        </RouteErrorBoundary>
     </>
   );
 };
