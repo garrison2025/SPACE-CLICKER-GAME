@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, MAX_PRESTIGE_TECH_LEVEL } from './constants';
 import { BLOG_POST_META } from './content/blogMeta';
+import { CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, GAME_ROUTE_META_BY_ID, SITE_CONTENT_UPDATED, VIEW_ROUTE_PATHS } from './content/routeSeo';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
@@ -89,26 +90,6 @@ const hasUsableGalaxyMinerSave = () => {
     }
 };
 
-// High-quality Open Graph images for each game
-const GAME_OG_IMAGES: Record<GameId, string> = {
-    'galaxy_miner': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-    'mars_colony': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-    'star_defense': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200',
-    'merge_ships': 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
-    'gravity_idle': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
-    'deep_signal': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200'
-};
-
-const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
-const SPACEBAR_OG_IMAGES: Record<string, string> = {
-    'spacebar-games': 'https://spaceclickergame.com/og/spacebar-games.svg',
-    'spacebar-clicker': 'https://spaceclickergame.com/og/spacebar-clicker.svg',
-    'spacebar-clicker-2': 'https://spaceclickergame.com/og/spacebar-clicker-2.svg',
-    'spacebar-counter': 'https://spaceclickergame.com/og/spacebar-counter.svg',
-    'spacebar-clicker-test': 'https://spaceclickergame.com/og/spacebar-clicker-test.svg',
-    'spacebar-clicker-unblocked': 'https://spaceclickergame.com/og/spacebar-clicker-unblocked.svg'
-};
-
 const normalizeSocialImage = (source: string) => {
     try {
         const url = new URL(source);
@@ -123,43 +104,9 @@ const normalizeSocialImage = (source: string) => {
         return source;
     }
 };
-const SITE_CONTENT_UPDATED = '2026-10-07';
 const SITE_URL = 'https://spaceclickergame.com/';
 const ORGANIZATION_ID = SITE_URL + '#organization';
 const ORGANIZATION_LOGO = SITE_URL + 'favicon.svg';
-
-const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
-  galaxy_miner: {
-    title: 'Galaxy Miner – Space Mining Idle Clicker Online',
-    description: 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.',
-    genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi']
-  },
-  mars_colony: {
-    title: 'Mars Colony Idle - Free Space Strategy Game',
-    description: 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and automated resource production.',
-    genres: ['Idle', 'Management', 'Strategy', 'Simulation']
-  },
-  star_defense: {
-    title: 'Star Defense - Free Space Defense Clicker',
-    description: 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.',
-    genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi']
-  },
-  merge_ships: {
-    title: 'Merge Spaceships - Free Browser Merge Game',
-    description: 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.',
-    genres: ['Merge', 'Idle', 'Casual', 'Collection']
-  },
-  gravity_idle: {
-    title: 'Gravity Idle - Free Physics Idle Game',
-    description: 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.',
-    genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi']
-  },
-  deep_signal: {
-    title: 'Deep Space Signal - Signal Decoding Idle Game',
-    description: 'Scan radio frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting in this browser idle simulation.',
-    genres: ['Idle', 'Simulation', 'Signal Decoding', 'Sci-Fi']
-  }
-};
 
 const SORTED_BLOG_POST_META = [...BLOG_POST_META].sort(
   (a, b) => Date.parse(b.publishedDate) - Date.parse(a.publishedDate)
@@ -572,25 +519,26 @@ const App: React.FC = () => {
               title: "404 - Signal Lost | Space Clicker Game",
               description: "The requested page could not be found.",
               path: location.pathname,
-              image: normalizeSocialImage(DEFAULT_OG_IMAGE),
+              image: normalizeSocialImage(DEFAULT_SOCIAL_IMAGE),
               type: 'website' as const,
               schema: undefined
           };
       }
       
-      let title = "Space Clicker – Free Space Clicker Game Online";
-      let desc = "Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.";
-      let image = normalizeSocialImage(SPACEBAR_OG_IMAGES[viewMode] || DEFAULT_OG_IMAGE);
+      const routePath = viewMode === 'game' && activeGame
+          ? `/game/${activeGame}`
+          : (VIEW_ROUTE_PATHS[viewMode] || (location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '')));
+      const routeMeta = CORE_ROUTE_META_BY_PATH[routePath] || CORE_ROUTE_META_BY_PATH['/'];
+      let title = routeMeta.title;
+      let desc = routeMeta.description;
+      let image = normalizeSocialImage(routeMeta.socialImage || DEFAULT_SOCIAL_IMAGE);
       let type: 'website' | 'article' = 'website';
       let schema: any = undefined;
 
       if (viewMode === 'game') {
           const game = GAMES_CATALOG.find(g => g.id === activeGame);
           if (game) {
-              const gameSeo = GAME_SEO[game.id];
-              title = gameSeo.title;
-              desc = gameSeo.description;
-              image = normalizeSocialImage(GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE);
+              const gameSeo = GAME_ROUTE_META_BY_ID[game.id];
               type = 'website';
               schema = {
                 "@context": "https://schema.org",
@@ -647,8 +595,6 @@ const App: React.FC = () => {
                   type = 'article';
               }
           } else {
-              title = "Space Clicker Game Blog - Guides & Strategy";
-              desc = "Read guides, mechanics explainers and strategy articles for space clicker and incremental browser games.";
               schema = {
                   "@context": "https://schema.org",
                   "@graph": [
@@ -781,8 +727,6 @@ const App: React.FC = () => {
             ]
           };
       } else if (viewMode === 'compare') {
-          title = "Space Clicker Game vs Classic Incremental Games: Feature Comparison";
-          desc = "Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.";
           const comparedGames = [
             'Space Clicker Game (Galaxy Miner)',
             'Cookie Clicker',
@@ -830,8 +774,6 @@ const App: React.FC = () => {
             ]
           };
       } else if (viewMode === 'achievements') {
-          title = "Galaxy Miner Milestones & Progress Tracker | Space Clicker Game";
-          desc = "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.";
           const milestones = [
             '1,000 lifetime Stardust',
             '1 million lifetime Stardust',
@@ -883,8 +825,6 @@ const App: React.FC = () => {
             ]
           };
       } else if (viewMode === 'about') {
-          title = "About | Space Clicker Game";
-          desc = "Learn about SpaceClickerGame.com and its free browser-based clicker, idle and spacebar experiences.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -922,24 +862,7 @@ const App: React.FC = () => {
                 }
               ]
           };
-      } else if (viewMode === 'contact') {
-          title = "Contact | Space Clicker Game";
-          desc = "Contact SpaceClickerGame.com for player support, bug reports, feedback, business, advertising, or press questions.";
-      } else if (viewMode === 'privacy') {
-          title = "Privacy Policy | Space Clicker Game";
-          desc = "Read how SpaceClickerGame.com handles browser-local game saves, exported save codes, hosting requests, analytics, and advertising technologies.";
-      } else if (viewMode === 'terms') {
-          title = "Terms of Service | Space Clicker Game";
-          desc = "Read the terms that apply when using SpaceClickerGame.com and its browser-based games and tools.";
-      } else if (viewMode === 'cookies') {
-          title = "Cookie & Local Storage Settings | Space Clicker Game";
-          desc = "Learn how SpaceClickerGame.com uses browser localStorage for game progress and what clearing site storage does to local saves.";
-      } else if (viewMode === 'sitemap') {
-          title = "HTML Sitemap | Space Clicker Game";
-          desc = "Browse the main games, Spacebar tools, guides, support pages, and legal resources available on SpaceClickerGame.com.";
       } else if (viewMode === 'spacebar-games') {
-          title = "Spacebar Games - Clicker, Counter & CPS Tests";
-          desc = "Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -1000,8 +923,6 @@ const App: React.FC = () => {
               ]
           };
       } else if (viewMode === 'spacebar-clicker-2') {
-          title = "Spacebar Clicker 2 - Upgraded Idle Space Bar Game";
-          desc = "Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.";
           type = 'website';
           schema = {
               "@context": "https://schema.org",
@@ -1068,15 +989,9 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'spacebar-clicker' || viewMode === 'spacebar-clicker-unblocked') {
           const unblocked = viewMode === 'spacebar-clicker-unblocked';
-          title = unblocked
-              ? "Spacebar Clicker Unblocked - Play Instantly in Your Browser"
-              : "Spacebar Clicker – Free Space Bar Clicker Game Online";
-          desc = unblocked
-              ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
-              : "Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.";
           type = 'website';
           const classicClickerUrl = "https://spaceclickergame.com/spacebar-clicker/";
-          const classicClickerDescription = "Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.";
+          const classicClickerDescription = CORE_ROUTE_META_BY_PATH['/spacebar-clicker'].description;
           const clickerGameSchema = {
               "@type": "VideoGame",
               "name": "Spacebar Clicker",
@@ -1200,8 +1115,6 @@ const App: React.FC = () => {
               ]
           };
       } else if (viewMode === 'spacebar-counter') {
-          title = "Spacebar Counter - Count Space Bar Presses & CPS";
-          desc = "Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -1254,8 +1167,6 @@ const App: React.FC = () => {
               ]
           };
       } else if (viewMode === 'spacebar-clicker-test') {
-          title = "Spacebar Clicker Test - Space Bar CPS & Speed Test";
-          desc = "Test spacebar speed with timed and 100-click modes. Track average CPS, press interval, peak CPS, personal bests and recent local results.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [

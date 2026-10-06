@@ -1,9 +1,40 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { CORE_ROUTE_META } from '../content/routeSeo.js';
 
 const distDir = path.resolve('dist');
 const site = 'https://spaceclickergame.com';
 const legacyPublicSitemap = path.resolve('public/sitemap.xml');
+
+const coreRoutes = new Set();
+const coreViews = new Set();
+const primaryIntentOwners = new Map();
+
+for (const meta of CORE_ROUTE_META) {
+  if (!meta.route || !meta.view || !meta.title || !meta.description || !meta.h1 || !meta.primaryIntent) {
+    throw new Error('routeSeo.js contains an incomplete core route metadata record');
+  }
+  if (coreRoutes.has(meta.route)) {
+    throw new Error('routeSeo.js contains a duplicate route owner: ' + meta.route);
+  }
+  if (meta.view !== 'game' && coreViews.has(meta.view)) {
+    throw new Error('routeSeo.js contains a duplicate view owner: ' + meta.view);
+  }
+  if (primaryIntentOwners.has(meta.primaryIntent)) {
+    throw new Error(
+      'SEO intent cannibalization contract: "' + meta.primaryIntent + '" is owned by both ' +
+      primaryIntentOwners.get(meta.primaryIntent) + ' and ' + meta.route
+    );
+  }
+
+  coreRoutes.add(meta.route);
+  if (meta.view !== 'game') coreViews.add(meta.view);
+  primaryIntentOwners.set(meta.primaryIntent, meta.route);
+}
+
+if (CORE_ROUTE_META.length !== 22) {
+  throw new Error('Expected 22 core route metadata records, found ' + CORE_ROUTE_META.length);
+}
 
 if (fs.existsSync(legacyPublicSitemap)) {
   throw new Error('public/sitemap.xml must not exist; sitemap.xml is generated from the prerender route catalog at build time.');
@@ -704,8 +735,12 @@ for (const file of htmlFiles) {
   auditedRoutes.push(route);
 }
 
-if (auditedRoutes.length !== 32) {
-  throw new Error('Expected 32 prerendered routes, found ' + auditedRoutes.length);
+const expectedPrerenderedRouteCount = CORE_ROUTE_META.length + 10;
+if (auditedRoutes.length !== expectedPrerenderedRouteCount) {
+  throw new Error(
+    'Expected ' + expectedPrerenderedRouteCount +
+    ' prerendered routes from shared core metadata plus 10 blog articles, found ' + auditedRoutes.length
+  );
 }
 
 for (const [href, minimum] of blogClusterTargets) {
@@ -935,4 +970,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots/hreflang and 1200x630 social preview handoff, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
