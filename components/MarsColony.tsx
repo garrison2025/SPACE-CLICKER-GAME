@@ -261,6 +261,11 @@ const MarsColony: React.FC = () => {
         if (!hasVisualEffects) return;
 
         const visualLoop = () => {
+            if (document.hidden) {
+                frameRef.current = requestAnimationFrame(visualLoop);
+                return;
+            }
+
             setParticles(prev => prev.map(p => ({
                 ...p,
                 x: p.x + p.vx,
