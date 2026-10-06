@@ -1562,7 +1562,7 @@ const App: React.FC = () => {
           version: SAVE_VERSION,
           lastSaveTime: Date.now()
       };
-      safeSetStorageItem(SAVE_KEY, JSON.stringify(toSave));
+      return safeSetStorageItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
   const handleImportSave = (data: any) => {
@@ -1853,8 +1853,11 @@ const App: React.FC = () => {
 
       // Listen for global force save event (from StarshipConsole)
       const handleForceSave = () => {
-          saveGame();
-          addLog("GAME SAVED MANUALLY", "success");
+          const persisted = saveGame();
+          addLog(
+              persisted ? "GAME SAVED MANUALLY" : "MANUAL SAVE FAILED: BROWSER STORAGE UNAVAILABLE",
+              persisted ? "success" : "alert"
+          );
       };
 
       // Browser close/refresh listener
