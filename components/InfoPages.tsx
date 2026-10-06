@@ -95,7 +95,7 @@ export const PrivacyPage = () => (
         <p className="text-sm font-mono text-gray-500">Effective Date: October 6, 2026</p>
         
         <p>
-            At <strong>SpaceClickerGame.com</strong>, we take your privacy as seriously as we take our shield integrity. This Privacy Policy explains how we collect, use, and protect your information when you access our <strong>space clicker games</strong>.
+            This Privacy Policy explains how <strong>SpaceClickerGame.com</strong> handles information when you use the site&apos;s browser-based games, Spacebar tools, guides, and related pages.
         </p>
 
         <h3>1. Information Collection</h3>
@@ -126,43 +126,57 @@ export const PrivacyPage = () => (
 
         <h3>4. Contact Us</h3>
         <p>
-            If you have questions about these protocols, please contact Command at <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.
+            If you have questions about this Privacy Policy, contact <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.
         </p>
     </PageContainer>
 );
 
 export const TermsPage = () => (
     <PageContainer title="TERMS OF SERVICE">
-        <p className="text-sm font-mono text-gray-500">Last Updated: October 5, 2026</p>
+        <p className="text-sm font-mono text-gray-500">Last Updated: October 6, 2026</p>
 
         <h3>1. Acceptance of Terms</h3>
         <p>
-            By accessing <strong>SpaceClickerGame.com</strong> ("the Site"), you agree to abide by these Terms of Service. If you do not agree to these terms, please disconnect from the simulation immediately.
+            By accessing or using <strong>SpaceClickerGame.com</strong> (the "Site"), you agree to these Terms of Service. If you do not agree, do not use the Site.
         </p>
 
-        <h3>2. Use License</h3>
+        <h3>2. Permitted Use</h3>
         <p>
-            Permission is granted to temporarily access the materials (games and software) on Space Clicker Game for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title. You may not:
+            The Site provides browser-based games, tools, guides, and related materials for personal use. You may use the Site only in a lawful manner and must not:
         </p>
         <ul>
-            <li>Modify or copy the game assets for commercial distribution.</li>
-            <li>Attempt to reverse engineer any software contained on the Site.</li>
-            <li>Use the Site for any malicious mining scripts or botnets that degrade service for others.</li>
+            <li>Interfere with the Site&apos;s operation or intentionally degrade service for other users.</li>
+            <li>Attempt unauthorized access to systems, accounts, or data that are not made available through the Site.</li>
+            <li>Use automated requests, malicious scripts, or other abusive traffic in a way that disrupts normal operation.</li>
+            <li>Redistribute protected site assets or content commercially without permission from the applicable rights holder.</li>
         </ul>
 
-        <h3>3. Disclaimer</h3>
+        <h3>3. Local Saves and Availability</h3>
         <p>
-            The materials on Space Clicker Game are provided on an 'as is' basis. We make no warranties, expressed or implied, regarding the stability of your galactic empire. We are not responsible for save data loss due to browser cache clearing or supernova events.
+            Supported game progress is stored locally in the current browser. Local storage can be cleared by the user, browser, device, or privacy settings, and private-browsing sessions may not persist data. Where a portable save or backup option is available, keeping a separate backup is the user&apos;s responsibility.
+        </p>
+        <p>
+            The Site may be changed, updated, interrupted, or discontinued without guaranteeing uninterrupted availability of every game, feature, or locally stored save.
         </p>
 
-        <h3>4. Limitations</h3>
+        <h3>4. Disclaimer</h3>
         <p>
-            In no event shall Space Clicker Game or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit) arising out of the use or inability to use the materials on the Site.
+            The Site and its materials are provided on an "as is" and "as available" basis to the extent permitted by applicable law. We do not guarantee that every feature will be error-free, uninterrupted, or compatible with every browser or device.
         </p>
 
-        <h3>5. Governing Law</h3>
+        <h3>5. Limitation of Liability</h3>
         <p>
-            These terms do not designate a fictional or universal jurisdiction. Applicable law and any non-waivable consumer rights depend on the circumstances and the jurisdiction that legally applies to the site operator and user.
+            To the extent permitted by applicable law, Space Clicker Game is not liable for indirect, incidental, special, consequential, or similar losses arising from use of, or inability to use, the Site, including loss of locally stored game progress. Any rights that cannot legally be excluded or limited remain unaffected.
+        </p>
+
+        <h3>6. Governing Law and Consumer Rights</h3>
+        <p>
+            Applicable law, jurisdiction, and any non-waivable consumer rights depend on the circumstances and the laws that legally apply to the site operator and the user. Nothing in these Terms is intended to exclude rights that cannot lawfully be excluded.
+        </p>
+
+        <h3>7. Contact</h3>
+        <p>
+            Questions about these Terms can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.
         </p>
     </PageContainer>
 );
