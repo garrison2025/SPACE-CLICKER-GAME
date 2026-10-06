@@ -678,6 +678,7 @@ const DeepSpaceSignal: React.FC = () => {
                         {/* Analysis Action */}
                         {msg.isDecoded && !msg.analyzed && msg.sender !== 'SYSTEM' && (
                             <button
+                                type="button"
                                 onClick={(e) => { e.stopPropagation(); handleAnalyze(msg.id); }}
                                 disabled={energy < 10}
                                 className="mt-2 min-h-11 text-[10px] border border-green-700 text-green-700 px-3 py-2 rounded hover:bg-green-700 hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed uppercase"
