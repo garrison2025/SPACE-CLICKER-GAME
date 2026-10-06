@@ -155,7 +155,13 @@ const SpacebarClicker2: React.FC = () => {
     [upgrades.microBot, upgrades.reactorBank, permanentMultiplier, fluxMultiplier, overdriveMultiplier]
   );
 
-  const ascensionGain = Math.floor(Math.sqrt(points / ASCENSION_THRESHOLD));
+  const ascensionGain = Math.max(
+    0,
+    Math.min(
+      Math.floor(Math.sqrt(points / ASCENSION_THRESHOLD)),
+      MAX_NOVA_CORES - novaCores
+    )
+  );
   const ascensionProgress = Math.min(100, (points / ASCENSION_THRESHOLD) * 100);
   const pointsToAscension = Math.max(0, ASCENSION_THRESHOLD - points);
 
@@ -342,13 +348,21 @@ const SpacebarClicker2: React.FC = () => {
   };
 
   const ascend = () => {
-    if (ascensionGain < 1) return;
-    if (!window.confirm(`Ascend this run for +${ascensionGain} Nova Core${ascensionGain > 1 ? 's' : ''}? Points and standard upgrades reset.`)) return;
+    const snapshot = saveRef.current;
+    const availableGain = Math.max(
+      0,
+      Math.min(
+        Math.floor(Math.sqrt(snapshot.points / ASCENSION_THRESHOLD)),
+        MAX_NOVA_CORES - snapshot.novaCores
+      )
+    );
+    if (availableGain < 1) return;
+    if (!window.confirm(`Ascend this run for +${availableGain} Nova Core${availableGain > 1 ? 's' : ''}? Points and standard upgrades reset.`)) return;
 
-    const nextNovaCores = novaCores + ascensionGain;
+    const nextNovaCores = snapshot.novaCores + availableGain;
     const nextUpgrades = emptyUpgrades();
     const nextSnapshot = {
-      ...saveRef.current,
+      ...snapshot,
       points: 0,
       novaCores: nextNovaCores,
       upgrades: nextUpgrades,
