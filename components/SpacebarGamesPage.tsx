@@ -7,35 +7,40 @@ const SpacebarGamesPage: React.FC = () => {
       title: 'Spacebar Clicker',
       badge: 'IDLE / INCREMENTAL',
       description: 'Press Space for points, buy manual and automatic upgrades, build combos, earn offline progress and prestige for permanent Quantum Keys.',
-      bestFor: 'Longer progression sessions'
+      bestFor: 'Longer progression sessions',
+      cta: 'Play Spacebar Clicker'
     },
     {
       href: '/spacebar-clicker-test/',
       title: 'Spacebar Clicker Test',
       badge: 'CPS SPEED TEST',
       description: 'Run 1, 5, 10, 30 or 60 second tests, choose a custom duration, or race to 100 presses as quickly as possible.',
-      bestFor: 'Measuring spacebar speed'
+      bestFor: 'Measuring spacebar speed',
+      cta: 'Start Spacebar CPS Test'
     },
     {
       href: '/spacebar-counter/',
       title: 'Spacebar Counter',
       badge: 'ENDLESS COUNTER',
       description: 'Count deliberate Space presses with current CPS, average CPS, peak CPS and a best count saved in this browser.',
-      bestFor: 'Untimed counting and practice'
+      bestFor: 'Untimed counting and practice',
+      cta: 'Open Spacebar Counter'
     },
     {
       href: '/spacebar-clicker-2/',
       title: 'Spacebar Clicker 2',
       badge: 'OVERDRIVE EDITION',
       description: 'A separate enhanced edition with Overdrive surges, stronger automation, offline earnings and Nova Core ascension.',
-      bestFor: 'A deeper second progression loop'
+      bestFor: 'A deeper second progression loop',
+      cta: 'Play Spacebar Clicker 2'
     },
     {
       href: '/spacebar-clicker-unblocked/',
       title: 'Spacebar Clicker Instant Play',
       badge: 'NO DOWNLOAD',
       description: 'Open the full Spacebar Clicker game directly in a modern browser with keyboard and mobile controls and local browser saves.',
-      bestFor: 'Quick browser access'
+      bestFor: 'Quick browser access',
+      cta: 'Open Instant Browser Mode'
     }
   ];
 
@@ -66,7 +71,7 @@ const SpacebarGamesPage: React.FC = () => {
               <div className="mt-5 text-xs text-gray-500">
                 Best for: <span className="text-gray-300">{game.bestFor}</span>
               </div>
-              <div className="mt-5 text-sm font-bold text-neon-blue">PLAY NOW →</div>
+              <div className="mt-5 text-sm font-bold text-neon-blue">{game.cta} →</div>
             </a>
           ))}
         </div>
@@ -77,9 +82,7 @@ const SpacebarGamesPage: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Which spacebar game should you play?</h2>
             <p>
-              Use Spacebar Clicker when you want an actual incremental game with upgrades and automation. Use Spacebar Counter when
-              you only want an untimed tally. Use Spacebar Clicker Test when the goal is a measurable CPS result over a fixed duration.
-              The instant-play page opens the same clicker experience directly in the browser.
+              Use <a href="/spacebar-clicker/" className="text-neon-blue hover:text-white">Spacebar Clicker</a> when you want an incremental game with upgrades, automation, offline progress and prestige. Use the <a href="/spacebar-counter/" className="text-neon-blue hover:text-white">Spacebar Counter</a> when you only want an untimed tally. Use the <a href="/spacebar-clicker-test/" className="text-neon-blue hover:text-white">Spacebar Clicker Test</a> when the goal is a measurable CPS result over a fixed duration. <a href="/spacebar-clicker-2/" className="text-neon-blue hover:text-white">Spacebar Clicker 2</a> is a separate progression game, while the <a href="/spacebar-clicker-unblocked/" className="text-neon-blue hover:text-white">instant browser route</a> opens the classic game without an installation step and does not bypass network restrictions.
             </p>
           </section>
 
