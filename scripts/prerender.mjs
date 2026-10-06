@@ -76,6 +76,7 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
     author: readField('author'),
     datePublished: new Date(readField('date')).toISOString(),
     dateModified: new Date(readField('updatedDate', false) || readField('date')).toISOString(),
+    readTime: readField('readTime'),
     image: readField('image')
   };
 }
@@ -121,6 +122,7 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
     title: readJsonField('title'),
     seoTitle: readJsonField('seoTitle'),
     publishedDate: readJsonField('publishedDate'),
+    readTime: readJsonField('readTime'),
     description: readJsonField('excerpt'),
     image: readJsonField('image')
   };
@@ -132,6 +134,12 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
         `blogMeta.ts drift for ${slug}: ${field} does not match content/blogPosts.ts`
       );
     }
+  }
+
+  if (lightweight.readTime !== canonical.readTime) {
+    throw new Error(
+      `blogMeta.ts drift for ${slug}: readTime ${lightweight.readTime} does not match ${canonical.readTime}`
+    );
   }
 
   const canonicalPublishedDate = canonical.datePublished.slice(0, 10);
