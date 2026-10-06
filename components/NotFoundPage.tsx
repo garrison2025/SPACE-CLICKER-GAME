@@ -7,12 +7,6 @@ interface NotFoundPageProps {
 }
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
-    
-    return () => {
-            document.head.removeChild(meta);
-        };
-    }, []);
-
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
             {/* Background Glitch Effect */}
