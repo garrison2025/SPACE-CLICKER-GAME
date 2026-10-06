@@ -969,6 +969,11 @@ const App: React.FC = () => {
                     },
                     {
                       "@type": "Question",
+                      "name": "How much offline production can Spacebar Clicker 2 recover?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Supported saved runs can recover up to 12 hours of offline auto-production. Overdrive contributes only for the portion of its actual remaining duration that overlaps the offline window." }
+                    },
+                    {
+                      "@type": "Question",
                       "name": "Can I move my Spacebar Clicker 2 save to another browser?",
                       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save." }
                     }
@@ -1071,6 +1076,11 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "What survives a prestige reset?",
                       "acceptedAnswer": { "@type": "Answer", "text": "Quantum Keys, lifetime presses, best CPS and achievement progress remain." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "How much offline production can Spacebar Clicker recover?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Once automation is producing points, a supported saved run can recover up to 24 hours of offline production when you return." }
                     },
                     {
                       "@type": "Question",
