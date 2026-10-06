@@ -51,7 +51,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   const [geodes, setGeodes] = useState<Geode[]>([]);
   const [shake, setShake] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const planetRef = useRef<HTMLDivElement>(null);
+  const planetRef = useRef<HTMLButtonElement>(null);
   const transientTimersRef = useRef<Set<number>>(new Set());
 
   const scheduleTransient = (callback: () => void, delay: number) => {
@@ -469,22 +469,35 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             </div>
 
             {/* Planet Surface */}
-            <div 
+            <button
                 ref={planetRef}
-                className={`w-full h-full rounded-full transition-all duration-300 relative overflow-hidden group ${isFlux ? 'shadow-[0_0_120px_fuchsia]' : ''}`}
+                type="button"
+                disabled={overheated}
+                aria-label={overheated ? 'Mining beam cooling down' : `Mine Stardust on ${planet.name}`}
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                    event.stopPropagation();
+                    const rect = event.currentTarget.getBoundingClientRect();
+                    const keyboardActivation = event.detail === 0;
+                    const clientX = keyboardActivation ? rect.left + rect.width / 2 : event.clientX;
+                    const clientY = keyboardActivation ? rect.top + rect.height / 2 : event.clientY;
+                    handleInteraction(clientX, clientY);
+                }}
+                className={`w-full h-full rounded-full transition-all duration-300 relative overflow-hidden group border-0 p-0 appearance-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-neon-blue/70 disabled:cursor-not-allowed ${isFlux ? 'shadow-[0_0_120px_fuchsia]' : ''}`}
                 style={{
                     background: `radial-gradient(circle at 35% 35%, ${isFlux ? '#d946ef' : planet.colors.primary}, ${planet.colors.secondary})`,
                     boxShadow: isFlux ? `0 0 100px ${planet.colors.atmosphere}, inset -10px -10px 40px rgba(0,0,0,0.8)` : `0 0 60px ${planet.colors.atmosphere}, inset -10px -10px 40px rgba(0,0,0,0.8)`
                 }}
             >
-                <div className="absolute inset-0 rounded-full opacity-40 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent_70%)] mix-blend-overlay"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border-[2px] border-white/10 rounded-full animate-spin-slow pointer-events-none"></div>
+                <span className="absolute inset-0 rounded-full opacity-40 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent_70%)] mix-blend-overlay" aria-hidden="true"></span>
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border-[2px] border-white/10 rounded-full animate-spin-slow pointer-events-none" aria-hidden="true"></span>
                 
                 {/* Glow on hover/active */}
-                <div 
+                <span
                     className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300 bg-white mix-blend-overlay"
-                ></div>
-            </div>
+                    aria-hidden="true"
+                ></span>
+            </button>
           </div>
 
           {/* Physics Debris */}
