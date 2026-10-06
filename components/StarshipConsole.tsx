@@ -4,6 +4,7 @@ import { GameId, GameMeta } from '../types';
 import { GAMES_CATALOG } from '../constants';
 import { toggleMute, getMuteState } from '../services/audioService';
 import { clearProjectStorage } from '../utils/projectStorage';
+import { trapDialogFocus } from '../utils/dialogFocus';
 import { Logo } from './Logo';
 
 interface StarshipConsoleProps {
@@ -221,6 +222,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                 aria-modal="true"
                 aria-labelledby="system-config-title"
                 tabIndex={-1}
+                onKeyDown={trapDialogFocus}
                 className="bg-space-800 w-full max-w-md max-h-full border border-white/20 rounded-2xl shadow-2xl overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
               >
                   <div className="p-6 border-b border-white/10 flex justify-between items-center bg-space-900">
