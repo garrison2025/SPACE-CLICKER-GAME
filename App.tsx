@@ -11,6 +11,7 @@ import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
 import { isInteractiveKeyboardTarget } from './utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from './utils/projectStorage';
 
 // --- LAZY LOAD GAMES (Code Splitting for SEO Performance) ---
 const MarsColony = React.lazy(() => import('./components/MarsColony'));
@@ -282,8 +283,8 @@ const App: React.FC = () => {
   // Modals & Settings State
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showHotkeysOverlay, setShowHotkeysOverlay] = useState(false);
-  const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => localStorage.getItem('space_haptic') !== 'false');
-  const [screenShakeEnabled, setScreenShakeEnabled] = useState<boolean>(() => localStorage.getItem('space_screenshake') !== 'false');
+  const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => safeGetStorageItem('space_haptic') !== 'false');
+  const [screenShakeEnabled, setScreenShakeEnabled] = useState<boolean>(() => safeGetStorageItem('space_screenshake') !== 'false');
   const [offlineEarnings, setOfflineEarnings] = useState<{
     isOpen: boolean;
     awayTimeSeconds: number;
@@ -308,13 +309,13 @@ const App: React.FC = () => {
 
   const toggleHaptic = () => {
     const next = !hapticEnabled;
-    localStorage.setItem('space_haptic', String(next));
+    safeSetStorageItem('space_haptic', String(next));
     setHapticEnabled(next);
   };
 
   const toggleScreenShake = () => {
     const next = !screenShakeEnabled;
-    localStorage.setItem('space_screenshake', String(next));
+    safeSetStorageItem('space_screenshake', String(next));
     setScreenShakeEnabled(next);
   };
 
@@ -1422,7 +1423,7 @@ const App: React.FC = () => {
     };
 
     gameStateRef.current = nextSnapshot;
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
+    safeSetStorageItem(SAVE_KEY, JSON.stringify({
       ...nextSnapshot,
       version: SAVE_VERSION,
       lastSaveTime: Date.now()
@@ -1467,7 +1468,7 @@ const App: React.FC = () => {
     // Persist the permanent-currency transaction before the UI update so an immediate tab close
     // cannot restore the pre-reset save and duplicate Dark Matter.
     gameStateRef.current = nextSnapshot;
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
+    safeSetStorageItem(SAVE_KEY, JSON.stringify({
       ...nextSnapshot,
       version: SAVE_VERSION,
       lastSaveTime: Date.now()
@@ -1561,7 +1562,7 @@ const App: React.FC = () => {
           version: SAVE_VERSION,
           lastSaveTime: Date.now()
       };
-      localStorage.setItem(SAVE_KEY, JSON.stringify(toSave));
+      safeSetStorageItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
   const handleImportSave = (data: any) => {
@@ -1638,13 +1639,21 @@ const App: React.FC = () => {
           crisesResolved: nextCrises
       };
       gameStateRef.current = normalized;
-      localStorage.setItem(SAVE_KEY, JSON.stringify({ ...normalized, version: SAVE_VERSION, lastSaveTime: Date.now() }));
-      addLog("TELEMETRY BACKUP RESTORED SUCCESSFULLY", "success");
+      const persisted = safeSetStorageItem(
+          SAVE_KEY,
+          JSON.stringify({ ...normalized, version: SAVE_VERSION, lastSaveTime: Date.now() })
+      );
+      addLog(
+          persisted
+              ? "TELEMETRY BACKUP RESTORED SUCCESSFULLY"
+              : "BACKUP RESTORED FOR THIS SESSION; BROWSER STORAGE IS UNAVAILABLE",
+          persisted ? "success" : "alert"
+      );
   };
 
   // Initialize Loading & Offline Progress
   useEffect(() => {
-      const saved = localStorage.getItem(SAVE_KEY);
+      const saved = safeGetStorageItem(SAVE_KEY);
       if (!saved) return;
 
       try {
@@ -1743,7 +1752,7 @@ const App: React.FC = () => {
           };
 
           gameStateRef.current = normalized;
-          localStorage.setItem(SAVE_KEY, JSON.stringify({
+          safeSetStorageItem(SAVE_KEY, JSON.stringify({
               ...normalized,
               version: SAVE_VERSION,
               lastSaveTime: now
@@ -1992,7 +2001,7 @@ const App: React.FC = () => {
                     onToggleScreenShake={toggleScreenShake}
                     onImportSave={handleImportSave}
                     onResetGame={() => {
-                        localStorage.removeItem(SAVE_KEY);
+                        safeRemoveStorageItem(SAVE_KEY);
                         window.location.reload();
                     }}
                 />
