@@ -1,3 +1,29 @@
+export const safeGetStorageItem = (key: string) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+export const safeSetStorageItem = (key: string, value: string) => {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const safeRemoveStorageItem = (key: string) => {
+  try {
+    localStorage.removeItem(key);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const PROJECT_STORAGE_EXACT_KEYS = new Set([
   'space_haptic',
   'space_screenshake',
@@ -22,16 +48,19 @@ export const isProjectStorageKey = (key: string) =>
   PROJECT_STORAGE_PREFIXES.some((prefix) => key.startsWith(prefix));
 
 export const clearProjectStorage = () => {
-  const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
-    .filter((key): key is string => Boolean(key));
+  try {
+    const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
+      .filter((key): key is string => Boolean(key));
 
-  let removed = 0;
-  keys.forEach((key) => {
-    if (isProjectStorageKey(key)) {
-      localStorage.removeItem(key);
-      removed += 1;
-    }
-  });
+    let removed = 0;
+    keys.forEach((key) => {
+      if (isProjectStorageKey(key) && safeRemoveStorageItem(key)) {
+        removed += 1;
+      }
+    });
 
-  return removed;
+    return removed;
+  } catch {
+    return 0;
+  }
 };
