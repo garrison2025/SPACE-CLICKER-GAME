@@ -138,6 +138,22 @@ const manifest = await run('https://spaceclickergame.com/manifest.webmanifest');
 expect(manifest.status === 200, 'manifest.webmanifest should pass through');
 expect(manifest.headers.get('x-content-type-options') === 'nosniff', 'manifest.webmanifest must include X-Content-Type-Options');
 
+const builtManifest = JSON.parse(
+  fs.readFileSync(new URL('../dist/manifest.webmanifest', import.meta.url), 'utf8')
+);
+expect(builtManifest.name === 'Space Clicker Game', 'Manifest name must stay stable');
+expect(builtManifest.short_name === 'Space Clicker', 'Manifest short_name must stay stable');
+expect(builtManifest.id === '/', 'Manifest app id must stay rooted at /');
+expect(builtManifest.start_url === '/', 'Manifest start_url must stay rooted at /');
+expect(builtManifest.scope === '/', 'Manifest scope must stay rooted at /');
+expect(builtManifest.display === 'standalone', 'Manifest display must remain standalone');
+expect(builtManifest.theme_color === '#0b0d17', 'Manifest theme color must match the site shell');
+expect(
+  Array.isArray(builtManifest.icons) &&
+  builtManifest.icons.some((icon) => icon.src === '/favicon.svg' && icon.type === 'image/svg+xml'),
+  'Manifest must reference the shipped SVG app icon'
+);
+
 const robots = await run('https://spaceclickergame.com/robots.txt');
 expect(robots.status === 200, 'robots.txt should pass through');
 
