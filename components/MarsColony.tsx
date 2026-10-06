@@ -250,7 +250,7 @@ const MarsColony: React.FC = () => {
             stateRef.current = { resources: next, buildings: currentBuildings };
             setResources(next);
         }, 1000);
-        return () => window.window.clearInterval(timer);
+        return () => window.clearInterval(timer);
     }, []);
 
     // --- PHYSICS LOOP (Visuals) ---
@@ -434,7 +434,7 @@ const MarsColony: React.FC = () => {
         window.addEventListener('pagehide', handlePageHide);
 
         return () => {
-            clearInterval(timer);
+            window.clearInterval(timer);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('pagehide', handlePageHide);
             if (manualSaveTimerRef.current !== undefined) {
