@@ -21,6 +21,8 @@ const BLOG_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
 const formatBlogDate = (publishedDate: string) =>
     BLOG_DATE_FORMATTER.format(new Date(`${publishedDate}T00:00:00Z`));
 
+const preloadBlogPosts = () => import('../content/blogPosts');
+
 const optimizeUnsplash = (url: string, width: number, height?: number) => {
     if (!url.includes('images.unsplash.com')) return url;
     try {
@@ -53,7 +55,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
         let cancelled = false;
         setArticleLoadError(false);
 
-        import('../content/blogPosts')
+        preloadBlogPosts()
             .then(({ BLOG_POSTS }) => {
                 if (!cancelled) setBlogPosts(BLOG_POSTS);
             })
@@ -587,6 +589,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         <a 
                             key={post.id}
                             href={`/blog/${post.slug}/`}
+                            onMouseEnter={() => { void preloadBlogPosts(); }}
+                            onFocus={() => { void preloadBlogPosts(); }}
                             onClick={(e) => { e.preventDefault(); onNavigate('blog', post.slug); }}
                             className="group bg-space-900 border border-white/10 rounded-xl overflow-hidden hover:border-neon-blue/50 transition-all cursor-pointer hover:-translate-y-2 shadow-lg flex flex-col h-full block"
                         >
