@@ -49,9 +49,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="description" content={description} />
       {!noindex && <link rel="canonical" href={fullUrl} />}
 
-      {/* International SEO / Hreflang */}
-      {!noindex && <link rel="alternate" href={fullUrl} hrefLang="en" />}
-      {!noindex && <link rel="alternate" href={fullUrl} hrefLang="x-default" />}
+      {/* Monolingual site: do not emit hreflang/x-default until real localized equivalents exist. */}
 
       {/* Robots Directive */}
       {noindex ? (
@@ -70,6 +68,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content={title} />
       <meta property="og:site_name" content="Space Clicker Game" />
+      <meta property="og:locale" content="en_US" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
