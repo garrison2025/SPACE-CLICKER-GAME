@@ -44,6 +44,7 @@ const GoldenComet: React.FC<GoldenCometProps> = ({ onCatch }) => {
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
+          event.stopPropagation();
           setIsVisible(false);
           onCatch();
         }
