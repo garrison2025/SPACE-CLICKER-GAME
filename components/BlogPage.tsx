@@ -398,7 +398,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
         let processedContent = post.content;
         toc.forEach((item) => {
             const escapedText = item.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            const regex = new RegExp(`(<h${item.level}>)(\${escapedText})(</h${item.level}>)`);
+            const regex = new RegExp(`(<h${item.level}>)(${escapedText})(</h${item.level}>)`);
             processedContent = processedContent.replace(
                 regex,
                 `$1<span id="${item.id}" tabindex="-1" class="scroll-mt-24 relative focus:outline-none">$2</span>$3`
