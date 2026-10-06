@@ -1015,7 +1015,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
               <section>
                 <h2 className="text-2xl font-display text-white mb-3">Instant browser play</h2>
                 <p>
-                  This version opens directly in a modern browser with no download, account, launcher, or extension required. The game itself is the same interactive Spacebar Clicker economy: press Space, buy upgrades, unlock automation, and use Hyperdrive prestige once a run is large enough.
+                  This version opens directly in a modern browser with no download, account, launcher, or extension required. This route uses the same Spacebar Clicker implementation as the main page on SpaceClickerGame.com: press Space, buy upgrades, unlock automation, and use Hyperdrive prestige once a run is large enough.
                 </p>
               </section>
               <section>
@@ -1048,7 +1048,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   <div><h3 className="text-lg text-white">What does “unblocked” mean on this page?</h3><p>It means the game opens directly in a browser with no installation, launcher, extension, or account step. It does not bypass network restrictions.</p></div>
                   <div><h3 className="text-lg text-white">Can a school or workplace network still block the game?</h3><p>Yes. Access depends on the rules applied by the network, device, firewall, parental controls, or administrator.</p></div>
                   <div><h3 className="text-lg text-white">Does the instant-play version save progress?</h3><p>Yes. Progress is stored locally in the current browser. There is no cloud or cross-device sync.</p></div>
-                  <div><h3 className="text-lg text-white">Is this the same Spacebar Clicker game?</h3><p>Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page.</p></div>
+                  <div><h3 className="text-lg text-white">Is this the same version as the main Spacebar Clicker page on this site?</h3><p>Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page on SpaceClickerGame.com.</p></div>
                 </div>
               </section>
             </>
