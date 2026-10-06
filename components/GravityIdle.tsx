@@ -95,6 +95,7 @@ const GravityIdle: React.FC = () => {
     const hiddenAtRef = useRef<number | null>(null);
     const offlineReturnFocusRef = useRef<HTMLElement | null>(null);
     const shopToggleRef = useRef<HTMLButtonElement | null>(null);
+    const shopPanelRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         matterRef.current = matter;
@@ -132,16 +133,11 @@ const GravityIdle: React.FC = () => {
     useEffect(() => {
         if (!showShop) return;
 
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                setShowShop(false);
-                window.requestAnimationFrame(() => shopToggleRef.current?.focus());
-            }
-        };
+        const previousFocus =
+            document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        window.requestAnimationFrame(() => shopPanelRef.current?.focus());
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+        return () => previousFocus?.focus();
     }, [showShop]);
 
     // --- GAME LOOP ---
@@ -836,8 +832,22 @@ const GravityIdle: React.FC = () => {
 
              {/* UPGRADE SHOP PANEL */}
              <div
+                ref={shopPanelRef}
                 id="gravity-physics-lab"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="gravity-physics-lab-title"
                 aria-hidden={!showShop}
+                tabIndex={-1}
+                onKeyDown={(event) => {
+                    if (event.key === 'Escape') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        setShowShop(false);
+                        return;
+                    }
+                    trapDialogFocus(event);
+                }}
                 style={{ visibility: showShop ? 'visible' : 'hidden' }}
                 className={`
                   absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
@@ -847,16 +857,13 @@ const GravityIdle: React.FC = () => {
                  <div className="p-6 border-b border-white/10 bg-black/40">
                      <div className="flex justify-between items-center mb-4">
                          <div>
-                             <h3 className="font-display font-black text-xl text-neon-purple tracking-wide">PHYSICS LAB</h3>
+                             <h3 id="gravity-physics-lab-title" className="font-display font-black text-xl text-neon-purple tracking-wide">PHYSICS LAB</h3>
                              <p className="text-[10px] text-gray-500">UPGRADE CONSTANTS</p>
                          </div>
                          <button
                             type="button"
                             aria-label="Close Physics Lab"
-                            onClick={() => {
-                                setShowShop(false);
-                                window.requestAnimationFrame(() => shopToggleRef.current?.focus());
-                            }}
+                            onClick={() => setShowShop(false)}
                             className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
                          >✕</button>
                      </div>
@@ -898,20 +905,13 @@ const GravityIdle: React.FC = () => {
                          const canAfford = matter >= cost && !isMax;
 
                          return (
-                             <div
+                             <button
+                                  type="button"
                                   key={key}
-                                  role="button"
-                                  tabIndex={canAfford ? 0 : -1}
-                                  aria-disabled={!canAfford}
+                                  disabled={!canAfford}
                                   aria-label={`${cfg.name}, level ${lvl}, ${isMax ? 'maxed' : `cost ${formatNumber(cost)} matter`}`}
-                                  className={`p-4 rounded-xl border transition-all select-none group relative overflow-hidden touch-manipulation focus:outline-none focus:ring-2 focus:ring-neon-purple/60 ${canAfford ? 'border-neon-purple/40 bg-neon-purple/5 cursor-pointer hover:bg-neon-purple/10 hover:border-neon-purple' : 'border-white/5 bg-black/40 opacity-60'}`}
-                                  onKeyDown={(event) => {
-                                      if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
-                                          event.preventDefault();
-                                          handleBuy(key);
-                                      }
-                                  }}
-                                  onClick={() => canAfford && handleBuy(key)}>
+                                  className={`w-full text-left p-4 rounded-xl border transition-all select-none group relative overflow-hidden touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-purple/60 ${canAfford ? 'border-neon-purple/40 bg-neon-purple/5 cursor-pointer hover:bg-neon-purple/10 hover:border-neon-purple' : 'border-white/5 bg-black/40 opacity-60 cursor-not-allowed'}`}
+                                  onClick={() => handleBuy(key)}>
                                  
                                  {/* Progress Bar BG */}
                                  {canAfford && <div className="absolute inset-0 bg-neon-purple/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>}
@@ -933,7 +933,7 @@ const GravityIdle: React.FC = () => {
                                         )}
                                      </div>
                                  </div>
-                             </div>
+                             </button>
                          )
                      })}
                  </div>
