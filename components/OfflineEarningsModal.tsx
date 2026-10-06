@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { formatNumber } from '../utils';
+import { trapDialogFocus } from '../utils/dialogFocus';
 
 interface OfflineEarningsModalProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
         aria-labelledby="offline-earnings-title"
         tabIndex={-1}
         autoFocus
+        onKeyDown={trapDialogFocus}
         className="relative bg-gradient-to-b from-space-800 to-space-950 border-2 border-yellow-500/60 w-full max-w-lg max-h-full rounded-3xl p-5 sm:p-6 md:p-8 text-center shadow-[0_0_80px_rgba(234,179,8,0.25)] overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
       >
         
