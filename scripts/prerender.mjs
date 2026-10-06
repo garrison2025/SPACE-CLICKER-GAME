@@ -1137,7 +1137,7 @@ const renderHtml = (route, title, description, h1) => {
   const isArticle = route.startsWith('/blog/');
   const socialImage = getRouteSocialImage(route);
   let html = baseHtml;
-  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
+  html = html.replace(/<title>[^<]*<\/title>/i, `<title data-rh="true">${escapeHtml(title)}</title>`);
   html = html.replace(/<meta name="description"[^>]*>/i, `<meta name="description" data-rh="true" content="${escapeHtml(description)}">`);
   html = html.replace(/<meta property="og:title"[^>]*>/i, `<meta property="og:title" data-rh="true" content="${escapeHtml(title)}" />`);
   html = html.replace(/<meta property="og:description"[^>]*>/i, `<meta property="og:description" data-rh="true" content="${escapeHtml(description)}" />`);
