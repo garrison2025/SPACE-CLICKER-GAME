@@ -8,7 +8,7 @@ interface NotFoundPageProps {
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
     return (
-        <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
+        <main id="main-content" tabIndex={-1} className="min-h-screen bg-black flex flex-col items-center justify-center text-center p-4 relative overflow-hidden focus:outline-none">
             {/* Background Glitch Effect */}
             <div className="absolute inset-0 bg-[radial-gradient(rgba(239,68,68,0.08)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 pointer-events-none"></div>
             <div className="absolute inset-0 bg-red-900/10 animate-pulse pointer-events-none"></div>
@@ -30,14 +30,14 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                     <button
                         type="button"
                         onClick={() => onNavigate('home')}
-                        className="px-8 py-3 bg-white text-black font-bold rounded hover:bg-neon-blue transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                        className="px-8 py-3 bg-white text-black font-bold rounded hover:bg-neon-blue transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                     >
                         RETURN TO BASE
                     </button>
                     <button
                         type="button"
                         onClick={() => onNavigate('game')}
-                        className="px-8 py-3 border border-red-500 text-red-500 font-bold rounded hover:bg-red-500 hover:text-black transition-colors"
+                        className="px-8 py-3 border border-red-500 text-red-500 font-bold rounded hover:bg-red-500 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
                     >
                         EMERGENCY WARP
                     </button>
@@ -47,7 +47,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                     HTTP 404 · PAGE NOT FOUND
                 </div>
             </div>
-        </div>
+        </main>
     );
 };
 
