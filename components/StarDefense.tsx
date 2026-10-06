@@ -444,7 +444,7 @@ const StarDefense: React.FC = () => {
             comboTimerRef.current = COMBO_TIMEOUT;
             
             const scrapReward = Math.floor(enemy.scoreValue * comboMultiplier);
-            const nextScraps = scrapsRef.current + scrapReward;
+            const nextScraps = Math.min(MAX_RESOURCE_VALUE, scrapsRef.current + scrapReward);
             scrapsRef.current = nextScraps;
             saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
             setScraps(nextScraps);
@@ -569,7 +569,7 @@ const StarDefense: React.FC = () => {
             addFloatingText(p.x, p.y, "+25 HP", "#10b981", true);
         } else if (p.type === 'scrap') {
             const amount = 100 * wave;
-            const nextScraps = scrapsRef.current + amount;
+            const nextScraps = Math.min(MAX_RESOURCE_VALUE, scrapsRef.current + amount);
             scrapsRef.current = nextScraps;
             saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
             setScraps(nextScraps);
@@ -587,6 +587,7 @@ const StarDefense: React.FC = () => {
         const u = currentUpgrades.find(up => up.id === id);
         if (!u) return;
         if (id !== 'repair' && u.level >= MAX_UPGRADE_LEVEL) return;
+        if (id === 'repair' && hpRef.current >= maxHp) return;
 
         let cost = Math.floor(u.cost * Math.pow(u.costMult, u.level));
         if (id === 'repair') cost = u.cost;
