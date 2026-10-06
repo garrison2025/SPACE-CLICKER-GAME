@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { PrestigeUpgrade } from '../types';
 import { PRESTIGE_UPGRADES } from '../constants';
 import { formatNumber } from '../utils';
-import { trapDialogFocus } from '../utils/dialogFocus';
+import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
 interface PrestigeShopProps {
   darkMatter: number;
@@ -16,21 +16,16 @@ interface PrestigeShopProps {
 }
 
 const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prestigeGain, canPrestige, thresholdLabel, onPrestige, onBuy, onClose }) => {
-  useEffect(() => {
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-    return () => previousFocus?.focus();
-  }, []);
+  const dialogRef = useDialogFocus<HTMLDivElement>(true);
 
   return (
     <div className="safe-screen-overlay fixed inset-0 z-[70] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in">
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="prestige-shop-title"
         tabIndex={-1}
-        autoFocus
         onKeyDown={trapDialogFocus}
         className="bg-space-800 w-full max-w-4xl max-h-full rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
       >
