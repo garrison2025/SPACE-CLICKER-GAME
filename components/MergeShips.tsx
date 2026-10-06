@@ -134,6 +134,14 @@ const MergeShips: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        if (!showShop) return;
+        const previousFocus = document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
+        return () => previousFocus?.focus();
+    }, [showShop]);
+
+    useEffect(() => {
         if (!selectedShip) return;
 
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -975,10 +983,25 @@ const MergeShips: React.FC = () => {
              
              {/* Tech Shop */}
              {showShop && (
-                 <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center animate-in slide-in-from-bottom">
-                     <div className="bg-slate-900 border border-white/20 w-full max-w-lg rounded-t-2xl md:rounded-2xl p-6 shadow-2xl">
+                 <div className="safe-screen-overlay absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center animate-in slide-in-from-bottom">
+                     <div
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="merge-tech-bay-title"
+                        tabIndex={-1}
+                        autoFocus
+                        onKeyDown={(event) => {
+                            if (event.key === 'Escape') {
+                                event.stopPropagation();
+                                setShowShop(false);
+                                return;
+                            }
+                            trapDialogFocus(event);
+                        }}
+                        className="bg-slate-900 border border-white/20 w-full max-w-lg max-h-full overflow-y-auto rounded-t-2xl md:rounded-2xl p-6 shadow-2xl outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+                     >
                          <div className="flex justify-between items-center mb-6">
-                             <h3 className="font-display font-bold text-xl text-white">TECH BAY</h3>
+                             <h3 id="merge-tech-bay-title" className="font-display font-bold text-xl text-white">TECH BAY</h3>
                              <button
                                 type="button"
                                 aria-label="Close upgrades"
