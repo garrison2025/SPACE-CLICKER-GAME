@@ -207,13 +207,13 @@ const DeepSpaceSignal: React.FC = () => {
         const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
         const interval = window.setInterval(() => {
             if (document.hidden) return;
+            let line = "";
+            for (let i = 0; i < 8; i++) {
+                line += Math.floor(Math.random() * 16).toString(16).toUpperCase() + " ";
+            }
             setHexLines(prev => {
-                const next = [...prev];
-                let line = "";
-                for(let i=0; i<8; i++) line += Math.floor(Math.random()*16).toString(16).toUpperCase() + " ";
-                next.push(line);
-                if (next.length > 20) next.shift();
-                return next;
+                const next = [...prev, line];
+                return next.length > 20 ? next.slice(-20) : next;
             });
         }, reduceMotion ? 800 : 350);
         return () => window.clearInterval(interval);
