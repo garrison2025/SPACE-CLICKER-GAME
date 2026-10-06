@@ -130,6 +130,7 @@ const SpacebarClicker2: React.FC = () => {
   const [saveImportText, setSaveImportText] = useState('');
   const pressTimes = useRef<number[]>([]);
   const energyRef = useRef(energy);
+  const overdriveStartedAtRef = useRef(0);
   const overdriveUntilRef = useRef(overdriveUntil);
 
   useEffect(() => {
@@ -146,26 +147,26 @@ const SpacebarClicker2: React.FC = () => {
   const permanentMultiplier = 1 + novaCores * 0.15;
   const fluxMultiplier = 1 + upgrades.fluxAmplifier * 0.25;
 
-  const manualPower = useMemo(
+  const baseManualPower = useMemo(
     () =>
       (1 + upgrades.carbonKey * 2) *
       Math.pow(2, upgrades.torqueMultiplier) *
       permanentMultiplier *
-      fluxMultiplier *
-      overdriveMultiplier,
-    [upgrades.carbonKey, upgrades.torqueMultiplier, permanentMultiplier, fluxMultiplier, overdriveMultiplier]
+      fluxMultiplier,
+    [upgrades.carbonKey, upgrades.torqueMultiplier, permanentMultiplier, fluxMultiplier]
   );
+  const manualPower = baseManualPower * overdriveMultiplier;
 
-  const autoRate = useMemo(
+  const baseAutoRate = useMemo(
     () =>
       upgrades.microBot *
       3 *
       Math.pow(2, upgrades.reactorBank) *
       permanentMultiplier *
-      fluxMultiplier *
-      overdriveMultiplier,
-    [upgrades.microBot, upgrades.reactorBank, permanentMultiplier, fluxMultiplier, overdriveMultiplier]
+      fluxMultiplier,
+    [upgrades.microBot, upgrades.reactorBank, permanentMultiplier, fluxMultiplier]
   );
+  const autoRate = baseAutoRate * overdriveMultiplier;
 
   const ascensionGain = Math.max(
     0,
@@ -245,12 +246,38 @@ const SpacebarClicker2: React.FC = () => {
   }, [overdriveUntil]);
 
   useEffect(() => {
-    if (autoRate <= 0) return;
+    if (baseAutoRate <= 0) return;
+
+    let lastTick = Date.now();
     const timer = window.setInterval(() => {
-      const gain = autoRate / 5;
+      if (document.hidden) return;
+
+      const now = Date.now();
+      const cappedElapsedMs = Math.min(
+        43_200_000,
+        Math.max(0, now - lastTick)
+      );
+      const intervalStart = now - cappedElapsedMs;
+      lastTick = now;
+      if (cappedElapsedMs <= 0) return;
+
+      const overdriveStart = overdriveStartedAtRef.current;
+      const overdriveEnd = overdriveUntilRef.current;
+      const overlapStart = Math.max(intervalStart, overdriveStart);
+      const overlapEnd = Math.min(now, overdriveEnd);
+      const overdriveMs = Math.max(0, overlapEnd - overlapStart);
+      const normalMs = Math.max(0, cappedElapsedMs - overdriveMs);
+
+      const gain =
+        baseAutoRate * (normalMs / 1000) +
+        baseAutoRate * 3 * (overdriveMs / 1000);
+
       const snapshot = saveRef.current;
       const nextPoints = Math.min(MAX_RESOURCE_VALUE, snapshot.points + gain);
-      const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, snapshot.lifetimePoints + gain);
+      const nextLifetimePoints = Math.min(
+        MAX_RESOURCE_VALUE,
+        snapshot.lifetimePoints + gain
+      );
       saveRef.current = {
         ...snapshot,
         points: nextPoints,
@@ -259,8 +286,9 @@ const SpacebarClicker2: React.FC = () => {
       setPoints(nextPoints);
       setLifetimePoints(nextLifetimePoints);
     }, 200);
+
     return () => window.clearInterval(timer);
-  }, [autoRate]);
+  }, [baseAutoRate]);
 
   useEffect(() => {
     if (!cpsTrackingActive) return;
@@ -309,8 +337,10 @@ const SpacebarClicker2: React.FC = () => {
     setCpsTrackingActive(true);
 
     const snapshot = saveRef.current;
-    const nextPoints = Math.min(MAX_RESOURCE_VALUE, snapshot.points + manualPower);
-    const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, snapshot.lifetimePoints + manualPower);
+    const runtimeOverdriveMultiplier = overdriveUntilRef.current > Date.now() ? 3 : 1;
+    const runtimeManualPower = baseManualPower * runtimeOverdriveMultiplier;
+    const nextPoints = Math.min(MAX_RESOURCE_VALUE, snapshot.points + runtimeManualPower);
+    const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, snapshot.lifetimePoints + runtimeManualPower);
     const nextPresses = Math.min(MAX_COUNTER_VALUE, snapshot.presses + 1);
     saveRef.current = {
       ...snapshot,
@@ -329,8 +359,10 @@ const SpacebarClicker2: React.FC = () => {
 
       if (nextEnergy >= 100) {
         const duration = 10_000 + upgrades.overdriveCapacitor * 1_000;
-        const nextOverdriveUntil = Date.now() + duration;
+        const startedAt = Date.now();
+        const nextOverdriveUntil = startedAt + duration;
         energyRef.current = 0;
+        overdriveStartedAtRef.current = startedAt;
         overdriveUntilRef.current = nextOverdriveUntil;
         setEnergy(0);
         setOverdriveUntil(nextOverdriveUntil);
@@ -339,7 +371,7 @@ const SpacebarClicker2: React.FC = () => {
         setEnergy(nextEnergy);
       }
     }
-  }, [manualPower, upgrades.overdriveCapacitor]);
+  }, [baseManualPower, upgrades.overdriveCapacitor]);
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -413,6 +445,7 @@ const SpacebarClicker2: React.FC = () => {
     setPoints(0);
     setUpgrades(nextUpgrades);
     energyRef.current = 0;
+    overdriveStartedAtRef.current = 0;
     overdriveUntilRef.current = 0;
     setEnergy(0);
     setOverdriveUntil(0);
@@ -485,6 +518,9 @@ const SpacebarClicker2: React.FC = () => {
       setUpgrades(next.upgrades);
       setBestCps(next.bestCps);
       setCurrentCps(0);
+      energyRef.current = 0;
+      overdriveStartedAtRef.current = 0;
+      overdriveUntilRef.current = 0;
       setEnergy(0);
       setOverdriveUntil(0);
       setOfflineEarned(0);
@@ -597,6 +633,7 @@ const SpacebarClicker2: React.FC = () => {
     setBestCps(0);
     setCurrentCps(0);
     energyRef.current = 0;
+    overdriveStartedAtRef.current = 0;
     overdriveUntilRef.current = 0;
     setEnergy(0);
     setOverdriveUntil(0);
