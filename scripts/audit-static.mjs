@@ -71,6 +71,35 @@ const titles = new Map();
 const descriptions = new Map();
 const auditedRoutes = [];
 
+// Editorial external-link safety contract:
+// Third-party http(s) references in blog source open in a new tab and always
+// include noopener/noreferrer. First-party absolute links stay in the same tab.
+const blogSourcePath = path.resolve('content/blogPosts.ts');
+const blogSource = fs.readFileSync(blogSourcePath, 'utf8');
+for (const match of blogSource.matchAll(/<a\s+([^>]*href=["'](https?:\/\/[^"']+)["'][^>]*)>/gi)) {
+  const attrs = match[1];
+  const href = match[2];
+  let hostname = '';
+  try {
+    hostname = new URL(href).hostname.toLowerCase();
+  } catch {
+    throw new Error('content/blogPosts.ts: invalid absolute link ' + href);
+  }
+
+  const isFirstParty =
+    hostname === 'spaceclickergame.com' ||
+    hostname === 'www.spaceclickergame.com';
+
+  if (!isFirstParty) {
+    if (!/target=["']_blank["']/i.test(attrs)) {
+      throw new Error('content/blogPosts.ts: external link must use target="_blank": ' + href);
+    }
+    if (!/rel=["'][^"']*\bnoopener\b[^"']*\bnoreferrer\b[^"']*["']/i.test(attrs)) {
+      throw new Error('content/blogPosts.ts: external link must include rel="noopener noreferrer": ' + href);
+    }
+  }
+}
+
 // Runtime <head> ownership contract:
 // App.tsx owns route-level title/meta/canonical/schema through SEOHead.
 // BlogPage may replace only the prerendered Article JSON-LD block after hydration.
