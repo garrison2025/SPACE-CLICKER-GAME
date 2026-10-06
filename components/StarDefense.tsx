@@ -875,19 +875,210 @@ const StarDefense: React.FC = () => {
 
                  {/* RENDER ENTITIES */}
                  {powerupsRef.current.map(p => (
-                     <div 
+                     <button
                         key={p.id}
+                        type="button"
+                        aria-label={
+                            p.type === 'heal'
+                                ? 'Collect repair power-up'
+                                : p.type === 'scrap'
+                                  ? 'Collect scrap power-up'
+                                  : 'Collect damage boost power-up'
+                        }
                         onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => handlePowerUpClick(e, p)}
-                        className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 z-30 cursor-pointer animate-bounce"
+                        className="absolute w-11 h-11 -translate-x-1/2 -translate-y-1/2 z-30 cursor-pointer animate-bounce flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full"
                         style={{ left: `${p.x}%`, top: `${p.y}%` }}
                      >
-                         <div className={`w-full h-full rounded-full border-2 flex items-center justify-center font-bold text-xs bg-black shadow-lg
+                         <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs bg-black shadow-lg
                             ${p.type === 'heal' ? 'border-green-500 text-green-500 shadow-green-500/50' : p.type === 'scrap' ? 'border-yellow-500 text-yellow-500 shadow-yellow-500/50' : 'border-red-500 text-red-500 shadow-red-500/50'}
-                         `}>
-                             {p.type === 'heal' ? '+' : p.type === 'scrap' ? '$' : '⚡'}
+                         `} aria-hidden="true">
+                             {p.type === 'heal' ? '+' : p.type === 'scrap' ? '
+
+                 {enemiesRef.current.map(e => (
+                     <div 
+                        key={e.id}
+                        className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center transition-transform"
+                        style={{
+                            left: `${e.x}%`,
+                            top: `${e.y}%`,
+                            width: `${ENEMY_TYPES[e.type].size}px`,
+                            height: `${ENEMY_TYPES[e.type].size}px`,
+                        }}
+                     >
+                         <svg viewBox="0 0 100 100" className={`w-full h-full drop-shadow-lg ${e.isStunned ? 'brightness-200 grayscale' : ''} ${e.type === 'boss' ? 'animate-pulse' : ''}`} style={{ fill: ENEMY_TYPES[e.type].color }}>
+                             {e.type === 'scout' && <path d="M50 100 L0 0 L50 20 L100 0 Z" />}
+                             {e.type === 'fighter' && <path d="M50 100 L20 40 L0 0 L50 20 L100 0 L80 40 Z" />}
+                             {e.type === 'tank' && <path d="M10 10 H90 V60 L50 90 L10 60 Z" />}
+                             {e.type === 'boss' && <path d="M50 100 L10 40 L0 0 L30 10 L50 30 L70 10 L100 0 L90 40 Z" />}
+                         </svg>
+                         <div className="absolute -top-3 w-full h-1 bg-gray-700 rounded-full overflow-hidden">
+                             <div className="h-full bg-red-500" style={{ width: `${(e.hp/e.maxHp)*100}%` }}></div>
                          </div>
                      </div>
+                 ))}
+
+                 {projectilesRef.current.map(p => (
+                     <div
+                        key={p.id}
+                        className="absolute rounded-full"
+                        style={{
+                            left: `${p.x}%`,
+                            top: `${p.y}%`,
+                            width: p.source === 'enemy' ? '6px' : '4px',
+                            height: p.source === 'enemy' ? '6px' : '12px',
+                            backgroundColor: p.color,
+                            boxShadow: `0 0 8px ${p.color}`,
+                            transform: `translate(-50%, -50%) rotate(${p.vx ? Math.atan2(p.vy!, p.vx!) * 180 / Math.PI + 90 : 0}deg)`
+                        }}
+                     ></div>
+                 ))}
+
+                 {particlesRef.current.map(p => (
+                     <div
+                        key={p.id}
+                        className="absolute w-1 h-1 rounded-full pointer-events-none"
+                        style={{
+                            left: `${p.x}%`,
+                            top: `${p.y}%`,
+                            backgroundColor: p.color,
+                            opacity: p.life,
+                            transform: `scale(${p.life}) translate(-50%, -50%)`
+                        }}
+                     ></div>
+                 ))}
+
+                 {floatTextRef.current.map(t => (
+                     <div 
+                        key={t.id}
+                        className={`absolute pointer-events-none font-bold whitespace-nowrap animate-float 
+                            ${t.isDamage ? 'text-xs text-red-200' : t.isCrit ? 'text-xl z-50' : 'text-sm z-40'}`}
+                        style={{ left: `${t.x}%`, top: `${t.y}%`, color: t.color || (t.isDamage ? '#ffaaaa' : '#fff'), transform: 'translate(-50%, -50%)', textShadow: '0 0 2px black' }}
+                     >
+                         {t.text}
+                     </div>
+                 ))}
+
+                 {/* Player Ship */}
+                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-16 h-16 z-10 pointer-events-none">
+                     <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(0,243,255,0.5)]">
+                         <path d="M50 0 L85 85 L50 70 L15 85 Z" fill="#fff" />
+                         <path d="M50 0 L85 85 L50 70 Z" fill="#94a3b8" />
+                         <circle cx="50" cy="80" r="4" fill="#00f3ff" className="animate-pulse" />
+                     </svg>
+                     <div className="absolute top-full left-1/2 -translate-x-1/2 w-2 h-8 bg-blue-400 blur-md animate-pulse"></div>
+                     
+                     {/* Muzzle Flash */}
+                     <div 
+                        className="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-12 bg-blue-300 rounded-full blur-md"
+                        style={{ opacity: muzzleFlashRef.current }}
+                     ></div>
+                 </div>
+
+                 {/* Turrets Visuals */}
+                 {upgrades.find(u => u.id === 'turret_alpha' && u.level > 0) && (
+                     <>
+                        <div className="absolute bottom-10 left-[20%] w-8 h-8 text-blue-500 transition-transform duration-75" style={{ transform: `rotate(${turretAnglesRef.current['turret_alpha']}deg)` }}>
+                            <svg viewBox="0 0 100 100" fill="currentColor"><rect x="40" y="-10" width="20" height="60"/><circle cx="50" cy="50" r="30"/></svg>
+                        </div>
+                        <div className="absolute bottom-10 right-[20%] w-8 h-8 text-blue-500 transition-transform duration-75" style={{ transform: `rotate(${turretAnglesRef.current['turret_alpha']}deg)` }}>
+                            <svg viewBox="0 0 100 100" fill="currentColor"><rect x="40" y="-10" width="20" height="60"/><circle cx="50" cy="50" r="30"/></svg>
+                        </div>
+                     </>
+                 )}
+                 {upgrades.find(u => u.id === 'turret_beta' && u.level > 0) && (
+                     <div className="absolute bottom-14 left-1/2 -translate-x-1/2 w-10 h-10 text-red-500 transition-transform duration-100" style={{ transform: `translateX(-50%) rotate(${turretAnglesRef.current['turret_beta']}deg)` }}>
+                          <svg viewBox="0 0 100 100" fill="currentColor"><rect x="35" y="-20" width="30" height="70"/><rect x="20" y="40" width="60" height="40"/></svg>
+                     </div>
+                 )}
+
+                 {/* GAME OVER OVERLAY */}
+                 {gameOver && (
+                     <div className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm">
+                         <h2 className="text-5xl font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
+                         <p className="text-gray-400 mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
+                         <button 
+                            onClick={handleRestart}
+                            className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded shadow-[0_0_20px_red] transition-all"
+                         >
+                             REINITIALIZE SYSTEM
+                         </button>
+                     </div>
+                 )}
+            </div>
+
+            {/* --- SIDEBAR (UPGRADES) --- */}
+            <div className="w-full md:w-80 h-[380px] md:h-auto shrink-0 bg-space-900 flex flex-col border-t md:border-t-0 md:border-l border-white/10 z-30">
+                <div className="p-4 border-b border-white/10 bg-black/20">
+                    <div className="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">RESOURCES</div>
+                    <div className="text-3xl font-mono text-yellow-400 font-bold flex items-center gap-2">
+                        <span>🔩</span> {formatNumber(scraps)}
+                    </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                    {upgrades.map(u => {
+                        let cost = Math.floor(u.cost * Math.pow(u.costMult, u.level));
+                        if(u.id === 'repair') cost = u.cost;
+                        const canAfford = scraps >= cost;
+
+                        return (
+                            <div 
+                                key={u.id}
+                                role="button"
+                                tabIndex={canAfford ? 0 : -1}
+                                aria-disabled={!canAfford}
+                                aria-label={`${u.name}, level ${u.level}, cost ${formatNumber(cost)} scrap`}
+                                onKeyDown={(event) => {
+                                    if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
+                                        event.preventDefault();
+                                        handleBuyUpgrade(u.id);
+                                    }
+                                }}
+                                onClick={() => canAfford && handleBuyUpgrade(u.id)}
+                                className={`
+                                    p-3 rounded border flex items-center gap-3 transition-all select-none touch-manipulation focus:outline-none focus:ring-2 focus:ring-yellow-400/60
+                                    ${canAfford 
+                                        ? 'bg-space-800 border-gray-600 hover:bg-space-700 hover:border-yellow-400 cursor-pointer active:scale-95' 
+                                        : 'bg-black/40 border-white/5 opacity-50 cursor-not-allowed'}
+                                `}
+                            >
+                                <div className="text-2xl w-10 h-10 flex items-center justify-center bg-black/50 rounded border border-white/10">
+                                    {u.icon}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <h4 className="font-bold text-sm text-gray-200 truncate">{u.name}</h4>
+                                        <span className="text-[10px] bg-white/10 px-1.5 rounded text-gray-400">Lv.{u.level}</span>
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 mb-2 leading-tight">{u.description}</p>
+                                    <div className={`text-xs font-mono font-bold ${canAfford ? 'text-yellow-400' : 'text-red-400'}`}>
+                                        {formatNumber(cost)} SCRAP
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+                
+                <div className="p-4 border-t border-white/10 bg-black/40">
+                    <div className="text-xs font-bold text-gray-500 mb-2">TACTICAL READOUT</div>
+                    <div className="space-y-1 text-[10px] font-mono text-gray-400">
+                        <div className="flex justify-between"><span>BASE DMG:</span> <span className="text-neon-blue">{Math.floor(baseClickDamage)}</span></div>
+                        <div className="flex justify-between"><span>FIRE RATE:</span> <span className={activeEffects['rapid'] ? 'text-yellow-400' : ''}>{activeEffects['rapid'] ? '200%' : '100%'}</span></div>
+                        <div className="flex justify-between"><span>SHIELD MAX:</span> <span className="text-blue-400">{maxShield}</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+
+export default StarDefense;
+ : '⚡'}
+                         </span>
+                     </button>
                  ))}
 
                  {enemiesRef.current.map(e => (
