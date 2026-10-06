@@ -445,6 +445,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                   <p role="alert" className="text-xs font-mono text-red-400 animate-pulse">{importError}</p>
                 )}
                 <button
+                  type="button"
                   onClick={handleApplyImport}
                   className="w-full min-h-11 py-2.5 bg-neon-green text-black font-mono font-bold rounded-lg text-xs hover:bg-emerald-400 transition-colors shadow-md"
                 >
