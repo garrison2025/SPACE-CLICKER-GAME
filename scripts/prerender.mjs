@@ -164,7 +164,7 @@ const routes = [
   ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.', 'Star Defense'],
   ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.', 'Merge Spaceships'],
   ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.', 'Gravity Idle'],
-  ['/game/deep_signal', 'Deep Space Signal - Free Browser Text Adventure', 'Send signals, manage energy, decode strange transmissions, and uncover a text-based deep-space mystery in your browser.', 'Deep Space Signal'],
+  ['/game/deep_signal', 'Deep Space Signal - Signal Decoding Idle Game', 'Scan radio frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting in this browser idle simulation.', 'Deep Space Signal'],
   ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],
   ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
   ['/spacebar-clicker', 'Spacebar Clicker – Free Space Bar Clicker Game Online', 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.', 'Spacebar Clicker'],
@@ -214,7 +214,7 @@ const GAME_SCHEMA_CONFIG = {
   '/game/star_defense': { name: 'Star Defense', genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi'] },
   '/game/merge_ships': { name: 'Merge Spaceships', genres: ['Merge', 'Idle', 'Casual', 'Collection'] },
   '/game/gravity_idle': { name: 'Gravity Idle', genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi'] },
-  '/game/deep_signal': { name: 'Deep Space Signal', genres: ['Text Adventure', 'Mystery', 'Sci-Fi', 'Single Player'] }
+  '/game/deep_signal': { name: 'Deep Space Signal', genres: ['Idle', 'Simulation', 'Signal Decoding', 'Sci-Fi'] }
 };
 
 const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
@@ -872,7 +872,7 @@ const staticRouteContent = {
   '/game/deep_signal': `
 <section>
       <h2>Deep Space Signal gameplay</h2>
-      <p>Deep Space Signal is a text-focused browser mystery built around scanning radio frequencies, receiving encrypted transmissions, and turning decoded messages into Data. Each scan consumes Energy, so progress is paced by both active decisions and passive regeneration.</p>
+      <p>Deep Space Signal is a browser idle simulation built around scanning radio frequencies, receiving encrypted transmissions, and turning decoded messages into Data. Each scan consumes Energy, so progress is paced by active decisions, passive regeneration, and later automation.</p>
       <h2>Scanning and decryption</h2>
       <p>The Antenna Array unlocks deeper frequencies, while Crypto Core upgrades increase passive decryption speed. Players can also click undecoded messages to reduce their encryption manually instead of waiting for the processor to finish the work.</p>
       <h2>Energy and automation</h2>
