@@ -20,6 +20,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [isMuted, setIsMuted] = useState(getMuteState());
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [systemStatus, setSystemStatus] = useState('');
   const dockScrollRef = useRef<HTMLElement | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
   const settingsDialogRef = useRef<HTMLDivElement | null>(null);
@@ -34,9 +35,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       if (!scroller || !button) return;
 
       const targetLeft = button.offsetLeft - (scroller.clientWidth - button.offsetWidth) / 2;
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
       scroller.scrollTo({
           left: Math.max(0, targetLeft),
-          behavior: 'smooth'
+          behavior: reduceMotion ? 'auto' : 'smooth'
       });
   }, [activeGame]);
 
@@ -78,6 +80,32 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       const newState = !isMuted;
       setIsMuted(newState);
       toggleMute(newState);
+  };
+
+  const handleFullscreenToggle = async () => {
+      setSystemStatus('');
+
+      try {
+          if (document.fullscreenElement) {
+              if (!document.exitFullscreen) {
+                  setSystemStatus('Exiting fullscreen is not supported in this browser.');
+                  return;
+              }
+              await document.exitFullscreen();
+              setSystemStatus('Fullscreen exited.');
+              return;
+          }
+
+          if (!document.documentElement.requestFullscreen) {
+              setSystemStatus('Fullscreen is not supported in this browser.');
+              return;
+          }
+
+          await document.documentElement.requestFullscreen();
+          setSystemStatus('Fullscreen enabled.');
+      } catch {
+          setSystemStatus('Fullscreen request was blocked by the browser.');
+      }
   };
 
   const handleManualSave = () => {
@@ -175,17 +203,12 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                 aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
                 aria-pressed={isFullscreen}
                 className="min-w-11 min-h-11 px-3 py-2 flex items-center justify-center gap-2 border border-neon-blue/60 text-neon-blue rounded-lg text-xs font-bold hover:bg-neon-blue hover:text-black transition-colors"
-                onClick={() => {
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen?.().catch(() => undefined);
-                    } else {
-                        document.exitFullscreen?.().catch(() => undefined);
-                    }
-                }}
+                onClick={handleFullscreenToggle}
             >
                <span aria-hidden="true">⛶</span>
                <span className="hidden md:inline">{isFullscreen ? 'EXIT FULLSCREEN' : 'FULLSCREEN'}</span>
             </button>
+            <span role="status" aria-live="polite" className="sr-only">{systemStatus}</span>
          </div>
       </header>
 
