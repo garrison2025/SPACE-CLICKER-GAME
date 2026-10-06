@@ -259,7 +259,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
       if (viewMode === 'blog' && activePostId) {
-          void import('./content/blogPosts');
+          void import('./content/blogPosts').catch(() => undefined);
       }
   }, [viewMode, activePostId]);
   
