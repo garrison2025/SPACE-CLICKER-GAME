@@ -167,7 +167,13 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     [upgrades.autoPresser, upgrades.spacebarReactor, upgrades.turboSwitch, globalMultiplier]
   );
 
-  const prestigeGain = Math.floor(Math.sqrt(points / PRESTIGE_THRESHOLD));
+  const prestigeGain = Math.max(
+    0,
+    Math.min(
+      Math.floor(Math.sqrt(points / PRESTIGE_THRESHOLD)),
+      MAX_IMPORTED_QUANTUM_KEYS - quantumKeys
+    )
+  );
   const prestigeProgress = Math.min(100, (points / PRESTIGE_THRESHOLD) * 100);
   const pointsToPrestige = Math.max(0, PRESTIGE_THRESHOLD - points);
 
@@ -387,13 +393,21 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   };
 
   const prestige = () => {
-    if (prestigeGain < 1) return;
+    const snapshot = saveStateRef.current;
+    const availableGain = Math.max(
+      0,
+      Math.min(
+        Math.floor(Math.sqrt(snapshot.points / PRESTIGE_THRESHOLD)),
+        MAX_IMPORTED_QUANTUM_KEYS - snapshot.quantumKeys
+      )
+    );
+    if (availableGain < 1) return;
     if (!window.confirm('Initiate Hyperdrive Reset? Current points and standard upgrades will reset, but Quantum Keys and records stay.')) return;
 
-    const nextQuantumKeys = quantumKeys + prestigeGain;
+    const nextQuantumKeys = snapshot.quantumKeys + availableGain;
     const nextUpgrades = emptyUpgrades();
     const nextSnapshot: Omit<SpacebarSave, 'version' | 'lastSaveTime'> = {
-      ...saveStateRef.current,
+      ...snapshot,
       points: 0,
       quantumKeys: nextQuantumKeys,
       upgrades: nextUpgrades,
