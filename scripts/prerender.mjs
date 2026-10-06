@@ -254,6 +254,52 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": site + "/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is this space clicker game free to play?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The current browser games and Spacebar tools can be played without purchasing a paid account or upgrade."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Space Clicker an idle game?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Galaxy Miner starts with manual Stardust mining, then shifts toward automated production through Mining Drones and later upgrade tiers. Returning after time away can credit up to 24 hours of saved automatic production."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I play Space Clicker on mobile?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Galaxy Miner supports touch input in a modern mobile browser. The Spacebar games also provide large on-screen controls for devices without a physical keyboard."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Galaxy Miner save my progress?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What happens when I use Galactic Reset?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Galaxy Miner resets Stardust and standard upgrades, then awards Dark Matter based on the size of the run. Dark Matter and permanent technology remain for future runs."
+              }
+            }
+          ]
         }
       ]
     };
@@ -277,6 +323,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "isAccessibleForFree": true,
           "dateModified": SITE_CONTENT_UPDATED,
           "inLanguage": "en",
+          "image": getRouteSocialImage(route),
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -312,6 +359,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
       "@graph": [
         {
           "@type": "CollectionPage",
+          "@id": canonical + "#webpage",
           "name": "Spacebar Games",
           "description": description,
           "url": canonical,
@@ -319,6 +367,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
         },
         {
           "@type": "ItemList",
+          "@id": canonical + "#tools",
           "name": "Spacebar Games and Tools",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "url": site + "/spacebar-clicker/", "name": "Spacebar Clicker" },
