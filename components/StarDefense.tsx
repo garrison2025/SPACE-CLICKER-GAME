@@ -61,6 +61,8 @@ const StarDefense: React.FC = () => {
     const statusUiActiveRef = useRef(false); 
     
     const [upgrades, setUpgrades] = useState<DefenseUpgrade[]>(INITIAL_UPGRADES);
+    const scrapsRef = useRef(scraps);
+    const upgradesRef = useRef<DefenseUpgrade[]>(upgrades);
     const saveStateRef = useRef({ scraps, wave, upgrades });
     
     // Refs for Game Loop
@@ -434,8 +436,11 @@ const StarDefense: React.FC = () => {
             setCombo(prev => prev + 1);
             comboTimerRef.current = COMBO_TIMEOUT;
             
-            setScraps(prev => prev + Math.floor(enemy.scoreValue * comboMultiplier));
-            addFloatingText(enemy.x, enemy.y, `+${Math.floor(enemy.scoreValue * comboMultiplier)}`, '#fbbf24');
+            const scrapReward = Math.floor(enemy.scoreValue * comboMultiplier);
+            const nextScraps = scrapsRef.current + scrapReward;
+            scrapsRef.current = nextScraps;
+            setScraps(nextScraps);
+            addFloatingText(enemy.x, enemy.y, `+${scrapReward}`, '#fbbf24');
         } else {
             createParticles(enemy.x, enemy.y, '#fff', 2);
         }
@@ -556,7 +561,9 @@ const StarDefense: React.FC = () => {
             addFloatingText(p.x, p.y, "+25 HP", "#10b981", true);
         } else if (p.type === 'scrap') {
             const amount = 100 * wave;
-            setScraps(prev => prev + amount);
+            const nextScraps = scrapsRef.current + amount;
+            scrapsRef.current = nextScraps;
+            setScraps(nextScraps);
             addFloatingText(p.x, p.y, `+${amount} SCRAP`, "#fbbf24", true);
         } else if (p.type === 'double_damage') {
              activeEffectsRef.current = { ...activeEffectsRef.current, double_damage: 10000 };
@@ -567,22 +574,31 @@ const StarDefense: React.FC = () => {
     };
 
     const handleBuyUpgrade = (id: string) => {
-        const u = upgrades.find(up => up.id === id);
+        const currentUpgrades = upgradesRef.current;
+        const u = currentUpgrades.find(up => up.id === id);
         if (!u) return;
+
         let cost = Math.floor(u.cost * Math.pow(u.costMult, u.level));
         if (id === 'repair') cost = u.cost;
+        if (scrapsRef.current < cost) return;
 
-        if (scraps >= cost) {
-            setScraps(prev => prev - cost);
-            if (id === 'repair') {
-                const nextHp = Math.min(maxHp, hpRef.current + (maxHp * 0.3));
-                hpRef.current = nextHp;
-                setHp(nextHp);
-                addFloatingText(50, 50, "REPAIRED", "#10b981", true);
-            } else {
-                setUpgrades(prev => prev.map(item => item.id === id ? { ...item, level: item.level + 1 } : item));
-            }
+        const nextScraps = scrapsRef.current - cost;
+        scrapsRef.current = nextScraps;
+        setScraps(nextScraps);
+
+        if (id === 'repair') {
+            const nextHp = Math.min(maxHp, hpRef.current + (maxHp * 0.3));
+            hpRef.current = nextHp;
+            setHp(nextHp);
+            addFloatingText(50, 50, "REPAIRED", "#10b981", true);
+            return;
         }
+
+        const nextUpgrades = currentUpgrades.map(item =>
+            item.id === id ? { ...item, level: item.level + 1 } : item
+        );
+        upgradesRef.current = nextUpgrades;
+        setUpgrades(nextUpgrades);
     };
 
     const handleRestart = () => {
@@ -599,6 +615,8 @@ const StarDefense: React.FC = () => {
 
         hpRef.current = 100;
         shieldRef.current = 0;
+        scrapsRef.current = 0;
+        upgradesRef.current = freshUpgrades;
         setGameOver(false);
         setHp(100);
         setShield(0);
@@ -643,6 +661,8 @@ const StarDefense: React.FC = () => {
     // then replaces them with the loaded snapshot, so an immediate tab close
     // cannot restore default progress over a valid save.
     useEffect(() => {
+        scrapsRef.current = scraps;
+        upgradesRef.current = upgrades;
         saveStateRef.current = { scraps, wave, upgrades };
     }, [scraps, wave, upgrades]);
 
@@ -680,6 +700,8 @@ const StarDefense: React.FC = () => {
             };
 
             saveStateRef.current = nextSnapshot;
+            scrapsRef.current = loadedScraps;
+            upgradesRef.current = loadedUpgrades;
             localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: Date.now(),
