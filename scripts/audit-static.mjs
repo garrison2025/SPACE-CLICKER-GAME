@@ -266,6 +266,19 @@ const trustContentRoutes = new Set([
   '/cookies/'
 ]);
 
+const requiredBlogHubIntentLinks = [
+  '/blog/strategy-guide-clicker-game-space-empire/',
+  '/blog/active-vs-passive-space-click-game-styles/',
+  '/blog/mastering-the-space-bar-clicking-game/',
+  '/blog/mechanics-of-space-bar-clicking-game-physics/'
+];
+
+const strategyGuideRequiredHeadings = [
+  'Space Clicker Strategy Guide: Start With the Current Bottleneck',
+  'Idle Space Clicker Strategy: When Automation Takes Over',
+  'Space Clicker on Mobile: What Changes'
+];
+
 const blogClusterTargets = new Map([
   ['/game/galaxy_miner/', 7],
   ['/spacebar-games/', 2],
@@ -591,6 +604,19 @@ for (const file of htmlFiles) {
     }
     if (!html.includes('Space clicker guides and strategy')) {
       throw new Error(route + ': static blog hub introduction is missing');
+    }
+    for (const href of requiredBlogHubIntentLinks) {
+      if (!html.includes('href="' + href + '"')) {
+        throw new Error(route + ': high-intent guide shortcut is missing ' + href);
+      }
+    }
+  }
+
+  if (route === '/blog/strategy-guide-clicker-game-space-empire/') {
+    for (const heading of strategyGuideRequiredHeadings) {
+      if (!html.includes(heading)) {
+        throw new Error(route + ': strategy search-intent section is missing ' + heading);
+      }
     }
   }
 
