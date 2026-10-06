@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { formatNumber } from '../utils';
 
 interface OfflineEarningsModalProps {
@@ -16,6 +16,14 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
   productionRate,
   onClaim,
 }) => {
+  useEffect(() => {
+    if (!isOpen || earnedStardust <= 0) return;
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    return () => previousFocus?.focus();
+  }, [isOpen, earnedStardust]);
+
   if (!isOpen || earnedStardust <= 0) return null;
 
   // Format away time into readable string (e.g. 2h 45m 12s)
@@ -86,6 +94,7 @@ export const OfflineEarningsModal: React.FC<OfflineEarningsModalProps> = ({
 
         {/* Claim Button */}
         <button
+          type="button"
           onClick={onClaim}
           className="w-full min-h-11 py-3.5 sm:py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-display font-black text-lg rounded-2xl shadow-[0_0_30px_rgba(234,179,8,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all tracking-wider flex items-center justify-center gap-2"
         >
