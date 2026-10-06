@@ -155,7 +155,7 @@ const BrandHero = ({ onPlay, hasSave }: { onPlay: () => void; hasSave: boolean }
                 {/* Badge */}
                 <div className="marketing-motion inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 md:backdrop-blur-md mb-4 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <span className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></span>
-                    <span className="text-xs font-mono text-neon-green tracking-widest">V.3.0 SYSTEM ONLINE</span>
+                    <span className="text-xs font-mono text-neon-green tracking-widest">BROWSER SYSTEM ONLINE</span>
                 </div>
 
                 {/* Main Title (H1) - LCP OPTIMIZED (Removed animations) */}
