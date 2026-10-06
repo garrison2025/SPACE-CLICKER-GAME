@@ -1720,8 +1720,8 @@ const App: React.FC = () => {
           return acc;
       }, {} as { [id: string]: number });
 
-      const nextLevel = Math.max(1, safeNonNegativeInt(data.level, 1, 1_000_000));
       const nextPlanetIndex = safeNonNegativeInt(data.planetIndex, 0, PLANETS.length - 1);
+      const nextLevel = nextPlanetIndex + 1;
       const nextLifetime = finiteNonNegative(data.lifetimeEarnings);
       const nextClicks = safeNonNegativeInt(data.totalClicks);
       const nextCrits = safeNonNegativeInt(data.totalCrits);
@@ -1795,8 +1795,8 @@ const App: React.FC = () => {
               return acc;
           }, {} as { [id: string]: number });
 
-          const nextLevel = Math.max(1, safeNonNegativeInt(data.level, 1, 1_000_000));
           const nextPlanetIndex = safeNonNegativeInt(data.planetIndex, 0, PLANETS.length - 1);
+          const nextLevel = nextPlanetIndex + 1;
           const nextClicks = safeNonNegativeInt(data.totalClicks);
           const nextCrits = safeNonNegativeInt(data.totalCrits);
           const nextComets = safeNonNegativeInt(data.cometsCaught);
