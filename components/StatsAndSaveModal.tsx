@@ -81,6 +81,14 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    return () => previousFocus?.focus();
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   // Calculate export string
@@ -219,14 +227,6 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
       setImportError('Invalid save string! Please check your code.');
     }
   };
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-    return () => previousFocus?.focus();
-  }, [isOpen]);
 
   const critRatePercent = totalClicks > 0 ? ((totalCrits / totalClicks) * 100).toFixed(1) : '0.0';
   const totalBuildingLevels = Object.values(upgrades).reduce((sum, u) => sum + u.count, 0);
