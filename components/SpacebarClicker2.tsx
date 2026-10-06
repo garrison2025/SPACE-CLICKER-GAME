@@ -127,6 +127,16 @@ const SpacebarClicker2: React.FC = () => {
   const [showSaveImport, setShowSaveImport] = useState(false);
   const [saveImportText, setSaveImportText] = useState('');
   const pressTimes = useRef<number[]>([]);
+  const energyRef = useRef(energy);
+  const overdriveUntilRef = useRef(overdriveUntil);
+
+  useEffect(() => {
+    energyRef.current = energy;
+  }, [energy]);
+
+  useEffect(() => {
+    overdriveUntilRef.current = overdriveUntil;
+  }, [overdriveUntil]);
 
   const isOverdrive = overdriveUntil > clock;
   const overdriveRemaining = Math.max(0, (overdriveUntil - clock) / 1000);
@@ -295,19 +305,24 @@ const SpacebarClicker2: React.FC = () => {
     setLifetimePoints(nextLifetimePoints);
     setPresses(nextPresses);
 
-    if (!isOverdrive) {
+    const overdriveActive = overdriveUntilRef.current > Date.now();
+    if (!overdriveActive) {
       const charge = 7 + upgrades.overdriveCapacitor * 1.5;
-      setEnergy((value) => {
-        const next = value + charge;
-        if (next >= 100) {
-          const duration = 10_000 + upgrades.overdriveCapacitor * 1_000;
-          setOverdriveUntil(Date.now() + duration);
-          return 0;
-        }
-        return next;
-      });
+      const nextEnergy = energyRef.current + charge;
+
+      if (nextEnergy >= 100) {
+        const duration = 10_000 + upgrades.overdriveCapacitor * 1_000;
+        const nextOverdriveUntil = Date.now() + duration;
+        energyRef.current = 0;
+        overdriveUntilRef.current = nextOverdriveUntil;
+        setEnergy(0);
+        setOverdriveUntil(nextOverdriveUntil);
+      } else {
+        energyRef.current = nextEnergy;
+        setEnergy(nextEnergy);
+      }
     }
-  }, [manualPower, isOverdrive, upgrades.overdriveCapacitor]);
+  }, [manualPower, upgrades.overdriveCapacitor]);
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -380,6 +395,8 @@ const SpacebarClicker2: React.FC = () => {
     setNovaCores(nextNovaCores);
     setPoints(0);
     setUpgrades(nextUpgrades);
+    energyRef.current = 0;
+    overdriveUntilRef.current = 0;
     setEnergy(0);
     setOverdriveUntil(0);
   };
@@ -555,6 +572,8 @@ const SpacebarClicker2: React.FC = () => {
     setUpgrades(emptyUpgrades());
     setBestCps(0);
     setCurrentCps(0);
+    energyRef.current = 0;
+    overdriveUntilRef.current = 0;
     setEnergy(0);
     setOverdriveUntil(0);
     setOfflineEarned(0);
