@@ -46,6 +46,18 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
   if (/<script\b/i.test(content) || content.includes('${')) {
     throw new Error(`Unsafe or unsupported template content found in blog post ${slug}`);
   }
+  if (/\son[a-z]+\s*=/i.test(content) || /(?:href|src)\s*=\s*["']\s*javascript:/i.test(content)) {
+    throw new Error(`Unsafe inline event handler or javascript URL found in blog post ${slug}`);
+  }
+  const externalBlankLinks = [...content.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/gi)];
+  for (const match of externalBlankLinks) {
+    const tag = match[0];
+    const relMatch = tag.match(/rel=["']([^"']*)["']/i);
+    const relTokens = new Set((relMatch?.[1] || '').toLowerCase().split(/\s+/).filter(Boolean));
+    if (!relTokens.has('noopener') || !relTokens.has('noreferrer')) {
+      throw new Error(`target=_blank link missing noopener/noreferrer in blog post ${slug}`);
+    }
+  }
 
   blogStaticContent[`/blog/${slug}`] = `<article class="static-blog-content">${content}</article>`;
 
