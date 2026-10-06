@@ -73,7 +73,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
       
       {/* Navigation */}
       <header className="site-header-safe sticky top-0 z-[100] w-full bg-space-950 md:bg-space-950/80 md:backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="site-header-inner-safe max-w-7xl mx-auto h-16 flex items-center justify-between">
             {/* Logo */}
             <a
                 href="/"
