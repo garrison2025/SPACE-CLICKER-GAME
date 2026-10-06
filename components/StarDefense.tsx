@@ -53,6 +53,7 @@ const StarDefense: React.FC = () => {
     
     // Combo System
     const [combo, setCombo] = useState(0);
+    const comboRef = useRef(0);
     const [comboTimer, setComboTimer] = useState(0); // For UI bar
     
     const [skillCooldowns, setSkillCooldowns] = useState<{[key:string]: number}>({});
@@ -120,7 +121,6 @@ const StarDefense: React.FC = () => {
     const maxShield = (upgrades.find(u => u.id === 'shield_gen')?.level || 0) * (upgrades.find(u => u.id === 'shield_gen')?.value || 50);
     const baseClickDamage = (upgrades.find(u => u.id === 'blaster')?.value || 10) * (1 + (upgrades.find(u => u.id === 'blaster')?.level || 1) * 0.2);
     
-    const comboMultiplier = 1 + (combo * 0.1);
 
     // --- GAME LOOP ---
     const gameLoop = useCallback((timestamp: number) => {
@@ -138,7 +138,9 @@ const StarDefense: React.FC = () => {
             comboTimerRef.current -= deltaTime;
             setComboTimer(comboTimerRef.current); // Sync to state for UI bar
             if (comboTimerRef.current <= 0) {
-                setCombo(0);
+                comboRef.current = 0;
+                comboRef.current = 0;
+        setCombo(0);
                 addFloatingText(50, 50, "COMBO LOST", "#ef4444");
             }
         }
@@ -440,11 +442,16 @@ const StarDefense: React.FC = () => {
             }
             createParticles(enemy.x, enemy.y, ENEMY_TYPES[enemy.type].color, 12);
             
-            // Combo Logic
-            setCombo(prev => prev + 1);
+            // Combo Logic. Preserve the existing economy: the current
+            // streak boosts this kill, then the new kill extends the streak.
+            const currentCombo = comboRef.current;
+            const scrapMultiplier = 1 + (currentCombo * 0.1);
+            const nextCombo = Math.min(Number.MAX_SAFE_INTEGER, currentCombo + 1);
+            comboRef.current = nextCombo;
+            setCombo(nextCombo);
             comboTimerRef.current = COMBO_TIMEOUT;
             
-            const scrapReward = Math.floor(enemy.scoreValue * comboMultiplier);
+            const scrapReward = Math.floor(enemy.scoreValue * scrapMultiplier);
             const nextScraps = Math.min(MAX_RESOURCE_VALUE, scrapsRef.current + scrapReward);
             scrapsRef.current = nextScraps;
             saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
@@ -459,6 +466,7 @@ const StarDefense: React.FC = () => {
         if (amount <= 0 || gameOver) return;
 
         lastHitTimeRef.current = Date.now();
+        comboRef.current = 0;
         setCombo(0);
         comboTimerRef.current = 0;
 
@@ -842,8 +850,10 @@ const StarDefense: React.FC = () => {
                  {/* Combo Meter (Center Top) */}
                  {combo > 0 && (
                      <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center z-20 pointer-events-none animate-in zoom-in">
-                         <div className="text-4xl font-black italic text-yellow-400 drop-shadow-[0_0_10px_orange]">x{combo}</div>
-                         <div className="text-xs font-bold text-yellow-600 tracking-widest">COMBO</div>
+                         <div className="text-3xl font-black italic text-yellow-400 drop-shadow-[0_0_10px_orange]">COMBO {combo}</div>
+                         <div className="text-[10px] font-bold text-yellow-600 tracking-widest">
+                             NEXT SCRAP ×{(1 + combo * 0.1).toFixed(1)}
+                         </div>
                          <div className="w-24 h-1 bg-gray-800 mt-1 rounded-full overflow-hidden">
                              <div className="h-full bg-yellow-400" style={{ width: `${(comboTimer / COMBO_TIMEOUT) * 100}%` }}></div>
                          </div>
