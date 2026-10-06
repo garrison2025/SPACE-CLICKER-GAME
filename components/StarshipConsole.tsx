@@ -24,6 +24,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [systemStatus, setSystemStatus] = useState('');
   const [resetStatus, setResetStatus] = useState('');
   const dockScrollRef = useRef<HTMLElement | null>(null);
+  const gameScrollRef = useRef<HTMLDivElement | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
   const settingsDialogRef = useRef<HTMLDivElement | null>(null);
   const saveTimersRef = useRef<number[]>([]);
@@ -43,6 +44,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
           left: Math.max(0, targetLeft),
           behavior: reduceMotion ? 'auto' : 'smooth'
       });
+  }, [activeGame]);
+
+  useEffect(() => {
+      gameScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [activeGame]);
 
   useEffect(() => {
@@ -391,7 +396,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
          </aside>
 
          {/* Center Viewport - SCROLLABLE FOR SEO CONTENT */}
-         <div className="game-scroll-region flex-1 relative bg-black/40 shadow-inner overflow-y-auto custom-scrollbar scroll-smooth">
+         <div ref={gameScrollRef} className="game-scroll-region flex-1 relative bg-black/40 shadow-inner overflow-y-auto custom-scrollbar scroll-smooth">
              {/* Scanlines Effect */}
              <div className="hidden md:block absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20 mix-blend-overlay z-[5] fixed"></div>
              <div className="hidden md:block absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/30 z-[5] fixed"></div>
