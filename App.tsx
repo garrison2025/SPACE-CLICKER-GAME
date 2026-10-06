@@ -243,6 +243,12 @@ const App: React.FC = () => {
           });
       }
   }, [location.pathname]);
+
+  useEffect(() => {
+      if (viewMode === 'blog' && activePostId) {
+          void import('./content/blogPosts');
+      }
+  }, [viewMode, activePostId]);
   
   // Galaxy Miner State
   const [resources, setResources] = useState<{ [key in ResourceType]: number }>({
