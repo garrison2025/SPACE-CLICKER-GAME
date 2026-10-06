@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { playSound } from '../services/audioService';
+import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 
 const BEST_KEY = 'spacebar_counter_best_v1';
 
@@ -48,8 +49,7 @@ const SpacebarCounter: React.FC = () => {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (isInteractiveKeyboardTarget(event.target)) return;
       if (event.code === 'Space' && !event.repeat) {
         event.preventDefault();
         pressRef.current();
