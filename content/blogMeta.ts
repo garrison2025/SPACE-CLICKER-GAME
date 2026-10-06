@@ -54,7 +54,7 @@ export const BLOG_POST_META: BlogPostMeta[] = [
     "title": "Designing a Universe: The Strategy Behind a Clicker Game Space Empire",
     "seoTitle": "Space Clicker Strategy Guide | Space Clicker Game Blog",
     "excerpt": "Compare upgrade cost, production gains and reset timing to make better decisions in incremental space clicker runs.",
-    "image": "https://images.unsplash.com/photo-1614730341194-75c60740a070?auto=format&fit=crop&q=80&w=2000"
+    "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000"
   },
   {
     "id": "7",
