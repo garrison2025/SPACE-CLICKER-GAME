@@ -7,6 +7,9 @@ on:
       - fix/spacebar-seo-suite-20261005
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,13 +21,18 @@ jobs:
           package-manager-cache: false
       - name: Generate dependency lock
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Upload dependency lock
-        uses: actions/upload-artifact@v7
-        with:
-          name: generated-package-lock
-          path: package-lock.json
-          if-no-files-found: error
-          retention-days: 1
+      - name: Commit dependency lock once
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          if git diff --quiet -- package-lock.json && git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
+            echo "package-lock.json is already tracked and current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "build: commit dependency lock"
+          git push
       - run: npm ci --no-audit --no-fund
       - run: npm run build
       - run: node scripts/test-project-storage.mjs
