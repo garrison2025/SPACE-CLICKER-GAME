@@ -702,7 +702,9 @@ const MergeShips: React.FC = () => {
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') {
-                hiddenAtRef.current = Date.now();
+                if (hiddenAtRef.current === null) {
+                    hiddenAtRef.current = Date.now();
+                }
                 saveGame();
                 return;
             }
