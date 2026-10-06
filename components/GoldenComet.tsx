@@ -37,9 +37,19 @@ const GoldenComet: React.FC<GoldenCometProps> = ({ onCatch }) => {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-label="Catch the Golden Comet for a Stardust reward"
       onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          setIsVisible(false);
+          onCatch();
+        }
+      }}
       onAnimationEnd={handleAnimationEnd}
-      className="absolute z-[40] cursor-pointer w-11 h-11 md:w-14 md:h-14 touch-manipulation"
+      className="absolute z-[40] cursor-pointer w-11 h-11 md:w-14 md:h-14 touch-manipulation focus:outline-none focus:ring-2 focus:ring-yellow-300"
       style={{
         top: position.top,
         left: '-100px', // Start off-screen relative to container
