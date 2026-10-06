@@ -475,7 +475,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             ['What does “unblocked” mean on this page?', 'It means the game opens directly in a browser with no installation, launcher, extension, or account step. It does not bypass network restrictions.'],
             ['Can a school or workplace network still block the game?', 'Yes. Access depends on the rules applied by the network, device, firewall, parental controls, or administrator.'],
             ['Does the instant-play version save progress?', 'Yes. Progress is stored locally in the current browser. There is no cloud or cross-device sync.'],
-            ['Is this the same Spacebar Clicker game?', 'Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page.']
+            ['Is this the same version as the main Spacebar Clicker page on this site?', 'Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page on SpaceClickerGame.com.']
           ]
         : [
             ['Is Spacebar Clicker free?', 'Yes. It runs in a modern browser with no download or account required.'],
@@ -483,7 +483,8 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             ['Does progress sync between devices?', 'No. Progress is saved locally in the current browser.'],
             ['What survives a prestige reset?', 'Quantum Keys, lifetime presses, best CPS and achievement progress remain.'],
             ['How much offline production can Spacebar Clicker recover?', 'Once automation is producing points, a supported saved run can recover up to 24 hours of offline production when you return.'],
-      ['Can I move my Spacebar Clicker save to another browser?', 'Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported values are validated before replacing the local save.']
+            ['Is this the same Spacebar Clicker implementation used on every website?', "No. This is SpaceClickerGame.com's own implementation. Hyperdrive, Quantum Keys, upgrade values, achievements, and offline rules on this page apply to this version."],
+            ['Can I move my Spacebar Clicker save to another browser?', 'Yes. Copy a save code or download a .scg backup file, move it to the other browser or device, then paste the code or import the backup file. Imported values are validated before replacing the local save.']
           ];
 
     return {
@@ -911,6 +912,8 @@ const staticRouteContent = {
 <section>
       <h2>How to play Spacebar Clicker</h2>
       <p>Spacebar Clicker is a free browser idle game built around deliberate Space key presses. Each valid press earns points, and those points can be reinvested into stronger manual output and automatic production. On touch devices, the large on-screen Space control provides the same basic input loop.</p>
+      <h2>Version-specific mechanics</h2>
+      <p>This page is SpaceClickerGame.com's own Spacebar Clicker implementation. Its upgrade prices, Hyperdrive Prestige, Quantum Keys, offline-production rules, achievements, and save format describe this version only. Other websites can use the same Spacebar Clicker name for different builds with different upgrade lists or reset rules.</p>
       <h2>Upgrades and automatic production</h2>
       <p>The early game rewards active pressing, but upgrades gradually move the run toward passive income. Manual upgrades increase the value of each press, while automatic upgrades keep generating points without requiring constant input.</p>
       <h2>CPS tracking and deliberate presses</h2>
