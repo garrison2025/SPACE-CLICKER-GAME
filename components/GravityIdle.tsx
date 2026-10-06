@@ -403,11 +403,10 @@ const GravityIdle: React.FC = () => {
 
         if (matterGained > 0) {
             const gained = Math.floor(matterGained);
-            setMatter(prev => {
-                const next = prev + gained;
-                matterRef.current = next;
-                return next;
-            });
+            const nextMatter = Math.min(MAX_RESOURCE_VALUE, matterRef.current + gained);
+            matterRef.current = nextMatter;
+            saveStateRef.current = { ...saveStateRef.current, matter: nextMatter };
+            setMatter(nextMatter);
         }
 
         frameRef.current = requestAnimationFrame(gameLoop);
@@ -568,6 +567,7 @@ const GravityIdle: React.FC = () => {
         const nextUpgrades = { ...currentUpgrades, [key]: lvl + count };
         matterRef.current = nextMatter;
         upgradesRef.current = nextUpgrades;
+        saveStateRef.current = { matter: nextMatter, upgrades: nextUpgrades };
         setMatter(nextMatter);
         setUpgrades(nextUpgrades);
     };
@@ -660,6 +660,7 @@ const GravityIdle: React.FC = () => {
             const rate = 30 * powerMult * efficiency;
             const earned = seconds >= 60 ? Math.floor(rate * seconds) : 0;
             const nextMatter = Math.min(MAX_RESOURCE_VALUE, loadedMatter + Math.max(0, earned));
+            const credited = Math.max(0, nextMatter - loadedMatter);
             const nextSnapshot = { matter: nextMatter, upgrades: loadedUpgrades };
 
             // Consume the offline window immediately so refreshing before the
@@ -675,8 +676,8 @@ const GravityIdle: React.FC = () => {
             setMatter(nextMatter);
             setUpgrades(loadedUpgrades);
 
-            if (earned > 0) {
-                setOfflineReport({ time: seconds, earned });
+            if (credited > 0) {
+                setOfflineReport({ time: seconds, earned: credited });
             }
         } catch (error) {
             console.warn('Could not load Gravity Idle save.', error);
