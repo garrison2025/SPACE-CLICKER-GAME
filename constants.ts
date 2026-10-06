@@ -155,7 +155,7 @@ export const PLANETS: Planet[] = [
   {
     id: 0,
     name: "Proxima Centauri B",
-    description: "A rocky, potential habitable world closest to the sun.",
+    description: "A nearby exoplanet used here as the first fictional mining sector.",
     threshold: 0,
     productionMultiplier: 1,
     colors: { primary: '#4f46e5', secondary: '#0f172a', atmosphere: 'rgba(79, 70, 229, 0.4)' }
@@ -163,7 +163,7 @@ export const PLANETS: Planet[] = [
   {
     id: 1,
     name: "Kepler-186f",
-    description: "The Red Cousin of Earth. Rich in iron oxide dust.",
+    description: "A real exoplanet name used here for a fictional high-yield mining sector.",
     threshold: 1_000_000, // 1M
     productionMultiplier: 10,
     colors: { primary: '#b91c1c', secondary: '#450a0a', atmosphere: 'rgba(220, 38, 38, 0.5)' }
@@ -171,7 +171,7 @@ export const PLANETS: Planet[] = [
   {
     id: 2,
     name: "Trappist-1e",
-    description: "An icy ocean world. Massive subsurface energy reserves.",
+    description: "A real exoplanet name used here for a fictional deep-space mining sector.",
     threshold: 1_000_000_000, // 1B
     productionMultiplier: 50,
     colors: { primary: '#06b6d4', secondary: '#083344', atmosphere: 'rgba(6, 182, 212, 0.5)' }
@@ -179,7 +179,7 @@ export const PLANETS: Planet[] = [
   {
     id: 3,
     name: "Galactic Core",
-    description: "The event horizon. Infinite density, infinite riches.",
+    description: "A fictional endgame mining sector inspired by the Milky Way's central region.",
     threshold: 1_000_000_000_000, // 1T
     productionMultiplier: 200,
     colors: { primary: '#fbbf24', secondary: '#000000', atmosphere: 'rgba(251, 191, 36, 0.4)' }
