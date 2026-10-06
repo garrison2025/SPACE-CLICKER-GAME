@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface HotkeyOverlayProps {
   isOpen: boolean;
@@ -7,6 +7,14 @@ interface HotkeyOverlayProps {
 }
 
 export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, onToggle }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    return () => previousFocus?.focus();
+  }, [isOpen]);
+
   const HOTKEYS = [
     { key: 'SPACE', desc: 'Pulse Mining Laser (Manual Tap)', color: 'border-neon-blue text-neon-blue' },
     { key: '1 - 8', desc: 'Quick-Buy Upgrades (Tier 1 to 8)', color: 'border-yellow-400 text-yellow-400' },
@@ -20,6 +28,7 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
     <>
       {/* Floating Trigger Button (Bottom Left) */}
       <button
+        type="button"
         onClick={onToggle}
         className="hotkey-trigger hidden md:flex fixed z-40 bg-space-900/80 hover:bg-space-800 border border-white/20 hover:border-neon-blue text-gray-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono backdrop-blur-sm transition-all shadow-lg items-center gap-1.5 group select-none"
         title="Keyboard Shortcuts"
