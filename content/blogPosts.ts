@@ -282,10 +282,10 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Compare upgrade cost, production gains and reset timing to make better decisions in incremental space clicker runs.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 08, 2026',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '3 min read',
         tags: ['clicker game space', 'strategy', 'math', 'optimization'],
-        image: 'https://images.unsplash.com/photo-1614730341194-75c60740a070?auto=format&fit=crop&q=80&w=2000',
+        image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
             <p class="lead">Behind the flashy particle effects and retro UI of any <strong>clicker game space</strong> title lies a cold, hard engine of mathematics. To master the void, one must master the numbers.</p>
 
