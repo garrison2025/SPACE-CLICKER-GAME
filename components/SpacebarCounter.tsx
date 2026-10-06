@@ -168,6 +168,12 @@ const SpacebarCounter: React.FC = () => {
           <button
             type="button"
             onPointerDown={(event) => { event.preventDefault(); press(); }}
+            onKeyDown={(event) => {
+              if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+                event.preventDefault();
+                press();
+              }
+            }}
             className="w-full min-h-[130px] rounded-2xl border-2 border-neon-blue bg-gradient-to-b from-space-700 to-black shadow-[0_12px_0_#062f38] active:translate-y-2 active:shadow-[0_4px_0_#062f38] transition-all select-none touch-manipulation"
           >
             <span className="block text-4xl font-display font-black tracking-[0.35em] text-white">SPACE</span>
