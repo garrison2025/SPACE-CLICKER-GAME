@@ -4,6 +4,7 @@ import Breadcrumbs from './Breadcrumbs';
 import SEOHead from './SEOHead';
 import { SAVE_KEY } from '../constants';
 import { formatNumber } from '../utils';
+import { safeGetStorageItem } from '../utils/projectStorage';
 
 interface AchievementsPageProps {
   onNavigate: (view: ViewMode, id?: string) => void;
@@ -139,7 +140,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
   // Load active progress from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(SAVE_KEY);
+      const saved = safeGetStorageItem(SAVE_KEY);
       if (saved) {
         const data = JSON.parse(saved);
         const stardust = data.lifetimeEarnings || data.resources?.STARDUST || 0;
