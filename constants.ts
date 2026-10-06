@@ -26,7 +26,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Management', 'Strategy', 'Simulation'],
     briefing: "Welcome to Ares Prime. Your mission is to establish a self-sustaining colony by balancing Oxygen, Food, Energy, Minerals, housing, and population. Energy shortages reduce production efficiency, while depleted life-support reserves can reverse population growth.",
     manual: "1. CLICK 'EXCAVATE' to mine Minerals for construction.\n2. BUILD Solar Panels first to generate Energy.\n3. CONSTRUCT Hydroponics and Oxygenators to support life.\n4. POPULATION grows automatically when resources are surplus.\n5. COLONISTS generate Credits as a colony-economy indicator; current construction still uses Minerals.",
-    changelog: ["v1.0: Full colony simulation release.", "v0.9: Multi-resource production and population balancing."]
+    changelog: ["Current: Minerals, Credits, Colonists, Energy, Food, Oxygen, and housing are simulated together.", "Current: Construction is Mineral-funded, while Energy shortages reduce production efficiency and life-support shortages can reduce population."]
   },
   {
     id: 'star_defense',
@@ -39,7 +39,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Combat', 'Defense', 'Action'],
     briefing: "Long-range scanners detect an incoming fleet. Defend the Mothership through escalating waves by combining direct fire, automated turrets, shields, repairs, and timed combat abilities.",
     manual: "1. CLICK the battle space for direct fire, or press Space / Enter to auto-target the enemy closest to the mothership.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss-class enemies on fifth-wave cycles.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
-    changelog: ["v1.1: Added Space / Enter main-fire controls and keyboard-accessible combat targets.", "v1.0: Systems Online. Weapons free."]
+    changelog: ["Current: Pointer fire plus Space / Enter auto-targeting are supported.", "Current: Automated turrets, shields, repairs, EMP, Rapid Fire, Nuke abilities, fifth-wave boss cycles, and local save persistence are active."]
   },
   {
     id: 'merge_ships',
@@ -52,7 +52,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Merge', 'Casual', 'Collection'],
     briefing: "Our engineers have developed a new modular hull technology. By combining two identical chassis, we can fuse them into a superior vessel. Build the ultimate armada.",
     manual: "1. DRAG matching ships on desktop, or select a ship and use MOVE / MERGE controls on touch or keyboard.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.\n4. RETURN after time away to recover up to 24 hours of estimated Orbit income.",
-    changelog: ["v1.1: Added capped offline and hidden-tab Orbit earnings plus keyboard fleet controls.", "v1.0: Hangar bays open. Merge logic active."]
+    changelog: ["Current: Matching ships can be merged in the hangar and deployed to Orbit for automated asteroid income.", "Current: Keyboard/touch fleet controls and capped offline or hidden-tab Orbit earnings are supported."]
   },
   {
     id: 'gravity_idle',
@@ -65,7 +65,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Physics', 'Zen', 'Simulation'],
     briefing: "Observe the dance of the spheres. In this sector, we use kinetic bombardment to break apart resource clusters. Launch probes and let gravity do the work.",
     manual: "1. BUY Launchers to automate projectile firing.\n2. UPGRADE Gravity Well density to curve trajectories.\n3. UNLOCK Piercing physics to shatter multiple layers.\n4. RETURN after time away to recover up to 24 hours of estimated launcher output.",
-    changelog: ["v1.1: Added capped offline and hidden-tab Matter recovery plus a keyboard-accessible Gravity Pulse.", "v1.0: Physics engine calibrated. Singularity stable."]
+    changelog: ["Current: Orbital launchers, gravity, kinetic power, piercing, and the manual Gravity Pulse all affect the simulation.", "Current: Supported saves can recover capped estimated Matter after offline or hidden-tab time."]
   },
   {
     id: 'deep_signal',
@@ -78,7 +78,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Idle', 'Signal Decoder', 'Simulation'],
     briefing: "A green terminal waits for the next frequency scan. Receive encrypted transmissions, decode them, then analyze recovered data to strengthen BIO, TECH, MIL, and VOID systems.",
     manual: "1. SCAN frequencies to receive encrypted transmissions.\n2. MANAGE Energy while upgrading scan and decryption systems.\n3. DECODE and analyze messages to build BIO, TECH, MIL, and VOID bonuses.",
-    changelog: ["v1.1: Clarified signal progression and paused background processing in hidden tabs.", "v1.0: Signal receiver active. Connection established."]
+    changelog: ["Current: Frequency scans, Energy management, manual/passive decryption, and BIO/TECH/MIL/VOID analysis are active.", "Current: Auto-Scan AI and hidden-tab processing safeguards support longer idle sessions without unbounded message growth."]
   }
 ];
 
