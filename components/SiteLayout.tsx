@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Logo } from './Logo';
+import { GameId } from '../types';
 
 export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements' | 'spacebar-clicker' | 'spacebar-counter' | 'spacebar-clicker-test' | 'spacebar-clicker-unblocked' | 'spacebar-games' | 'spacebar-clicker-2';
 
@@ -7,9 +8,10 @@ interface SiteLayoutProps {
   children: React.ReactNode;
   onNavigate: (view: ViewMode, id?: string) => void;
   currentView: ViewMode;
+  activeGame?: GameId;
 }
 
-const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView }) => {
+const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView, activeGame }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -50,12 +52,17 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
     if (view === 'game') path = '/game/galaxy_miner/';
     else if (view !== 'home') path = `/${view}/`;
     
+    const isCurrent =
+      view === 'game'
+        ? currentView === 'game' && activeGame === 'galaxy_miner'
+        : currentView === view;
+
     return (
         <a
           href={path}
-          aria-current={currentView === view ? 'page' : undefined}
+          aria-current={isCurrent ? 'page' : undefined}
           onClick={(e) => { e.preventDefault(); onNavigate(view); }}
-          className={`transition-colors font-bold tracking-wide text-sm ${currentView === view ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
+          className={`transition-colors font-bold tracking-wide text-sm ${isCurrent ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
         >
           {label}
         </a>
@@ -152,13 +159,27 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                         <a
                           key={view}
                           href={view === 'home' ? '/' : view === 'game' ? '/game/galaxy_miner/' : `/${view}/`}
-                          aria-current={currentView === view ? 'page' : undefined}
+                          aria-current={
+                            view === 'game'
+                              ? currentView === 'game' && activeGame === 'galaxy_miner'
+                                ? 'page'
+                                : undefined
+                              : currentView === view
+                                ? 'page'
+                                : undefined
+                          }
                           onClick={(event) => {
                             event.preventDefault();
                             setMobileMenuOpen(false);
                             onNavigate(view as ViewMode);
                           }}
-                          className={`block min-h-11 rounded-lg px-3 py-3 text-sm transition-colors ${currentView === view ? 'bg-white/5 text-neon-blue' : 'text-gray-300 hover:bg-white/5 hover:text-neon-blue'}`}
+                          className={`block min-h-11 rounded-lg px-3 py-3 text-sm transition-colors ${
+                            (view === 'game'
+                              ? currentView === 'game' && activeGame === 'galaxy_miner'
+                              : currentView === view)
+                              ? 'bg-white/5 text-neon-blue'
+                              : 'text-gray-300 hover:bg-white/5 hover:text-neon-blue'
+                          }`}
                         >
                           {label}
                         </a>
