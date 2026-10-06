@@ -223,6 +223,8 @@ const DeepSpaceSignal: React.FC = () => {
     // --- GAME LOOP ---
     useEffect(() => {
         const interval = setInterval(() => {
+            if (document.hidden) return;
+
             // 1. Energy Regen
             const nextEnergy = Math.min(maxEnergy, energyRef.current + (regenRate / 5));
             energyRef.current = nextEnergy;
