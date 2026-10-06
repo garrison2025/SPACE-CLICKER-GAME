@@ -177,7 +177,7 @@ const LoadingSimulation = () => (
 const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const shouldFocusRouteRef = useRef(false);
+  const routeFocusInitializedRef = useRef(false);
 
   // --- LEGACY ROUTE GUARD & REDIRECTS ---
   // This cleans up old URLs indexed by Google (e.g. /?view=game&id=...)
@@ -282,19 +282,39 @@ const App: React.FC = () => {
       setActivePostId(route.postId);
       setIs404(route.error);
 
-      if (shouldFocusRouteRef.current) {
-          shouldFocusRouteRef.current = false;
-          window.requestAnimationFrame(() => {
-              const target = document.getElementById(
-                  route.view === 'game' && !route.error ? 'game-main-content' : 'main-content'
-              );
-              target?.focus();
-          });
-      }
-
       if (route.view === 'home' && !route.error) {
           setHasGalaxyMinerSave(hasUsableGalaxyMinerSave());
       }
+  }, [location.pathname]);
+
+  useEffect(() => {
+      if (!routeFocusInitializedRef.current) {
+          routeFocusInitializedRef.current = true;
+          return;
+      }
+
+      const route = parsePath();
+      const targetId = route.view === 'game' && !route.error
+          ? 'game-main-content'
+          : 'main-content';
+      let frame = 0;
+      let attempts = 0;
+
+      const focusRouteTarget = () => {
+          const target = document.getElementById(targetId);
+          if (target) {
+              target.focus();
+              return;
+          }
+
+          attempts += 1;
+          if (attempts < 20) {
+              frame = window.requestAnimationFrame(focusRouteTarget);
+          }
+      };
+
+      frame = window.requestAnimationFrame(focusRouteTarget);
+      return () => window.cancelAnimationFrame(frame);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -1682,7 +1702,6 @@ const App: React.FC = () => {
   // Modern Navigation Handler (Replaces handleNavigate)
   const handleNavigate = (target: ViewMode, id?: string) => {
     setIs404(false);
-    shouldFocusRouteRef.current = true;
     window.scrollTo(0, 0);
     
     if (target === 'home') {
