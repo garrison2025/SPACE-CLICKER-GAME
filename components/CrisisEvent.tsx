@@ -94,6 +94,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
+          event.stopPropagation();
             if (health <= 1) {
               resolveCrisis(true);
             } else {
