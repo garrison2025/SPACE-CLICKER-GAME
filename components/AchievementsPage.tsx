@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
-import SEOHead from './SEOHead';
 import { SAVE_KEY } from '../constants';
 import { formatNumber } from '../utils';
 import { safeGetStorageItem } from '../utils/projectStorage';
@@ -192,54 +191,9 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
     ? achievements
     : achievements.filter(a => a.category === activeCategory);
 
-  const achievementsSchema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "CollectionPage",
-        "@id": "https://spaceclickergame.com/achievements/#webpage",
-        "url": "https://spaceclickergame.com/achievements/",
-        "name": "Galaxy Miner Milestones & Progress Tracker",
-        "description": "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.",
-        "dateModified": "2026-10-05",
-        "isPartOf": {
-          "@type": "WebSite",
-          "@id": "https://spaceclickergame.com/#website",
-          "name": "Space Clicker Game",
-          "url": "https://spaceclickergame.com/"
-        }
-      },
-      {
-        "@type": "ItemList",
-        "@id": "https://spaceclickergame.com/achievements/#milestones",
-        "name": "Galaxy Miner tracked milestones",
-        "itemListElement": ACHIEVEMENTS_DATA.map((achievement, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "name": achievement.title,
-          "description": achievement.unlockCondition
-        }))
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://spaceclickergame.com/achievements/#breadcrumb",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Galaxy Miner Milestones", "item": "https://spaceclickergame.com/achievements/" }
-        ]
-      }
-    ]
-  };
-
   return (
     <div className="min-h-screen bg-space-950 text-gray-200 pt-24 pb-20 px-4">
-      <SEOHead
-        title="Galaxy Miner Milestones & Progress Tracker | Space Clicker Game"
-        description="Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save."
-        path="/achievements"
-        type="website"
-        schema={achievementsSchema}
-      />
+
 
       <div className="max-w-7xl mx-auto space-y-10">
         {/* Breadcrumbs */}
