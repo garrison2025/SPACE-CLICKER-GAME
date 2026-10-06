@@ -1110,7 +1110,7 @@ const staticRouteContent = {
         <li><strong><a href="https://store.steampowered.com/app/616110/SPACEPLAN/">SPACEPLAN</a></strong> is a story-driven science-fiction clicker built around potato-based devices, probes, and staged discoveries rather than a repeatable prestige economy.</li>
         <li><strong><a href="https://melvoridle.com/">Melvor Idle</a></strong> centers on skills, mastery, equipment, crafting, dungeons, and combat instead of one global prestige-reset loop.</li>
       </ul>
-      <p>The comparison is a feature snapshot, not a ranking. Third-party names and trademarks belong to their respective owners; SpaceClickerGame.com is not affiliated with those projects. External game features can change, so the linked primary pages should be used for current product details.</p>
+      <p>The comparison is a feature snapshot, not a ranking. Third-party names and trademarks belong to their respective owners; SpaceClickerGame.com is not affiliated with those projects. External game features can change, so the linked primary pages should be used for current product details. The listed comparison sources were reviewed on October 6, 2026.</p>
       <p>You can <a href="/game/galaxy_miner/">play Galaxy Miner</a> directly or explore the site's <a href="/spacebar-games/">Spacebar games and tools</a>.</p>
     </section>`,
   '/achievements': `
