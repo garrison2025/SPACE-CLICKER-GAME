@@ -102,7 +102,7 @@ for (const relativePath of storageSourceFiles) {
   const source = fs.readFileSync(path.resolve(relativePath), 'utf8');
 
   for (const match of source.matchAll(
-    /(?:SAVE_KEY|BEST_KEY|BEST_PREFIX|HISTORY_KEY)\s*=\s*['"]([^'"]+)['"]/g
+    /(?:SAVE_KEY|BEST_KEY|CURRENT_KEY|BEST_PREFIX|HISTORY_KEY)\s*=\s*['"]([^'"]+)['"]/g
   )) {
     discoveredKeys.add(match[1]);
   }
