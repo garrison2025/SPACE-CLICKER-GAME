@@ -4,11 +4,44 @@ interface AppErrorBoundaryState {
   hasError: boolean;
 }
 
+const CHUNK_RELOAD_KEY = 'scg_chunk_reload_attempted_v1';
+const CHUNK_ERROR_PATTERN =
+  /ChunkLoadError|Loading chunk|Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i;
+
 class AppErrorBoundary extends React.Component<React.PropsWithChildren, AppErrorBoundaryState> {
   state: AppErrorBoundaryState = { hasError: false };
+  private recoveryTimer?: number;
 
   static getDerivedStateFromError(): AppErrorBoundaryState {
     return { hasError: true };
+  }
+
+  componentDidMount() {
+    this.recoveryTimer = window.setTimeout(() => {
+      try {
+        sessionStorage.removeItem(CHUNK_RELOAD_KEY);
+      } catch {
+        // Storage can be unavailable in hardened/private browsing modes.
+      }
+    }, 15_000);
+  }
+
+  componentWillUnmount() {
+    if (this.recoveryTimer !== undefined) {
+      window.clearTimeout(this.recoveryTimer);
+    }
+  }
+
+  componentDidCatch(error: Error) {
+    if (!CHUNK_ERROR_PATTERN.test(`${error.name} ${error.message}`)) return;
+
+    try {
+      if (sessionStorage.getItem(CHUNK_RELOAD_KEY) === '1') return;
+      sessionStorage.setItem(CHUNK_RELOAD_KEY, '1');
+      window.location.reload();
+    } catch {
+      // Keep the visible fallback if sessionStorage or reload is blocked.
+    }
   }
 
   render() {
