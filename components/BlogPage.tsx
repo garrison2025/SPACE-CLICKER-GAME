@@ -1,6 +1,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { BLOG_POSTS } from '../content/blogPosts';
+import type { BlogPost } from '../types';
+import { BLOG_POST_META } from '../content/blogMeta';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
 import SocialShare from './SocialShare';
@@ -9,6 +10,16 @@ interface BlogPageProps {
     postId: string | null;
     onNavigate: (view: ViewMode, id?: string) => void;
 }
+
+const BLOG_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    timeZone: 'UTC'
+});
+
+const formatBlogDate = (publishedDate: string) =>
+    BLOG_DATE_FORMATTER.format(new Date(`${publishedDate}T00:00:00Z`));
 
 const optimizeUnsplash = (url: string, width: number, height?: number) => {
     if (!url.includes('images.unsplash.com')) return url;
@@ -26,15 +37,41 @@ const optimizeUnsplash = (url: string, width: number, height?: number) => {
 
 const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
     const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([]);
+    const [blogPosts, setBlogPosts] = useState<BlogPost[] | null>(null);
+    const [articleLoadError, setArticleLoadError] = useState(false);
 
     const sortedBlogPosts = useMemo(
-        () => [...BLOG_POSTS].sort((a, b) => Date.parse(b.date) - Date.parse(a.date)),
+        () => [...BLOG_POST_META].sort(
+            (a, b) => Date.parse(b.publishedDate) - Date.parse(a.publishedDate)
+        ),
         []
     );
 
-    const post = useMemo(() => 
-        postId ? BLOG_POSTS.find(p => p.slug === postId || p.id === postId) : null, 
-    [postId]);
+    useEffect(() => {
+        if (!postId || blogPosts) return;
+
+        let cancelled = false;
+        setArticleLoadError(false);
+
+        import('../content/blogPosts')
+            .then(({ BLOG_POSTS }) => {
+                if (!cancelled) setBlogPosts(BLOG_POSTS);
+            })
+            .catch(() => {
+                if (!cancelled) setArticleLoadError(true);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [postId, blogPosts]);
+
+    const post = useMemo(
+        () => postId && blogPosts
+            ? blogPosts.find(p => p.slug === postId || p.id === postId) || null
+            : null,
+        [postId, blogPosts]
+    );
 
     // Prefer shared-tag matches, then fill any remaining slots with
     // manually reviewed topic-adjacent guides so every article has three useful next reads.
@@ -94,7 +131,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             ]
         };
 
-        const scored = BLOG_POSTS
+        const fullPosts = blogPosts || [];
+        const scored = fullPosts
             .filter(p => p.id !== post.id)
             .map(p => ({
                 post: p,
@@ -106,13 +144,13 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
 
         const result = [...scored];
         for (const slug of fallbackSlugs[post.slug] || []) {
-            const candidate = BLOG_POSTS.find(item => item.slug === slug);
+            const candidate = fullPosts.find(item => item.slug === slug);
             if (candidate && !result.some(item => item.id === candidate.id)) result.push(candidate);
             if (result.length >= 3) break;
         }
 
         return result.slice(0, 3);
-    }, [post]);
+    }, [post, blogPosts]);
 
     const interactiveDestinations = useMemo(() => {
         if (!post) return [];
@@ -277,6 +315,41 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
 
     // --- SINGLE POST VIEW ---
     if (postId) {
+        if (!blogPosts && !articleLoadError) {
+            return (
+                <div role="status" aria-live="polite" className="min-h-[60vh] pt-32 px-4 text-center text-neon-blue font-mono">
+                    LOADING MISSION LOG...
+                </div>
+            );
+        }
+
+        if (articleLoadError) {
+            return (
+                <div className="min-h-[60vh] pt-32 px-4 text-center">
+                    <h2 className="text-2xl text-red-400 mb-4">MISSION LOG MODULE UNAVAILABLE</h2>
+                    <p className="mx-auto mb-6 max-w-xl text-sm text-gray-400">
+                        The article module could not be loaded. This can happen when an older open tab meets a newer deployment.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-3">
+                        <button
+                            type="button"
+                            onClick={() => window.location.reload()}
+                            className="min-h-11 rounded-lg bg-neon-blue px-5 py-2.5 font-bold text-black"
+                        >
+                            Reload latest version
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onNavigate('blog')}
+                            className="min-h-11 rounded-lg border border-white/15 px-5 py-2.5 font-bold text-white"
+                        >
+                            Return to archives
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
         if (!post) {
             return (
                 <div className="min-h-screen pt-32 px-4 text-center">
@@ -539,7 +612,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                 <div className="h-1 bg-gradient-to-r from-space-800 to-space-700 group-hover:from-neon-blue group-hover:to-purple-500 transition-all absolute top-0 left-0 right-0"></div>
                                 
                                 <div className="text-[10px] font-mono text-gray-500 mb-3 flex justify-between">
-                                    <span>{post.date}</span>
+                                    <span>{formatBlogDate(post.publishedDate)}</span>
                                     <span>{post.readTime}</span>
                                 </div>
                                 <h2 className="text-xl font-display font-bold text-white mb-3 group-hover:text-neon-blue transition-colors line-clamp-2">
