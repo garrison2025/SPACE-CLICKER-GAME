@@ -120,6 +120,7 @@ const MergeShips: React.FC = () => {
     const floatingTextTimersRef = useRef<Set<number>>(new Set());
     const openedCrateIdsRef = useRef<Set<string>>(new Set());
     const shipInspectorReturnFocusRef = useRef<HTMLElement | null>(null);
+    const offlineReturnFocusRef = useRef<HTMLElement | null>(null);
     const hiddenAtRef = useRef<number | null>(null);
 
     useEffect(() => {
@@ -149,6 +150,27 @@ const MergeShips: React.FC = () => {
             shipInspectorReturnFocusRef.current = null;
         };
     }, [selectedShip]);
+
+    useEffect(() => {
+        if (!offlineProfit) return;
+
+        offlineReturnFocusRef.current =
+            document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setOfflineProfit(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            offlineReturnFocusRef.current?.focus();
+            offlineReturnFocusRef.current = null;
+        };
+    }, [offlineProfit]);
     
     const [_, setRenderTrigger] = useState(0); 
 
