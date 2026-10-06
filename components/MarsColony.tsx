@@ -4,6 +4,9 @@ import { MarsBuilding, MarsResourceState, FloatingText } from '../types';
 import { formatNumber } from '../utils';
 
 const MARS_SAVE_KEY = 'mars_colony_save_v2';
+const MAX_RESOURCE_VALUE = 1e300;
+const MAX_BUILDING_COUNT = 1000;
+const MAX_POPULATION = 1_000_000;
 
 interface MarsParticle {
     id: number;
@@ -88,16 +91,22 @@ const INITIAL_RESOURCES: MarsResourceState = {
     oxygen: { current: 100, max: 100, production: 0 }
 };
 
-const finiteNonNegative = (value: unknown, fallback = 0) => {
+const finiteNonNegative = (
+    value: unknown,
+    fallback = 0,
+    max = MAX_RESOURCE_VALUE
+) => {
     const parsed = Number(value);
-    return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
+    return Number.isFinite(parsed)
+        ? Math.min(max, Math.max(0, parsed))
+        : fallback;
 };
 
 const safeBuildingCount = (value: unknown, fallback = 0) =>
-    Math.min(1000, Math.max(0, Math.floor(finiteNonNegative(value, fallback))));
+    Math.min(MAX_BUILDING_COUNT, Math.max(0, Math.floor(finiteNonNegative(value, fallback, MAX_BUILDING_COUNT))));
 
 const safePopulation = (value: unknown) =>
-    Math.min(1_000_000, Math.max(0, Math.floor(finiteNonNegative(value))));
+    Math.min(MAX_POPULATION, Math.max(0, Math.floor(finiteNonNegative(value, 0, MAX_POPULATION))));
 
 const sanitizeReservoir = (
     raw: any,
@@ -158,64 +167,85 @@ const MarsColony: React.FC = () => {
 
     // --- GAME LOOP (Logic) ---
     useEffect(() => {
-        const timer = setInterval(() => {
-            setResources(prev => {
-                const next: MarsResourceState = {
-                    ...prev,
-                    energy: { ...prev.energy },
-                    food: { ...prev.food },
-                    oxygen: { ...prev.oxygen }
-                };
-                
-                // 1. Calculate Production & Consumption
-                let energyProd = 0;
-                let energyCons = 0;
-                let foodProd = 0;
-                let oxyProd = 0;
-                let housingCap = 0;
-                let mineralProd = 0;
+        const timer = window.setInterval(() => {
+            const snapshot = stateRef.current;
+            const prev = snapshot.resources;
+            const currentBuildings = snapshot.buildings;
+            const next: MarsResourceState = {
+                ...prev,
+                energy: { ...prev.energy },
+                food: { ...prev.food },
+                oxygen: { ...prev.oxygen }
+            };
 
-                buildings.forEach(b => {
-                    energyCons += b.energyCost * b.count;
-                    if (b.production.type === 'energy') energyProd += b.production.amount * b.count;
-                    if (b.production.type === 'food') foodProd += b.production.amount * b.count;
-                    if (b.production.type === 'oxygen') oxyProd += b.production.amount * b.count;
-                    if (b.production.type === 'housing') housingCap += b.production.amount * b.count;
-                    if (b.production.type === 'minerals') mineralProd += b.production.amount * b.count;
-                });
+            let energyProd = 0;
+            let energyCons = 0;
+            let foodProd = 0;
+            let oxyProd = 0;
+            let housingCap = 0;
+            let mineralProd = 0;
 
-                // Energy Logic
-                next.energy.production = energyProd;
-                next.energy.consumption = energyCons;
-                const efficiency = next.energy.current > 0 || energyProd >= energyCons ? 1 : 0.1;
-                
-                next.energy.current = Math.min(next.energy.max, Math.max(0, next.energy.current + (energyProd - energyCons)));
-
-                // Resource Logic (scaled by efficiency)
-                next.food.production = foodProd * efficiency;
-                next.food.current = Math.min(next.food.max, Math.max(0, next.food.current + next.food.production - (prev.population * 0.1)));
-
-                next.oxygen.production = oxyProd * efficiency;
-                next.oxygen.current = Math.min(next.oxygen.max, Math.max(0, next.oxygen.current + next.oxygen.production - (prev.population * 0.1)));
-
-                next.minerals += mineralProd * efficiency;
-
-                // Population Logic
-                if (next.food.current > 50 && next.oxygen.current > 50 && prev.population < housingCap) {
-                    if (Math.random() < 0.1) next.population += 1;
-                }
-                if (next.food.current <= 0 || next.oxygen.current <= 0) {
-                     if (Math.random() < 0.2 && next.population > 0) next.population -= 1;
-                }
-
-                // Credit Generation
-                next.credits += prev.population * 0.05;
-
-                return next;
+            currentBuildings.forEach(b => {
+                energyCons += b.energyCost * b.count;
+                if (b.production.type === 'energy') energyProd += b.production.amount * b.count;
+                if (b.production.type === 'food') foodProd += b.production.amount * b.count;
+                if (b.production.type === 'oxygen') oxyProd += b.production.amount * b.count;
+                if (b.production.type === 'housing') housingCap += b.production.amount * b.count;
+                if (b.production.type === 'minerals') mineralProd += b.production.amount * b.count;
             });
+
+            next.energy.production = Math.min(MAX_RESOURCE_VALUE, energyProd);
+            next.energy.consumption = Math.min(MAX_RESOURCE_VALUE, energyCons);
+            const efficiency = next.energy.current > 0 || energyProd >= energyCons ? 1 : 0.1;
+
+            next.energy.current = Math.min(
+                next.energy.max,
+                Math.max(0, next.energy.current + (energyProd - energyCons))
+            );
+
+            next.food.production = Math.min(MAX_RESOURCE_VALUE, foodProd * efficiency);
+            next.food.current = Math.min(
+                next.food.max,
+                Math.max(0, next.food.current + next.food.production - (prev.population * 0.1))
+            );
+
+            next.oxygen.production = Math.min(MAX_RESOURCE_VALUE, oxyProd * efficiency);
+            next.oxygen.current = Math.min(
+                next.oxygen.max,
+                Math.max(0, next.oxygen.current + next.oxygen.production - (prev.population * 0.1))
+            );
+
+            next.minerals = Math.min(
+                MAX_RESOURCE_VALUE,
+                prev.minerals + mineralProd * efficiency
+            );
+
+            if (
+                next.food.current > 50 &&
+                next.oxygen.current > 50 &&
+                prev.population < Math.min(MAX_POPULATION, housingCap) &&
+                Math.random() < 0.1
+            ) {
+                next.population = Math.min(MAX_POPULATION, prev.population + 1);
+            }
+            if (
+                (next.food.current <= 0 || next.oxygen.current <= 0) &&
+                next.population > 0 &&
+                Math.random() < 0.2
+            ) {
+                next.population = Math.max(0, next.population - 1);
+            }
+
+            next.credits = Math.min(
+                MAX_RESOURCE_VALUE,
+                prev.credits + prev.population * 0.05
+            );
+
+            stateRef.current = { resources: next, buildings: currentBuildings };
+            setResources(next);
         }, 1000);
-        return () => clearInterval(timer);
-    }, [buildings]);
+        return () => window.clearInterval(timer);
+    }, []);
 
     // --- PHYSICS LOOP (Visuals) ---
     // Only animate while visual effects exist. This avoids a permanent 60fps
@@ -278,8 +308,14 @@ const MarsColony: React.FC = () => {
             clientY = e.clientY || (rect.top + rect.height / 2);
         }
 
-        const amount = 1 + bonus;
-        setResources(prev => ({ ...prev, minerals: prev.minerals + amount }));
+        const amount = Math.max(0, 1 + bonus);
+        const snapshot = stateRef.current;
+        const nextResources = {
+            ...snapshot.resources,
+            minerals: Math.min(MAX_RESOURCE_VALUE, snapshot.resources.minerals + amount)
+        };
+        stateRef.current = { resources: nextResources, buildings: snapshot.buildings };
+        setResources(nextResources);
         
         // Visuals
         setClicks(prev => [...prev, {
@@ -298,8 +334,10 @@ const MarsColony: React.FC = () => {
         const building = snapshot.buildings.find(b => b.id === id);
         if (!building) return;
 
+        if (building.count >= MAX_BUILDING_COUNT) return;
+
         const cost = Math.floor(building.cost * Math.pow(1.15, building.count));
-        if (snapshot.resources.minerals < cost) return;
+        if (!Number.isFinite(cost) || snapshot.resources.minerals < cost) return;
 
         const nextResources = {
             ...snapshot.resources,
