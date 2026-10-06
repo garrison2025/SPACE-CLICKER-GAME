@@ -284,7 +284,7 @@ export const BLOG_POSTS: BlogPost[] = [
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 08, 2026',
         updatedDate: 'Oct 7, 2026',
-        readTime: '3 min read',
+        readTime: '5 min read',
         tags: ['clicker game space', 'strategy', 'math', 'optimization'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
