@@ -615,8 +615,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 />
 
                 <header className="mb-12 text-center">
-                    <h1 className="text-4xl md:text-6xl font-display font-black text-white mb-4 tracking-widest">
-                        MISSION <span className="text-neon-blue">LOGS</span>
+                    <div className="text-[10px] font-mono uppercase tracking-[0.28em] text-neon-blue mb-3">
+                        Mission Logs
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-display font-black text-white mb-4 tracking-tight">
+                        SPACE CLICKER GAME <span className="text-neon-blue">BLOG</span>
                     </h1>
                     <p className="text-gray-400 font-mono text-sm max-w-2xl mx-auto">
                         Guides to clicker mechanics, Spacebar tests, idle strategy, browser performance, and the design of incremental space games.
