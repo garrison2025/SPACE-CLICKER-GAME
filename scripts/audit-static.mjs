@@ -549,6 +549,20 @@ console.log(
     .join(' | ')
 );
 
+const faviconPath = path.join(distDir, 'favicon.svg');
+if (!fs.existsSync(faviconPath)) throw new Error('dist/favicon.svg is missing');
+const favicon = fs.readFileSync(faviconPath, 'utf8');
+if (!/<svg\b/i.test(favicon) || !/viewBox="0 0 100 100"/i.test(favicon)) {
+  throw new Error('favicon.svg is not the expected local SVG asset');
+}
+for (const file of htmlFiles) {
+  const route = routeForFile(file);
+  const html = fs.readFileSync(file, 'utf8');
+  if (!/<link\s+rel="icon"\s+type="image\/svg\+xml"\s+href="\/favicon\.svg"\s*\/?>/i.test(html)) {
+    throw new Error(route + ': local SVG favicon link is missing');
+  }
+}
+
 const notFoundPath = path.join(distDir, '404.html');
 if (!fs.existsSync(notFoundPath)) throw new Error('dist/404.html is missing');
 const notFound = fs.readFileSync(notFoundPath, 'utf8');
