@@ -5,6 +5,7 @@ import { generateAlienMessage } from '../services/eventService';
 import { playSound } from '../services/audioService';
 import { formatNumber } from '../utils';
 import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { trapDialogFocus } from '../utils/dialogFocus';
 
 const DEEP_SIGNAL_SAVE_KEY = 'deep_signal_save_v3';
 const MAX_LIVE_MESSAGES = 100;
@@ -95,6 +96,14 @@ const DeepSpaceSignal: React.FC = () => {
     const [isScanning, setIsScanning] = useState(false);
     const [frequency, setFrequency] = useState(1420.0); 
     const [showUpgrades, setShowUpgrades] = useState(false);
+
+    useEffect(() => {
+        if (!showUpgrades) return;
+        const previousFocus = document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null;
+        return () => previousFocus?.focus();
+    }, [showUpgrades]);
     const [hexLines, setHexLines] = useState<string[]>([]);
 
     // Refs
@@ -777,9 +786,24 @@ const DeepSpaceSignal: React.FC = () => {
 
             {/* UPGRADE MODAL */}
             {showUpgrades && (
-                <div className="absolute inset-x-4 bottom-28 top-20 z-50 bg-black/95 border-2 border-green-500 p-6 shadow-[0_0_50px_rgba(0,255,0,0.1)] animate-in slide-in-from-bottom duration-300 flex flex-col">
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="deep-space-engineering-title"
+                    tabIndex={-1}
+                    autoFocus
+                    onKeyDown={(event) => {
+                        if (event.key === 'Escape') {
+                            event.stopPropagation();
+                            setShowUpgrades(false);
+                            return;
+                        }
+                        trapDialogFocus(event);
+                    }}
+                    className="absolute inset-x-4 bottom-28 top-20 z-50 bg-black/95 border-2 border-green-500 p-6 shadow-[0_0_50px_rgba(0,255,0,0.1)] animate-in slide-in-from-bottom duration-300 flex flex-col outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                >
                     <div className="flex justify-between items-center mb-6 border-b border-green-800 pb-2">
-                        <h2 className="text-xl font-bold text-glow">ENGINEERING BAY</h2>
+                        <h2 id="deep-space-engineering-title" className="text-xl font-bold text-glow">ENGINEERING BAY</h2>
                         <button
                             type="button"
                             aria-label="Close Engineering Bay"
