@@ -62,7 +62,7 @@ export const Logo: React.FC<LogoProps> = ({ className = "w-8 h-8", withText = fa
       </div>
       
       {withText && (
-        <div className="flex flex-col">
+        <div className="hidden min-[360px]:flex flex-col">
             <span className="font-display font-bold text-lg tracking-widest leading-none text-white group-hover:text-neon-blue transition-colors">SPACE CLICKER</span>
             <span className="text-[9px] text-gray-400 tracking-[0.2em] font-mono">VOID UNIVERSE</span>
         </div>
