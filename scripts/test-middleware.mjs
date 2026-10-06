@@ -35,6 +35,9 @@ expect(hub.status === 200, 'Known Spacebar games hub should pass through');
 
 const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
+expect(known.headers.get('referrer-policy') === 'strict-origin-when-cross-origin', 'Known route must include Referrer-Policy');
+expect(known.headers.get('x-content-type-options') === 'nosniff', 'Known route must include X-Content-Type-Options');
+expect(known.headers.get('permissions-policy') === 'camera=(), microphone=(), geolocation=()', 'Known route must include Permissions-Policy');
 
 const sequel = await run('https://spaceclickergame.com/spacebar-clicker-2/');
 expect(sequel.status === 200, 'Known Spacebar Clicker 2 route should pass through');
@@ -45,6 +48,7 @@ expect(knownGame.status === 200, 'Known game route should pass through');
 const noSlashSpacebar = await run('https://spaceclickergame.com/spacebar-clicker');
 expect(noSlashSpacebar.status === 301, 'Known Spacebar route without trailing slash should redirect');
 expect(noSlashSpacebar.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/', 'Spacebar trailing-slash redirect target is wrong');
+expect(noSlashSpacebar.headers.get('x-content-type-options') === 'nosniff', 'Redirect must include security headers');
 
 const noSlashGame = await run('https://spaceclickergame.com/game/galaxy_miner');
 expect(noSlashGame.status === 301, 'Known game route without trailing slash should redirect');
@@ -75,6 +79,7 @@ expect(knownBlog.status === 200, 'Known blog route should pass through');
 
 const asset = await run('https://spaceclickergame.com/assets/index-ABC123.js');
 expect(asset.status === 200, 'Static asset should pass through');
+expect(asset.headers.get('x-content-type-options') === 'nosniff', 'Static asset must include X-Content-Type-Options');
 
 const missingAsset = await run('https://spaceclickergame.com/assets/not-a-real-file.js');
 expect(missingAsset.status === 404, 'Missing static asset must return HTTP 404');
@@ -145,6 +150,8 @@ const missingHtml = await missing.text();
 expect(missingHtml.includes('noindex,nofollow'), '404 HTML must include noindex');
 expect(!missingHtml.includes('rel="canonical"'), '404 HTML must not canonicalize to the homepage');
 expect(missing.headers.get('x-robots-tag') === 'noindex, nofollow', '404 response must send X-Robots-Tag noindex');
+expect(missing.headers.get('referrer-policy') === 'strict-origin-when-cross-origin', '404 response must include Referrer-Policy');
+expect(missing.headers.get('x-content-type-options') === 'nosniff', '404 response must include X-Content-Type-Options');
 
 const invalidGame = await run('https://spaceclickergame.com/game/not-a-real-game/');
 expect(invalidGame.status === 404, 'Unknown game route must return HTTP 404');
@@ -175,4 +182,4 @@ for (const canonicalUrl of sitemapUrls) {
   );
 }
 
-console.log('Middleware routing tests passed: legacy routes, 404s, static discovery files, and 32/32 sitemap URLs are canonical.');
+console.log('Middleware routing tests passed: canonical routes, redirects, 404s, security headers, static discovery files, and 32/32 sitemap URLs are verified.');
