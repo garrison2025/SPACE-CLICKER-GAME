@@ -58,6 +58,7 @@ const defaultSave = (): SaveData => ({
 });
 
 const MAX_RESOURCE_VALUE = 1e300;
+const MAX_UPGRADE_LEVEL = 1000;
 const MAX_COUNTER_VALUE = Number.MAX_SAFE_INTEGER;
 const MAX_NOVA_CORES = 1e12;
 const MAX_CPS_VALUE = 10_000;
@@ -74,7 +75,7 @@ const sanitize = (raw: unknown): SaveData => {
   const upgrades = emptyUpgrades();
   (Object.keys(upgrades) as UpgradeId[]).forEach((id) => {
     const def = defs.find((item) => item.id === id);
-    const maxLevel = def?.max ?? 1000;
+    const maxLevel = def?.max ?? MAX_UPGRADE_LEVEL;
     upgrades[id] = Math.min(
       maxLevel,
       Math.max(0, Math.floor(num((incoming as Record<string, unknown>)[id])))
@@ -187,10 +188,13 @@ const SpacebarClicker2: React.FC = () => {
 
     if (awaySeconds >= 60 && initialRate > 0) {
       const earned = Math.floor(initialRate * awaySeconds);
+      const nextPoints = Math.min(MAX_RESOURCE_VALUE, initial.points + earned);
+      const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, initial.lifetimePoints + earned);
+      const credited = Math.max(0, nextPoints - initial.points);
       const nextSnapshot = {
         ...saveRef.current,
-        points: initial.points + earned,
-        lifetimePoints: initial.lifetimePoints + earned,
+        points: nextPoints,
+        lifetimePoints: nextLifetimePoints,
       };
 
       // Credit and persist offline production immediately. Refreshing before the
@@ -204,7 +208,7 @@ const SpacebarClicker2: React.FC = () => {
 
       setPoints(nextSnapshot.points);
       setLifetimePoints(nextSnapshot.lifetimePoints);
-      setOfflineEarned(earned);
+      setOfflineEarned(credited);
     }
   }, [initial]);
 
@@ -226,8 +230,16 @@ const SpacebarClicker2: React.FC = () => {
     if (autoRate <= 0) return;
     const timer = window.setInterval(() => {
       const gain = autoRate / 5;
-      setPoints((value) => value + gain);
-      setLifetimePoints((value) => value + gain);
+      const snapshot = saveRef.current;
+      const nextPoints = Math.min(MAX_RESOURCE_VALUE, snapshot.points + gain);
+      const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, snapshot.lifetimePoints + gain);
+      saveRef.current = {
+        ...snapshot,
+        points: nextPoints,
+        lifetimePoints: nextLifetimePoints,
+      };
+      setPoints(nextPoints);
+      setLifetimePoints(nextLifetimePoints);
     }, 200);
     return () => window.clearInterval(timer);
   }, [autoRate]);
@@ -263,9 +275,19 @@ const SpacebarClicker2: React.FC = () => {
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
     setCpsTrackingActive(true);
 
-    setPoints((value) => value + manualPower);
-    setLifetimePoints((value) => value + manualPower);
-    setPresses((value) => value + 1);
+    const snapshot = saveRef.current;
+    const nextPoints = Math.min(MAX_RESOURCE_VALUE, snapshot.points + manualPower);
+    const nextLifetimePoints = Math.min(MAX_RESOURCE_VALUE, snapshot.lifetimePoints + manualPower);
+    const nextPresses = Math.min(MAX_COUNTER_VALUE, snapshot.presses + 1);
+    saveRef.current = {
+      ...snapshot,
+      points: nextPoints,
+      lifetimePoints: nextLifetimePoints,
+      presses: nextPresses,
+    };
+    setPoints(nextPoints);
+    setLifetimePoints(nextLifetimePoints);
+    setPresses(nextPresses);
 
     if (!isOverdrive) {
       const charge = 7 + upgrades.overdriveCapacitor * 1.5;
@@ -298,7 +320,8 @@ const SpacebarClicker2: React.FC = () => {
   const buy = (def: UpgradeDef) => {
     const snapshot = saveRef.current;
     const level = snapshot.upgrades[def.id];
-    if (def.max !== undefined && level >= def.max) return;
+    const effectiveMax = def.max ?? MAX_UPGRADE_LEVEL;
+    if (level >= effectiveMax) return;
 
     const price = Math.floor(def.baseCost * Math.pow(def.scale, level));
     if (snapshot.points < price) return;
@@ -657,7 +680,7 @@ const SpacebarClicker2: React.FC = () => {
           <div className="p-4 space-y-3 max-h-[760px] overflow-y-auto">
             {defs.map((def) => {
               const level = upgrades[def.id];
-              const maxed = def.max !== undefined && level >= def.max;
+              const maxed = level >= (def.max ?? MAX_UPGRADE_LEVEL);
               const price = cost(def);
               return (
                 <button
