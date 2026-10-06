@@ -86,23 +86,11 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
       </div>
 
       {/* The Meteor */}
-      <div
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
         aria-label={`Deflect incoming meteor. ${health} hits remaining.`}
         onClick={handleClick}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-          event.stopPropagation();
-            if (health <= 1) {
-              resolveCrisis(true);
-            } else {
-              setHealth(prev => prev - 1);
-            }
-          }
-        }}
-        className="absolute z-[90] cursor-crosshair w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl animate-spin-slow focus:outline-none focus:ring-2 focus:ring-red-300"
+        className="absolute z-[90] cursor-crosshair w-24 h-24 md:w-32 md:h-32 p-0 border-0 bg-transparent drop-shadow-2xl animate-spin-slow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 rounded-full"
         style={{
             top: '50%',
             left: '50%',
@@ -122,7 +110,7 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
                 {health}
             </div>
         </div>
-      </div>
+      </button>
     </>
   );
 };
