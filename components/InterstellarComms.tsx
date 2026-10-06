@@ -83,6 +83,7 @@ const InterstellarComms: React.FC<InterstellarCommsProps> = ({ activeGame, onSwi
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
+          event.stopPropagation();
           onSwitchGame(message.targetGame);
           setMessage(null);
         }
