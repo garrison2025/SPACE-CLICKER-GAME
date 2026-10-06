@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { trapDialogFocus } from '../utils/dialogFocus';
+import React from 'react';
+import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
 interface HotkeyOverlayProps {
   isOpen: boolean;
@@ -8,13 +8,7 @@ interface HotkeyOverlayProps {
 }
 
 export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, onToggle }) => {
-  useEffect(() => {
-    if (!isOpen) return;
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-    return () => previousFocus?.focus();
-  }, [isOpen]);
+  const dialogRef = useDialogFocus<HTMLDivElement>(isOpen);
 
   const HOTKEYS = [
     { key: 'SPACE', desc: 'Pulse Mining Laser (Manual Tap)', color: 'border-neon-blue text-neon-blue' },
@@ -45,11 +39,11 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
       {isOpen && (
         <div className="safe-screen-overlay fixed inset-0 z-[140] flex items-center justify-center bg-black/85 md:backdrop-blur-sm animate-in fade-in">
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="hotkey-dialog-title"
             tabIndex={-1}
-            autoFocus
             onKeyDown={trapDialogFocus}
             className="bg-space-850 border border-white/20 w-full max-w-md max-h-full rounded-2xl p-4 sm:p-6 shadow-2xl overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
           >
