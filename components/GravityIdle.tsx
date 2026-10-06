@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GravitySaveData } from '../types';
 import { formatNumber } from '../utils';
-import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 import { trapDialogFocus } from '../utils/dialogFocus';
 
 const GRAVITY_SAVE_KEY = 'gravity_idle_save_v2';
@@ -775,8 +775,8 @@ const GravityIdle: React.FC = () => {
             if (credited > 0) {
                 setOfflineReport({ time: seconds, earned: credited });
             }
-        } catch (error) {
-            console.warn('Could not load Gravity Idle save.', error);
+        } catch {
+            safeRemoveStorageItem(GRAVITY_SAVE_KEY);
         }
     }, []);
 
