@@ -362,14 +362,17 @@ const StarDefense: React.FC = () => {
 
         // 10. Wave
         waveTimerRef.current += deltaTime;
-        if (waveTimerRef.current > 1800) { 
-            setWave(prev => prev + 1);
+        if (waveTimerRef.current > 1800) {
+            const nextWave = Math.min(MAX_WAVE, saveStateRef.current.wave + 1);
+            saveStateRef.current = { ...saveStateRef.current, wave: nextWave };
+            setWave(nextWave);
             waveTimerRef.current = 0;
-            if ((wave + 1) % 5 === 0) {
+
+            if (nextWave % 5 === 0) {
                  setBossWarning(true);
                  scheduleTransient(() => setBossWarning(false), 3000);
-            } else {
-                 addFloatingText(50, 40, `WAVE ${wave + 1}`, '#fff', true);
+            } else if (nextWave > wave) {
+                 addFloatingText(50, 40, `WAVE ${nextWave}`, '#fff', true);
             }
         }
 
