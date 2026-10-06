@@ -848,7 +848,7 @@ const staticRouteContent = {
       <h2>Star Defense gameplay</h2>
       <p>Star Defense is a browser defense clicker in which enemy ships move toward the mothership while the player combines direct clicks with automated weapons. Destroyed enemies award Scrap, which funds upgrades inside the current run.</p>
       <h2>Manual damage and auto-turrets</h2>
-      <p>Plasma Cannons improve manual click damage, while Alpha Turrets and Missile Batteries add automatic fire. Manual targeting handles immediate threats and automation reduces the amount of constant clicking needed as waves accelerate.</p>
+      <p>Plasma Cannons improve manual direct-fire damage, while Alpha Turrets and Missile Batteries add automatic fire. Pointer users can fire into the battle space; keyboard users can press Space or Enter to auto-target the enemy currently closest to the mothership. Automation reduces the amount of constant manual firing needed as waves accelerate.</p>
       <h2>Hull, shields, and repair</h2>
       <p>Void Shield generators create a regenerating barrier, Hull Plating increases maximum survivability, and Nanite Repair provides an emergency recovery option. Defensive upgrades become more important as fighters, tanks, and boss-class enemies create sustained pressure.</p>
       <h2>Tactical abilities and waves</h2>
