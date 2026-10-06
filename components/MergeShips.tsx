@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MergeShip, FloatingText, MergeUpgradeState, Particle } from '../types';
 import { formatNumber } from '../utils';
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const MERGE_SAVE_KEY = 'merge_ships_save_v3';
 const HANGAR_SLOTS = 12; // 4x3 Grid
@@ -505,7 +506,7 @@ const MergeShips: React.FC = () => {
     }, [credits, hangar, orbit, tech, shipsPurchased, highestLevel]);
 
     const saveGame = useCallback(() => {
-        localStorage.setItem(MERGE_SAVE_KEY, JSON.stringify({ 
+        safeSetStorageItem(MERGE_SAVE_KEY, JSON.stringify({ 
             ...saveStateRef.current,
             lastSaveTime: Date.now() 
         }));
@@ -513,7 +514,7 @@ const MergeShips: React.FC = () => {
 
     // Initial Load
     useEffect(() => {
-        const saved = localStorage.getItem(MERGE_SAVE_KEY);
+        const saved = safeGetStorageItem(MERGE_SAVE_KEY);
         if (!saved) return;
 
         try {
@@ -579,7 +580,7 @@ const MergeShips: React.FC = () => {
             // Consume the offline window immediately so a quick refresh cannot
             // credit the same period a second time.
             saveStateRef.current = nextSnapshot;
-            localStorage.setItem(MERGE_SAVE_KEY, JSON.stringify({
+            safeSetStorageItem(MERGE_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: now,
             }));
