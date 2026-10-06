@@ -11,9 +11,16 @@ interface RouteErrorBoundaryState {
 
 class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps, RouteErrorBoundaryState> {
   state: RouteErrorBoundaryState = { hasError: false };
+  private fallbackRef = React.createRef<HTMLElement>();
 
   static getDerivedStateFromError(): RouteErrorBoundaryState {
     return { hasError: true };
+  }
+
+  componentDidCatch() {
+    window.requestAnimationFrame(() => {
+      this.fallbackRef.current?.focus({ preventScroll: true });
+    });
   }
 
   componentDidUpdate(previousProps: RouteErrorBoundaryProps) {
@@ -25,9 +32,14 @@ class RouteErrorBoundary extends React.Component<RouteErrorBoundaryProps, RouteE
   render() {
     if (!this.state.hasError) return this.props.children;
 
+    const focusTargetId = this.props.resetKey.startsWith('/game/')
+      ? 'game-main-content'
+      : 'main-content';
+
     return (
       <main
-        id="main-content"
+        ref={this.fallbackRef}
+        id={focusTargetId}
         tabIndex={-1}
         role="alert"
         className="min-h-screen bg-space-950 px-4 py-24 text-center text-gray-200 focus:outline-none"
