@@ -48,7 +48,6 @@ const StarshipConsole = React.lazy(() => import('./components/StarshipConsole'))
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
 const MAX_SAFE_UPGRADE_COUNT = 1000;
-const MAX_SAFE_UNBOUNDED_TECH_LEVEL = 1000;
 const MAX_SAFE_RESOURCE_VALUE = 1e300;
 const MAX_SAFE_DARK_MATTER = 1e280;
 const MAX_SAFE_OFFLINE_RATE = 1e295;
@@ -1526,7 +1525,7 @@ const App: React.FC = () => {
 
     const snapshot = gameStateRef.current;
     const currentLevel = snapshot.prestigeUpgrades[id] || 0;
-    const maxLevel = u.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : u.maxLevel;
+    const maxLevel = u.maxLevel === -1 ? MAX_PRESTIGE_TECH_LEVEL : u.maxLevel;
     if (currentLevel >= maxLevel) return;
 
     const cost = Math.floor(u.cost * Math.pow(1.5, currentLevel));
@@ -1804,7 +1803,7 @@ const App: React.FC = () => {
       };
 
       const nextPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
-          const maxLevel = tech.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : tech.maxLevel;
+          const maxLevel = tech.maxLevel === -1 ? MAX_PRESTIGE_TECH_LEVEL : tech.maxLevel;
           acc[tech.id] = safeNonNegativeInt(data.prestigeUpgrades?.[tech.id], 0, maxLevel);
           return acc;
       }, {} as { [id: string]: number });
@@ -1879,7 +1878,7 @@ const App: React.FC = () => {
           }, {} as { [id: string]: Upgrade });
 
           const loadedPrestige = PRESTIGE_UPGRADES.reduce((acc, tech) => {
-              const maxLevel = tech.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : tech.maxLevel;
+              const maxLevel = tech.maxLevel === -1 ? MAX_PRESTIGE_TECH_LEVEL : tech.maxLevel;
               acc[tech.id] = safeNonNegativeInt(data.prestigeUpgrades?.[tech.id], 0, maxLevel);
               return acc;
           }, {} as { [id: string]: number });
