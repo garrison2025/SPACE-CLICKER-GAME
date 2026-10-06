@@ -151,6 +151,14 @@ expect(
   /onResetGame=\{\(\)\s*=>\s*\{[\s\S]*?safeRemoveStorageItem\(SAVE_KEY\)/.test(appSource),
   'Galaxy Miner telemetry reset must delete the persisted save before reloading'
 );
+expect(
+  /onResetGame=\{\(\)\s*=>\s*\{[\s\S]*?safeRemoveStorageItem\(SAVE_KEY\)[\s\S]*?suppressSaveRef\.current\s*=\s*true[\s\S]*?window\.location\.reload\(\)/.test(appSource),
+  'Galaxy Miner telemetry reset must suppress pagehide autosave before reloading'
+);
+expect(
+  /const saveGame\s*=\s*useCallback\(\(\)\s*=>\s*\{\s*if\s*\(suppressSaveRef\.current\)\s*return true;/.test(appSource),
+  'Galaxy Miner saveGame must honor the reset autosave suppression guard'
+);
 
 const failureStorage = new MemoryStorage({ failRemove: true });
 failureStorage.setItem('spacebar_clicker_save_v1', 'before');
@@ -168,4 +176,4 @@ expect(
   'Project persistence should recover after a failed reset'
 );
 
-console.log(`Project storage tests passed: scoped clearing, ${discoveredKeys.size} discovered project keys, page-level reset deletion, failure reporting, and reset write guard are verified.`);
+console.log(`Project storage tests passed: scoped clearing, ${discoveredKeys.size} discovered project keys, page-level reset deletion, Galaxy reset autosave suppression, failure reporting, and reset write guard are verified.`);
