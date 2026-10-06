@@ -10,15 +10,19 @@ interface UpgradeShopProps {
 
 type BuyAmount = 1 | 10 | 100 | 'MAX';
 
+const MAX_UPGRADE_COUNT = 1000;
+
 const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) => {
   const [buyAmount, setBuyAmount] = useState<BuyAmount>(1);
 
   // Helper to calculate cost for N upgrades
   const calculateCost = (upgrade: Upgrade, n: number): number => {
+    const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
+    const count = Math.min(Math.max(0, n), remaining);
     let total = 0;
     let currentBase = upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.count);
     
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < count; i++) {
         total += Math.floor(currentBase);
         currentBase *= upgrade.costMultiplier;
     }
@@ -29,9 +33,10 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
     let total = 0;
     let count = 0;
     let currentBase = upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.count);
+    const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
     
-    // Safety break at 500 to prevent freezes
-    while (total + currentBase <= currency && count < 500) {
+    // Safety break at 500 per click while never crossing the runtime/save cap.
+    while (total + currentBase <= currency && count < Math.min(500, remaining)) {
         total += Math.floor(currentBase);
         currentBase *= upgrade.costMultiplier;
         count++;
@@ -39,12 +44,13 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
     return { count, cost: total };
   };
 
-  const getNextMilestone = (current: number) => {
+  const getNextMilestone = (current: number): number | null => {
       if (current < 25) return 25;
       if (current < 50) return 50;
       if (current < 100) return 100;
       if (current < 200) return 200;
-      return 500;
+      if (current < 500) return 500;
+      return null;
   };
 
   return (
@@ -83,39 +89,39 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
           let buyCount = 0;
           let cost = 0;
 
+          const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
+
           if (buyAmount === 'MAX') {
               const res = calculateMax(upgrade);
               buyCount = res.count;
               cost = res.cost;
           } else {
-              buyCount = buyAmount;
-              cost = calculateCost(upgrade, buyCount);
+              buyCount = Math.min(buyAmount, remaining);
+              cost = buyCount > 0 ? calculateCost(upgrade, buyCount) : 0;
           }
 
-          // If MAX returns 0, show cost for 1 but disable it (visual feedback)
-          if (buyAmount === 'MAX' && buyCount === 0) {
-              buyCount = 1;
-              cost = calculateCost(upgrade, 1);
-          }
-
-          const canAfford = currency >= cost;
+          const canAfford = buyCount > 0 && currency >= cost;
           const nextMilestone = getNextMilestone(upgrade.count);
-          const progressToMilestone = Math.min(100, (upgrade.count / nextMilestone) * 100);
+          const progressToMilestone = nextMilestone
+            ? Math.min(100, (upgrade.count / nextMilestone) * 100)
+            : 100;
 
           return (
-            <div 
+            <button
               key={upgrade.id}
-              className={`relative overflow-hidden p-3.5 rounded-xl border transition-all duration-200 group select-none ${
+              type="button"
+              disabled={!canAfford}
+              className={`relative w-full text-left overflow-hidden p-3.5 rounded-xl border transition-all duration-200 group select-none ${
                 canAfford 
                   ? 'border-space-600 bg-space-700/40 hover:bg-space-700 hover:border-neon-blue cursor-pointer active:scale-[0.98]' 
                   : 'border-space-800 bg-space-900/40 opacity-70 cursor-not-allowed grayscale-[0.8]'
               }`}
-              onClick={() => canAfford && onBuy(upgrade.id, buyCount)}
+              onClick={() => onBuy(upgrade.id, buyCount)}
             >
               {/* Cost Progress Hint (Background) */}
               <div 
                 className="absolute bottom-0 left-0 h-full bg-gradient-to-r from-neon-blue/10 to-transparent transition-all duration-500" 
-                style={{ width: canAfford ? '0%' : `${Math.min(100, (currency / cost) * 100)}%` }}
+                style={{ width: canAfford || cost <= 0 ? '0%' : `${Math.min(100, (currency / cost) * 100)}%` }}
               />
 
               <div className="flex justify-between items-start mb-2 relative z-10">
@@ -148,7 +154,9 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
               </div>
               <div className="flex justify-between text-[9px] text-gray-500 mb-2 font-mono">
                   <span>LEVEL {upgrade.count}</span>
-                  <span className={progressToMilestone > 80 ? 'text-yellow-400 font-bold animate-pulse' : ''}>NEXT BOOST: LVL {nextMilestone} (x2)</span>
+                  <span className={nextMilestone && progressToMilestone > 80 ? 'text-yellow-400 font-bold animate-pulse' : ''}>
+                    {nextMilestone ? `NEXT BOOST: LVL ${nextMilestone} (x2)` : 'ALL BOOSTS UNLOCKED'}
+                  </span>
               </div>
               
               <div className="flex justify-between items-center text-xs relative z-10">
@@ -161,7 +169,7 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
                   +{formatNumber(upgrade.baseProduction * buyCount)}/s
                 </div>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
