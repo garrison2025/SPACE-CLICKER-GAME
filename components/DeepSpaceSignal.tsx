@@ -716,6 +716,7 @@ const DeepSpaceSignal: React.FC = () => {
 
                 {/* 2. Main Action */}
                 <button
+                    type="button"
                     onClick={handleScan}
                     disabled={isScanning || energy < scanCost}
                     className={`
@@ -732,13 +733,15 @@ const DeepSpaceSignal: React.FC = () => {
 
                 {/* 3. Upgrades Toggle */}
                 <div className="grid grid-rows-2 gap-2 min-h-12">
-                    <button 
+                    <button
+                        type="button"
                         onClick={() => { setShowUpgrades(!showUpgrades); playSound('click'); }}
                         className={`min-h-11 border border-green-700 text-[10px] sm:text-xs font-bold tracking-wide sm:tracking-wider hover:bg-green-900/30 transition-colors ${showUpgrades ? 'bg-green-900 text-white' : 'text-green-600'}`}
                     >
                         SYSTEM UPGRADES
                     </button>
-                    <button 
+                    <button
+                        type="button"
                         onClick={clearLogs}
                         className="min-h-11 border border-green-900 text-green-800 text-[10px] sm:text-xs font-bold hover:text-red-400 hover:border-red-900 transition-colors"
                     >
@@ -752,7 +755,12 @@ const DeepSpaceSignal: React.FC = () => {
                 <div className="absolute inset-x-4 bottom-28 top-20 z-50 bg-black/95 border-2 border-green-500 p-6 shadow-[0_0_50px_rgba(0,255,0,0.1)] animate-in slide-in-from-bottom duration-300 flex flex-col">
                     <div className="flex justify-between items-center mb-6 border-b border-green-800 pb-2">
                         <h2 className="text-xl font-bold text-glow">ENGINEERING BAY</h2>
-                        <button onClick={() => setShowUpgrades(false)} className="text-green-500 hover:text-white">✕</button>
+                        <button
+                            type="button"
+                            aria-label="Close Engineering Bay"
+                            onClick={() => setShowUpgrades(false)}
+                            className="w-11 h-11 flex items-center justify-center text-green-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+                        >✕</button>
                     </div>
                     
                     <div className="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4 custom-scrollbar">
@@ -770,6 +778,7 @@ const DeepSpaceSignal: React.FC = () => {
                                         <div className="text-xs text-green-600/70 mb-1">{cfg.desc}</div>
                                     </div>
                                     <button
+                                        type="button"
                                         onClick={() => handleBuy(key)}
                                         disabled={isMax || !canAfford}
                                         className={`px-3 py-2 text-xs font-bold border min-w-[80px] text-center transition-all ${isMax ? 'border-transparent text-gray-600' : canAfford ? 'border-green-500 text-green-500 hover:bg-green-500 hover:text-black' : 'border-red-900 text-red-900 opacity-50'}`}
