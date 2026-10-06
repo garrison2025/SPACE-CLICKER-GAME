@@ -302,6 +302,7 @@ const App: React.FC = () => {
   const [showHotkeysOverlay, setShowHotkeysOverlay] = useState(false);
   const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => safeGetStorageItem('space_haptic') !== 'false');
   const [screenShakeEnabled, setScreenShakeEnabled] = useState<boolean>(() => safeGetStorageItem('space_screenshake') !== 'false');
+  const hiddenAtRef = useRef<number | null>(null);
   const [offlineEarnings, setOfflineEarnings] = useState<{
     isOpen: boolean;
     awayTimeSeconds: number;
@@ -406,7 +407,16 @@ const App: React.FC = () => {
     const intervalTime = viewMode === 'game' && activeGame === 'galaxy_miner' ? 250 : 1000;
     let lastTick = Date.now();
 
+    const handleVisibilityChange = () => {
+        lastTick = Date.now();
+    };
+
     const timer = setInterval(() => {
+        if (document.hidden) {
+            lastTick = Date.now();
+            return;
+        }
+
         const now = Date.now();
         const elapsedSeconds = Math.min(86400, Math.max(0, (now - lastTick) / 1000));
         lastTick = now;
@@ -436,7 +446,11 @@ const App: React.FC = () => {
         setLifetimeEarnings(nextLifetimeEarnings);
     }, intervalTime);
 
-    return () => clearInterval(timer);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+        clearInterval(timer);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [getProductionRate, viewMode, activeGame]);
 
   // --- SEO METADATA CALCULATION ---
@@ -1583,6 +1597,82 @@ const App: React.FC = () => {
       return safeSetStorageItem(SAVE_KEY, JSON.stringify(toSave));
   }, []);
 
+  const creditHiddenGalaxyProgress = useCallback(() => {
+      const hiddenAt = hiddenAtRef.current;
+      hiddenAtRef.current = null;
+      if (hiddenAt === null) return;
+
+      const now = Date.now();
+      const seconds = Math.min(86_400, Math.max(0, (now - hiddenAt) / 1000));
+      if (seconds < 60) return;
+
+      const snapshot = gameStateRef.current;
+      let baseRate = 0;
+      Object.values(snapshot.upgrades).forEach((upgrade: Upgrade) => {
+          if (upgrade.type !== 'auto') return;
+
+          let milestoneMult = 1;
+          if (upgrade.count >= 25) milestoneMult *= 2;
+          if (upgrade.count >= 50) milestoneMult *= 2;
+          if (upgrade.count >= 100) milestoneMult *= 2;
+          if (upgrade.count >= 200) milestoneMult *= 2;
+          if (upgrade.count >= 500) milestoneMult *= 4;
+
+          baseRate += upgrade.baseProduction * upgrade.count * milestoneMult;
+      });
+
+      const planetMult = PLANETS[snapshot.planetIndex]?.productionMultiplier || 1;
+      const darkMatterMult = 1 + snapshot.resources[ResourceType.DarkMatter] * 0.1;
+      const passiveBoost = 1 + ((snapshot.prestigeUpgrades['passive_boost'] || 0) * 0.25);
+      const rate = Math.min(
+          MAX_SAFE_OFFLINE_RATE,
+          baseRate * planetMult * darkMatterMult * passiveBoost
+      );
+      const theoretical = finiteNonNegative(
+          Math.floor(rate * seconds),
+          0,
+          MAX_SAFE_RESOURCE_VALUE
+      );
+      if (theoretical <= 0) return;
+
+      const currentStardust = snapshot.resources[ResourceType.Stardust];
+      const nextStardust = Math.min(MAX_SAFE_RESOURCE_VALUE, currentStardust + theoretical);
+      const credited = Math.max(0, nextStardust - currentStardust);
+      if (credited <= 0) return;
+
+      const nextResources = {
+          ...snapshot.resources,
+          [ResourceType.Stardust]: nextStardust
+      };
+      const nextLifetimeEarnings = Math.min(
+          MAX_SAFE_RESOURCE_VALUE,
+          snapshot.lifetimeEarnings + credited
+      );
+      const nextSnapshot = {
+          ...snapshot,
+          resources: nextResources,
+          lifetimeEarnings: nextLifetimeEarnings
+      };
+
+      gameStateRef.current = nextSnapshot;
+      safeSetStorageItem(SAVE_KEY, JSON.stringify({
+          ...nextSnapshot,
+          version: SAVE_VERSION,
+          lastSaveTime: now
+      }));
+      setResources(nextResources);
+      setLifetimeEarnings(nextLifetimeEarnings);
+
+      if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+          setOfflineEarnings({
+              isOpen: true,
+              awayTimeSeconds: seconds,
+              earnedStardust: credited,
+              productionRate: rate
+          });
+      }
+  }, [viewMode, activeGame]);
+
   const handleImportSave = (data: any) => {
       const validShape =
           data &&
@@ -1864,11 +1954,22 @@ const App: React.FC = () => {
 
   // Save interval plus page-lifecycle persistence.
   useEffect(() => {
-      const timer = setInterval(saveGame, AUTO_SAVE_INTERVAL);
+      const timer = setInterval(() => {
+          if (!document.hidden) saveGame();
+      }, AUTO_SAVE_INTERVAL);
+
       const handleVisibilityChange = () => {
-          if (document.visibilityState === 'hidden') saveGame();
+          if (document.visibilityState === 'hidden') {
+              if (hiddenAtRef.current === null) hiddenAtRef.current = Date.now();
+              saveGame();
+              return;
+          }
+          creditHiddenGalaxyProgress();
       };
-      const handlePageHide = () => saveGame();
+
+      const handlePageHide = () => {
+          if (!document.hidden) saveGame();
+      };
 
       document.addEventListener('visibilitychange', handleVisibilityChange);
       window.addEventListener('pagehide', handlePageHide);
@@ -1877,9 +1978,9 @@ const App: React.FC = () => {
           clearInterval(timer);
           document.removeEventListener('visibilitychange', handleVisibilityChange);
           window.removeEventListener('pagehide', handlePageHide);
-          saveGame();
+          if (!document.hidden) saveGame();
       };
-  }, [saveGame]);
+  }, [saveGame, creditHiddenGalaxyProgress]);
 
   const renderActiveGame = () => {
       switch(activeGame) {
