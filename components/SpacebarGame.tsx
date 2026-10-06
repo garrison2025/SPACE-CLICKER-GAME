@@ -289,11 +289,18 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   useEffect(() => {
     const timer = window.setInterval(saveNow, 10000);
-    const beforeUnload = () => saveNow();
-    window.addEventListener('beforeunload', beforeUnload);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') saveNow();
+    };
+    const handlePageHide = () => saveNow();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+
     return () => {
       window.clearInterval(timer);
-      window.removeEventListener('beforeunload', beforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
       saveNow();
     };
   }, [saveNow]);
