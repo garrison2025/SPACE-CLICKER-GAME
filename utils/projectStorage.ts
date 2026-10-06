@@ -56,7 +56,7 @@ const PROJECT_STORAGE_PREFIXES = [
   'deep_signal_save_',
   'spacebar_clicker_save_',
   'spacebar_clicker_2_save_',
-  'spacebar_counter_best_',
+  'spacebar_counter_',
   'spacebar_test_',
 ];
 
