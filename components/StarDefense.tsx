@@ -127,6 +127,11 @@ const StarDefense: React.FC = () => {
     // --- GAME LOOP ---
     const gameLoop = useCallback((timestamp: number) => {
         if (gameOver) return;
+        if (document.hidden) {
+            lastTimeRef.current = timestamp;
+            animationFrameRef.current = requestAnimationFrame(gameLoop);
+            return;
+        }
         if (!lastTimeRef.current) lastTimeRef.current = timestamp;
         const deltaTime = Math.min((timestamp - lastTimeRef.current) / 16.66, 4); // Normalize to 60fps
         lastTimeRef.current = timestamp;
