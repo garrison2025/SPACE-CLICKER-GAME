@@ -601,7 +601,12 @@ for (const required of [
   '/llms.txt',
   '/robots.txt',
   'Cache-Control: public, max-age=900, stale-while-revalidate=3600',
-  'Cache-Control: public, max-age=3600, stale-while-revalidate=86400'
+  'Cache-Control: public, max-age=3600, stale-while-revalidate=86400',
+  'Referrer-Policy: strict-origin-when-cross-origin',
+  'X-Content-Type-Options: nosniff',
+  'X-Frame-Options: DENY',
+  'X-Permitted-Cross-Domain-Policies: none',
+  'Permissions-Policy: camera=(), microphone=(), geolocation=()'
 ]) {
   if (!headers.includes(required)) throw new Error('dist/_headers is missing required cache policy: ' + required);
 }
