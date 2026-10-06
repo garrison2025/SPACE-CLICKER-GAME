@@ -327,9 +327,9 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       <main id="game-main-content" tabIndex={-1} className="flex-1 relative flex overflow-hidden focus:outline-none">
          
          {/* Side HUD (Left) */}
-         <aside className="hidden lg:flex w-16 hover:w-64 focus-within:w-64 transition-all duration-300 border-r border-white/5 bg-black/20 backdrop-blur flex-col z-40 group shrink-0">
-             <div className="flex-1 py-8 flex flex-col gap-6 items-center group-hover:items-stretch group-focus-within:items-stretch group-hover:px-4 group-focus-within:px-4">
-                 <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest text-center group-hover:text-left group-focus-within:text-left mb-2 group-hover:mb-0 group-focus-within:mb-0 transition-all">Simulations</div>
+         <aside className="hidden lg:flex w-16 xl:w-64 border-r border-white/5 bg-black/20 backdrop-blur flex-col z-40 shrink-0">
+             <div className="flex-1 py-8 flex flex-col gap-6 items-center xl:items-stretch xl:px-4">
+                 <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest text-center xl:text-left mb-2 xl:mb-0">Simulations</div>
                  
                  {/* Playable simulation switcher */}
                  {GAMES_CATALOG.map((game) => (
@@ -339,11 +339,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                        aria-label={`Switch to ${game.title}`}
                        aria-current={activeGame === game.id ? 'page' : undefined}
                        onClick={() => onSwitchGame(game.id)}
-                       className={`min-h-11 w-full flex items-center justify-center group-hover:justify-start group-focus-within:justify-start gap-3 rounded-lg px-2 transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue ${activeGame === game.id ? 'opacity-100 bg-white/5' : 'opacity-45 hover:opacity-100 hover:bg-white/5'}`}
+                       className={`min-h-11 w-full flex items-center justify-center xl:justify-start gap-3 rounded-lg px-2 transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue ${activeGame === game.id ? 'opacity-100 bg-white/5' : 'opacity-45 hover:opacity-100 hover:bg-white/5'}`}
                        title={game.title}
                      >
                          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${activeGame === game.id ? 'bg-neon-green shadow-[0_0_5px_lime]' : 'bg-gray-600'}`}></div>
-                         <div className="hidden group-hover:block group-focus-within:block whitespace-nowrap text-xs text-gray-300">
+                         <div className="hidden xl:block whitespace-nowrap text-xs text-gray-300">
                              <div className="font-bold">{game.title}</div>
                              <div className="text-[10px] text-gray-500">{game.subtitle}</div>
                          </div>
@@ -352,10 +352,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
              </div>
              
              <div className="p-4 border-t border-white/5">
-                 <div className="hidden group-hover:block group-focus-within:block text-[10px] text-gray-600 text-center">
+                 <div className="hidden xl:block text-[10px] text-gray-600 text-center">
                      LOCAL SAVE <br/> ACTIVE
                  </div>
-                 <div className="group-hover:hidden group-focus-within:hidden text-center text-gray-700">📶</div>
+                 <div className="xl:hidden text-center text-gray-700" aria-hidden="true">📶</div>
              </div>
          </aside>
 
