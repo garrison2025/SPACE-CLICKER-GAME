@@ -321,7 +321,7 @@ const SpacebarCounter: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg text-white">Can I use this as a spacebar CPS counter?</h3>
-                <p>Yes. The page shows current CPS, average CPS and peak CPS while also keeping the total press count.</p>
+                <p>Yes. Current, average and peak CPS use only presses made during the current active timing session. A restored or manually set starting total does not inflate the speed metrics.</p>
               </div>
               <div>
                 <h3 className="text-lg text-white">Does holding the Space key increase the count?</h3>
