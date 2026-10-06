@@ -314,11 +314,17 @@ const SpacebarClicker2: React.FC = () => {
   }, [cpsTrackingActive]);
 
   useEffect(() => {
-    const timer = window.setInterval(saveNow, 10000);
+    const timer = window.setInterval(() => {
+      if (!document.hidden) saveNow();
+    }, 10000);
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') saveNow();
     };
-    const handlePageHide = () => saveNow();
+
+    const handlePageHide = () => {
+      if (!document.hidden) saveNow();
+    };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('pagehide', handlePageHide);
@@ -327,7 +333,7 @@ const SpacebarClicker2: React.FC = () => {
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('pagehide', handlePageHide);
-      saveNow();
+      if (!document.hidden) saveNow();
     };
   }, [saveNow]);
 
