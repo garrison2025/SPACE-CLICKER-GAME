@@ -1128,7 +1128,7 @@ const App: React.FC = () => {
                     {
                       "@type": "Question",
                       "name": "Can I use this as a spacebar CPS counter?",
-                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The page shows current CPS, average CPS and peak CPS while also keeping the total press count." }
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Current, average and peak CPS use only presses made during the current active timing session. A restored or manually set starting total does not inflate the speed metrics." }
                     },
                     {
                       "@type": "Question",
