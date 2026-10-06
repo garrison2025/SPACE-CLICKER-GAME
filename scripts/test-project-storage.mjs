@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 const expect = (condition, message) => {
   if (!condition) throw new Error(message);
 };
@@ -58,6 +61,53 @@ expect(
   'Reset guard must not block unrelated origin storage'
 );
 
+// Prevent future save/settings keys from silently falling outside the scoped
+// factory-reset rules. Extract the storage constants used by the live source
+// and assert that each one is recognized by projectStorage.ts.
+const storageSourceFiles = [
+  'constants.ts',
+  'components/MarsColony.tsx',
+  'components/StarDefense.tsx',
+  'components/MergeShips.tsx',
+  'components/GravityIdle.tsx',
+  'components/DeepSpaceSignal.tsx',
+  'components/SpacebarGame.tsx',
+  'components/SpacebarClicker2.tsx',
+  'components/SpacebarCounter.tsx',
+  'components/SpacebarClickerTest.tsx',
+  'services/audioService.ts',
+  'App.tsx',
+];
+
+const discoveredKeys = new Set();
+for (const relativePath of storageSourceFiles) {
+  const source = fs.readFileSync(path.resolve(relativePath), 'utf8');
+
+  for (const match of source.matchAll(
+    /(?:SAVE_KEY|BEST_KEY|BEST_PREFIX|HISTORY_KEY)\s*=\s*['"]([^'"]+)['"]/g
+  )) {
+    discoveredKeys.add(match[1]);
+  }
+
+  for (const match of source.matchAll(
+    /['"](space_haptic|space_screenshake|sc_mute)['"]/g
+  )) {
+    discoveredKeys.add(match[1]);
+  }
+}
+
+expect(discoveredKeys.size >= 11, 'Storage key discovery should cover every current game/tool setting key');
+for (const key of discoveredKeys) {
+  expect(
+    successModule.isProjectStorageKey(key),
+    `Factory reset scope is missing storage key/prefix: ${key}`
+  );
+}
+expect(
+  !successModule.isProjectStorageKey('unrelated-key'),
+  'Unrelated origin storage must never be classified as project data'
+);
+
 const failureStorage = new MemoryStorage({ failRemove: true });
 failureStorage.setItem('spacebar_clicker_save_v1', 'before');
 globalThis.localStorage = failureStorage;
@@ -74,4 +124,4 @@ expect(
   'Project persistence should recover after a failed reset'
 );
 
-console.log('Project storage tests passed: scoped clearing, failure reporting, and reset write guard are verified.');
+console.log(`Project storage tests passed: scoped clearing, ${discoveredKeys.size} discovered project keys, failure reporting, and reset write guard are verified.`);
