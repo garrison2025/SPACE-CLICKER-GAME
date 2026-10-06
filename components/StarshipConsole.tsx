@@ -27,6 +27,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
   const settingsDialogRef = useRef<HTMLDivElement | null>(null);
   const saveTimersRef = useRef<number[]>([]);
+  const systemStatusTimerRef = useRef<number>();
   const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
   const activeGameMeta = GAMES_CATALOG.find((game) => game.id === activeGame);
 
@@ -75,8 +76,30 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       return () => {
           saveTimersRef.current.forEach((timer) => window.clearTimeout(timer));
           saveTimersRef.current = [];
+          if (systemStatusTimerRef.current !== undefined) {
+              window.clearTimeout(systemStatusTimerRef.current);
+          }
       };
   }, []);
+
+  useEffect(() => {
+      if (!systemStatus) return;
+
+      if (systemStatusTimerRef.current !== undefined) {
+          window.clearTimeout(systemStatusTimerRef.current);
+      }
+      systemStatusTimerRef.current = window.setTimeout(() => {
+          systemStatusTimerRef.current = undefined;
+          setSystemStatus('');
+      }, 2500);
+
+      return () => {
+          if (systemStatusTimerRef.current !== undefined) {
+              window.clearTimeout(systemStatusTimerRef.current);
+              systemStatusTimerRef.current = undefined;
+          }
+      };
+  }, [systemStatus]);
 
   const handleMuteToggle = () => {
       const newState = !isMuted;
@@ -217,7 +240,15 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                <span aria-hidden="true">⛶</span>
                <span className="hidden md:inline">{isFullscreen ? 'EXIT FULLSCREEN' : 'FULLSCREEN'}</span>
             </button>
-            <span role="status" aria-live="polite" className="sr-only">{systemStatus}</span>
+            {systemStatus && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="fixed right-3 top-[calc(4.75rem+env(safe-area-inset-top))] z-[130] max-w-[min(22rem,calc(100vw-1.5rem))] rounded-lg border border-white/15 bg-space-950/95 px-3 py-2 text-xs text-gray-200 shadow-xl"
+              >
+                {systemStatus}
+              </div>
+            )}
             <span role="status" aria-live="polite" className="sr-only">
               {saveStatus === 'saving'
                 ? 'Saving game.'
