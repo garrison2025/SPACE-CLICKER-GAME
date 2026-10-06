@@ -204,6 +204,9 @@ const MergeShips: React.FC = () => {
     // Derived Cost
     const purchaseLevel = 1 + tech.shipLevel;
     const nextShipCost = Math.floor(BASE_SHIP_COST * Math.pow(COST_SCALE, shipsPurchased) * Math.pow(1.8, tech.shipLevel));
+    const hasHangarSpace = hangar.some(ship => ship === null);
+    const purchaseLimitReached = shipsPurchased >= MAX_PURCHASE_COUNT;
+    const canBuyShip = !purchaseLimitReached && hasHangarSpace && credits >= nextShipCost;
     
     // --- GAME LOOP ---
     const gameLoop = useCallback((timestamp: number) => {
@@ -885,13 +888,28 @@ const MergeShips: React.FC = () => {
                      <button
                         type="button"
                         onClick={buyShip}
-                        disabled={credits < nextShipCost || !hangar.some(s => s === null)}
+                        disabled={!canBuyShip}
+                        aria-label={
+                            purchaseLimitReached
+                                ? 'Ship purchase limit reached'
+                                : !hasHangarSpace
+                                  ? 'Hangar full'
+                                  : `Buy level ${purchaseLevel} ship for ${formatNumber(nextShipCost)} credits`
+                        }
                         className={`px-3 md:px-6 py-2 min-h-11 rounded font-bold text-[11px] md:text-xs flex flex-col items-center leading-tight transition-all
-                            ${credits >= nextShipCost && hangar.some(s => s === null) ? 'bg-neon-blue text-black hover:scale-105 shadow-[0_0_15px_rgba(0,243,255,0.4)]' : 'bg-slate-800 text-gray-500 cursor-not-allowed'}
+                            ${canBuyShip ? 'bg-neon-blue text-black hover:scale-105 shadow-[0_0_15px_rgba(0,243,255,0.4)]' : 'bg-slate-800 text-gray-500 cursor-not-allowed'}
                         `}
                      >
-                         <span>BUY SHIP Lv.{purchaseLevel}</span>
-                         <span className="text-[10px] opacity-70">${formatNumber(nextShipCost)}</span>
+                         <span>
+                            {purchaseLimitReached
+                                ? 'PURCHASE LIMIT'
+                                : !hasHangarSpace
+                                  ? 'HANGAR FULL'
+                                  : `BUY SHIP Lv.${purchaseLevel}`}
+                         </span>
+                         {!purchaseLimitReached && hasHangarSpace && (
+                            <span className="text-[10px] opacity-70">${formatNumber(nextShipCost)}</span>
+                         )}
                      </button>
                  </div>
              </div>
