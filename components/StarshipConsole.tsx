@@ -154,7 +154,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       </a>
       
       {/* --- TOP HUD --- */}
-      <header className="game-console-header flex items-center justify-between px-2 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
+      <header className="game-console-header flex items-center justify-between border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
          <div className="flex min-w-0 items-center gap-2 sm:gap-4">
             <button
                 type="button"
