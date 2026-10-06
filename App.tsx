@@ -83,6 +83,7 @@ const SPACEBAR_OG_IMAGE = 'https://images.unsplash.com/photo-1542751371-adc38448
 const SITE_CONTENT_UPDATED = '2026-10-06';
 const SITE_URL = 'https://spaceclickergame.com/';
 const ORGANIZATION_ID = SITE_URL + '#organization';
+const ORGANIZATION_LOGO = SITE_URL + 'favicon.svg';
 
 const GAME_SEO: Record<GameId, { title: string; description: string; genres: string[] }> = {
   galaxy_miner: {
@@ -607,7 +608,11 @@ const App: React.FC = () => {
                 "@type": "Organization",
                 "@id": ORGANIZATION_ID,
                 "name": "Space Clicker Game",
-                "url": SITE_URL
+                "url": SITE_URL,
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": ORGANIZATION_LOGO
+                }
               },
               {
                 "@type": "VideoGame",
@@ -796,7 +801,11 @@ const App: React.FC = () => {
                     "@type": "Organization",
                     "@id": ORGANIZATION_ID,
                     "name": "Space Clicker Game",
-                    "url": SITE_URL
+                    "url": SITE_URL,
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": ORGANIZATION_LOGO
+                    }
                   },
                   "isPartOf": {
                     "@type": "WebSite",
