@@ -1840,8 +1840,12 @@ const App: React.FC = () => {
                   MAX_SAFE_RESOURCE_VALUE
               )
           };
+          const creditedAmount = Math.max(
+              0,
+              creditedResources[ResourceType.Stardust] - loadedResources[ResourceType.Stardust]
+          );
           const creditedLifetime = finiteNonNegative(
-              savedLifetime + totalEarned,
+              savedLifetime + creditedAmount,
               0,
               MAX_SAFE_RESOURCE_VALUE
           );
@@ -1877,11 +1881,11 @@ const App: React.FC = () => {
           setCometsCaught(nextComets);
           setCrisesResolved(nextCrises);
 
-          if (totalEarned > 0) {
+          if (creditedAmount > 0) {
               setOfflineEarnings({
                   isOpen: true,
                   awayTimeSeconds: cappedSecs,
-                  earnedStardust: totalEarned,
+                  earnedStardust: creditedAmount,
                   productionRate: effectiveRate
               });
           }
