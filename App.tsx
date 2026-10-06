@@ -2010,7 +2010,20 @@ const App: React.FC = () => {
 
       if (isInteractiveKeyboardTarget(e.target)) return;
 
-      // Do not let gameplay shortcuts fire through a modal or mobile drawer.
+      if ((e.key === 'p' || e.key === 'P') && showPrestigeShop) {
+        setShowPrestigeShop(false);
+        return;
+      }
+      if ((e.key === 's' || e.key === 'S') && showStatsModal) {
+        setShowStatsModal(false);
+        return;
+      }
+      if ((e.key === 'h' || e.key === 'H' || e.key === '?') && showHotkeysOverlay) {
+        setShowHotkeysOverlay(false);
+        return;
+      }
+
+      // Do not let gameplay shortcuts fire through a different modal or mobile drawer.
       if (hasOpenLayer) return;
 
       if (e.code === 'Space') {
