@@ -10,7 +10,7 @@ const DEEP_SIGNAL_SAVE_KEY = 'deep_signal_save_v3';
 const MAX_LIVE_MESSAGES = 100;
 
 const UPGRADE_CONFIG = {
-    antenna: { name: 'Antenna Array', desc: 'Unlock deeper frequencies.', base: 100, mult: 2.0, max: 10 },
+    antenna: { name: 'Antenna Array', desc: 'Increases Data recovered from newly scanned signals.', base: 100, mult: 2.0, max: 10 },
     processor: { name: 'Crypto Core', desc: 'Passive decryption speed.', base: 150, mult: 1.5, max: 20 },
     battery: { name: 'Capacitor Bank', desc: 'Increase Max Energy.', base: 50, mult: 1.4, max: 20 },
     solar: { name: 'Solar Sails', desc: 'Energy regeneration rate.', base: 200, mult: 1.6, max: 15 },
