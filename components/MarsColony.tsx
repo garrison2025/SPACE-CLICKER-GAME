@@ -520,21 +520,29 @@ const MarsColony: React.FC = () => {
                             <div className="absolute inset-0 transition-opacity duration-1000">
                                  {/* Auto Miners (Moving dots) */}
                                  {buildings.find(b => b.id === 'miner_bot')?.count! > 0 && Array.from({length: Math.min(5, buildings.find(b => b.id === 'miner_bot')?.count!)}).map((_, i) => (
-                                     <div 
-                                        key={i} 
+                                     <button
+                                        key={i}
+                                        type="button"
+                                        aria-label="Collect Auto-Miner bonus minerals"
                                         onClick={(e) => handleExcavate(e, 2, '#fbbf24')}
-                                        className="absolute w-3 h-3 bg-yellow-400 rounded-sm animate-pulse cursor-pointer hover:scale-150 transition-transform hover:bg-white shadow-[0_0_5px_gold]" 
+                                        className="absolute w-11 h-11 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 rounded"
                                         style={{ top: `${40 + i * 10}%`, left: `${20 + i * 15}%` }}
                                         title="Auto-Miner (Click for bonus)"
-                                     ></div>
+                                     >
+                                        <span className="block w-3 h-3 bg-yellow-400 rounded-sm animate-pulse group-hover:scale-150 transition-transform group-hover:bg-white shadow-[0_0_5px_gold]" aria-hidden="true"></span>
+                                     </button>
                                  ))}
                                  {/* Solar Panels Ring */}
                                  {buildings.find(b => b.id === 'solar_panel')?.count! > 0 && (
-                                     <div 
+                                     <button
+                                        type="button"
+                                        aria-label="Collect Solar Array bonus minerals"
                                         onClick={(e) => handleExcavate(e, 1, '#60a5fa')}
-                                        className="absolute top-[10%] left-[50%] -translate-x-1/2 w-6 h-6 bg-blue-400 border-2 border-white shadow-[0_0_15px_cyan] cursor-pointer hover:scale-125 transition-transform"
+                                        className="absolute top-[10%] left-[50%] -translate-x-1/2 w-11 h-11 flex items-center justify-center cursor-pointer group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 rounded"
                                         title="Solar Array"
-                                     ></div>
+                                     >
+                                        <span className="block w-6 h-6 bg-blue-400 border-2 border-white shadow-[0_0_15px_cyan] group-hover:scale-125 transition-transform" aria-hidden="true"></span>
+                                     </button>
                                  )}
                                  {/* Reactor Glow */}
                                  {buildings.find(b => b.id === 'reactor')?.count! > 0 && (
@@ -542,19 +550,27 @@ const MarsColony: React.FC = () => {
                                  )}
                                  {/* Habs */}
                                  {buildings.find(b => b.id === 'habitat')?.count! > 0 && (
-                                     <div 
+                                     <button
+                                        type="button"
+                                        aria-label="Collect Habitat bonus minerals"
                                         onClick={(e) => handleExcavate(e, 1, '#ffffff')}
-                                        className="absolute bottom-[40%] left-[50%] -translate-x-1/2 w-10 h-10 bg-white/80 rounded-t-full border-2 border-gray-400 cursor-pointer hover:bg-white hover:shadow-[0_0_20px_white] transition-all"
+                                        className="absolute bottom-[40%] left-[50%] -translate-x-1/2 w-11 h-11 flex items-center justify-center cursor-pointer group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
                                         title="Colony Habitat"
-                                     ></div>
+                                     >
+                                        <span className="block w-10 h-10 bg-white/80 rounded-t-full border-2 border-gray-400 group-hover:bg-white group-hover:shadow-[0_0_20px_white] transition-all" aria-hidden="true"></span>
+                                     </button>
                                  )}
                                  {/* Greenhouse */}
                                  {buildings.find(b => b.id === 'greenhouse')?.count! > 0 && (
-                                     <div 
+                                     <button
+                                        type="button"
+                                        aria-label="Collect Greenhouse bonus minerals"
                                         onClick={(e) => handleExcavate(e, 1, '#4ade80')}
-                                        className="absolute bottom-[35%] right-[25%] w-8 h-6 bg-green-500/50 border border-green-300 rounded-sm cursor-pointer hover:bg-green-400 hover:shadow-[0_0_15px_lime] transition-all"
+                                        className="absolute bottom-[35%] right-[25%] w-11 h-11 flex items-center justify-center cursor-pointer group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300 rounded"
                                         title="Greenhouse"
-                                     ></div>
+                                     >
+                                        <span className="block w-8 h-6 bg-green-500/50 border border-green-300 rounded-sm group-hover:bg-green-400 group-hover:shadow-[0_0_15px_lime] transition-all" aria-hidden="true"></span>
+                                     </button>
                                  )}
                             </div>
                         </div>
