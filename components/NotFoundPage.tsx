@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ViewMode } from './SiteLayout';
 
 interface NotFoundPageProps {
@@ -8,16 +8,7 @@ interface NotFoundPageProps {
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
     
-    // SEO: Tell bots not to index this error page
-    useEffect(() => {
-        const meta = document.createElement('meta');
-        meta.name = "robots";
-        meta.content = "noindex";
-        document.head.appendChild(meta);
-        
-        document.title = "404 - Signal Lost | Space Clicker Game";
-
-        return () => {
+    return () => {
             document.head.removeChild(meta);
         };
     }, []);
@@ -38,17 +29,19 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                 </h1>
                 
                 <p className="text-gray-400 mb-8 font-mono text-sm leading-relaxed">
-                    The coordinates you entered do not correspond to any known sector in the Space Clicker Game. The navigation computer assumes this is a user error or a corrupted hyperlane.
+                    The requested address does not match a known game, Spacebar tool, guide, or site page. Use the links below to return to a valid section.
                 </p>
 
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
-                    <button 
+                    <button
+                        type="button"
                         onClick={() => onNavigate('home')}
                         className="px-8 py-3 bg-white text-black font-bold rounded hover:bg-neon-blue transition-colors shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                     >
                         RETURN TO BASE
                     </button>
-                    <button 
+                    <button
+                        type="button"
                         onClick={() => onNavigate('game')}
                         className="px-8 py-3 border border-red-500 text-red-500 font-bold rounded hover:bg-red-500 hover:text-black transition-colors"
                     >
@@ -57,7 +50,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                 </div>
                 
                 <div className="mt-12 text-[10px] text-gray-600 font-mono">
-                    ERROR_CODE: NULL_POINTER_EXCEPTION_IN_REALITY
+                    HTTP 404 · PAGE NOT FOUND
                 </div>
             </div>
         </div>
