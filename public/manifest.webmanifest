@@ -28,5 +28,29 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "shortcuts": [
+    {
+      "name": "Galaxy Miner",
+      "short_name": "Galaxy Miner",
+      "description": "Open the flagship Space Clicker game.",
+      "url": "/game/galaxy_miner/"
+    },
+    {
+      "name": "Spacebar Clicker",
+      "short_name": "Spacebar Clicker",
+      "description": "Open the incremental Spacebar Clicker game.",
+      "url": "/spacebar-clicker/"
+    },
+    {
+      "name": "Spacebar CPS Test",
+      "short_name": "CPS Test",
+      "description": "Open the timed Spacebar CPS and speed test.",
+      "url": "/spacebar-clicker-test/"
+    }
   ]
 }
