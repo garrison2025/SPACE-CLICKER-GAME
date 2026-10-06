@@ -630,9 +630,45 @@ const GravityIdle: React.FC = () => {
     // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
         const t = setInterval(saveGame, 5000);
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'hidden') saveGame();
+
+        const creditHiddenProgress = () => {
+            const hiddenAt = hiddenAtRef.current;
+            hiddenAtRef.current = null;
+            if (hiddenAt === null) return;
+
+            const now = Date.now();
+            const seconds = Math.min(86_400, Math.max(0, (now - hiddenAt) / 1000));
+            if (seconds < 60) return;
+
+            const rate = getOfflineMatterRate(upgradesRef.current);
+            const earned = Math.floor(rate * seconds);
+            if (earned <= 0) return;
+
+            const currentMatter = matterRef.current;
+            const nextMatter = Math.min(MAX_RESOURCE_VALUE, currentMatter + earned);
+            const credited = Math.max(0, nextMatter - currentMatter);
+            if (credited <= 0) return;
+
+            const nextSnapshot = { matter: nextMatter, upgrades: upgradesRef.current };
+            matterRef.current = nextMatter;
+            saveStateRef.current = nextSnapshot;
+            safeSetStorageItem(GRAVITY_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: now,
+            }));
+            setMatter(nextMatter);
+            setOfflineReport({ time: seconds, earned: credited });
         };
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                hiddenAtRef.current = Date.now();
+                saveGame();
+                return;
+            }
+            creditHiddenProgress();
+        };
+
         const handlePageHide = () => saveGame();
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
