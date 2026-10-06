@@ -22,24 +22,26 @@ const SpacebarCounter: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState('');
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
+  const countRef = useRef(0);
+  const bestCountRef = useRef(bestCount);
 
   const press = () => {
     const now = performance.now();
     if (soundEnabled) playSound('click');
-    if (!running) {
-      setRunning(true);
+    if (startedAt.current === null) {
       startedAt.current = now;
+      setRunning(true);
     }
+
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
-    setCount((value) => {
-      const next = value + 1;
-      setBestCount((best) => {
-        const nextBest = Math.max(best, next);
-        localStorage.setItem(BEST_KEY, String(nextBest));
-        return nextBest;
-      });
-      return next;
-    });
+
+    const nextCount = Math.min(Number.MAX_SAFE_INTEGER, countRef.current + 1);
+    const nextBest = Math.max(bestCountRef.current, nextCount);
+    countRef.current = nextCount;
+    bestCountRef.current = nextBest;
+    setCount(nextCount);
+    setBestCount(nextBest);
+    localStorage.setItem(BEST_KEY, String(nextBest));
   };
 
   const pressRef = useRef(press);
@@ -73,6 +75,7 @@ const SpacebarCounter: React.FC = () => {
   }, [running]);
 
   const reset = () => {
+    countRef.current = 0;
     setCount(0);
     setElapsedMs(0);
     setRunning(false);
