@@ -483,36 +483,41 @@ const GravityIdle: React.FC = () => {
         }
     };
 
-    const handleCanvasPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const activatePulse = () => {
         const now = Date.now();
-        if (now - lastPulseTimeRef.current < 5000) return; // 5s Cooldown
+        if (now - lastPulseTimeRef.current < 5000) return false;
 
+        const { cx, cy } = sizeRef.current;
+        lastPulseTimeRef.current = now;
+        pulseCooldownRef.current = 0;
+        setPulseCooldown(0);
+
+        bodiesRef.current.push({
+            id: Math.random(),
+            type: 'pulse',
+            x: cx,
+            y: cy,
+            vx: 0,
+            vy: 0,
+            radius: 20,
+            color: '#bc13fe',
+            mass: 0,
+            life: 50,
+            damage: 20 * Math.pow(1.5, upgradesRef.current.gravity)
+        } as any);
+        return true;
+    };
+
+    const handleCanvasPointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
         const rect = canvasRef.current?.getBoundingClientRect();
         if (!rect) return;
-        
+
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const { cx, cy } = sizeRef.current;
-
         const dist = Math.sqrt(Math.pow(x - cx, 2) + Math.pow(y - cy, 2));
-        if (dist < 60) {
-            lastPulseTimeRef.current = now;
-            pulseCooldownRef.current = 0;
-            setPulseCooldown(0);
 
-            bodiesRef.current.push({
-                id: Math.random(),
-                type: 'pulse',
-                x: cx,
-                y: cy,
-                vx: 0, vy: 0,
-                radius: 20,
-                color: '#bc13fe',
-                mass: 0,
-                life: 50, 
-                damage: 20 * Math.pow(1.5, upgrades.gravity) 
-            } as any);
-        }
+        if (dist < 60) activatePulse();
     };
 
     const calculateCost = (key: keyof typeof UPGRADE_CONFIG, count: number) => {
@@ -759,6 +764,18 @@ const GravityIdle: React.FC = () => {
                              <div className="h-full bg-white transition-all duration-200" style={{ width: `${pulseCooldown}%` }}></div>
                          </div>
                      </div>
+                 </div>
+
+                 <div className="absolute bottom-4 left-4 z-10">
+                     <button
+                        type="button"
+                        onClick={activatePulse}
+                        disabled={pulseCooldown < 99}
+                        aria-label={pulseCooldown < 99 ? `Gravity Pulse charging, ${Math.floor(pulseCooldown)} percent` : 'Activate Gravity Pulse'}
+                        className="min-h-11 px-4 py-3 rounded-xl border border-neon-purple/70 bg-black/70 text-neon-purple font-bold text-xs backdrop-blur disabled:opacity-45 disabled:cursor-not-allowed hover:bg-neon-purple hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                     >
+                        {pulseCooldown < 99 ? `PULSE ${Math.floor(pulseCooldown)}%` : 'GRAVITY PULSE'}
+                     </button>
                  </div>
 
                  <div className="absolute bottom-4 right-4 z-10 flex gap-2">
