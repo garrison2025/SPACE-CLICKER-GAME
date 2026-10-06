@@ -1,6 +1,7 @@
 {
   "name": "Space Clicker Game",
   "short_name": "Space Clicker",
+  "id": "/",
   "description": "Play Space Clicker, Galaxy Miner, Spacebar games and browser-based space simulations.",
   "start_url": "/",
   "scope": "/",
