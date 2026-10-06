@@ -119,6 +119,7 @@ const loadSave = (): SpacebarSave => {
     const raw = safeGetStorageItem(SAVE_KEY);
     return raw ? sanitizeSave(JSON.parse(raw)) : defaultSave();
   } catch {
+    safeRemoveStorageItem(SAVE_KEY);
     return defaultSave();
   }
 };
