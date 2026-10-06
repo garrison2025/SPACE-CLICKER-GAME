@@ -4,26 +4,31 @@ import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const BEST_KEY = 'spacebar_counter_best_v1';
+const CURRENT_KEY = 'spacebar_counter_current_v1';
 
-const loadBestCount = () => {
-  const value = Number(safeGetStorageItem(BEST_KEY) || 0);
+const loadCounterValue = (key: string) => {
+  const value = Number(safeGetStorageItem(key) || 0);
   return Number.isFinite(value) && value >= 0
     ? Math.min(Number.MAX_SAFE_INTEGER, Math.floor(value))
     : 0;
 };
 
+const loadBestCount = () => loadCounterValue(BEST_KEY);
+const loadCurrentCount = () => loadCounterValue(CURRENT_KEY);
+
 const SpacebarCounter: React.FC = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(loadCurrentCount);
   const [elapsedMs, setElapsedMs] = useState(0);
   const [running, setRunning] = useState(false);
   const [currentCps, setCurrentCps] = useState(0);
   const [peakCps, setPeakCps] = useState(0);
-  const [bestCount, setBestCount] = useState(loadBestCount);
+  const [bestCount, setBestCount] = useState(() => Math.max(loadBestCount(), loadCurrentCount()));
+  const [manualCountInput, setManualCountInput] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const pressTimes = useRef<number[]>([]);
   const startedAt = useRef<number | null>(null);
-  const countRef = useRef(0);
+  const countRef = useRef(count);
   const bestCountRef = useRef(bestCount);
   const hiddenAtRef = useRef<number | null>(null);
 
@@ -43,6 +48,7 @@ const SpacebarCounter: React.FC = () => {
     bestCountRef.current = nextBest;
     setCount(nextCount);
     setBestCount(nextBest);
+    safeSetStorageItem(CURRENT_KEY, String(nextCount));
     safeSetStorageItem(BEST_KEY, String(nextBest));
   };
 
@@ -102,9 +108,7 @@ const SpacebarCounter: React.FC = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [running]);
 
-  const reset = () => {
-    countRef.current = 0;
-    setCount(0);
+  const resetSessionMetrics = () => {
     setElapsedMs(0);
     setRunning(false);
     setCurrentCps(0);
@@ -112,6 +116,48 @@ const SpacebarCounter: React.FC = () => {
     pressTimes.current = [];
     startedAt.current = null;
     hiddenAtRef.current = null;
+  };
+
+  const reset = () => {
+    countRef.current = 0;
+    setCount(0);
+    safeSetStorageItem(CURRENT_KEY, '0');
+    resetSessionMetrics();
+    setStatusMessage('Current count reset to zero. Highest total is kept.');
+  };
+
+  const decrement = () => {
+    const nextCount = Math.max(0, countRef.current - 1);
+    countRef.current = nextCount;
+    setCount(nextCount);
+    safeSetStorageItem(CURRENT_KEY, String(nextCount));
+    setStatusMessage(nextCount === 0 ? 'Current count is zero.' : 'Removed one from the current total.');
+  };
+
+  const applyManualCount = () => {
+    const raw = manualCountInput.trim();
+    if (!raw) {
+      setStatusMessage('Enter a whole number from 0 up to the browser-safe integer limit.');
+      return;
+    }
+
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      setStatusMessage('Enter a valid non-negative number.');
+      return;
+    }
+
+    const nextCount = Math.min(Number.MAX_SAFE_INTEGER, Math.floor(parsed));
+    const nextBest = Math.max(bestCountRef.current, nextCount);
+    countRef.current = nextCount;
+    bestCountRef.current = nextBest;
+    setCount(nextCount);
+    setBestCount(nextBest);
+    setManualCountInput('');
+    safeSetStorageItem(CURRENT_KEY, String(nextCount));
+    safeSetStorageItem(BEST_KEY, String(nextBest));
+    resetSessionMetrics();
+    setStatusMessage(`Current count set to ${nextCount}. Timing metrics restarted.`);
   };
 
   const seconds = elapsedMs / 1000;
@@ -138,7 +184,7 @@ const SpacebarCounter: React.FC = () => {
           <div className="text-xs text-neon-blue font-mono tracking-[0.3em] mb-3">KEYBOARD UTILITY</div>
           <h1 className="text-4xl md:text-6xl font-display font-black text-white mb-4">Spacebar Counter</h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Count every deliberate spacebar press, watch live CPS, and compare your current run with the best count saved in this browser.
+            Count every deliberate spacebar press, correct the total when needed, and keep the current and highest totals saved in this browser.
           </p>
           <div className="mt-6 grid sm:grid-cols-3 gap-2 text-left max-w-3xl mx-auto">
             <a href="/spacebar-counter/" aria-current="page" className="rounded-xl border border-neon-blue/40 bg-neon-blue/5 px-4 py-3">
@@ -185,15 +231,49 @@ const SpacebarCounter: React.FC = () => {
             <Metric label="Current CPS" value={currentCps.toFixed(1)} />
             <Metric label="Average CPS" value={average.toFixed(2)} />
             <Metric label="Peak CPS" value={peakCps.toFixed(1)} />
-            <Metric label="Best Count" value={String(bestCount)} />
+            <Metric label="Highest Total" value={String(bestCount)} />
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3 mt-7">
-            <button type="button" onClick={reset} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset</button>
-            <button type="button" onClick={enterFullscreen} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
-            <button type="button" onClick={() => setSoundEnabled((value) => !value)} className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">{soundEnabled ? 'Sound On' : 'Sound Off'}</button>
-            <a href="/spacebar-clicker/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Play Spacebar Clicker</a>
-            <a href="/spacebar-clicker-test/" className="px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Open Speed Test</a>
+          <div className="mt-7 rounded-xl border border-white/10 bg-black/20 p-4">
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end justify-center">
+              <label className="text-left sm:w-64">
+                <span className="block text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Set current total</span>
+                <input
+                  type="number"
+                  min="0"
+                  max={Number.MAX_SAFE_INTEGER}
+                  step="1"
+                  inputMode="numeric"
+                  value={manualCountInput}
+                  onChange={(event) => setManualCountInput(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      applyManualCount();
+                    }
+                  }}
+                  placeholder={String(count)}
+                  className="w-full min-h-11 rounded-lg border border-white/10 bg-space-950 px-3 py-2 font-mono text-white focus:outline-none focus:border-neon-blue"
+                />
+              </label>
+              <button type="button" onClick={applyManualCount} className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue">
+                Set total
+              </button>
+              <button type="button" onClick={decrement} disabled={count <= 0} className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue disabled:opacity-40 disabled:cursor-not-allowed">
+                −1 correction
+              </button>
+            </div>
+            <p className="mt-2 text-center text-[11px] text-gray-500">
+              Setting or correcting the total updates the local counter. Setting a new total restarts the timing metrics.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-4">
+            <button type="button" onClick={reset} className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Reset current</button>
+            <button type="button" onClick={enterFullscreen} className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue">Fullscreen</button>
+            <button type="button" onClick={() => setSoundEnabled((value) => !value)} className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue">{soundEnabled ? 'Sound On' : 'Sound Off'}</button>
+            <a href="/spacebar-clicker/" className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue flex items-center">Play Spacebar Clicker</a>
+            <a href="/spacebar-clicker-test/" className="min-h-11 px-5 py-2 rounded border border-white/10 hover:border-neon-blue flex items-center">Open Speed Test</a>
           </div>
           {statusMessage && (
             <p role="status" aria-live="polite" className="mt-3 text-center text-xs text-gray-400">{statusMessage}</p>
@@ -205,8 +285,7 @@ const SpacebarCounter: React.FC = () => {
             <h2 className="text-2xl font-display text-white mb-3">What is a Spacebar Counter?</h2>
             <p>
               A spacebar counter is a simple keyboard tool for spacebar counting: it records intentional Space key presses while showing a running total and live CPS. This page keeps the interface minimal:
-              no upgrades, no idle economy, and no game progression. It is useful when the only goal is to count presses and watch current,
-              average, and peak CPS.
+              no upgrades, no idle economy, and no game progression. The current total is saved locally, can be corrected with a minus-one control, and can be set to a chosen starting value when you are continuing an existing tally.
             </p>
           </section>
           <section>
@@ -238,8 +317,8 @@ const SpacebarCounter: React.FC = () => {
                 <p>No. Browser-generated repeat events from holding the key are ignored, so the counter tracks intentional presses.</p>
               </div>
               <div>
-                <h3 className="text-lg text-white">Is my best count saved?</h3>
-                <p>Yes. The best count is stored locally in this browser. It is not uploaded to a public leaderboard.</p>
+                <h3 className="text-lg text-white">Are my current and highest totals saved?</h3>
+                <p>Yes. Both are stored locally in this browser. You can also set or correct the current total without creating an account, and nothing is uploaded to a public leaderboard.</p>
               </div>
             </div>
           </section>
