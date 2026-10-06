@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface SocialShareProps {
     title: string;
@@ -8,6 +8,16 @@ interface SocialShareProps {
 
 const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
     const [copied, setCopied] = useState(false);
+    const copiedTimerRef = useRef<number>();
+
+    useEffect(() => {
+        return () => {
+            if (copiedTimerRef.current !== undefined) {
+                window.clearTimeout(copiedTimerRef.current);
+            }
+        };
+    }, []);
+
     const shareUrl = url || window.location.href;
     const encodedUrl = encodeURIComponent(shareUrl);
     const encodedTitle = encodeURIComponent(title);
@@ -16,7 +26,13 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
         try {
             await navigator.clipboard.writeText(shareUrl);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            if (copiedTimerRef.current !== undefined) {
+                window.clearTimeout(copiedTimerRef.current);
+            }
+            copiedTimerRef.current = window.setTimeout(() => {
+                copiedTimerRef.current = undefined;
+                setCopied(false);
+            }, 2000);
         } catch {
             window.prompt('Copy this link:', shareUrl);
         }
@@ -75,12 +91,14 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
                 </a>
 
                 {/* Copy Link */}
-                <button 
+                <button
+                    type="button"
+                    aria-label={copied ? 'Link copied' : 'Copy article link'}
                     onClick={handleCopy}
                     className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors ml-auto"
                 >
-                    <span>{copied ? '✓' : '🔗'}</span>
-                    <span className="hidden md:inline">{copied ? 'COPIED' : 'COPY LINK'}</span>
+                    <span aria-hidden="true">{copied ? '✓' : '🔗'}</span>
+                    <span className="hidden md:inline" aria-live="polite">{copied ? 'COPIED' : 'COPY LINK'}</span>
                 </button>
             </div>
         </div>
