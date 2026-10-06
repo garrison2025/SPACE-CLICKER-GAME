@@ -455,11 +455,18 @@ const buildStaticRouteSchema = (route, description, canonical) => {
   }
 
   if (route === '/spacebar-clicker' || route === '/spacebar-clicker-2' || route === '/spacebar-clicker-unblocked') {
+    const isUnblocked = route === '/spacebar-clicker-unblocked';
     const name = route === '/spacebar-clicker-2'
       ? 'Spacebar Clicker 2'
-      : route === '/spacebar-clicker-unblocked'
+      : isUnblocked
         ? 'Spacebar Clicker Unblocked'
         : 'Spacebar Clicker';
+    const primaryGameCanonical = site + '/spacebar-clicker/';
+    const gameEntityCanonical = isUnblocked ? primaryGameCanonical : canonical;
+    const gameEntityName = isUnblocked ? 'Spacebar Clicker' : name;
+    const gameEntityDescription = isUnblocked
+      ? 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.'
+      : description;
 
     const faqEntity = route === '/spacebar-clicker-2'
       ? [
@@ -492,10 +499,10 @@ const buildStaticRouteSchema = (route, description, canonical) => {
       "@graph": [
         {
           "@type": "VideoGame",
-          "@id": canonical + "#game",
-          "url": canonical,
-          "name": name,
-          "description": description,
+          "@id": gameEntityCanonical + "#game",
+          "url": gameEntityCanonical,
+          "name": gameEntityName,
+          "description": gameEntityDescription,
           "genre": ["Clicker", "Incremental", "Idle"],
           "playMode": "SinglePlayer",
           "applicationCategory": "Game",
@@ -505,6 +512,21 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           "inLanguage": "en",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
+        ...(isUnblocked ? [{
+          "@type": "WebPage",
+          "@id": canonical + "#webpage",
+          "url": canonical,
+          "name": "Spacebar Clicker Unblocked - Instant Browser Play",
+          "description": description,
+          "dateModified": SITE_CONTENT_UPDATED,
+          "mainEntity": { "@id": primaryGameCanonical + "#game" },
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": site + "/#website",
+            "name": "Space Clicker Game",
+            "url": site + "/"
+          }
+        }] : []),
         {
           "@type": "BreadcrumbList",
           "@id": canonical + "#breadcrumb",
