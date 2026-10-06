@@ -25,6 +25,7 @@ const SpacebarCounter: React.FC = () => {
   const startedAt = useRef<number | null>(null);
   const countRef = useRef(0);
   const bestCountRef = useRef(bestCount);
+  const hiddenAtRef = useRef<number | null>(null);
 
   const press = () => {
     const now = performance.now();
@@ -65,6 +66,7 @@ const SpacebarCounter: React.FC = () => {
   useEffect(() => {
     if (!running) return;
     const timer = window.setInterval(() => {
+      if (document.hidden) return;
       const now = performance.now();
       pressTimes.current = pressTimes.current.filter((time) => now - time <= 1000);
       const cps = pressTimes.current.length;
@@ -73,6 +75,31 @@ const SpacebarCounter: React.FC = () => {
       if (startedAt.current !== null) setElapsedMs(now - startedAt.current);
     }, 200);
     return () => window.clearInterval(timer);
+  }, [running]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const now = performance.now();
+
+      if (document.hidden) {
+        hiddenAtRef.current = running ? now : null;
+        pressTimes.current = [];
+        setCurrentCps(0);
+        return;
+      }
+
+      if (running && hiddenAtRef.current !== null && startedAt.current !== null) {
+        const hiddenDuration = Math.max(0, now - hiddenAtRef.current);
+        startedAt.current += hiddenDuration;
+        setElapsedMs(Math.max(0, now - startedAt.current));
+      }
+      hiddenAtRef.current = null;
+      pressTimes.current = [];
+      setCurrentCps(0);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [running]);
 
   const reset = () => {
@@ -84,6 +111,7 @@ const SpacebarCounter: React.FC = () => {
     setPeakCps(0);
     pressTimes.current = [];
     startedAt.current = null;
+    hiddenAtRef.current = null;
   };
 
   const seconds = elapsedMs / 1000;
