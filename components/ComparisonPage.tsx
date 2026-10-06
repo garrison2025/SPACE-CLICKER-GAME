@@ -90,7 +90,7 @@ const COMPARISON_DATA: GameComparison[] = [
     combatOrEvents: "Combat areas, dungeons, Slayer tasks, bosses and expansion content",
     graphicsAndAudio: "Menu-driven web interface centered on skills, inventories and combat panels",
     focus: "Broad RPG progression across non-combat skills, mastery systems and combat",
-    sourceUrl: "https://melvoridle.com/"
+    sourceUrl: "https://store.steampowered.com/app/1267910/Melvor_Idle/"
   }
 ];
 
