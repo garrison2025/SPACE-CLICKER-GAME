@@ -1106,7 +1106,7 @@ const staticRouteContent = {
       <ul>
         <li><strong><a href="https://orteil.dashnet.org/cookieclicker/">Cookie Clicker</a></strong> combines manual cookie input, automated buildings, Golden Cookies, and ascension.</li>
         <li><strong><a href="https://www.decisionproblem.com/paperclips/">Universal Paperclips</a></strong> uses staged narrative progression, automation, autonomous probes, and late-game probe hazards and combat rather than a conventional repeating prestige loop.</li>
-        <li><strong><a href="https://antimatter-dimensions.github.io/">Antimatter Dimensions</a></strong> emphasizes automation and layered progression through Infinity, Eternity, and Reality.</li>
+        <li><strong><a href="https://store.steampowered.com/app/1399720/Antimatter_Dimensions/">Antimatter Dimensions</a></strong> emphasizes automation and layered progression through Infinity, Eternity, and Reality.</li>
         <li><strong><a href="https://store.steampowered.com/app/616110/SPACEPLAN/">SPACEPLAN</a></strong> is a story-driven science-fiction clicker built around potato-based devices, probes, and staged discoveries rather than a repeatable prestige economy.</li>
         <li><strong><a href="https://melvoridle.com/">Melvor Idle</a></strong> centers on skills, mastery, equipment, crafting, dungeons, and combat instead of one global prestige-reset loop.</li>
       </ul>
