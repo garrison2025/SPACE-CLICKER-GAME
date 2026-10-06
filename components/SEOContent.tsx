@@ -141,11 +141,11 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                  </div>
              )}
 
-             <h3 className="text-2xl font-display text-white mb-4 mt-12">Patch Notes</h3>
+             <h3 className="text-2xl font-display text-white mb-4 mt-12">Current Systems</h3>
              <div className="space-y-2">
                 {game.changelog.map((log, i) => (
                     <div key={i} className="text-sm text-gray-400 border-l-2 border-neon-green pl-4 py-1">
-                        <span className="text-white font-bold mr-2">Update:</span> {log}
+                        <span className="text-white font-bold mr-2">Status:</span> {log}
                     </div>
                 ))}
              </div>
