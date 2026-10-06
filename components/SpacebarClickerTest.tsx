@@ -62,6 +62,7 @@ const loadHistory = (): TestHistoryEntry[] => {
       )
       .slice(0, 10);
   } catch {
+    safeRemoveStorageItem(HISTORY_KEY);
     return [];
   }
 };
