@@ -1,0 +1,19 @@
+{
+  "name": "Space Clicker Game",
+  "short_name": "Space Clicker",
+  "description": "Play Space Clicker, Galaxy Miner, Spacebar games and browser-based space simulations.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b0d17",
+  "theme_color": "#0b0d17",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
