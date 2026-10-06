@@ -1844,24 +1844,22 @@ const App: React.FC = () => {
     offlineEarnings.isOpen
   ]);
 
-  // Save Interval & Event Listeners
+  // Save interval plus page-lifecycle persistence.
   useEffect(() => {
-      // Auto-save interval
-      const timer = setInterval(() => {
-          saveGame();
-      }, AUTO_SAVE_INTERVAL);
-
-      // Browser close/refresh listener
-      const handleBeforeUnload = () => {
-          saveGame();
+      const timer = setInterval(saveGame, AUTO_SAVE_INTERVAL);
+      const handleVisibilityChange = () => {
+          if (document.visibilityState === 'hidden') saveGame();
       };
+      const handlePageHide = () => saveGame();
 
-      window.addEventListener('beforeunload', handleBeforeUnload);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('pagehide', handlePageHide);
 
       return () => {
           clearInterval(timer);
-          window.removeEventListener('beforeunload', handleBeforeUnload);
-          saveGame(); // Save on unmount
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+          window.removeEventListener('pagehide', handlePageHide);
+          saveGame();
       };
   }, [saveGame]);
 
