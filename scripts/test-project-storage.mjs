@@ -126,6 +126,32 @@ expect(
   'Unrelated origin storage must never be classified as project data'
 );
 
+// Page-level reset contract:
+// A reset control must delete the persisted save, not only clear React state.
+const classicSpacebarSource = fs.readFileSync(
+  path.resolve('components/SpacebarGame.tsx'),
+  'utf8'
+);
+expect(
+  /const hardReset\s*=\s*\(\)\s*=>\s*\{[\s\S]*?safeRemoveStorageItem\(SAVE_KEY\)/.test(classicSpacebarSource),
+  'Classic Spacebar hardReset must delete the persisted save before clearing the session'
+);
+
+const clicker2Source = fs.readFileSync(
+  path.resolve('components/SpacebarClicker2.tsx'),
+  'utf8'
+);
+expect(
+  /const resetAll\s*=\s*\(\)\s*=>\s*\{[\s\S]*?safeRemoveStorageItem\(SAVE_KEY\)/.test(clicker2Source),
+  'Spacebar Clicker 2 resetAll must delete the persisted save before clearing the session'
+);
+
+const appSource = fs.readFileSync(path.resolve('App.tsx'), 'utf8');
+expect(
+  /onResetGame=\{\(\)\s*=>\s*\{[\s\S]*?safeRemoveStorageItem\(SAVE_KEY\)/.test(appSource),
+  'Galaxy Miner telemetry reset must delete the persisted save before reloading'
+);
+
 const failureStorage = new MemoryStorage({ failRemove: true });
 failureStorage.setItem('spacebar_clicker_save_v1', 'before');
 globalThis.localStorage = failureStorage;
@@ -142,4 +168,4 @@ expect(
   'Project persistence should recover after a failed reset'
 );
 
-console.log(`Project storage tests passed: scoped clearing, ${discoveredKeys.size} discovered project keys, failure reporting, and reset write guard are verified.`);
+console.log(`Project storage tests passed: scoped clearing, ${discoveredKeys.size} discovered project keys, page-level reset deletion, failure reporting, and reset write guard are verified.`);
