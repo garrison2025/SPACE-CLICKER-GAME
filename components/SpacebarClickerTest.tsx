@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 type TestMode = { type: 'time'; seconds: number; label: string } | { type: 'clicks'; clicks: number; label: string };
 
@@ -19,7 +20,7 @@ const MAX_STORED_CLICKS = Number.MAX_SAFE_INTEGER;
 const MAX_STORED_ELAPSED = 86_400;
 
 const readBestCps = (key: string) => {
-  const value = Number(localStorage.getItem(key) || 0);
+  const value = Number(safeGetStorageItem(key) || 0);
   return Number.isFinite(value) && value >= 0 ? Math.min(MAX_STORED_CPS, value) : 0;
 };
 
@@ -35,7 +36,7 @@ type TestHistoryEntry = {
 
 const loadHistory = (): TestHistoryEntry[] => {
   try {
-    const raw = localStorage.getItem(HISTORY_KEY);
+    const raw = safeGetStorageItem(HISTORY_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
@@ -130,7 +131,7 @@ const SpacebarClickerTest: React.FC = () => {
     const nextBest = Math.min(MAX_STORED_CPS, Math.max(bestCpsRef.current, average));
     bestCpsRef.current = nextBest;
     setBestCps(nextBest);
-    localStorage.setItem(BEST_PREFIX + modeKey(mode), String(nextBest));
+    safeSetStorageItem(BEST_PREFIX + modeKey(mode), String(nextBest));
 
     const entry: TestHistoryEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -145,7 +146,7 @@ const SpacebarClickerTest: React.FC = () => {
     const nextHistory = [entry, ...historyRef.current].slice(0, 10);
     historyRef.current = nextHistory;
     setHistory(nextHistory);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(nextHistory));
+    safeSetStorageItem(HISTORY_KEY, JSON.stringify(nextHistory));
   };
 
   const press = () => {
@@ -245,9 +246,13 @@ const SpacebarClickerTest: React.FC = () => {
     : 0;
 
   const clearHistory = () => {
+    if (!safeRemoveStorageItem(HISTORY_KEY)) {
+      setShareStatus('Could not clear stored history because browser storage is unavailable.');
+      return;
+    }
     historyRef.current = [];
-    localStorage.removeItem(HISTORY_KEY);
     setHistory([]);
+    setShareStatus('Recent test history cleared.');
   };
 
   const downloadResultCard = () => {
