@@ -925,7 +925,8 @@ const SpacebarClicker2: React.FC = () => {
               <div><h3 className="text-lg text-white">Does Spacebar Clicker 2 have auto-clickers?</h3><p>Yes. Micro Bots generate passive points and Reactor Banks multiply automatic production.</p></div>
               <div><h3 className="text-lg text-white">What does Nova Ascension reset?</h3><p>It resets current points and standard upgrades. Nova Cores, lifetime records and the permanent Nova bonus remain.</p></div>
               <div><h3 className="text-lg text-white">Does it work on mobile?</h3><p>Yes. Mobile players can use the large on-screen Space button, while desktop players can press the physical Space key.</p></div>
-              <div><h3 className="text-lg text-white">Can I move my Edition 2 save to another browser?</h3><p>Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save.</p></div>
+              <div><h3 className="text-lg text-white">How much offline production can Edition 2 recover?</h3><p>Supported saved runs can recover up to 12 hours of offline auto-production. Overdrive time that was already active is accounted for only within its actual remaining duration.</p></div>
+          <div><h3 className="text-lg text-white">Can I move my Edition 2 save to another browser?</h3><p>Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save.</p></div>
             </div>
           </section>
         </article>
