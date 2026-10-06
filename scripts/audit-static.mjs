@@ -650,6 +650,16 @@ for (const [href, minimum] of blogClusterTargets) {
 // should point directly to a real prerendered route instead of relying on a
 // client-side fallback or silently creating a soft navigation dead end.
 const auditedRouteSet = new Set(auditedRoutes);
+
+for (const shortcut of manifest.shortcuts) {
+  const normalized = shortcut.url === '/'
+    ? '/'
+    : '/' + String(shortcut.url).split('/').filter(Boolean).join('/') + '/';
+  if (!auditedRouteSet.has(normalized)) {
+    throw new Error('manifest.webmanifest shortcut points to a missing prerendered route: ' + shortcut.url);
+  }
+}
+
 const incomingLinkCounts = new Map(auditedRoutes.map((route) => [route, 0]));
 
 for (const file of htmlFiles) {
