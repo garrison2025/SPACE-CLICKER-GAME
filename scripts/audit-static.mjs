@@ -311,6 +311,7 @@ const strategyGuideRequiredHeadings = [
 ];
 
 const geoExtractionRequirements = new Map([
+  ['/', ['Space Clicker is a free browser-based incremental space game.']],
   ['/spacebar-games/', ['Spacebar mode comparison', '<table>']],
   ['/spacebar-clicker-test/', ['How CPS and press interval are calculated', 'valid presses ÷ active elapsed seconds', '1000 ÷ average CPS']],
   ['/about/', ['Editorial and testing principles']]
