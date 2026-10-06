@@ -2086,7 +2086,7 @@ const App: React.FC = () => {
   // Save interval plus page-lifecycle persistence.
   useEffect(() => {
       const timer = setInterval(() => {
-          if (!document.hidden) saveGame();
+          saveGame();
       }, AUTO_SAVE_INTERVAL);
 
       const handleVisibilityChange = () => {
