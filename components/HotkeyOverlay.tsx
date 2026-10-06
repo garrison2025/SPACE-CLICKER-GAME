@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { trapDialogFocus } from '../utils/dialogFocus';
 
 interface HotkeyOverlayProps {
   isOpen: boolean;
@@ -49,6 +50,7 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
             aria-labelledby="hotkey-dialog-title"
             tabIndex={-1}
             autoFocus
+            onKeyDown={trapDialogFocus}
             className="bg-space-850 border border-white/20 w-full max-w-md max-h-full rounded-2xl p-4 sm:p-6 shadow-2xl overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
           >
             <div className="flex justify-between items-center mb-5 pb-3 border-b border-white/10">
