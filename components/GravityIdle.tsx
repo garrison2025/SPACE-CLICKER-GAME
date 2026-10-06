@@ -858,7 +858,7 @@ const GravityIdle: React.FC = () => {
                 }}
                 style={{ visibility: showShop ? 'visible' : 'hidden' }}
                 className={`
-                  absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-[61] transition-transform duration-300 transform shadow-2xl flex flex-col
+                  safe-side-panel absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-[61] transition-transform duration-300 transform shadow-2xl flex flex-col
                   ${showShop ? 'translate-x-0' : 'translate-x-full'}
                 `}
              >
