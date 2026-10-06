@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { playSound } from '../services/audioService';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const BEST_KEY = 'spacebar_counter_best_v1';
 
 const loadBestCount = () => {
-  const value = Number(localStorage.getItem(BEST_KEY) || 0);
+  const value = Number(safeGetStorageItem(BEST_KEY) || 0);
   return Number.isFinite(value) && value >= 0
     ? Math.min(Number.MAX_SAFE_INTEGER, Math.floor(value))
     : 0;
@@ -41,7 +42,7 @@ const SpacebarCounter: React.FC = () => {
     bestCountRef.current = nextBest;
     setCount(nextCount);
     setBestCount(nextBest);
-    localStorage.setItem(BEST_KEY, String(nextBest));
+    safeSetStorageItem(BEST_KEY, String(nextBest));
   };
 
   const pressRef = useRef(press);
