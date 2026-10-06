@@ -62,6 +62,7 @@ const MAX_UPGRADE_LEVEL = 1000;
 const MAX_COUNTER_VALUE = Number.MAX_SAFE_INTEGER;
 const MAX_NOVA_CORES = 1e12;
 const MAX_CPS_VALUE = 10_000;
+const MAX_SAVE_IMPORT_SIZE = 100_000;
 
 const num = (value: unknown, fallback = 0, max = MAX_RESOURCE_VALUE) =>
   typeof value === 'number' && Number.isFinite(value) && value >= 0
@@ -416,7 +417,7 @@ const SpacebarClicker2: React.FC = () => {
       setSaveTransferStatus('No save data was provided.');
       return false;
     }
-    if (code.length > 50_000) {
+    if (code.length > MAX_SAVE_IMPORT_SIZE) {
       setSaveTransferStatus('Save code is too large.');
       return false;
     }
@@ -536,7 +537,7 @@ const SpacebarClicker2: React.FC = () => {
     picker.onchange = async () => {
       const selected = picker.files?.[0];
       if (!selected) return;
-      if (selected.size > 100_000) {
+      if (selected.size > MAX_SAVE_IMPORT_SIZE) {
         setSaveTransferStatus('Backup file is too large.');
         return;
       }
@@ -787,6 +788,7 @@ const SpacebarClicker2: React.FC = () => {
             <textarea
               id="spacebar-2-save-import"
               value={saveImportText}
+              maxLength={MAX_SAVE_IMPORT_SIZE}
               onChange={(event) => setSaveImportText(event.target.value)}
               placeholder="Paste SCG2 save code here..."
               spellCheck={false}
