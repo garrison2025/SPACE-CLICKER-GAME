@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GravitySaveData } from '../types';
 import { formatNumber } from '../utils';
 import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { trapDialogFocus } from '../utils/dialogFocus';
 
 const GRAVITY_SAVE_KEY = 'gravity_idle_save_v2';
 
@@ -92,6 +93,7 @@ const GravityIdle: React.FC = () => {
     const upgradesRef = useRef(upgrades);
     const pulseCooldownRef = useRef(pulseCooldown);
     const hiddenAtRef = useRef<number | null>(null);
+    const offlineReturnFocusRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         matterRef.current = matter;
@@ -104,6 +106,27 @@ const GravityIdle: React.FC = () => {
     useEffect(() => {
         pulseCooldownRef.current = pulseCooldown;
     }, [pulseCooldown]);
+
+    useEffect(() => {
+        if (!offlineReport) return;
+
+        offlineReturnFocusRef.current =
+            document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setOfflineReport(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            offlineReturnFocusRef.current?.focus();
+            offlineReturnFocusRef.current = null;
+        };
+    }, [offlineReport]);
 
     // --- GAME LOOP ---
     const gameLoop = useCallback(() => {
@@ -889,8 +912,16 @@ const GravityIdle: React.FC = () => {
 
              {/* OFFLINE REPORT MODAL */}
              {offlineReport && (
-                 <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in">
-                     <div role="dialog" aria-modal="true" aria-labelledby="gravity-offline-title" className="bg-stone-900 border border-neon-purple p-8 rounded-2xl max-w-sm w-full text-center shadow-[0_0_50px_rgba(188,19,254,0.3)]">
+                 <div className="safe-screen-overlay absolute inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm animate-in fade-in">
+                     <div
+                       role="dialog"
+                       aria-modal="true"
+                       aria-labelledby="gravity-offline-title"
+                       tabIndex={-1}
+                       autoFocus
+                       onKeyDown={trapDialogFocus}
+                       className="bg-stone-900 border border-neon-purple p-6 sm:p-8 rounded-2xl max-w-sm w-full max-h-full overflow-y-auto text-center shadow-[0_0_50px_rgba(188,19,254,0.3)] outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
+                     >
                          <div className="text-4xl mb-4">🌌</div>
                          <h2 id="gravity-offline-title" className="text-xl font-display font-bold text-white mb-2">SIMULATION RESUMED</h2>
                          <p className="text-gray-400 text-xs mb-6">Matter accretion continued while you were away. The generated matter below is already credited to this local save.</p>
