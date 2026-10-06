@@ -985,7 +985,7 @@ const MergeShips: React.FC = () => {
              
              {/* Tech Shop */}
              {showShop && (
-                 <div className="safe-screen-overlay absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center animate-in slide-in-from-bottom">
+                 <div className="safe-screen-overlay absolute inset-0 z-[60] bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center animate-in slide-in-from-bottom">
                      <div
                         role="dialog"
                         aria-modal="true"
