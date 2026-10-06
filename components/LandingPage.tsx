@@ -11,7 +11,7 @@ interface LandingPageProps {
 }
 
 // --- LIGHTWEIGHT HERO PREVIEW (CSS ONLY, NO LOGIC) ---
-const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
+const HolographicPreview = ({ onStart, hasSave }: { onStart: () => void; hasSave: boolean }) => {
     return (
         <a
             href="/game/galaxy_miner/"
@@ -64,7 +64,7 @@ const HolographicPreview = ({ onStart }: { onStart: () => void }) => {
                 <div className="relative">
                     <div className="absolute inset-0 bg-neon-blue blur-xl opacity-20 group-hover:opacity-40 transition-opacity animate-pulse"></div>
                     <span className="relative inline-block bg-space-900/90 border border-neon-blue text-neon-blue px-8 py-3 rounded text-sm md:text-base font-display font-black tracking-[0.2em] shadow-[0_0_20px_rgba(0,243,255,0.2)] group-hover:bg-neon-blue group-hover:text-black transition-all transform group-hover:scale-110">
-                        RESUME MINING
+                        {hasSave ? 'RESUME MINING' : 'START MINING'}
                     </span>
                 </div>
             </div>
@@ -134,7 +134,7 @@ const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
   </section>
 );
 
-const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
+const BrandHero = ({ onPlay, hasSave }: { onPlay: () => void; hasSave: boolean }) => {
     const scrollToConsole = () => {
         const el = document.getElementById('console-anchor');
         if (!el) return;
@@ -197,7 +197,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                             }}
                             className="group relative px-5 sm:px-8 py-3.5 sm:py-4 bg-white text-black font-display font-black text-base sm:text-xl tracking-[0.12em] sm:tracking-widest whitespace-nowrap hover:bg-neon-blue transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,243,255,0.6)] hover:scale-105"
                         >
-                            PLAY SPACE CLICKER
+                            {hasSave ? 'RESUME SPACE CLICKER' : 'PLAY SPACE CLICKER'}
                             <span className="absolute -bottom-2 -right-2 w-full h-full border-2 border-white/30 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
                         </a>
                         <button
@@ -402,7 +402,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
     <div className="w-full flex flex-col bg-space-900 overflow-x-hidden">
       
       {/* 1. BRAND HERO */}
-      <BrandHero onPlay={() => onStart('galaxy_miner')} />
+      <BrandHero onPlay={() => onStart('galaxy_miner')} hasSave={Boolean(hasSave)} />
       
       {/* 2. STATS TICKER */}
       <LiveStatsTicker />
@@ -449,7 +449,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                         <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-neon-blue"></div>
                         
                         <div className="relative overflow-hidden rounded-lg">
-                           <HolographicPreview onStart={() => onStart('galaxy_miner')} />
+                           <HolographicPreview onStart={() => onStart('galaxy_miner')} hasSave={Boolean(hasSave)} />
                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[60] bg-[length:100%_2px,3px_100%] opacity-10"></div>
                         </div>
                     </div>
@@ -464,8 +464,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                             <div className="text-sm font-mono text-neon-green">LOCAL BROWSER</div>
                         </div>
                         <div className="text-right">
-                            <div className="text-[10px] text-gray-500 uppercase tracking-widest">New Run</div>
-                            <div className="text-sm font-mono text-neon-blue">STARTS AT 0 SD</div>
+                            <div className="text-[10px] text-gray-500 uppercase tracking-widest">
+                                {hasSave ? 'Existing Run' : 'New Run'}
+                            </div>
+                            <div className="text-sm font-mono text-neon-blue">
+                                {hasSave ? 'RESUMES LOCAL SAVE' : 'STARTS AT 0 SD'}
+                            </div>
                         </div>
                     </div>
                 </div>
