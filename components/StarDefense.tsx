@@ -762,7 +762,9 @@ const StarDefense: React.FC = () => {
 
     // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
-        const t = setInterval(saveGame, 5000);
+        const t = setInterval(() => {
+            if (!document.hidden) saveGame();
+        }, 5000);
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') saveGame();
         };
