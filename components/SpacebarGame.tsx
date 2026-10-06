@@ -668,8 +668,9 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     { label: 'First Contact', unlocked: lifetimePresses >= 1, detail: 'Press Space once.' },
     { label: 'Key Cadet', unlocked: lifetimePresses >= 100, detail: 'Reach 100 lifetime presses.' },
     { label: 'Rapid Signal', unlocked: bestCps >= 8, detail: 'Reach 8 CPS.' },
-    { label: 'Automation Online', unlocked: autoRate >= 10, detail: 'Produce 10 points per second automatically.' },
+    { label: 'Million-Point Relay', unlocked: lifetimePoints >= 1_000_000, detail: 'Earn 1 million lifetime points.' },
     { label: 'Hyperdrive', unlocked: quantumKeys >= 1, detail: 'Earn your first Quantum Key.' },
+    { label: 'Quantum Fleet', unlocked: quantumKeys >= 10, detail: 'Accumulate 10 Quantum Keys.' },
   ];
 
   return (
@@ -878,7 +879,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       </section>
 
       <section className="max-w-6xl mx-auto px-4 pb-20">
-        <div className="grid md:grid-cols-5 gap-3 mb-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
           {achievements.map((item) => (
             <div
               key={item.label}
