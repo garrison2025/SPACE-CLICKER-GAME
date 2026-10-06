@@ -1029,20 +1029,37 @@ const App: React.FC = () => {
               ? "Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige."
               : "Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.";
           type = 'website';
+          const classicClickerUrl = "https://spaceclickergame.com/spacebar-clicker/";
+          const classicClickerDescription = "Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.";
           const clickerGameSchema = {
               "@type": "VideoGame",
-              "name": unblocked ? "Spacebar Clicker Unblocked" : "Spacebar Clicker",
-              "description": desc,
+              "name": "Spacebar Clicker",
+              "description": classicClickerDescription,
               "genre": ["Clicker", "Incremental", "Idle"],
               "playMode": "SinglePlayer",
               "applicationCategory": "Game",
               "operatingSystem": "Any modern web browser",
-              "@id": `https://spaceclickergame.com/${viewMode}/#game`,
-              "url": `https://spaceclickergame.com/${viewMode}/`,
+              "@id": classicClickerUrl + "#game",
+              "url": classicClickerUrl,
               "isAccessibleForFree": true,
               "dateModified": SITE_CONTENT_UPDATED,
               "inLanguage": "en",
               "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          };
+          const unblockedPageSchema = {
+              "@type": "WebPage",
+              "@id": "https://spaceclickergame.com/spacebar-clicker-unblocked/#webpage",
+              "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/",
+              "name": "Spacebar Clicker Unblocked - Instant Browser Play",
+              "description": desc,
+              "dateModified": SITE_CONTENT_UPDATED,
+              "mainEntity": { "@id": classicClickerUrl + "#game" },
+              "isPartOf": {
+                "@type": "WebSite",
+                "@id": "https://spaceclickergame.com/#website",
+                "name": "Space Clicker Game",
+                "url": "https://spaceclickergame.com/"
+              }
           };
           const clickerBreadcrumbSchema = {
               "@type": "BreadcrumbList",
@@ -1061,6 +1078,7 @@ const App: React.FC = () => {
               "@context": "https://schema.org",
               "@graph": [
                 clickerGameSchema,
+                unblockedPageSchema,
                 clickerBreadcrumbSchema,
                 {
                   "@type": "FAQPage",
