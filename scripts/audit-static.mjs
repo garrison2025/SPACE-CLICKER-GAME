@@ -234,6 +234,22 @@ const requiredSpacebarHubLinks = [
   '/spacebar-clicker-unblocked/'
 ];
 
+const requiredHomeClusterLinks = [
+  '/blog/strategy-guide-clicker-game-space-empire/',
+  '/spacebar-clicker/',
+  '/spacebar-counter/',
+  '/spacebar-clicker-test/'
+];
+
+const expectedSpacebarOgImages = new Map([
+  ['/spacebar-games/', site + '/og/spacebar-games.svg'],
+  ['/spacebar-clicker/', site + '/og/spacebar-clicker.svg'],
+  ['/spacebar-clicker-2/', site + '/og/spacebar-clicker-2.svg'],
+  ['/spacebar-counter/', site + '/og/spacebar-counter.svg'],
+  ['/spacebar-clicker-test/', site + '/og/spacebar-clicker-test.svg'],
+  ['/spacebar-clicker-unblocked/', site + '/og/spacebar-clicker-unblocked.svg']
+]);
+
 const deepSpacebarContentRoutes = new Set([
   '/spacebar-games/',
   '/spacebar-clicker/',
@@ -343,6 +359,9 @@ for (const file of htmlFiles) {
   if (twitterCard !== 'summary_large_image') throw new Error(route + ': twitter:card must be summary_large_image');
   if (twitterImage !== ogImage) throw new Error(route + ': twitter:image must match og:image');
   if (twitterImageAlt !== title) throw new Error(route + ': twitter:image:alt must match the page title');
+  if (expectedSpacebarOgImages.has(route) && ogImage !== expectedSpacebarOgImages.get(route)) {
+    throw new Error(route + ': Spacebar social image must be the route-specific first-party asset');
+  }
   if (canonical !== site + route) {
     throw new Error(route + ': canonical mismatch; expected ' + site + route + ', found ' + canonical);
   }
@@ -522,6 +541,14 @@ for (const file of htmlFiles) {
     }
     if (visibleText.length < 650) {
       throw new Error(route + ': trust/policy prerender is too thin (' + visibleText.length + ' chars)');
+    }
+  }
+
+  if (route === '/') {
+    for (const href of requiredHomeClusterLinks) {
+      if (!html.includes('href="' + href + '"')) {
+        throw new Error(route + ': homepage is missing contextual cluster link to ' + href);
+      }
     }
   }
 
