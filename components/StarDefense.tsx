@@ -122,6 +122,8 @@ const StarDefense: React.FC = () => {
     const maxHp = 100 + ((upgrades.find(u => u.id === 'hull')?.level || 0) * (upgrades.find(u => u.id === 'hull')?.value || 20));
     const maxShield = (upgrades.find(u => u.id === 'shield_gen')?.level || 0) * (upgrades.find(u => u.id === 'shield_gen')?.value || 50);
     const baseClickDamage = (upgrades.find(u => u.id === 'blaster')?.value || 10) * (1 + (upgrades.find(u => u.id === 'blaster')?.level || 1) * 0.2);
+    const baseClickDamageRef = useRef(baseClickDamage);
+    baseClickDamageRef.current = baseClickDamage;
     
 
     // --- GAME LOOP ---
@@ -559,25 +561,26 @@ const StarDefense: React.FC = () => {
     };
 
     // --- INTERACTIONS ---
+    const firePlayerShot = (x: number, targetId: number | null = null) => {
+        muzzleFlashRef.current = 1;
+        projectilesRef.current.push({
+            id: Math.random(),
+            x,
+            y: 90,
+            targetId,
+            damage: baseClickDamageRef.current * ((activeEffectsRef.current['rapid'] > 0 || activeEffectsRef.current['double_damage'] > 0) ? 2 : 1),
+            color: activeEffectsRef.current['rapid'] > 0 ? '#facc15' : '#00f3ff',
+            source: 'player'
+        });
+    };
+
     const handleFieldClick = (e: React.PointerEvent<HTMLDivElement>) => {
         if (gameOver) return;
         if (e.pointerType === 'mouse' && e.button !== 0) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
-        
-        // Muzzle Flash Effect
-        muzzleFlashRef.current = 1;
-
-        projectilesRef.current.push({
-            id: Math.random(),
-            x: x,
-            y: 90,
-            targetId: null,
-            damage: baseClickDamage * ((activeEffectsRef.current['rapid'] > 0 || activeEffectsRef.current['double_damage'] > 0) ? 2 : 1),
-            color: activeEffectsRef.current['rapid'] > 0 ? '#facc15' : '#00f3ff',
-            source: 'player'
-        });
+        firePlayerShot(x);
     };
 
     const handlePowerUpClick = (e: React.MouseEvent, p: PowerUp) => {
@@ -684,7 +687,18 @@ const StarDefense: React.FC = () => {
     // Keyboard controls
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
-            if (gameOver || isInteractiveKeyboardTarget(e.target)) return;
+            if (gameOver || isInteractiveKeyboardTarget(e.target) || e.repeat) return;
+
+            if (e.code === 'Space' || e.key === 'Enter') {
+                e.preventDefault();
+                const target = enemiesRef.current.reduce<Enemy | null>(
+                    (closest, enemy) => !closest || enemy.y > closest.y ? enemy : closest,
+                    null
+                );
+                firePlayerShot(target?.x ?? 50, target?.id ?? null);
+                return;
+            }
+
             if (e.key === '1') activateSkill('emp');
             if (e.key === '2') activateSkill('rapid');
             if (e.key === '3') activateSkill('nuke');
@@ -791,8 +805,11 @@ const StarDefense: React.FC = () => {
         <div className="w-full h-full relative bg-black overflow-y-auto md:overflow-hidden flex flex-col md:flex-row font-sans select-none text-white">
             
             {/* --- GAME AREA --- */}
-            <div 
-                className="flex-1 min-h-[440px] md:min-h-0 relative md:border-r border-b md:border-b-0 border-white/20 bg-space-950 cursor-crosshair overflow-hidden group touch-manipulation"
+            <div
+                role="region"
+                tabIndex={0}
+                aria-label="Star Defense battle space. Press Space or Enter to fire at the nearest enemy. Press 1, 2, or 3 for combat skills."
+                className="flex-1 min-h-[440px] md:min-h-0 relative md:border-r border-b md:border-b-0 border-white/20 bg-space-950 cursor-crosshair overflow-hidden group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                 onPointerDown={handleFieldClick}
             >
                  {/* Moving Starfield Background */}
