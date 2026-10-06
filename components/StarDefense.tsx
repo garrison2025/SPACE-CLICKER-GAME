@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } from '../types';
 import { formatNumber } from '../utils';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 const DEFENSE_SAVE_KEY = 'star_defense_save_v4';
 const MAX_RESOURCE_VALUE = 1e300;
@@ -482,7 +483,7 @@ const StarDefense: React.FC = () => {
                 wave: 1,
                 upgrades: INITIAL_UPGRADES.map((upgrade) => ({ ...upgrade })),
             };
-            localStorage.removeItem(DEFENSE_SAVE_KEY);
+            safeRemoveStorageItem(DEFENSE_SAVE_KEY);
             setGameOver(true);
         }
     };
@@ -625,7 +626,7 @@ const StarDefense: React.FC = () => {
         // Persist the new run before updating the UI so an immediate close after
         // Restart cannot resurrect the defeated run.
         saveStateRef.current = freshSnapshot;
-        localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({
+        safeSetStorageItem(DEFENSE_SAVE_KEY, JSON.stringify({
             ...freshSnapshot,
             lastSaveTime: Date.now(),
         }));
@@ -684,7 +685,7 @@ const StarDefense: React.FC = () => {
     }, [scraps, wave, upgrades]);
 
     useEffect(() => {
-        const saved = localStorage.getItem(DEFENSE_SAVE_KEY);
+        const saved = safeGetStorageItem(DEFENSE_SAVE_KEY);
         if (!saved) return;
 
         try {
@@ -719,7 +720,7 @@ const StarDefense: React.FC = () => {
             saveStateRef.current = nextSnapshot;
             scrapsRef.current = loadedScraps;
             upgradesRef.current = loadedUpgrades;
-            localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({
+            safeSetStorageItem(DEFENSE_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: Date.now(),
             }));
@@ -733,7 +734,7 @@ const StarDefense: React.FC = () => {
 
     const saveGame = useCallback(() => {
         if (!gameOver) {
-            localStorage.setItem(DEFENSE_SAVE_KEY, JSON.stringify({ 
+            safeSetStorageItem(DEFENSE_SAVE_KEY, JSON.stringify({ 
                 ...saveStateRef.current,
                 lastSaveTime: Date.now() 
             }));
