@@ -250,7 +250,7 @@ const MarsColony: React.FC = () => {
             stateRef.current = { resources: next, buildings: currentBuildings };
             setResources(next);
         }, 1000);
-        return () => window.clearInterval(timer);
+        return () => window.window.clearInterval(timer);
     }, []);
 
     // --- PHYSICS LOOP (Visuals) ---
@@ -422,7 +422,9 @@ const MarsColony: React.FC = () => {
 
     // Save loop plus page-lifecycle persistence.
     useEffect(() => {
-        const timer = setInterval(saveGame, 5000);
+        const timer = window.setInterval(() => {
+            if (!document.hidden) saveGame();
+        }, 5000);
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') saveGame();
         };
