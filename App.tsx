@@ -1851,26 +1851,15 @@ const App: React.FC = () => {
           saveGame();
       }, AUTO_SAVE_INTERVAL);
 
-      // Listen for global force save event (from StarshipConsole)
-      const handleForceSave = () => {
-          const persisted = saveGame();
-          addLog(
-              persisted ? "GAME SAVED MANUALLY" : "MANUAL SAVE FAILED: BROWSER STORAGE UNAVAILABLE",
-              persisted ? "success" : "alert"
-          );
-      };
-
       // Browser close/refresh listener
       const handleBeforeUnload = () => {
           saveGame();
       };
 
-      window.addEventListener('game-save-trigger', handleForceSave);
       window.addEventListener('beforeunload', handleBeforeUnload);
 
       return () => {
           clearInterval(timer);
-          window.removeEventListener('game-save-trigger', handleForceSave);
           window.removeEventListener('beforeunload', handleBeforeUnload);
           saveGame(); // Save on unmount
       };
@@ -2004,7 +1993,10 @@ const App: React.FC = () => {
                     onToggleScreenShake={toggleScreenShake}
                     onImportSave={handleImportSave}
                     onResetGame={() => {
-                        safeRemoveStorageItem(SAVE_KEY);
+                        if (!safeRemoveStorageItem(SAVE_KEY)) {
+                            addLog("RESET FAILED: BROWSER STORAGE UNAVAILABLE", "alert");
+                            return;
+                        }
                         window.location.reload();
                     }}
                 />
@@ -2041,6 +2033,14 @@ const App: React.FC = () => {
                 onSwitchGame={(id) => handleNavigate('game', id)}
                 onGoHome={() => handleNavigate('home')}
                 onOpenStats={activeGame === 'galaxy_miner' ? () => setShowStatsModal(true) : undefined}
+                onManualSave={activeGame === 'galaxy_miner' ? () => {
+                    const persisted = saveGame();
+                    addLog(
+                        persisted ? "GAME SAVED MANUALLY" : "MANUAL SAVE FAILED: BROWSER STORAGE UNAVAILABLE",
+                        persisted ? "success" : "alert"
+                    );
+                    return persisted;
+                } : undefined}
             >
                 <div className="w-full relative flex flex-col">
                     <div className="game-viewport relative min-h-0 w-full flex flex-col">
