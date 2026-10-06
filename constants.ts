@@ -70,12 +70,12 @@ export const GAMES_CATALOG: GameMeta[] = [
   {
     id: 'deep_signal',
     title: 'Deep Space Signal',
-    subtitle: 'Text Adventure',
-    description: 'A dark, text-based mystery. Send signals, decode responses, and uncover the secrets of the void.',
+    subtitle: 'Signal Decoding Idle',
+    description: 'Scan frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting.',
     icon: '📟',
     color: 'from-gray-700 to-gray-900',
     status: 'LIVE',
-    tags: ['Text-Based', 'Mystery', 'Story'],
+    tags: ['Idle', 'Signal Decoder', 'Simulation'],
     briefing: "You are sitting in front of a terminal. The screen is black. A single green cursor blinks. There is a button labeled 'SEND SIGNAL'. Do you dare press it?",
     manual: "1. SCAN frequencies to receive encrypted transmissions.\n2. MANAGE Energy while upgrading scan and decryption systems.\n3. DECODE and analyze messages to build BIO, TECH, MIL, and VOID bonuses.",
     changelog: ["v1.0: Signal receiver active. Connection established."]
