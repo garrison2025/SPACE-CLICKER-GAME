@@ -37,7 +37,7 @@ const SpacebarGamesPage: React.FC = () => {
       description: 'Open the full Spacebar Clicker game directly in a modern browser with keyboard and mobile controls and local browser saves.',
       bestFor: 'Quick browser access'
     }
-  ];;
+  ];
 
   return (
     <div className="min-h-screen bg-space-950 text-gray-200">
@@ -124,7 +124,7 @@ const SpacebarGamesPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg text-white">Do Spacebar Clicker saves sync between devices?</h3>
-                <p>No. Current game progress is stored locally in the browser on the device being used.</p>
+                <p>No automatic cloud sync is provided. Supported clicker modes store progress locally, but Spacebar Clicker and Spacebar Clicker 2 can export a save code or backup file for manual transfer and restore.</p>
               </div>
             </div>
           </section>
