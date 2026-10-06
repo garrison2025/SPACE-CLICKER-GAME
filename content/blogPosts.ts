@@ -8,7 +8,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Explore how space clicker games evolved from manual input into automation, prestige, offline progress, and long-run incremental strategy.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 29, 2025',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '4 min read',
         tags: ['space clicker game', 'incremental', 'history', 'mechanics'],
         image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000',
@@ -34,7 +34,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Why Space Fits Incremental Progression</h2>
             <p>A space setting is a natural thematic fit for <strong>space clicker games</strong> because the same resource loop can expand across increasingly large fictional scales.</p>
             <p>A space theme makes very large numerical scales easier to represent: progression can move from an asteroid to planets, stations, stellar infrastructure, and other fictional large-scale systems without changing the basic incremental loop.</p>
-            <p>Space gives incremental games a natural sense of scale. Designers can move from a single mining action to planets, nebulae, black holes, and large resource economies without changing the basic progression language. For real astronomy background, NASA's <a href="https://www.nasa.gov/universe" target="_blank" rel="noopener noreferrer">Universe</a> resources are a useful reference.</p>
+            <p>Space gives incremental games a natural sense of scale. Designers can move from a single mining action to planets, nebulae, black holes, and large resource economies without changing the basic progression language. For real astronomy background, NASA's <a href="https://science.nasa.gov/universe/" target="_blank" rel="noopener noreferrer">Universe</a> resources are a useful reference.</p>
 
             <h2>Space Bar Input in Clicker Games</h2>
             <p>A <strong>space bar clicking game</strong> uses keyboard input instead of, or alongside, pointer clicks. The same input pattern also appears in browser speed tests and short mini-games.</p>
