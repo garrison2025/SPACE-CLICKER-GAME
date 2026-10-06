@@ -325,31 +325,56 @@ const MergeShips: React.FC = () => {
 
     // --- INTERACTIONS ---
     const buyShip = () => {
-        if (credits >= nextShipCost) {
-            const idx = hangar.findIndex(s => s === null);
-            if (idx !== -1) {
-                setCredits(prev => prev - nextShipCost);
-                setShipsPurchased(prev => prev + 1);
-                setHangar(prev => {
-                    const next = [...prev];
-                    next[idx] = { id: Date.now().toString(), level: purchaseLevel };
-                    return next;
-                });
-                setHighestLevel(prev => Math.max(prev, purchaseLevel));
-            }
-        }
+        const snapshot = saveStateRef.current;
+        if (snapshot.shipsPurchased >= MAX_PURCHASE_COUNT) return;
+
+        const level = 1 + snapshot.tech.shipLevel;
+        const price = Math.floor(
+            BASE_SHIP_COST *
+            Math.pow(COST_SCALE, snapshot.shipsPurchased) *
+            Math.pow(1.8, snapshot.tech.shipLevel)
+        );
+        if (snapshot.credits < price) return;
+
+        const idx = snapshot.hangar.findIndex(ship => ship === null);
+        if (idx === -1) return;
+
+        const nextHangar = [...snapshot.hangar];
+        nextHangar[idx] = { id: Date.now().toString(), level };
+        const nextSnapshot = {
+            ...snapshot,
+            credits: snapshot.credits - price,
+            hangar: nextHangar,
+            shipsPurchased: snapshot.shipsPurchased + 1,
+            highestLevel: Math.max(snapshot.highestLevel, level),
+        };
+
+        saveStateRef.current = nextSnapshot;
+        setCredits(nextSnapshot.credits);
+        setShipsPurchased(nextSnapshot.shipsPurchased);
+        setHangar(nextHangar);
+        setHighestLevel(nextSnapshot.highestLevel);
     };
     
     const buyTech = (key: keyof MergeUpgradeState) => {
+        const snapshot = saveStateRef.current;
         const cfg = UPGRADE_CONFIG[key];
-        const currentLvl = tech[key];
+        const currentLvl = snapshot.tech[key];
         if (currentLvl >= cfg.max) return;
-        
+
         const cost = Math.floor(cfg.base * Math.pow(cfg.mult, currentLvl));
-        if (credits >= cost) {
-            setCredits(prev => prev - cost);
-            setTech(prev => ({ ...prev, [key]: currentLvl + 1 }));
-        }
+        if (snapshot.credits < cost) return;
+
+        const nextTech = { ...snapshot.tech, [key]: currentLvl + 1 };
+        const nextSnapshot = {
+            ...snapshot,
+            credits: snapshot.credits - cost,
+            tech: nextTech,
+        };
+
+        saveStateRef.current = nextSnapshot;
+        setCredits(nextSnapshot.credits);
+        setTech(nextTech);
     };
 
     const openCrate = (index: number) => {
