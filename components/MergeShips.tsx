@@ -633,9 +633,47 @@ const MergeShips: React.FC = () => {
     // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
         const t = setInterval(saveGame, 5000);
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'hidden') saveGame();
+
+        const creditHiddenProgress = () => {
+            const hiddenAt = hiddenAtRef.current;
+            hiddenAtRef.current = null;
+            if (hiddenAt === null) return;
+
+            const now = Date.now();
+            const seconds = Math.min(86_400, Math.max(0, (now - hiddenAt) / 1000));
+            if (seconds < 60) return;
+
+            const snapshot = saveStateRef.current;
+            const dps = snapshot.orbit.reduce(
+                (acc, ship) => acc + (ship ? getShipDps(ship.level) : 0),
+                0
+            );
+            const earning = Math.floor(dps * seconds * 0.5);
+            if (earning <= 0) return;
+
+            const nextCredits = Math.min(MAX_RESOURCE_VALUE, snapshot.credits + earning);
+            const credited = Math.max(0, nextCredits - snapshot.credits);
+            if (credited <= 0) return;
+
+            const nextSnapshot = { ...snapshot, credits: nextCredits };
+            saveStateRef.current = nextSnapshot;
+            safeSetStorageItem(MERGE_SAVE_KEY, JSON.stringify({
+                ...nextSnapshot,
+                lastSaveTime: now,
+            }));
+            setCredits(nextCredits);
+            setOfflineProfit({ time: seconds, amount: credited });
         };
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                hiddenAtRef.current = Date.now();
+                saveGame();
+                return;
+            }
+            creditHiddenProgress();
+        };
+
         const handlePageHide = () => saveGame();
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
