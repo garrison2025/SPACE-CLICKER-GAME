@@ -329,8 +329,10 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                      <button
                        type="button"
                        key={game.id}
+                       aria-label={`Switch to ${game.title}`}
+                       aria-current={activeGame === game.id ? 'page' : undefined}
                        onClick={() => onSwitchGame(game.id)}
-                       className={`flex items-center gap-3 transition-opacity text-left ${activeGame === game.id ? 'opacity-100' : 'opacity-45 hover:opacity-100'}`}
+                       className={`min-h-11 w-full flex items-center justify-center group-hover:justify-start gap-3 rounded-lg px-2 transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue ${activeGame === game.id ? 'opacity-100 bg-white/5' : 'opacity-45 hover:opacity-100 hover:bg-white/5'}`}
                        title={game.title}
                      >
                          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${activeGame === game.id ? 'bg-neon-green shadow-[0_0_5px_lime]' : 'bg-gray-600'}`}></div>
