@@ -13,6 +13,36 @@ if (!fs.existsSync(distDir)) {
   throw new Error('dist/ not found. Run the production build before static audit.');
 }
 
+const manifestPath = path.join(distDir, 'manifest.webmanifest');
+if (!fs.existsSync(manifestPath)) {
+  throw new Error('manifest.webmanifest is missing from dist/.');
+}
+
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+for (const field of ['name', 'short_name', 'start_url', 'display']) {
+  if (!manifest[field]) {
+    throw new Error('manifest.webmanifest is missing required field: ' + field);
+  }
+}
+
+if (!Array.isArray(manifest.icons) || manifest.icons.length === 0) {
+  throw new Error('manifest.webmanifest must define application icons.');
+}
+
+const manifestIconSizes = new Set(
+  manifest.icons.flatMap((icon) =>
+    String(icon?.sizes || '')
+      .split(/\s+/)
+      .filter(Boolean)
+  )
+);
+
+for (const requiredSize of ['192x192', '512x512']) {
+  if (!manifestIconSizes.has(requiredSize)) {
+    throw new Error('manifest.webmanifest must declare a ' + requiredSize + ' app icon.');
+  }
+}
+
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
   const full = path.join(dir, entry.name);
   if (entry.isDirectory()) return walk(full);
