@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { formatNumber } from '../utils';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
+import { decodeBase64Utf8, encodeBase64Utf8 } from '../utils/base64Utf8';
 
 type UpgradeId =
   | 'strongerKey'
@@ -484,7 +485,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       ...saveStateRef.current,
       lastSaveTime: Date.now(),
     };
-    return 'SCG1.' + window.btoa(JSON.stringify(payload));
+    return 'SCG1.' + encodeBase64Utf8(JSON.stringify(payload));
   };
 
   const applyImportedSaveCode = (rawCode: string) => {
@@ -500,7 +501,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
     try {
       const json = code.startsWith('SCG1.')
-        ? window.atob(code.slice(5))
+        ? decodeBase64Utf8(code.slice(5))
         : code;
       const parsed = JSON.parse(json);
       const validShape =
