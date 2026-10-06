@@ -847,6 +847,8 @@ const staticRouteContent = {
       <p>Ships moved into orbit automatically fire on passing asteroids. Stronger vessels deal more damage, and destroyed normal, gold, or boss asteroids award Credits that can be reinvested into more ships and technology.</p>
       <h2>Technology progression</h2>
       <p>Orbit Expansion opens additional deployment slots, Advanced Fabrication improves purchased ship quality, and Logistics Net increases the frequency of incoming crates. The main tradeoff is how much value to keep in the hangar for merging versus how much power to deploy for immediate income.</p>
+      <h2>Offline and background fleet earnings</h2>
+      <p>Supported saves can recover estimated Orbit income after at least one minute away, including when the browser keeps the tab open in the background. Recovery is capped at 24 hours and uses the deployed fleet's Orbit DPS with a 50% asteroid-availability model; it is an approximation rather than a full offscreen combat simulation.</p>
       <p>For a more traditional incremental economy, open <a href="/game/galaxy_miner/">Galaxy Miner</a>. For direct combat, try <a href="/game/star_defense/">Star Defense</a>.</p>
     </section>`,
   '/game/gravity_idle': `
@@ -859,6 +861,8 @@ const staticRouteContent = {
       <p>Orbital Cannons add launch sources, Auto-Loader increases firing speed, Kinetic Mass raises impact damage, and Quantum Drill adds piercing. These upgrades stack into a progressively denser automated system rather than requiring constant manual clicking.</p>
       <h2>Pulse and Matter progression</h2>
       <p>A manual gravity pulse provides an active intervention on a cooldown, while automatic launchers keep the simulation moving between inputs. Matter earned from destroyed objects funds the next level of gravity, firing, damage, and piercing upgrades.</p>
+      <h2>Offline and background Matter recovery</h2>
+      <p>Supported saves can recover estimated Matter after at least one minute away, including when an open tab is backgrounded. Recovery is capped at 24 hours and uses an approximation based on launcher count and Kinetic Mass instead of running the full physics simulation offscreen.</p>
       <p>For a slower management loop, visit <a href="/game/mars_colony/">Mars Colony Idle</a>. For an economy-and-prestige clicker, play <a href="/game/galaxy_miner/">Galaxy Miner</a>.</p>
     </section>`,
   '/game/deep_signal': `
