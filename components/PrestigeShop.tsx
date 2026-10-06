@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { PrestigeUpgrade } from '../types';
 import { PRESTIGE_UPGRADES } from '../constants';
 import { formatNumber } from '../utils';
+import { trapDialogFocus } from '../utils/dialogFocus';
 
 interface PrestigeShopProps {
   darkMatter: number;
@@ -30,6 +31,7 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
         aria-labelledby="prestige-shop-title"
         tabIndex={-1}
         autoFocus
+        onKeyDown={trapDialogFocus}
         className="bg-space-800 w-full max-w-4xl max-h-full rounded-2xl border border-neon-purple shadow-[0_0_50px_rgba(188,19,254,0.2)] flex flex-col overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
       >
         
