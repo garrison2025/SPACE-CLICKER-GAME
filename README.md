@@ -18,10 +18,10 @@ Browser-based clicker and idle game hub for **SpaceClickerGame.com**.
 
 ## Local development
 
-Prerequisite: Node.js 22 or newer (the verification workflow uses Node 22).
+Prerequisite: Node.js 22.16.0 (see `.node-version`).
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -29,6 +29,12 @@ Production build:
 
 ```bash
 npm run build
+```
+
+Run the same build, storage, and routing checks used by CI:
+
+```bash
+npm run verify
 ```
 
 The project does **not** require a Gemini API key or another paid API. Dynamic space events are generated locally in the browser.
