@@ -455,8 +455,13 @@ const App: React.FC = () => {
             resources: nextResources,
             lifetimeEarnings: nextLifetimeEarnings
         };
-        setResources(nextResources);
-        setLifetimeEarnings(nextLifetimeEarnings);
+
+        // Keep background Galaxy Miner progression in the mutable snapshot
+        // without re-rendering unrelated pages every second.
+        if (viewMode === 'game' && activeGame === 'galaxy_miner') {
+            setResources(nextResources);
+            setLifetimeEarnings(nextLifetimeEarnings);
+        }
     }, intervalTime);
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -465,6 +470,14 @@ const App: React.FC = () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [getProductionRate, viewMode, activeGame]);
+
+  useEffect(() => {
+    if (viewMode !== 'game' || activeGame !== 'galaxy_miner') return;
+
+    const snapshot = gameStateRef.current;
+    setResources(snapshot.resources);
+    setLifetimeEarnings(snapshot.lifetimeEarnings);
+  }, [viewMode, activeGame]);
 
   // --- SEO METADATA CALCULATION ---
   const getSEOProps = () => {
