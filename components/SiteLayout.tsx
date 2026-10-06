@@ -86,7 +86,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
             </a>
 
             {/* Desktop Nav */}
-            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-6 lg:gap-8">
+            <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-5 xl:gap-7">
                 <NavLink view="home" label="HOME" />
                 <NavLink view="game" label="GALAXY MINER" />
                 <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" />
@@ -102,22 +102,14 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                   href="/spacebar-games/"
                   aria-current={currentView === 'spacebar-games' ? 'page' : undefined}
                   onClick={(event) => { event.preventDefault(); onNavigate('spacebar-games'); }}
-                  className="hidden lg:inline-flex px-3.5 py-1.5 bg-neon-purple/10 border border-neon-purple/40 text-neon-purple hover:bg-neon-purple hover:text-black transition-all rounded-full font-mono text-xs font-bold"
+                  className="hidden xl:inline-flex px-3.5 py-1.5 bg-neon-purple/10 border border-neon-purple/40 text-neon-purple hover:bg-neon-purple hover:text-black transition-all rounded-full font-mono text-xs font-bold"
                 >
                   SPACEBAR TOOLS
-                </a>
-                <a
-                  href="/compare/"
-                  aria-current={currentView === 'compare' ? 'page' : undefined}
-                  onClick={(event) => { event.preventDefault(); onNavigate('compare'); }}
-                  className="hidden md:inline-flex px-3.5 py-1.5 bg-neon-blue/10 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-all rounded-full font-mono text-xs font-bold"
-                >
-                  VS IDLE GAMES
                 </a>
 
                 <div
                   ref={mobileMenuRef}
-                  className="md:hidden relative"
+                  className="lg:hidden relative"
                   onBlur={(event) => {
                     const nextFocus = event.relatedTarget as Node | null;
                     if (!nextFocus || !event.currentTarget.contains(nextFocus)) {
