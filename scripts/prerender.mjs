@@ -874,7 +874,7 @@ const staticRouteContent = {
       <h2>Deep Space Signal gameplay</h2>
       <p>Deep Space Signal is a browser idle simulation built around scanning radio frequencies, receiving encrypted transmissions, and turning decoded messages into Data. Each scan consumes Energy, so progress is paced by active decisions, passive regeneration, and later automation.</p>
       <h2>Scanning and decryption</h2>
-      <p>The Antenna Array unlocks deeper frequencies, while Crypto Core upgrades increase passive decryption speed. Players can also click undecoded messages to reduce their encryption manually instead of waiting for the processor to finish the work.</p>
+      <p>The Antenna Array increases the Data value recovered from newly scanned signals, while Crypto Core upgrades increase passive decryption speed. Players can also click undecoded messages to reduce their encryption manually instead of waiting for the processor to finish the work.</p>
       <h2>Energy and automation</h2>
       <p>Capacitor Bank raises maximum Energy, Solar Sails improve regeneration, and Auto-Scan AI can automate signal hunting once purchased. This creates a gradual shift from manual scanning toward a more idle signal-processing loop.</p>
       <h2>BIO, TECH, MIL, and VOID factions</h2>
