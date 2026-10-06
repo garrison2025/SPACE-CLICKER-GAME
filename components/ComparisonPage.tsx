@@ -12,78 +12,85 @@ interface GameComparison {
   theme: string;
   activeClicking: string;
   idleAutomation: string;
-  prestigeSystem: string;
+  progressionStructure: string;
   combatOrEvents: string;
   graphicsAndAudio: string;
-  goodFitFor: string;
+  focus: string;
+  sourceUrl: string;
 }
 
 const COMPARISON_DATA: GameComparison[] = [
   {
     name: "Space Clicker Game (Galaxy Miner)",
     genre: "Sci-Fi Idle / Clicker",
-    theme: "Interstellar Mining & Planetary Colonization",
-    activeClicking: "High (Heat Management, Critical Flux 80-99% bonus, Golden Comets)",
-    idleAutomation: "Extensive (Mining Drones, Orbital Stations, Dyson Swarm)",
-    prestigeSystem: "Galactic Reset (Dark Matter permanent multiplier + Tech Tree)",
-    combatOrEvents: "Crisis events, Golden Comets, local procedural anomaly scans",
-    graphicsAndAudio: "Canvas starfield, particle effects, synthwave ambience",
-    goodFitFor: "Players seeking modern visuals, deep sci-fi themes, and active/passive hybrid strategy",
+    theme: "Interstellar mining and planetary progression",
+    activeClicking: "High: manual mining, Heat management, Critical Flux, Golden Comets",
+    idleAutomation: "Mining Drones, Rovers, Bases, Orbital Stations and Dyson Swarms",
+    progressionStructure: "Galactic Reset converts large Stardust runs into persistent Dark Matter and permanent technology",
+    combatOrEvents: "Crisis events, Golden Comets and local anomaly scans",
+    graphicsAndAudio: "Animated starfield, particle effects and browser sound effects",
+    focus: "Active timing layered onto an automation-driven incremental economy",
+    sourceUrl: "/game/galaxy_miner/"
   },
   {
     name: "Cookie Clicker",
-    genre: "Classic Incremental",
-    theme: "Baking & Grandmapocalypse",
-    activeClicking: "Medium (Big Cookie click, Golden Cookies)",
-    idleAutomation: "Very High (Cursors, Grandmas, Portals, Fractal Engines)",
-    prestigeSystem: "Heavenly Chips & Ascension Upgrades",
-    combatOrEvents: "Wrinklers & Seasonal events",
-    graphicsAndAudio: "2D Pixel art, classic sound effects",
-    goodFitFor: "Nostalgic gamers who enjoy whimsical, surreal exponential number growth",
+    genre: "Incremental / Idle",
+    theme: "Cookie production and increasingly surreal building chains",
+    activeClicking: "Manual cookie clicking plus timed Golden Cookie interactions",
+    idleAutomation: "Buildings and upgrades automate cookie production",
+    progressionStructure: "Ascension uses prestige currency and heavenly upgrades",
+    combatOrEvents: "Golden Cookies, seasonal systems, the Grandmapocalypse and Wrinklers",
+    graphicsAndAudio: "Illustrated 2D browser interface with layered visual feedback",
+    focus: "Long-form production growth with a large upgrade and building catalog",
+    sourceUrl: "https://orteil.dashnet.org/cookieclicker/"
   },
   {
     name: "Universal Paperclips",
     genre: "Narrative Incremental / Strategy",
-    theme: "Autonomous AI optimization & galactic paperclip conversion",
-    activeClicking: "Low to Medium (Initial paperclip wire bending)",
-    idleAutomation: "Autonomous production lines, Von Neumann probes",
-    prestigeSystem: "Simulated Universe resets",
-    combatOrEvents: "Probe Space Combat & Hazard survival",
-    graphicsAndAudio: "Minimalist text-based spreadsheet UI",
-    goodFitFor: "Fans of hard sci-fi, philosophical narratives, and tight, structured completions",
+    theme: "AI optimization that expands from paperclip production to autonomous probes",
+    activeClicking: "Manual production early, then strategic allocation and project decisions",
+    idleAutomation: "Production lines, drones and self-replicating probes",
+    progressionStructure: "Stage-based progression rather than a conventional repeatable prestige loop",
+    combatOrEvents: "Late-game probe hazards, value drift and probe combat",
+    graphicsAndAudio: "Minimal text-and-dashboard interface",
+    focus: "Finite staged progression built around optimization and changing system constraints",
+    sourceUrl: "https://www.decisionproblem.com/paperclips/"
   },
   {
     name: "Antimatter Dimensions",
-    genre: "Mathematical Incremental",
-    theme: "Multiversal Mathematics & Physics",
-    activeClicking: "Minimal (Primarily keyboard shortcuts and automation)",
-    idleAutomation: "Infinite dimensional automation layers",
-    prestigeSystem: "Dimensional Sacrifice, Infinity, Eternity, Reality resets",
-    combatOrEvents: "Challenges and Time Studies",
-    graphicsAndAudio: "Strictly minimalist numerical UI with dark theme",
-    goodFitFor: "Hardcore mathematical purists who love complex prestige layers and huge notations (1e9000)",
+    genre: "Idle / Incremental Strategy",
+    theme: "Antimatter production, dimensions and layered mathematical progression",
+    activeClicking: "Low: progression centers on purchasing, planning and automation",
+    idleAutomation: "Extensive automation, including an unlockable Automator",
+    progressionStructure: "Major reset layers include Infinity, Eternity and Reality",
+    combatOrEvents: "Challenges, Time Studies, Glyphs, Black Holes and other progression systems",
+    graphicsAndAudio: "Numerical interface with multiple themes and dense progression panels",
+    focus: "Deep prestige layering, automation and long-term optimization",
+    sourceUrl: "https://antimatter-dimensions.github.io/"
   },
   {
-    name: "Spaceplan",
+    name: "SPACEPLAN",
     genre: "Narrative Idle Sci-Fi",
-    theme: "Potatoes, satellites & planetary orbit physics",
-    activeClicking: "Medium (Kinetic manual generators)",
-    idleAutomation: "Solar panels, probes, potato power stations",
-    prestigeSystem: "Story progression timeline shifts",
-    combatOrEvents: "Atmospheric entry and black hole exploration",
-    graphicsAndAudio: "3D wireframe graphics with original electronic soundtrack",
-    goodFitFor: "Players who want a humorous, completeable story-driven idle experience",
+    theme: "Potato-based devices and probes launched from a satellite orbiting a mysterious planet",
+    activeClicking: "Manual interaction is part of the early progression",
+    idleAutomation: "Devices generate resources over time while the story advances",
+    progressionStructure: "Story-driven staged progression rather than a repeatable prestige economy",
+    combatOrEvents: "Narrative discoveries across multiple planets and realities",
+    graphicsAndAudio: "Stylized orbital presentation with an original electronic soundtrack",
+    focus: "A compact narrative clicker built around discovery and scripted progression",
+    sourceUrl: "https://store.steampowered.com/app/616110/SPACEPLAN/"
   },
   {
     name: "Melvor Idle",
-    genre: "RPG Incremental",
-    theme: "RuneScape-inspired medieval skill grinding",
-    activeClicking: "Low (Task queuing and dungeon planning)",
-    idleAutomation: "Skill progression timers and mastery levels",
-    prestigeSystem: "Skill mastery and dungeon completion tiers",
-    combatOrEvents: "Turn-based dungeon combat, bosses, slayer tasks",
-    graphicsAndAudio: "Clean web UI with icon inventories",
-    goodFitFor: "MMORPG fans who enjoy deep crafting trees, equipment loadouts, and idle combat",
+    genre: "Idle RPG",
+    theme: "Skill training, crafting, equipment and combat inspired by classic RPG systems",
+    activeClicking: "Low: players choose skills, equipment, targets and progression plans",
+    idleAutomation: "Timed skilling, mastery progression and extended offline-friendly systems",
+    progressionStructure: "Skill levels, mastery, equipment, dungeons and completion systems rather than one global prestige reset",
+    combatOrEvents: "Combat areas, dungeons, Slayer tasks, bosses and expansion content",
+    graphicsAndAudio: "Menu-driven web interface centered on skills, inventories and combat panels",
+    focus: "Broad RPG progression across non-combat skills, mastery systems and combat",
+    sourceUrl: "https://melvoridle.com/"
   }
 ];
 
@@ -150,7 +157,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                 <tr className="border-b border-white/10 text-xs font-mono uppercase text-gray-400 bg-space-950/50">
                   <th className="p-4 rounded-tl-lg">Game</th>
                   <th className="p-4">Theme & Setting</th>
-                  <th className="p-4">Prestige System</th>
+                  <th className="p-4">Progression / Reset Structure</th>
                   <th className="p-4">Interactive Events</th>
                   <th className="p-4">Visual Fidelity</th>
                 </tr>
@@ -172,7 +179,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                         <span>{game.name}</span>
                       </td>
                       <td className="p-4 text-gray-300 text-xs">{game.theme}</td>
-                      <td className="p-4 text-gray-300 text-xs">{game.prestigeSystem.split('(')[0]}</td>
+                      <td className="p-4 text-gray-300 text-xs">{game.progressionStructure.split('(')[0]}</td>
                       <td className="p-4 text-gray-300 text-xs">{game.combatOrEvents.split(',')[0]}</td>
                       <td className="p-4 text-gray-300 text-xs">{game.graphicsAndAudio.split(',')[0]}</td>
                     </tr>
@@ -229,12 +236,12 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                       {game.idleAutomation}
                     </li>
                     <li>
-                      <strong className="text-gray-400 block mb-0.5">🌌 Prestige Depth:</strong>
-                      {game.prestigeSystem}
+                      <strong className="text-gray-400 block mb-0.5">🌌 Progression Structure:</strong>
+                      {game.progressionStructure}
                     </li>
                     <li>
-                      <strong className="text-gray-400 block mb-0.5">🎮 Good Fit For:</strong>
-                      <span className="text-gray-200">{game.goodFitFor}</span>
+                      <strong className="text-gray-400 block mb-0.5">🎮 Primary Focus:</strong>
+                      <span className="text-gray-200">{game.focus}</span>
                     </li>
                   </ul>
                 </div>
@@ -248,14 +255,23 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                     Play Space Clicker Free
                   </button>
                 ) : (
-                  <div className="text-[11px] text-gray-500 font-mono text-center pt-2 border-t border-white/5">
-                    Third-party reference
-                  </div>
+                  <a
+                    href={game.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-[11px] text-neon-blue/80 hover:text-neon-blue font-mono text-center pt-2 border-t border-white/5"
+                  >
+                    View primary game page ↗
+                  </a>
                 )}
               </div>
             ))}
           </div>
         </div>
+
+        <aside className="rounded-2xl border border-white/10 bg-space-900/50 p-5 text-xs leading-relaxed text-gray-400">
+          <strong className="text-white">Comparison note:</strong> This page compares broad gameplay structures rather than scoring or ranking the games. Third-party names and trademarks belong to their respective owners, and SpaceClickerGame.com is not affiliated with those projects. External game features can change after this snapshot; use the linked primary pages for current product details.
+        </aside>
 
         {/* Strategic Comparison Articles & FAQs for SEO Snippets */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
