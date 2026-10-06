@@ -116,6 +116,10 @@ const GAME_SEO: Record<GameId, { title: string; description: string; genres: str
   }
 };
 
+const SORTED_BLOG_POST_META = [...BLOG_POST_META].sort(
+  (a, b) => Date.parse(b.publishedDate) - Date.parse(a.publishedDate)
+);
+
 // Define valid views for strict routing
 const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games', 'spacebar-clicker-2'];
 
@@ -458,6 +462,7 @@ const App: React.FC = () => {
                     "applicationCategory": "Game",
                     "operatingSystem": "Any modern web browser",
                     "isAccessibleForFree": true,
+                    "dateModified": SITE_CONTENT_UPDATED,
                     "inLanguage": "en",
                     "image": image,
                     "offers": {
@@ -521,7 +526,7 @@ const App: React.FC = () => {
                       "@type": "ItemList",
                       "@id": "https://spaceclickergame.com/blog/#articles",
                       "name": "Space Clicker Game guides and strategy articles",
-                      "itemListElement": BLOG_POST_META.map((post, index) => ({
+                      "itemListElement": SORTED_BLOG_POST_META.map((post, index) => ({
                         "@type": "ListItem",
                         "position": index + 1,
                         "name": post.title,
@@ -693,12 +698,15 @@ const App: React.FC = () => {
               "@graph": [
                 {
                   "@type": "CollectionPage",
+                  "@id": "https://spaceclickergame.com/spacebar-games/#webpage",
                   "name": "Spacebar Games",
                   "description": desc,
-                  "url": "https://spaceclickergame.com/spacebar-games/"
+                  "url": "https://spaceclickergame.com/spacebar-games/",
+                  "dateModified": SITE_CONTENT_UPDATED
                 },
                 {
                   "@type": "ItemList",
+                  "@id": "https://spaceclickergame.com/spacebar-games/#tools",
                   "name": "Spacebar Games and Tools",
                   "itemListElement": [
                     { "@type": "ListItem", "position": 1, "url": "https://spaceclickergame.com/spacebar-clicker/", "name": "Spacebar Clicker" },
@@ -710,6 +718,7 @@ const App: React.FC = () => {
                 },
                 {
                   "@type": "BreadcrumbList",
+                  "@id": "https://spaceclickergame.com/spacebar-games/#breadcrumb",
                   "itemListElement": [
                     { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
                     { "@type": "ListItem", "position": 2, "name": "Spacebar Games", "item": "https://spaceclickergame.com/spacebar-games/" }
@@ -717,6 +726,7 @@ const App: React.FC = () => {
                 },
                 {
                   "@type": "FAQPage",
+                  "@id": "https://spaceclickergame.com/spacebar-games/#faq",
                   "mainEntity": [
                     {
                       "@type": "Question",
@@ -824,6 +834,7 @@ const App: React.FC = () => {
               "@id": `https://spaceclickergame.com/${viewMode}/#game`,
               "url": `https://spaceclickergame.com/${viewMode}/`,
               "isAccessibleForFree": true,
+              "dateModified": SITE_CONTENT_UPDATED,
               "inLanguage": "en",
               "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
           };
