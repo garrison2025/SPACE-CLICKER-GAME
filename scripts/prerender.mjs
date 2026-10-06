@@ -48,6 +48,7 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
   }
   if (
     /\son[a-z]+\s*=/i.test(content) ||
+    /\sstyle\s*=/i.test(content) ||
     /(?:href|src|formaction)\s*=\s*["']\s*(?:javascript:|data:text\/html)/i.test(content)
   ) {
     throw new Error(`Unsafe inline event handler or executable URL found in blog post ${slug}`);
