@@ -672,7 +672,7 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'compare') {
           title = "Space Clicker Game vs Classic Incremental Games: Feature Comparison";
-          desc = "Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games.";
+          desc = "Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.";
           const comparedGames = [
             'Space Clicker Game (Galaxy Miner)',
             'Cookie Clicker',
