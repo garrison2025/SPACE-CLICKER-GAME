@@ -1,3 +1,5 @@
+let projectStorageResetInProgress = false;
+
 export const safeGetStorageItem = (key: string) => {
   try {
     return localStorage.getItem(key);
@@ -7,6 +9,10 @@ export const safeGetStorageItem = (key: string) => {
 };
 
 export const safeSetStorageItem = (key: string, value: string) => {
+  if (projectStorageResetInProgress && isProjectStorageKey(key)) {
+    return false;
+  }
+
   try {
     localStorage.setItem(key, value);
     return true;
@@ -48,6 +54,8 @@ export const isProjectStorageKey = (key: string) =>
   PROJECT_STORAGE_PREFIXES.some((prefix) => key.startsWith(prefix));
 
 export const clearProjectStorage = () => {
+  projectStorageResetInProgress = true;
+
   try {
     const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
       .filter((key): key is string => Boolean(key));
@@ -64,8 +72,13 @@ export const clearProjectStorage = () => {
       }
     });
 
+    if (!success) {
+      projectStorageResetInProgress = false;
+    }
+
     return { success, removed };
   } catch {
+    projectStorageResetInProgress = false;
     return { success: false, removed: 0 };
   }
 };
