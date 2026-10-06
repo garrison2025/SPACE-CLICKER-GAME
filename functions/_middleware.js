@@ -149,10 +149,12 @@ export async function onRequest(context) {
 
     if (legacyView === 'game') {
       const id = url.searchParams.get('id');
-      destination = id && GAME_ROUTES.has(id) ? `/game/${encodeURIComponent(id)}/` : '/game/galaxy_miner/';
+      if (id && !GAME_ROUTES.has(id)) return notFoundResponse(url);
+      destination = id ? `/game/${encodeURIComponent(id)}/` : '/game/galaxy_miner/';
     } else if (legacyView === 'blog') {
       const post = url.searchParams.get('post');
-      destination = post && BLOG_ROUTES.has(post) ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
+      if (post && !BLOG_ROUTES.has(post)) return notFoundResponse(url);
+      destination = post ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
     } else if (legacyView === 'home') {
       destination = '/';
     } else {
