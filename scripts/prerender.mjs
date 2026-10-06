@@ -108,6 +108,7 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
   const lightweight = {
     title: readJsonField('title'),
     seoTitle: readJsonField('seoTitle'),
+    publishedDate: readJsonField('publishedDate'),
     description: readJsonField('excerpt'),
     image: readJsonField('image')
   };
@@ -119,6 +120,13 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
         `blogMeta.ts drift for ${slug}: ${field} does not match content/blogPosts.ts`
       );
     }
+  }
+
+  const canonicalPublishedDate = canonical.datePublished.slice(0, 10);
+  if (lightweight.publishedDate !== canonicalPublishedDate) {
+    throw new Error(
+      `blogMeta.ts drift for ${slug}: publishedDate ${lightweight.publishedDate} does not match ${canonicalPublishedDate}`
+    );
   }
 }
 
