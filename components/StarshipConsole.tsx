@@ -104,7 +104,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
 
   const handleFactoryReset = () => {
       if (window.confirm("WARNING: SPACE CLICKER GAME DATA WILL BE PURGED.\n\nThis removes game progress, Spacebar records, and site game settings stored by SpaceClickerGame.com in this browser. Other localStorage keys on the origin are left untouched.\n\nAre you sure?")) {
-          clearProjectStorage();
+          const result = clearProjectStorage();
+          if (!result.success) {
+              window.alert("The reset could not access or clear browser storage. Your local saves may still exist.");
+              return;
+          }
           window.location.reload();
       }
   };
