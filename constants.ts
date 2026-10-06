@@ -25,7 +25,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Management', 'Strategy', 'Simulation'],
     briefing: "Welcome to Ares Prime. Your mission is to establish a self-sustaining colony by balancing Oxygen, Food, Energy, Minerals, housing, and population. Energy shortages reduce production efficiency, while depleted life-support reserves can reverse population growth.",
-    manual: "1. CLICK 'EXCAVATE' to mine Minerals for construction.\n2. BUILD Solar Panels first to generate Energy.\n3. CONSTRUCT Hydroponics and Oxygenators to support life.\n4. POPULATION grows automatically when resources are surplus.\n5. COLONISTS generate Credits for advanced upgrades.",
+    manual: "1. CLICK 'EXCAVATE' to mine Minerals for construction.\n2. BUILD Solar Panels first to generate Energy.\n3. CONSTRUCT Hydroponics and Oxygenators to support life.\n4. POPULATION grows automatically when resources are surplus.\n5. COLONISTS generate Credits as a colony-economy indicator; current construction still uses Minerals.",
     changelog: ["v1.0: Full colony simulation release.", "v0.9: Multi-resource production and population balancing."]
   },
   {
