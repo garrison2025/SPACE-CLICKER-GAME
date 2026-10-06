@@ -19,7 +19,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     id: 'mars_colony',
     title: 'Mars Colony Idle',
     subtitle: 'Base Building Strategy',
-    description: 'Terraform the Red Planet. Balance Oxygen, Food, and Energy resources to grow your colony population.',
+    description: 'Build a settlement on Mars. Balance Oxygen, Food, Energy, Minerals, and housing to grow the colony population.',
     icon: '🌱',
     color: 'from-red-600 to-orange-500',
     status: 'LIVE',
