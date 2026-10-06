@@ -836,7 +836,7 @@ const GravityIdle: React.FC = () => {
                     type="button"
                     aria-label="Close Physics Lab"
                     onClick={() => setShowShop(false)}
-                    className="absolute inset-0 z-[19] bg-black/40 backdrop-blur-[1px] cursor-default"
+                    className="absolute inset-0 z-[60] bg-black/40 backdrop-blur-[1px] cursor-default"
                  />
              )}
              <div
@@ -858,7 +858,7 @@ const GravityIdle: React.FC = () => {
                 }}
                 style={{ visibility: showShop ? 'visible' : 'hidden' }}
                 className={`
-                  absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
+                  absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-[61] transition-transform duration-300 transform shadow-2xl flex flex-col
                   ${showShop ? 'translate-x-0' : 'translate-x-full'}
                 `}
              >
