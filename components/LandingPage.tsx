@@ -555,10 +555,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                 <div className="relative z-10 p-12 text-center">
                     <h2 className="text-3xl font-display font-black text-white mb-4">READY TO ASCEND?</h2>
                     <p className="text-gray-300 mb-8 max-w-xl mx-auto">The Galactic Core awaits. Your first mining laser is charged and ready.</p>
-                    <button 
+                    <button
+                        type="button"
                         onClick={() => {
                             const el = document.getElementById('console-anchor');
-                            if(el) el.scrollIntoView({behavior: 'smooth'});
+                            if (!el) return;
+                            const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+                            el.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
                         }}
                         className="px-8 py-3 bg-white text-black font-bold rounded hover:bg-neon-blue transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                     >
