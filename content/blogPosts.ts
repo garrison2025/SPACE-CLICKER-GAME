@@ -74,7 +74,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Explore how visible progress, short goals, feedback loops and milestones influence player motivation in space clicking games.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 28, 2025',
-        updatedDate: 'Oct 6, 2026',
+        updatedDate: 'Oct 5, 2026',
         readTime: '3 min read',
         tags: ['psychology', 'space clicking game', 'game design', 'player motivation'],
         image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2000',
@@ -235,7 +235,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'A technical look at Space-key input, switch and firmware behavior, browser key-repeat rules, CPS measurement, latency, and repeatable speed testing.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 05, 2026',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '3 min read',
         tags: ['space bar clicking game', 'hardware', 'speedrun', 'input lag'],
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000',
@@ -244,7 +244,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>The Anatomy of a Click</h2>
             <p>When you play a <strong>space bar clicking game</strong>, you aren't just sending a signal to a computer; you are engaging in a physical cycle. <em>Press, Actuate, Bottom-out, Release, Reset.</em></p>
-            <p>Top players of <a href="https://spaceclickergame.com">Space Clicker Game</a> understand that minimizing the time of this cycle is key to maximizing resource generation during the early game "active phase."</p>
+            <p>During the early active phase of <a href="https://spaceclickergame.com">Space Clicker Game</a>, shorter deliberate press cycles can increase manual input frequency, but the result still depends on the player, keyboard, browser, and counting rules.</p>
 
             <h3>Hardware Factors: Switches, Travel, and Firmware</h3>
             <p>No single switch category determines the maximum speed of a <strong>space bar click game</strong>. Key travel, actuation and reset behavior, stabilizer feel, keyboard firmware, debounce handling, layout, and the player's technique can all affect how repeated presses feel and register.</p>
@@ -269,7 +269,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>From Active to Idle: The Transition</h2>
             <p>Some <strong>space bar clicking games</strong> stay focused on raw input speed, while others add upgrades or automation and gradually shift attention from pressing to resource decisions.</p>
-            <p>In our game <em>Star Defense</em>, clicking is used for targeting high-priority enemies, while your automated turrets handle the trash mobs. This hybrid approach keeps the visceral fun of the <strong>space bar click game</strong> while adding the depth of a strategy RPG.</p>
+            <p>In our game <em>Star Defense</em>, direct clicks can damage enemies while automated turrets provide passive fire. That creates a hybrid active-and-automatic loop without turning the game into a pure input-speed test.</p>
 
             <h2>Conclusion</h2>
             <p>The humble space bar is the most satisfying key on the board. It's big, it's loud, and it feels powerful. By centering a game around this input, the <strong>space bar clicking game</strong> genre taps into a primal satisfaction of cause and effect.</p>
@@ -317,7 +317,7 @@ export const BLOG_POSTS: BlogPost[] = [
             </ol>
 
             <h2>The Kardashev Scale</h2>
-            <p>Ultimately, a <strong>clicker game space</strong> is a simulation of the <a href="https://en.wikipedia.org/wiki/Kardashev_scale" target="_blank" rel="noopener noreferrer">Kardashev Scale</a>—a method of measuring a civilization's level of technological advancement.</p>
+            <p>Space-themed incremental games can borrow imagery from large-scale civilization concepts such as the <a href="https://en.wikipedia.org/wiki/Kardashev_scale" target="_blank" rel="noopener noreferrer">Kardashev Scale</a>, but Galaxy Miner uses its own fictional progression rather than attempting to simulate that scientific framework directly.</p>
             <ul>
                 <li><strong>Type I:</strong> Planetary mastery (Mars Colony).</li>
                 <li><strong>Type II:</strong> Stellar mastery (Dyson Swarm in Galaxy Miner).</li>
