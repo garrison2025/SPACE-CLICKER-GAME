@@ -1497,6 +1497,7 @@ const App: React.FC = () => {
 
   // --- ROBUST SAVE STATE ---
   // Keep a synchronous snapshot so critical permanent-currency actions can be persisted atomically.
+  const suppressSaveRef = useRef(false);
   const gameStateRef = useRef({
       resources, upgrades, prestigeUpgrades, level, planetIndex, lifetimeEarnings,
       totalClicks, totalCrits, cometsCaught, crisesResolved
@@ -1681,6 +1682,8 @@ const App: React.FC = () => {
 
   // --- ROBUST SAVE SYSTEM ---
   const saveGame = useCallback(() => {
+      if (suppressSaveRef.current) return true;
+
       const data = gameStateRef.current;
       const toSave = {
           ...data,
@@ -2248,6 +2251,7 @@ const App: React.FC = () => {
                             addLog("RESET FAILED: BROWSER STORAGE UNAVAILABLE", "alert");
                             return;
                         }
+                        suppressSaveRef.current = true;
                         window.location.reload();
                     }}
                 />
