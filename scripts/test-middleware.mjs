@@ -37,6 +37,8 @@ const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
 expect(known.headers.get('referrer-policy') === 'strict-origin-when-cross-origin', 'Known route must include Referrer-Policy');
 expect(known.headers.get('x-content-type-options') === 'nosniff', 'Known route must include X-Content-Type-Options');
+expect(known.headers.get('x-frame-options') === 'DENY', 'Known route must deny framing');
+expect(known.headers.get('x-permitted-cross-domain-policies') === 'none', 'Known route must disable cross-domain policy files');
 expect(known.headers.get('permissions-policy') === 'camera=(), microphone=(), geolocation=()', 'Known route must include Permissions-Policy');
 
 const sequel = await run('https://spaceclickergame.com/spacebar-clicker-2/');
@@ -80,6 +82,8 @@ expect(knownBlog.status === 200, 'Known blog route should pass through');
 const asset = await run('https://spaceclickergame.com/assets/index-ABC123.js');
 expect(asset.status === 200, 'Static asset should pass through');
 expect(asset.headers.get('x-content-type-options') === 'nosniff', 'Static asset must include X-Content-Type-Options');
+expect(asset.headers.get('x-frame-options') === 'DENY', 'Static asset must include frame protection');
+expect(asset.headers.get('cache-control') === 'public, max-age=31536000, immutable', 'Hashed static assets must use immutable one-year caching');
 
 const missingAsset = await run('https://spaceclickergame.com/assets/not-a-real-file.js');
 expect(missingAsset.status === 404, 'Missing static asset must return HTTP 404');
@@ -158,6 +162,7 @@ expect(!missingHtml.includes('rel="canonical"'), '404 HTML must not canonicalize
 expect(missing.headers.get('x-robots-tag') === 'noindex, nofollow', '404 response must send X-Robots-Tag noindex');
 expect(missing.headers.get('referrer-policy') === 'strict-origin-when-cross-origin', '404 response must include Referrer-Policy');
 expect(missing.headers.get('x-content-type-options') === 'nosniff', '404 response must include X-Content-Type-Options');
+expect(missing.headers.get('x-frame-options') === 'DENY', '404 response must deny framing');
 
 const invalidGame = await run('https://spaceclickergame.com/game/not-a-real-game/');
 expect(invalidGame.status === 404, 'Unknown game route must return HTTP 404');
