@@ -303,7 +303,7 @@ const App: React.FC = () => {
       const focusRouteTarget = () => {
           const target = document.getElementById(targetId);
           if (target) {
-              target.focus();
+              target.focus({ preventScroll: true });
               return;
           }
 
