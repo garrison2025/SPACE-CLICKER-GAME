@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
+import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 
 type UpgradeId = 'carbonKey' | 'torqueMultiplier' | 'microBot' | 'reactorBank' | 'overdriveCapacitor' | 'fluxAmplifier';
 
@@ -282,8 +283,7 @@ const SpacebarClicker2: React.FC = () => {
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (isInteractiveKeyboardTarget(event.target)) return;
       if (event.code === 'Space' && !event.repeat) {
         event.preventDefault();
         press();
