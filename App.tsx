@@ -126,8 +126,13 @@ const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-black text-neon-blue font-mono space-y-4">
-        <div className="w-12 h-12 border-4 border-neon-blue border-t-transparent rounded-full animate-spin"></div>
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      className="w-full h-full flex flex-col items-center justify-center bg-black text-neon-blue font-mono space-y-4"
+    >
+        <div className="w-12 h-12 border-4 border-neon-blue border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
         <div className="text-sm tracking-widest animate-pulse">INITIALIZING SIMULATION...</div>
     </div>
 );
