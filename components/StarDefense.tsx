@@ -1039,10 +1039,10 @@ const StarDefense: React.FC = () => {
                         tabIndex={-1}
                         autoFocus
                         onKeyDown={trapDialogFocus}
-                        className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm outline-none"
+                        className="safe-screen-overlay absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm outline-none"
                      >
-                         <h2 id="star-defense-game-over-title" className="text-5xl font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
-                         <p id="star-defense-game-over-description" className="text-gray-400 mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
+                         <h2 id="star-defense-game-over-title" className="text-3xl sm:text-5xl text-center font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
+                         <p id="star-defense-game-over-description" className="text-gray-400 text-center mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
                          <button
                             type="button"
                             onClick={handleRestart}
