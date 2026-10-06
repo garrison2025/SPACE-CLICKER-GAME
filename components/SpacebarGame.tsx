@@ -256,11 +256,26 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   useEffect(() => {
     if (autoRate <= 0) return;
+
+    let lastTick = Date.now();
     const timer = window.setInterval(() => {
-      const gain = autoRate / 5;
+      if (document.hidden) return;
+
+      const now = Date.now();
+      const elapsedSeconds = Math.min(
+        86_400,
+        Math.max(0, (now - lastTick) / 1000)
+      );
+      lastTick = now;
+      if (elapsedSeconds <= 0) return;
+
+      const gain = autoRate * elapsedSeconds;
       const snapshot = saveStateRef.current;
       const nextPoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.points + gain);
-      const nextLifetimePoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.lifetimePoints + gain);
+      const nextLifetimePoints = Math.min(
+        MAX_IMPORTED_RESOURCE,
+        snapshot.lifetimePoints + gain
+      );
       saveStateRef.current = {
         ...snapshot,
         points: nextPoints,
@@ -269,6 +284,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       setPoints(nextPoints);
       setLifetimePoints(nextLifetimePoints);
     }, 200);
+
     return () => window.clearInterval(timer);
   }, [autoRate]);
 
