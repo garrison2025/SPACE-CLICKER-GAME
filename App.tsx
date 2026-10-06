@@ -2273,6 +2273,7 @@ const App: React.FC = () => {
             </div>
         )}
 
+        <RouteErrorBoundary resetKey={location.pathname}>
         {viewMode === 'game' && !is404 && (
             <Suspense fallback={null}>
                 <HotkeyOverlay 
@@ -2335,7 +2336,6 @@ const App: React.FC = () => {
             </Suspense>
         )}
 
-        <RouteErrorBoundary resetKey={location.pathname}>
         {is404 ? (
             <NotFoundPage onNavigate={handleNavigate} />
         ) : viewMode === 'game' ? (
