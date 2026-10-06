@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
 import { ResourceType, Upgrade, Planet } from '../types';
-import { trapDialogFocus } from '../utils/dialogFocus';
+import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
 interface StatsAndSaveModalProps {
   isOpen: boolean;
@@ -81,13 +81,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null;
-    return () => previousFocus?.focus();
-  }, [isOpen]);
+  const dialogRef = useDialogFocus<HTMLDivElement>(isOpen);
 
   if (!isOpen) return null;
 
@@ -234,11 +228,11 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   return (
     <div className="safe-screen-overlay fixed inset-0 z-[120] flex items-center justify-center bg-black/85 md:backdrop-blur-md animate-in fade-in">
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="stats-backup-title"
         tabIndex={-1}
-        autoFocus
         onKeyDown={trapDialogFocus}
         className="bg-space-850 border border-neon-blue/40 w-full max-w-2xl rounded-2xl shadow-[0_0_50px_rgba(0,243,255,0.15)] overflow-hidden flex flex-col max-h-full outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
       >
