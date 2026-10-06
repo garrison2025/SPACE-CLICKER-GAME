@@ -58,8 +58,9 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
                 {canNativeShare && (
                     <button
                         type="button"
+                        aria-label="Share article"
                         onClick={handleNativeShare}
-                        className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors"
+                        className="min-h-11 min-w-11 flex items-center justify-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors"
                     >
                         <span aria-hidden="true">↗</span>
                         <span className="hidden md:inline">Share</span>
@@ -71,7 +72,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
                     href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}&hashtags=SpaceClickerGame,IdleGame`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-black border border-white/10 hover:border-white/30 rounded text-xs text-gray-300 transition-colors"
+                    className="min-h-11 min-w-11 flex items-center justify-center gap-2 px-4 py-2 bg-space-800 hover:bg-black border border-white/10 hover:border-white/30 rounded text-xs text-gray-300 transition-colors"
                     aria-label="Share on X (Twitter)"
                 >
                     <span>𝕏</span>
@@ -83,7 +84,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
                     href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-[#ff4500] hover:text-white border border-white/10 hover:border-[#ff4500] rounded text-xs text-gray-300 transition-colors group"
+                    className="min-h-11 min-w-11 flex items-center justify-center gap-2 px-4 py-2 bg-space-800 hover:bg-[#ff4500] hover:text-white border border-white/10 hover:border-[#ff4500] rounded text-xs text-gray-300 transition-colors group"
                     aria-label="Share on Reddit"
                 >
                     <span>●</span>
@@ -95,12 +96,15 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, url }) => {
                     type="button"
                     aria-label={copied ? 'Link copied' : 'Copy article link'}
                     onClick={handleCopy}
-                    className="flex items-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors ml-auto"
+                    className="min-h-11 min-w-11 flex items-center justify-center gap-2 px-4 py-2 bg-space-800 hover:bg-neon-blue hover:text-black border border-white/10 hover:border-neon-blue rounded text-xs text-gray-300 transition-colors ml-auto"
                 >
                     <span aria-hidden="true">{copied ? '✓' : '🔗'}</span>
                     <span className="hidden md:inline" aria-live="polite">{copied ? 'COPIED' : 'COPY LINK'}</span>
                 </button>
             </div>
+            <span role="status" aria-live="polite" className="sr-only">
+                {copied ? 'Article link copied to clipboard.' : ''}
+            </span>
         </div>
     );
 };
