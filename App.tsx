@@ -303,19 +303,15 @@ const App: React.FC = () => {
   }, [activeGame]);
 
   const toggleHaptic = () => {
-    setHapticEnabled(prev => {
-      const next = !prev;
-      localStorage.setItem('space_haptic', String(next));
-      return next;
-    });
+    const next = !hapticEnabled;
+    localStorage.setItem('space_haptic', String(next));
+    setHapticEnabled(next);
   };
 
   const toggleScreenShake = () => {
-    setScreenShakeEnabled(prev => {
-      const next = !prev;
-      localStorage.setItem('space_screenshake', String(next));
-      return next;
-    });
+    const next = !screenShakeEnabled;
+    localStorage.setItem('space_screenshake', String(next));
+    setScreenShakeEnabled(next);
   };
 
   // Flux State: Heat is in the "Goldilocks Zone" (80-99%)
