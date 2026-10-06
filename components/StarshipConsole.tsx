@@ -11,13 +11,14 @@ interface StarshipConsoleProps {
   onSwitchGame: (id: GameId) => void;
   onGoHome: () => void;
   onOpenStats?: () => void;
+  onManualSave?: () => boolean;
   children: React.ReactNode;
 }
 
-const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, onOpenStats, children }) => {
+const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchGame, onGoHome, onOpenStats, onManualSave, children }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [isMuted, setIsMuted] = useState(getMuteState());
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const dockScrollRef = useRef<HTMLElement | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -80,23 +81,25 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   const handleManualSave = () => {
+      if (!onManualSave) return;
+
       saveTimersRef.current.forEach((timer) => window.clearTimeout(timer));
       saveTimersRef.current = [];
 
       setSaveStatus('saving');
-      window.dispatchEvent(new Event('game-save-trigger'));
+      const persisted = onManualSave();
 
-      const savedTimer = window.setTimeout(() => {
-          setSaveStatus('saved');
+      const resultTimer = window.setTimeout(() => {
+          setSaveStatus(persisted ? 'saved' : 'failed');
           const idleTimer = window.setTimeout(() => {
               setSaveStatus('idle');
               saveTimersRef.current = saveTimersRef.current.filter((timer) => timer !== idleTimer);
           }, 2000);
           saveTimersRef.current.push(idleTimer);
-          saveTimersRef.current = saveTimersRef.current.filter((timer) => timer !== savedTimer);
-      }, 500);
+          saveTimersRef.current = saveTimersRef.current.filter((timer) => timer !== resultTimer);
+      }, 300);
 
-      saveTimersRef.current.push(savedTimer);
+      saveTimersRef.current.push(resultTimer);
   };
 
   const handleFactoryReset = () => {
@@ -219,23 +222,34 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                           </button>
                       </div>
 
-                      {/* Manual Save */}
-                      <div className="flex items-center justify-between border-t border-white/10 pt-6">
-                          <div>
-                              <div className="font-bold text-white text-sm">MANUAL OVERRIDE</div>
-                              <div className="text-xs text-gray-500">Force save current state</div>
-                          </div>
-                          <button 
-                            onClick={handleManualSave}
-                            disabled={saveStatus !== 'idle'}
-                            className={`px-4 py-2 rounded text-xs font-bold transition-all w-28 text-center
-                                ${saveStatus === 'idle' ? 'bg-neon-blue text-black hover:bg-white' : 
-                                  saveStatus === 'saving' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'}
-                            `}
-                          >
-                              {saveStatus === 'idle' ? 'FORCE SAVE' : saveStatus === 'saving' ? 'SAVING...' : 'SAVED ✓'}
-                          </button>
-                      </div>
+                      {/* Manual Save: Galaxy Miner only. Other simulations manage their own persistence. */}
+                      {onManualSave && (
+                        <div className="flex items-center justify-between border-t border-white/10 pt-6">
+                            <div>
+                                <div className="font-bold text-white text-sm">MANUAL OVERRIDE</div>
+                                <div className="text-xs text-gray-500">Force save Galaxy Miner now</div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={handleManualSave}
+                              disabled={saveStatus !== 'idle'}
+                              className={`px-4 py-2 rounded text-xs font-bold transition-all w-28 text-center
+                                  ${saveStatus === 'idle' ? 'bg-neon-blue text-black hover:bg-white' :
+                                    saveStatus === 'saving' ? 'bg-yellow-500 text-black' :
+                                    saveStatus === 'failed' ? 'bg-red-600 text-white' :
+                                    'bg-green-500 text-white'}
+                              `}
+                            >
+                                {saveStatus === 'idle'
+                                  ? 'FORCE SAVE'
+                                  : saveStatus === 'saving'
+                                    ? 'SAVING...'
+                                    : saveStatus === 'failed'
+                                      ? 'FAILED'
+                                      : 'SAVED ✓'}
+                            </button>
+                        </div>
+                      )}
 
                       {/* Reset Data */}
                       <div className="border-t border-white/10 pt-6">
