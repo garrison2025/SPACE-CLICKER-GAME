@@ -747,7 +747,7 @@ const DeepSpaceSignal: React.FC = () => {
                         ${isScanning || energy < scanCost ? 'border-gray-800 text-gray-700 cursor-not-allowed' : 'border-green-500 text-green-400 hover:bg-green-500 hover:text-black hover:shadow-[0_0_30px_lime]'}
                     `}
                 >
-                    <div className="text-xl font-black tracking-widest">{isScanning ? 'SCANNING...' : 'BROADCAST'}</div>
+                    <div className="text-xl font-black tracking-widest">{isScanning ? 'SCANNING...' : 'SCAN FREQUENCY'}</div>
                     <div className="text-[10px] font-mono mt-1 opacity-70">-{Math.floor(scanCost)} ENERGY</div>
                     
                     {/* Scan effect overlay */}
