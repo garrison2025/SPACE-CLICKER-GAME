@@ -491,7 +491,7 @@ const incomingLinkCounts = new Map(auditedRoutes.map((route) => [route, 0]));
 for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
-  const hrefs = [...html.matchAll(/href="([^"]+)"/gi)].map((match) => match[1]);
+  const hrefs = [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/gi)].map((match) => match[1]);
 
   for (const href of hrefs) {
     if (!href.startsWith('/') || href.startsWith('//')) continue;
