@@ -249,6 +249,25 @@ const App: React.FC = () => {
   // Mechanics State
   const [heat, setHeat] = useState(0);
   const [overheated, setOverheated] = useState(false);
+  const heatRef = useRef(0);
+  const overheatedRef = useRef(false);
+  const overheatTimerRef = useRef<number>();
+
+  useEffect(() => {
+    heatRef.current = heat;
+  }, [heat]);
+
+  useEffect(() => {
+    overheatedRef.current = overheated;
+  }, [overheated]);
+
+  useEffect(() => {
+    return () => {
+      if (overheatTimerRef.current !== undefined) {
+        window.clearTimeout(overheatTimerRef.current);
+      }
+    };
+  }, []);
   
   // Telemetry & Stats State
   const [totalClicks, setTotalClicks] = useState(0);
@@ -1081,7 +1100,9 @@ const App: React.FC = () => {
   }, [viewMode, activeGame, resources, planetIndex]);
 
   const handleMine = (x: number, y: number, multiplier: number = 1, isGeode: boolean = false): { amount: number, isCrit: boolean } => {
-    if (overheated && !isGeode) return { amount: 0, isCrit: false };
+    const preActionHeat = heatRef.current;
+    const preActionOverheated = overheatedRef.current;
+    if (preActionOverheated && !isGeode) return { amount: 0, isCrit: false };
 
     const clickSnapshot = gameStateRef.current;
     const nextTotalClicks = Math.min(Number.MAX_SAFE_INTEGER, clickSnapshot.totalClicks + 1);
@@ -1089,27 +1110,41 @@ const App: React.FC = () => {
     setTotalClicks(nextTotalClicks);
 
     if (isGeode) {
-        setHeat(prev => Math.max(0, prev - 20));
+        const nextHeat = Math.max(0, preActionHeat - 20);
+        heatRef.current = nextHeat;
+        setHeat(nextHeat);
         addLog("SYSTEM VENTED: -20% HEAT", "info");
     } else {
-        setHeat(prev => {
-            const next = prev + 5; 
-            if (next >= 100) {
-                setOverheated(true);
-                setTimeout(() => {
-                    setOverheated(false);
-                    setHeat(0);
-                }, 5000); 
-                addLog("CRITICAL OVERHEAT! WEAPON DISABLED FOR 5s", "alert");
-                return 100;
+        const nextHeat = Math.min(100, preActionHeat + 5);
+        heatRef.current = nextHeat;
+        setHeat(nextHeat);
+
+        if (nextHeat >= 100 && !preActionOverheated) {
+            overheatedRef.current = true;
+            setOverheated(true);
+            if (overheatTimerRef.current !== undefined) {
+                window.clearTimeout(overheatTimerRef.current);
             }
-            return next;
-        });
+            overheatTimerRef.current = window.setTimeout(() => {
+                overheatTimerRef.current = undefined;
+                overheatedRef.current = false;
+                heatRef.current = 0;
+                setOverheated(false);
+                setHeat(0);
+            }, 5000);
+            addLog("CRITICAL OVERHEAT! WEAPON DISABLED FOR 5s", "alert");
+        }
     }
 
-    const fluxBonus = isFlux ? 2 : 1;
+    const runtimeFlux = preActionHeat >= 80 && preActionHeat < 100 && !preActionOverheated;
+    const runtimeCritChance =
+        0.05 +
+        (((gameStateRef.current.prestigeUpgrades['crit_chance'] || 0) * 5) / 100) +
+        (preActionHeat > 50 ? 0.1 : 0) +
+        (runtimeFlux ? 0.25 : 0);
+    const fluxBonus = runtimeFlux ? 2 : 1;
     const base = getClickPower() * multiplier * fluxBonus;
-    const isCrit = Math.random() < critChance;
+    const isCrit = Math.random() < runtimeCritChance;
     if (isCrit) {
         const critSnapshot = gameStateRef.current;
         const nextTotalCrits = Math.min(Number.MAX_SAFE_INTEGER, critSnapshot.totalCrits + 1);
@@ -1128,7 +1163,9 @@ const App: React.FC = () => {
     if (viewMode !== 'game' || activeGame !== 'galaxy_miner' || overheated || !hasHeat) return;
 
     const timer = setInterval(() => {
-        setHeat(prev => Math.max(0, prev - 2));
+        const nextHeat = Math.max(0, heatRef.current - 2);
+        heatRef.current = nextHeat;
+        setHeat(nextHeat);
     }, 100);
 
     return () => clearInterval(timer);
@@ -1330,6 +1367,12 @@ const App: React.FC = () => {
     setUpgrades(resetUpgrades);
     setLevel(1);
     setPlanetIndex(0);
+    if (overheatTimerRef.current !== undefined) {
+      window.clearTimeout(overheatTimerRef.current);
+      overheatTimerRef.current = undefined;
+    }
+    heatRef.current = 0;
+    overheatedRef.current = false;
     setHeat(0);
     setOverheated(false);
     setShowPrestigeShop(true);
@@ -1363,8 +1406,8 @@ const App: React.FC = () => {
         lastSaveTime: Date.now(),
         prestigeUpgrades: paidSnapshot.prestigeUpgrades,
         planetIndex: paidSnapshot.planetIndex,
-        heat,
-        overheated
+        heat: heatRef.current,
+        overheated: overheatedRef.current
       });
 
       addLog(event.title, 'event');
