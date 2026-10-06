@@ -66,7 +66,7 @@ const COMPARISON_DATA: GameComparison[] = [
     combatOrEvents: "Challenges, Time Studies, Glyphs, Black Holes and other progression systems",
     graphicsAndAudio: "Numerical interface with multiple themes and dense progression panels",
     focus: "Deep prestige layering, automation and long-term optimization",
-    sourceUrl: "https://antimatter-dimensions.github.io/"
+    sourceUrl: "https://store.steampowered.com/app/1399720/Antimatter_Dimensions/"
   },
   {
     name: "SPACEPLAN",
@@ -146,8 +146,9 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
                 Comparing themes, input style, automation, prestige loops, events, and presentation.
               </p>
             </div>
-            <div className="text-xs font-mono text-gray-500">
-              FEATURE SNAPSHOT • SYSTEMS MAY CHANGE OVER TIME
+            <div className="text-xs font-mono text-gray-500 text-right">
+              <div>FEATURE SNAPSHOT • SYSTEMS MAY CHANGE OVER TIME</div>
+              <div className="mt-1">REVIEWED OCTOBER 6, 2026</div>
             </div>
           </div>
 
