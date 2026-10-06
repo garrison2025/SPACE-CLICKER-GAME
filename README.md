@@ -46,3 +46,7 @@ The site is designed for Cloudflare Pages. The production domain is:
 - https://spaceclickergame.com
 
 Keep canonical URLs, sitemap URLs and internal links on the production domain. Deep routes are handled as SPA routes and important SEO routes are also generated as static entry HTML during the build.
+
+## SEO / GEO baseline
+
+SEO/GEO architecture, intent ownership, monolingual international-SEO policy, answer-engine extraction rules, and drift checks are recorded in [SEO-GEO-BASELINE.md](./SEO-GEO-BASELINE.md). The project follows the reusable `chenmu2024/Website-Starter-Standard` quality gate without inventing keyword or production-search metrics.
