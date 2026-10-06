@@ -101,6 +101,8 @@ const DeepSpaceSignal: React.FC = () => {
     const spectrumCanvasRef = useRef<HTMLCanvasElement>(null);
     const messagesRef = useRef<SignalMessage[]>(messages);
     const rewardedMessageIdsRef = useRef<Set<string>>(new Set());
+    const dataBytesRef = useRef(dataBytes);
+    const upgradesRef = useRef(upgrades);
     const energyRef = useRef(energy);
     const isScanningRef = useRef(isScanning);
     const handleScanRef = useRef<() => void>(() => undefined);
@@ -108,6 +110,14 @@ const DeepSpaceSignal: React.FC = () => {
     useEffect(() => {
         messagesRef.current = messages;
     }, [messages]);
+
+    useEffect(() => {
+        dataBytesRef.current = dataBytes;
+    }, [dataBytes]);
+
+    useEffect(() => {
+        upgradesRef.current = upgrades;
+    }, [upgrades]);
 
     useEffect(() => {
         energyRef.current = energy;
@@ -231,7 +241,9 @@ const DeepSpaceSignal: React.FC = () => {
                 commitMessages(nextMessages);
             }
             if (rewardEarned > 0) {
-                setDataBytes(value => value + rewardEarned);
+                const nextDataBytes = dataBytesRef.current + rewardEarned;
+                dataBytesRef.current = nextDataBytes;
+                setDataBytes(nextDataBytes);
                 playSound('success');
             }
 
@@ -342,7 +354,9 @@ const DeepSpaceSignal: React.FC = () => {
         commitMessages(nextMessages);
 
         if (rewardEarned > 0) {
-            setDataBytes(value => value + rewardEarned);
+            const nextDataBytes = dataBytesRef.current + rewardEarned;
+            dataBytesRef.current = nextDataBytes;
+            setDataBytes(nextDataBytes);
             playSound('success');
         }
     };
@@ -368,7 +382,10 @@ const DeepSpaceSignal: React.FC = () => {
             }));
         }
 
-        setDataBytes(prev => prev + Math.floor(msg.rewardData * 0.5));
+        const analysisReward = Math.floor(msg.rewardData * 0.5);
+        const nextDataBytes = dataBytesRef.current + analysisReward;
+        dataBytesRef.current = nextDataBytes;
+        setDataBytes(nextDataBytes);
 
         commitMessages(messagesRef.current.map(m =>
             m.id === msgId
@@ -379,17 +396,23 @@ const DeepSpaceSignal: React.FC = () => {
 
     const handleBuy = (key: keyof typeof UPGRADE_CONFIG) => {
         const cfg = UPGRADE_CONFIG[key];
-        const lvl = upgrades[key];
+        const currentUpgrades = upgradesRef.current;
+        const lvl = currentUpgrades[key];
         if (lvl >= cfg.max) return;
-        
+
         const cost = Math.floor(cfg.base * Math.pow(cfg.mult, lvl));
-        if (dataBytes >= cost) {
-            playSound('click');
-            setDataBytes(prev => prev - cost);
-            setUpgrades(prev => ({ ...prev, [key]: lvl + 1 }));
-        } else {
+        if (dataBytesRef.current < cost) {
             playSound('error');
+            return;
         }
+
+        const nextDataBytes = dataBytesRef.current - cost;
+        const nextUpgrades = { ...currentUpgrades, [key]: lvl + 1 };
+        dataBytesRef.current = nextDataBytes;
+        upgradesRef.current = nextUpgrades;
+        playSound('click');
+        setDataBytes(nextDataBytes);
+        setUpgrades(nextUpgrades);
     };
 
     const clearLogs = () => {
@@ -488,7 +511,9 @@ const DeepSpaceSignal: React.FC = () => {
                 lastSaveTime: Date.now(),
             }));
 
+            dataBytesRef.current = loadedDataBytes;
             energyRef.current = loadedEnergy;
+            upgradesRef.current = loadedUpgrades;
             setDataBytes(loadedDataBytes);
             setEnergy(loadedEnergy);
             setUpgrades(loadedUpgrades);
