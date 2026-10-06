@@ -1,7 +1,6 @@
 import React from 'react';
 import { ViewMode } from './SiteLayout';
 import Breadcrumbs from './Breadcrumbs';
-import SEOHead from './SEOHead';
 
 interface ComparisonPageProps {
   onNavigate: (view: ViewMode, id?: string) => void;
@@ -89,82 +88,9 @@ const COMPARISON_DATA: GameComparison[] = [
 ];
 
 const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
-  const comparisonSchema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://spaceclickergame.com/compare/#webpage",
-        "url": "https://spaceclickergame.com/compare/",
-        "name": "Space Clicker Game vs Classic Incremental Games: Feature Comparison",
-        "description": "Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games.",
-        "dateModified": "2026-10-05",
-        "isPartOf": {
-          "@type": "WebSite",
-          "@id": "https://spaceclickergame.com/#website",
-          "name": "Space Clicker Game",
-          "url": "https://spaceclickergame.com/"
-        }
-      },
-      {
-        "@type": "ItemList",
-        "@id": "https://spaceclickergame.com/compare/#games",
-        "name": "Incremental games in the feature comparison",
-        "itemListElement": COMPARISON_DATA.map((game, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "name": game.name
-        }))
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://spaceclickergame.com/compare/#breadcrumb",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Feature Comparison", "item": "https://spaceclickergame.com/compare/" }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What makes Space Clicker Game different from Cookie Clicker?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Galaxy Miner uses a sci-fi mining theme, a Heat Flux zone, crisis events, Golden Comets, local procedural anomaly scans, automation, and Dark Matter resets. Cookie Clicker uses a baking theme with Golden Cookies, building automation, seasonal systems, and ascension."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is Space Clicker Game free to play?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "The current browser simulations and Spacebar tools can be played without a paid account or paid upgrade purchase."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Does Space Clicker Game require installation?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No installation is required for the browser games. Access can still be limited by school, workplace, parental-control, firewall, or network-administrator policies."
-            }
-          }
-        ]
-      }
-    ]
-  };
-
   return (
     <div className="min-h-screen bg-space-950 text-gray-200 pt-24 pb-20 px-4">
-      <SEOHead
-        title="Space Clicker Game vs Classic Incremental Games: Feature Comparison"
-        description="Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games."
-        path="/compare"
-        type="website"
-        schema={comparisonSchema}
-      />
+
 
       <div className="max-w-7xl mx-auto space-y-12">
         {/* Breadcrumbs */}
