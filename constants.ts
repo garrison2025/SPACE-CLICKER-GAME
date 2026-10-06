@@ -37,8 +37,8 @@ export const GAMES_CATALOG: GameMeta[] = [
     color: 'from-purple-600 to-indigo-500',
     status: 'LIVE',
     tags: ['Combat', 'Defense', 'Action'],
-    briefing: "Alert! Long-range scanners detect a Xeno fleet on intercept course. You are the last line of defense for the Mothership. Man the point-defense cannons and hold the line until the jump drive charges.",
-    manual: "1. CLICK enemy ships to deal direct damage.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss encounters during every fifth-wave cycle.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
+    briefing: "Long-range scanners detect an incoming fleet. Defend the Mothership through escalating waves by combining direct fire, automated turrets, shields, repairs, and timed combat abilities.",
+    manual: "1. CLICK enemy ships to deal direct damage.\n2. UPGRADE auto-turrets to handle swarms.\n3. PREPARE for boss-class enemies on fifth-wave cycles.\n4. USE EMP, Rapid Fire, and Nuke abilities when pressure spikes.",
     changelog: ["v1.0: Systems Online. Weapons free."]
   },
   {
@@ -51,7 +51,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     status: 'LIVE',
     tags: ['Merge', 'Casual', 'Collection'],
     briefing: "Our engineers have developed a new modular hull technology. By combining two identical chassis, we can fuse them into a superior vessel. Build the ultimate armada.",
-    manual: "1. DRAG matching ships together to merge them into the next level.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.\n4. RETURN after time away to recover up to 24 hours of estimated Orbit income.",
+    manual: "1. DRAG matching ships on desktop, or select a ship and use MOVE / MERGE controls on touch or keyboard.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.\n4. RETURN after time away to recover up to 24 hours of estimated Orbit income.",
     changelog: ["v1.1: Added capped offline and hidden-tab Orbit earnings plus keyboard fleet controls.", "v1.0: Hangar bays open. Merge logic active."]
   },
   {
