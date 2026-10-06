@@ -831,6 +831,14 @@ const GravityIdle: React.FC = () => {
              </div>
 
              {/* UPGRADE SHOP PANEL */}
+             {showShop && (
+                 <button
+                    type="button"
+                    aria-label="Close Physics Lab"
+                    onClick={() => setShowShop(false)}
+                    className="absolute inset-0 z-[19] bg-black/40 backdrop-blur-[1px] cursor-default"
+                 />
+             )}
              <div
                 ref={shopPanelRef}
                 id="gravity-physics-lab"
