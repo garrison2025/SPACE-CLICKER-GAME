@@ -11,7 +11,7 @@ import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
 import { isInteractiveKeyboardTarget } from './utils/keyboard';
-import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from './utils/projectStorage';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem, STORAGE_WRITE_FAILED_EVENT } from './utils/projectStorage';
 
 // --- LAZY LOAD GAMES (Code Splitting for SEO Performance) ---
 const MarsColony = React.lazy(() => import('./components/MarsColony'));
@@ -229,6 +229,13 @@ const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(currentRoute.view); 
   const [activePostId, setActivePostId] = useState<string | null>(currentRoute.postId);
   const [is404, setIs404] = useState(currentRoute.error);
+  const [storageWriteFailed, setStorageWriteFailed] = useState(false);
+
+  useEffect(() => {
+      const handleStorageWriteFailure = () => setStorageWriteFailed(true);
+      window.addEventListener(STORAGE_WRITE_FAILED_EVENT, handleStorageWriteFailure);
+      return () => window.removeEventListener(STORAGE_WRITE_FAILED_EVENT, handleStorageWriteFailure);
+  }, []);
 
   // Update state when URL changes
   useEffect(() => {
@@ -2088,6 +2095,30 @@ const App: React.FC = () => {
             schema={seoData.schema}
             noindex={is404}
         />
+
+        {storageWriteFailed && (
+            <div
+                role="alert"
+                className="fixed left-1/2 top-[max(0.75rem,env(safe-area-inset-top))] z-[220] w-[min(92vw,42rem)] -translate-x-1/2 rounded-xl border border-yellow-400/50 bg-black/95 px-4 py-3 text-sm text-yellow-100 shadow-2xl backdrop-blur"
+            >
+                <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                        <div className="font-bold text-yellow-300">Local saving is unavailable</div>
+                        <div className="mt-1 text-xs leading-relaxed text-yellow-100/80">
+                            Progress can continue in this tab, but it may be lost when you leave or reload. Check browser storage or privacy settings before relying on this session.
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        aria-label="Dismiss local saving warning"
+                        onClick={() => setStorageWriteFailed(false)}
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-xl text-yellow-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300"
+                    >
+                        ×
+                    </button>
+                </div>
+            </div>
+        )}
 
         {viewMode === 'game' && !is404 && (
             <Suspense fallback={null}>
