@@ -777,7 +777,11 @@ const SpacebarClicker2: React.FC = () => {
               onClick={ascend}
               className="px-5 py-3 rounded bg-neon-blue text-black font-bold disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
             >
-              {ascensionGain > 0 ? `ASCEND +${ascensionGain}` : 'ASCENSION LOCKED'}
+              {novaCores >= MAX_NOVA_CORES
+                ? 'NOVA CORES MAXED'
+                : ascensionGain > 0
+                  ? `ASCEND +${ascensionGain}`
+                  : 'ASCENSION LOCKED'}
             </button>
           </div>
         </div>
@@ -790,7 +794,8 @@ const SpacebarClicker2: React.FC = () => {
           <div className="p-4 space-y-3 max-h-[760px] overflow-y-auto">
             {defs.map((def) => {
               const level = upgrades[def.id];
-              const maxed = level >= (def.max ?? MAX_UPGRADE_LEVEL);
+              const effectiveMax = def.max ?? MAX_UPGRADE_LEVEL;
+              const maxed = level >= effectiveMax;
               const price = cost(def);
               return (
                 <button
@@ -802,7 +807,7 @@ const SpacebarClicker2: React.FC = () => {
                 >
                   <div className="flex justify-between gap-3">
                     <strong className="text-white">{def.name}</strong>
-                    <span className="text-xs text-neon-purple font-mono">LV {level}{def.max ? '/' + def.max : ''}</span>
+                    <span className="text-xs text-neon-purple font-mono">LV {level}/{effectiveMax}</span>
                   </div>
                   <p className="mt-1 text-xs text-gray-500">{def.description}</p>
                   <div className="mt-3 text-xs font-mono text-gray-300">{maxed ? 'MAXED' : formatNumber(price) + ' points'}</div>
