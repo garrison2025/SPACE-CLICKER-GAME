@@ -29,6 +29,28 @@ if (!Array.isArray(manifest.icons) || manifest.icons.length === 0) {
   throw new Error('manifest.webmanifest must define application icons.');
 }
 
+if (!Array.isArray(manifest.categories) || !manifest.categories.includes('games')) {
+  throw new Error('manifest.webmanifest must categorize the app as games.');
+}
+
+const expectedShortcuts = new Set([
+  '/game/galaxy_miner/',
+  '/spacebar-clicker/',
+  '/spacebar-clicker-test/'
+]);
+if (!Array.isArray(manifest.shortcuts) || manifest.shortcuts.length !== expectedShortcuts.size) {
+  throw new Error('manifest.webmanifest must expose exactly the three core app shortcuts.');
+}
+for (const shortcut of manifest.shortcuts) {
+  if (!shortcut?.name || !shortcut?.url || !expectedShortcuts.has(shortcut.url)) {
+    throw new Error('manifest.webmanifest contains an invalid core shortcut.');
+  }
+  expectedShortcuts.delete(shortcut.url);
+}
+if (expectedShortcuts.size > 0) {
+  throw new Error('manifest.webmanifest is missing one or more required core shortcuts.');
+}
+
 const manifestIconSizes = new Set(
   manifest.icons.flatMap((icon) =>
     String(icon?.sizes || '')
