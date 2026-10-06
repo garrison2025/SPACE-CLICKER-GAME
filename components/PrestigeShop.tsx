@@ -1,6 +1,6 @@
 import React from 'react';
 import { PrestigeUpgrade } from '../types';
-import { PRESTIGE_UPGRADES } from '../constants';
+import { PRESTIGE_UPGRADES, MAX_PRESTIGE_TECH_LEVEL } from '../constants';
 import { formatNumber } from '../utils';
 import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
@@ -64,16 +64,17 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
         <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {PRESTIGE_UPGRADES.map(u => {
              const currentLevel = upgrades[u.id] || 0;
-             const isMaxed = u.maxLevel !== -1 && currentLevel >= u.maxLevel;
+             const effectiveMax = u.maxLevel === -1 ? MAX_PRESTIGE_TECH_LEVEL : u.maxLevel;
+             const isMaxed = currentLevel >= effectiveMax;
              const cost = Math.floor(u.cost * Math.pow(1.5, currentLevel));
-             const canAfford = darkMatter >= cost;
+             const canAfford = !isMaxed && darkMatter >= cost;
 
              return (
                <div key={u.id} className="bg-space-900/50 border border-space-600 p-4 rounded-lg hover:border-neon-purple transition-all group relative overflow-hidden">
                   <div className="relative z-10">
                     <div className="flex justify-between mb-2">
                         <h3 className="font-bold text-lg">{u.name}</h3>
-                        <span className="text-xs text-gray-500 bg-space-800 px-2 py-1 rounded">Lvl {currentLevel} {u.maxLevel > 0 ? `/ ${u.maxLevel}` : ''}</span>
+                        <span className="text-xs text-gray-500 bg-space-800 px-2 py-1 rounded">Lvl {currentLevel} / {effectiveMax}</span>
                     </div>
                     <p className="text-sm text-gray-400 mb-4 h-10">{u.description}</p>
                     <div className="text-neon-purple text-xs font-mono mb-4">
