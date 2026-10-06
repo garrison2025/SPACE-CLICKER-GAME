@@ -724,8 +724,17 @@ const MergeShips: React.FC = () => {
                  {/* --- ORBIT DOCK --- */}
                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-slate-900 to-transparent flex items-end justify-center gap-2 pb-2 px-4 z-10">
                      {orbit.map((ship, i) => (
-                         <div 
+                         <button
                             key={`orbit-${i}`}
+                            type="button"
+                            tabIndex={ship || dragging ? 0 : -1}
+                            aria-label={
+                                ship
+                                    ? `Orbit slot ${i + 1}, level ${ship.level} ship`
+                                    : dragging
+                                      ? `Move selected ship to empty orbit slot ${i + 1}`
+                                      : `Empty orbit slot ${i + 1}`
+                            }
                             onClick={() => {
                                 if (dragging) handleDrop('orbit', i);
                                 else if (ship) handleShipClick(ship, i, 'orbit');
@@ -737,24 +746,26 @@ const MergeShips: React.FC = () => {
                             draggable={!!ship}
                             onDragStart={() => handleDragStart('orbit', i)}
                             className={`
-                                relative w-16 h-16 rounded-t-lg border-x border-t border-b-0 border-white/20 flex items-center justify-center transition-all bg-black/40
+                                relative w-16 h-16 rounded-t-lg border-x border-t border-b-0 border-white/20 flex items-center justify-center transition-all bg-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue
                                 ${dragOver?.target === 'orbit' && dragOver?.index === i ? 'bg-neon-blue/20 border-neon-blue' : ''}
-                                ${ship ? 'cursor-pointer hover:bg-white/5' : ''}
+                                ${ship || dragging ? 'cursor-pointer hover:bg-white/5' : ''}
                             `}
                          >
                              {ship ? renderShip(ship.level) : <span className="text-white/10 text-xs font-mono">SLOT {i+1}</span>}
                              {ship && fireTimersRef.current[i] > 0.4 && (
-                                 <div className="absolute -top-4 w-4 h-10 bg-gradient-to-t from-white to-transparent opacity-50 blur-sm"></div>
+                                 <span className="absolute -top-4 w-4 h-10 bg-gradient-to-t from-white to-transparent opacity-50 blur-sm" aria-hidden="true"></span>
                              )}
-                         </div>
+                         </button>
                      ))}
                      {tech.orbitSlots < 5 && (
-                         <div 
+                         <button
+                            type="button"
+                            aria-label="Open Tech Bay to unlock more orbit slots"
                             onClick={() => setShowShop(true)}
-                            className="w-16 h-16 rounded-t-lg border-x border-t border-b-0 border-dashed border-white/10 flex items-center justify-center text-gray-600 cursor-pointer hover:bg-white/5 hover:text-white transition-colors"
+                            className="w-16 h-16 rounded-t-lg border-x border-t border-b-0 border-dashed border-white/10 flex items-center justify-center text-gray-600 cursor-pointer hover:bg-white/5 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                          >
                              +
-                         </div>
+                         </button>
                      )}
                  </div>
              </div>
@@ -802,8 +813,19 @@ const MergeShips: React.FC = () => {
                  )}
                  <div className="grid grid-cols-4 gap-2 md:gap-4 max-w-2xl mx-auto">
                      {hangar.map((ship, i) => (
-                         <div 
+                         <button
                             key={`hangar-${i}`}
+                            type="button"
+                            tabIndex={ship || dragging ? 0 : -1}
+                            aria-label={
+                                ship?.isCrate
+                                    ? `Open level ${ship.level} ship crate in hangar slot ${i + 1}`
+                                    : ship
+                                      ? `Hangar slot ${i + 1}, level ${ship.level} ship`
+                                      : dragging
+                                        ? `Move selected ship to empty hangar slot ${i + 1}`
+                                        : `Empty hangar slot ${i + 1}`
+                            }
                             onClick={() => {
                                 if (dragging) handleDrop('hangar', i);
                                 else if (ship) handleShipClick(ship, i, 'hangar');
@@ -815,19 +837,19 @@ const MergeShips: React.FC = () => {
                             draggable={!!ship && !ship.isCrate}
                             onDragStart={() => handleDragStart('hangar', i)}
                             className={`
-                                aspect-square rounded-xl border-2 flex items-center justify-center relative transition-all touch-manipulation focus:outline-none focus:ring-2 focus:ring-neon-blue/60
+                                aspect-square rounded-xl border-2 flex items-center justify-center relative transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue/60
                                 ${dragOver?.target === 'hangar' && dragOver?.index === i ? 'bg-white/10 border-white scale-105' : 'border-slate-800 bg-slate-900'}
-                                ${ship?.isCrate ? 'cursor-pointer hover:scale-105 animate-bounce border-yellow-500/50' : ship ? 'cursor-pointer hover:bg-slate-800' : ''}
+                                ${ship?.isCrate ? 'cursor-pointer hover:scale-105 animate-bounce border-yellow-500/50' : ship || dragging ? 'cursor-pointer hover:bg-slate-800' : ''}
                             `}
                          >
                              {ship?.isCrate ? (
-                                 <div className="text-4xl filter drop-shadow-[0_0_10px_gold]">📦</div>
+                                 <span className="text-4xl filter drop-shadow-[0_0_10px_gold]" aria-hidden="true">📦</span>
                              ) : ship ? (
                                  renderShip(ship.level)
                              ) : (
-                                 <div className="w-2 h-2 rounded-full bg-slate-800"></div>
+                                 <span className="w-2 h-2 rounded-full bg-slate-800" aria-hidden="true"></span>
                              )}
-                         </div>
+                         </button>
                      ))}
                  </div>
              </div>
