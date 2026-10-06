@@ -8,6 +8,9 @@ const SpacebarGamesPage: React.FC = () => {
       badge: 'IDLE / INCREMENTAL',
       description: 'Press Space for points, buy manual and automatic upgrades, build combos, earn offline progress and prestige for permanent Quantum Keys.',
       bestFor: 'Longer progression sessions',
+      timing: 'Open-ended',
+      progression: 'Upgrades + Quantum Keys',
+      localData: 'Local save + export/import',
       cta: 'Play Spacebar Clicker'
     },
     {
@@ -16,6 +19,9 @@ const SpacebarGamesPage: React.FC = () => {
       badge: 'CPS SPEED TEST',
       description: 'Run 1, 5, 10, 30 or 60 second tests, choose a custom duration, or race to 100 presses as quickly as possible.',
       bestFor: 'Measuring spacebar speed',
+      timing: '1–60s, custom 1–300s, or 100 presses',
+      progression: 'None',
+      localData: 'Mode bests + last 10 runs',
       cta: 'Start Spacebar CPS Test'
     },
     {
@@ -24,6 +30,9 @@ const SpacebarGamesPage: React.FC = () => {
       badge: 'ENDLESS COUNTER',
       description: 'Count deliberate Space presses with current CPS, average CPS, peak CPS and a best count saved in this browser.',
       bestFor: 'Untimed counting and practice',
+      timing: 'Untimed',
+      progression: 'None',
+      localData: 'Current + highest total',
       cta: 'Open Spacebar Counter'
     },
     {
@@ -32,6 +41,9 @@ const SpacebarGamesPage: React.FC = () => {
       badge: 'OVERDRIVE EDITION',
       description: 'A separate enhanced edition with Overdrive surges, stronger automation, offline earnings and Nova Core ascension.',
       bestFor: 'A deeper second progression loop',
+      timing: 'Open-ended',
+      progression: 'Upgrades + Nova Cores',
+      localData: 'Local save + export/import',
       cta: 'Play Spacebar Clicker 2'
     },
     {
@@ -40,6 +52,9 @@ const SpacebarGamesPage: React.FC = () => {
       badge: 'NO DOWNLOAD',
       description: 'Open the full Spacebar Clicker game directly in a modern browser with keyboard and mobile controls and local browser saves.',
       bestFor: 'Quick browser access',
+      timing: 'Open-ended',
+      progression: 'Same classic progression',
+      localData: 'Classic local save',
       cta: 'Open Instant Browser Mode'
     }
   ];
@@ -74,6 +89,36 @@ const SpacebarGamesPage: React.FC = () => {
               <div className="mt-5 text-sm font-bold text-neon-blue">{game.cta} →</div>
             </a>
           ))}
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 pb-10">
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-space-900/60">
+          <table className="w-full min-w-[820px] text-sm text-left">
+            <caption className="sr-only">Comparison of Spacebar games, counters, and CPS tests</caption>
+            <thead className="border-b border-white/10 text-[10px] uppercase tracking-wider text-gray-500">
+              <tr>
+                <th className="px-5 py-4">Mode</th>
+                <th className="px-5 py-4">Best for</th>
+                <th className="px-5 py-4">Timing</th>
+                <th className="px-5 py-4">Progression</th>
+                <th className="px-5 py-4">Local data</th>
+              </tr>
+            </thead>
+            <tbody>
+              {games.map((game) => (
+                <tr key={`compare-${game.href}`} className="border-b border-white/5 last:border-b-0 align-top">
+                  <td className="px-5 py-4">
+                    <a href={game.href} className="font-bold text-white hover:text-neon-blue">{game.title}</a>
+                  </td>
+                  <td className="px-5 py-4 text-gray-400">{game.bestFor}</td>
+                  <td className="px-5 py-4 text-gray-400">{game.timing}</td>
+                  <td className="px-5 py-4 text-gray-400">{game.progression}</td>
+                  <td className="px-5 py-4 text-gray-400">{game.localData}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 

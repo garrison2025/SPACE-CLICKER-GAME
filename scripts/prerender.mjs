@@ -772,6 +772,7 @@ const escapeXml = (value) =>
 const staticRouteContent = {
   '/': `
     <section>
+      <p><strong>Space Clicker is a free browser-based incremental space game.</strong> Galaxy Miner is the flagship mode: mine Stardust, automate production, manage Heat Flux, and use Galactic Reset for permanent Dark Matter upgrades. The site also includes five separate space simulations plus Spacebar clicker, counter, and CPS tools.</p>
       <h2>How to play Space Clicker</h2>
       <ol>
         <li>Mine Stardust manually to start the run.</li>
@@ -886,6 +887,17 @@ const staticRouteContent = {
 <section>
       <h2>Choose the right Spacebar game or tool</h2>
       <p>Choose the mode that matches what you want to do. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> for an upgrade-based idle game, <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS challenges. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression game, while <a href="/spacebar-clicker-unblocked/">instant browser mode</a> opens the classic game directly and does not bypass network restrictions.</p>
+      <h2>Spacebar mode comparison</h2>
+      <table>
+        <thead><tr><th>Mode</th><th>Best for</th><th>Timing</th><th>Progression</th><th>Local data</th></tr></thead>
+        <tbody>
+          <tr><td><a href="/spacebar-clicker/">Spacebar Clicker</a></td><td>Long progression sessions</td><td>Open-ended</td><td>Upgrades + Quantum Keys</td><td>Local save + export/import</td></tr>
+          <tr><td><a href="/spacebar-clicker-test/">Spacebar Clicker Test</a></td><td>Measuring Spacebar speed</td><td>1–60s, custom 1–300s, or 100 presses</td><td>None</td><td>Mode bests + last 10 runs</td></tr>
+          <tr><td><a href="/spacebar-counter/">Spacebar Counter</a></td><td>Untimed counting</td><td>Untimed</td><td>None</td><td>Current + highest total</td></tr>
+          <tr><td><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a></td><td>Second progression loop</td><td>Open-ended</td><td>Upgrades + Nova Cores</td><td>Local save + export/import</td></tr>
+          <tr><td><a href="/spacebar-clicker-unblocked/">Instant browser mode</a></td><td>Quick browser access</td><td>Open-ended</td><td>Same classic progression</td><td>Classic local save</td></tr>
+        </tbody>
+      </table>
       <h2>Spacebar Clicker</h2>
       <p><a href="/spacebar-clicker/">Spacebar Clicker</a> turns each deliberate Space press into points. Buy manual upgrades, unlock automatic production, watch CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
       <h2>Spacebar Counter and CPS Test</h2>
@@ -949,8 +961,17 @@ const staticRouteContent = {
 <section>
       <h2>Spacebar Clicker Test modes</h2>
       <p>The Spacebar Clicker Test measures deliberate Space presses over a chosen target. Timed presets include 1, 5, 10, 30, and 60 seconds. Custom mode accepts durations from 1 to 300 seconds, while the 100-click sprint measures how long it takes to reach one hundred valid presses.</p>
-      <h2>Average CPS, press interval, current CPS, and peak CPS</h2>
-      <p>Average CPS is the number of valid presses divided by elapsed test time. Average press interval is 1000 divided by average CPS and reports the mean spacing between valid presses in milliseconds; for example, 8 CPS equals 125 ms per press. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Some tools call the same Spacebar rate PPS, or presses per second. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
+      <h2>How CPS and press interval are calculated</h2>
+      <table>
+        <thead><tr><th>Metric</th><th>Calculation</th><th>Important limitation</th></tr></thead>
+        <tbody>
+          <tr><td>Average CPS</td><td>valid presses ÷ active elapsed seconds</td><td>Background time is paused.</td></tr>
+          <tr><td>Average interval</td><td>1000 ÷ average CPS</td><td>Reported in milliseconds per valid press.</td></tr>
+          <tr><td>Peak CPS</td><td>highest valid-press count in a rolling 1-second window</td><td>Short bursts can be higher than sustained average CPS.</td></tr>
+          <tr><td>Keyboard input</td><td>new deliberate Space keydown events</td><td>Browser-generated repeat events from holding Space are ignored.</td></tr>
+        </tbody>
+      </table>
+      <p>Example: 80 valid presses in 10 active seconds equals 8 CPS, and 1000 ÷ 8 equals 125 ms per press. Some tools call the same Spacebar rate PPS, or presses per second.</p>
       <h2>How timed tests start and finish</h2>
       <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. If the page is hidden or backgrounded, the clock pauses until the page becomes visible again. In 100-click mode, the test ends on the one-hundredth valid press and records active elapsed time.</p>
       <h2>How to compare CPS results</h2>
@@ -990,7 +1011,7 @@ const staticRouteContent = {
       <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
       <h2>Technology and local saves</h2>
       <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
-      <p>Site and policy review date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
+      <p>Site/content review date: October 7, 2026. Privacy and Terms policy date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
     </section>`,
   '/contact': `
     <section>
@@ -1223,12 +1244,12 @@ const renderHtml = (route, title, description, h1) => {
   } else {
     html = html.replace('</head>', `  <meta name="twitter:description" data-rh="true" content="${escapeHtml(description)}" />\n</head>`);
   }
-  html = html.replace('</head>', `  <meta property="og:image:width" data-rh="true" content="1200" />\n  <meta property="og:image:height" data-rh="true" content="630" />\n  <meta property="og:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n  <meta name="twitter:card" data-rh="true" content="summary_large_image" />\n  <meta name="twitter:image" data-rh="true" content="${escapeHtml(socialImage)}" />\n  <meta name="twitter:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n</head>`);
+  html = html.replace('</head>', `  <meta property="og:image:width" data-rh="true" content="1200" />\n  <meta property="og:image:height" data-rh="true" content="630" />\n  <meta property="og:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n  <meta property="og:locale" data-rh="true" content="en_US" />\n  <meta name="twitter:card" data-rh="true" content="summary_large_image" />\n  <meta name="twitter:image" data-rh="true" content="${escapeHtml(socialImage)}" />\n  <meta name="twitter:image:alt" data-rh="true" content="${escapeHtml(title)}" />\n</head>`);
   // Mark static SEO tags as Helmet-managed so the client can reconcile them
   // instead of appending a second canonical/meta set after React mounts.
   html = html.replace(/<meta property="og:image"([^>]*)>/i, '<meta property="og:image" data-rh="true"$1>');
   html = html.replace(/<meta property="og:site_name"([^>]*)>/i, '<meta property="og:site_name" data-rh="true"$1>');
-  html = html.replace('</head>', `  <meta name="robots" data-rh="true" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="en" />\n  <link rel="alternate" data-rh="true" href="${canonical}" hreflang="x-default" />\n  <link rel="canonical" data-rh="true" href="${canonical}" />\n</head>`);
+  html = html.replace('</head>', `  <meta name="robots" data-rh="true" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n  <link rel="canonical" data-rh="true" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
     `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav aria-label="Site navigation" style="margin-top:32px;line-height:1.9">

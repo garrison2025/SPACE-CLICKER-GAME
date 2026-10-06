@@ -163,10 +163,10 @@ const BrandHero = ({ onPlay, hasSave }: { onPlay: () => void; hasSave: boolean }
                     SPACE <span className="text-transparent bg-clip-text bg-gradient-to-br from-neon-blue via-blue-500 to-purple-600">CLICKER GAME</span>
                 </h1>
 
-                {/* Subtitle - SEO OPTIMIZED */}
+                {/* Direct answer / GEO-ready summary */}
                 <p className="marketing-motion text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-                    Enter a connected universe of browser-based space simulations. <br className="hidden md:block"/>
-                    Mine Stardust, automate production, manage colonies, defend sectors, and explore several browser-based space simulations.
+                    <strong className="text-gray-200 font-semibold">Space Clicker is a free browser-based incremental space game.</strong>
+                    {' '}In Galaxy Miner, mine Stardust, automate production, manage Heat Flux, and use Galactic Reset for permanent Dark Matter upgrades. The site also includes five separate space simulations plus Spacebar clicker, counter, and CPS tools.
                     <br/>
                     <span className="text-sm text-neon-blue mt-4 inline-block font-mono tracking-widest border border-neon-blue/30 px-3 py-1 rounded bg-neon-blue/5">NO DOWNLOAD • FREE TO PLAY</span>
                 </p>
