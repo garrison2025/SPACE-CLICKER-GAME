@@ -43,6 +43,22 @@ for (const requiredSize of ['192x192', '512x512']) {
   }
 }
 
+for (const icon of manifest.icons) {
+  const src = String(icon?.src || '');
+  if (!src.startsWith('/')) {
+    throw new Error('manifest.webmanifest icon must use a local absolute path: ' + src);
+  }
+  const iconPath = path.join(distDir, src.replace(/^\/+/, ''));
+  if (!fs.existsSync(iconPath) || fs.statSync(iconPath).size === 0) {
+    throw new Error('manifest.webmanifest icon is missing from dist/: ' + src);
+  }
+}
+
+const appleTouchIconPath = path.join(distDir, 'apple-touch-icon.png');
+if (!fs.existsSync(appleTouchIconPath) || fs.statSync(appleTouchIconPath).size === 0) {
+  throw new Error('apple-touch-icon.png is missing from dist/.');
+}
+
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
   const full = path.join(dir, entry.name);
   if (entry.isDirectory()) return walk(full);
