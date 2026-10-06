@@ -152,8 +152,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       </a>
       
       {/* --- TOP HUD --- */}
-      <header className="game-console-header flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
-         <div className="flex items-center gap-4">
+      <header className="game-console-header flex items-center justify-between px-2 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
+         <div className="flex min-w-0 items-center gap-2 sm:gap-4">
             <button
                 type="button"
                 aria-label="Return to Space Clicker Game home"
@@ -165,7 +165,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                   <span className="font-display font-bold text-sm md:text-lg tracking-widest leading-none">SPACE CLICKER GAME</span>
                   <span className="text-[10px] text-neon-blue font-mono tracking-wider">GAME CONSOLE</span>
                </div>
-               <div className="sm:hidden min-w-0 max-w-[8rem]">
+               <div className="sm:hidden min-w-0 max-w-[5.5rem]">
                   <div className="text-[9px] text-neon-blue font-mono tracking-wider">ACTIVE SIM</div>
                   <div className="text-xs font-bold text-white truncate">{activeGameMeta?.title || 'Space Game'}</div>
                </div>
@@ -179,17 +179,17 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
             </div>
          </div>
 
-         <div className="flex items-center gap-3">
+         <div className="flex shrink-0 items-center gap-1 sm:gap-2 md:gap-3">
             {onOpenStats && (
               <button
                 type="button"
                 aria-label="Open fleet telemetry and save tools"
                 onClick={onOpenStats}
-                className="flex items-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-neon-blue/20 border border-white/10 hover:border-neon-blue text-xs font-mono text-gray-300 hover:text-white transition-all shadow-sm"
+                className="min-w-11 min-h-11 px-2 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-neon-blue/20 border border-white/10 hover:border-neon-blue text-xs font-mono text-gray-300 hover:text-white transition-all shadow-sm flex items-center justify-center gap-1.5"
                 title="Fleet Telemetry & Backup [S]"
               >
                 <span>📊</span>
-                <span className="font-bold">STATS</span>
+                <span className="hidden sm:inline font-bold">STATS</span>
                 <span className="text-[9px] text-neon-blue hidden sm:inline">[S]</span>
               </button>
             )}
