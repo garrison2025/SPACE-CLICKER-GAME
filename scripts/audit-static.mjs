@@ -195,7 +195,9 @@ const comparisonSourcePath = path.join(componentsDir, 'ComparisonPage.tsx');
 const comparisonSource = fs.readFileSync(comparisonSourcePath, 'utf8');
 const runtimeComparisonSources = [
   ...comparisonSource.matchAll(/sourceUrl:\s*"([^"]+)"/g)
-].map((match) => match[1]);
+]
+  .map((match) => match[1])
+  .filter((sourceUrl) => /^https?:\/\//i.test(sourceUrl));
 
 if (runtimeComparisonSources.length !== 5) {
   throw new Error(
