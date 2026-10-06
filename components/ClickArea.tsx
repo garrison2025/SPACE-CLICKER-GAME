@@ -411,15 +411,17 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           <div className="absolute top-[55%] sm:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-48 h-48 sm:w-64 sm:h-64 md:w-[26rem] md:h-[26rem] max-w-[80vw] max-h-[80vh] aspect-square flex items-center justify-center">
             {/* Geodes */}
             {geodes.map(g => (
-                <div 
+                <button
                     key={g.id}
+                    type="button"
+                    aria-label="Crack energy geode and vent Heat"
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={(e) => handleGeodeClick(e, g.id)}
-                    className="absolute w-12 h-12 z-50 cursor-pointer animate-pulse hover:scale-125 transition-transform group touch-manipulation"
+                    className="absolute w-12 h-12 z-50 cursor-pointer animate-pulse hover:scale-125 transition-transform group touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-300 rounded"
                     style={{ top: `${g.top}%`, left: `${g.left}%` }}
                 >
-                    <div className="w-full h-full bg-fuchsia-500 rotate-45 border-2 border-white shadow-[0_0_20px_fuchsia] group-hover:bg-white transition-colors"></div>
-                </div>
+                    <span className="block w-full h-full bg-fuchsia-500 rotate-45 border-2 border-white shadow-[0_0_20px_fuchsia] group-hover:bg-white transition-colors" aria-hidden="true"></span>
+                </button>
             ))}
 
             {/* Orbiters */}
