@@ -130,6 +130,10 @@ for (const route of supportRoutes) {
   expect(response.status === 200, 'Known support route should pass through: ' + route);
 }
 
+const favicon = await run('https://spaceclickergame.com/favicon.svg');
+expect(favicon.status === 200, 'favicon.svg should pass through');
+expect(favicon.headers.get('x-content-type-options') === 'nosniff', 'favicon.svg must include X-Content-Type-Options');
+
 const robots = await run('https://spaceclickergame.com/robots.txt');
 expect(robots.status === 200, 'robots.txt should pass through');
 
