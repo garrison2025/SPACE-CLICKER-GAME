@@ -1061,7 +1061,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
               <section>
                 <h2 className="text-2xl font-display text-white mb-3">Related Spacebar tools</h2>
                 <p>
-                  Use the Spacebar Counter when you only need a running press total, or the Spacebar Clicker Test for fixed-duration CPS challenges and the 100-click sprint. The main Spacebar Clicker page is the full incremental game.
+                  Use the <a href="/spacebar-counter/" className="text-neon-blue hover:text-white">Spacebar Counter</a> when you only need a running press total, or the <a href="/spacebar-clicker-test/" className="text-neon-blue hover:text-white">Spacebar Clicker Test</a> for fixed-duration CPS challenges and the 100-click sprint. The <a href="/spacebar-clicker/" className="text-neon-blue hover:text-white">main Spacebar Clicker page</a> is the canonical full incremental-game destination.
                 </p>
               </section>
               <section>
@@ -1103,9 +1103,9 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
               <section>
                 <h2 className="text-2xl font-display text-white mb-3">Spacebar Clicker vs Spacebar Counter</h2>
                 <p>
-                  This page is the incremental game. If the goal is only to count key presses, use the dedicated Spacebar Counter.
-                  If the goal is to measure speed over a fixed duration, the Spacebar Clicker Test provides timed tests, peak CPS,
-                  average CPS and a saved personal best.
+                  This page is the incremental game. If the goal is only to count key presses, use the dedicated <a href="/spacebar-counter/" className="text-neon-blue hover:text-white">Spacebar Counter</a>.
+                  If the goal is to measure speed over a fixed duration, the <a href="/spacebar-clicker-test/" className="text-neon-blue hover:text-white">Spacebar Clicker Test</a> provides timed tests, peak CPS,
+                  average CPS and a saved personal best. The <a href="/spacebar-games/" className="text-neon-blue hover:text-white">Spacebar Games hub</a> compares every available mode side by side.
                 </p>
               </section>
               <section>
