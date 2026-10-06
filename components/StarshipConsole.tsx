@@ -22,6 +22,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [systemStatus, setSystemStatus] = useState('');
+  const [resetStatus, setResetStatus] = useState('');
   const dockScrollRef = useRef<HTMLElement | null>(null);
   const settingsButtonRef = useRef<HTMLButtonElement | null>(null);
   const settingsDialogRef = useRef<HTMLDivElement | null>(null);
@@ -132,10 +133,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   };
 
   const handleFactoryReset = () => {
+      setResetStatus('');
       if (window.confirm("WARNING: SPACE CLICKER GAME DATA WILL BE PURGED.\n\nThis removes game progress, Spacebar records, and site game settings stored by SpaceClickerGame.com in this browser. Other localStorage keys on the origin are left untouched.\n\nAre you sure?")) {
           const result = clearProjectStorage();
           if (!result.success) {
-              window.alert("The reset could not access or clear browser storage. Your local saves may still exist.");
+              setResetStatus('Reset failed because browser storage could not be accessed or cleared. Your local saves may still exist.');
               return;
           }
           window.location.reload();
@@ -306,6 +308,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                           >
                               FACTORY RESET PROTOCOL
                           </button>
+                          {resetStatus && (
+                            <p role="alert" className="mt-3 text-xs text-red-300">
+                              {resetStatus}
+                            </p>
+                          )}
                       </div>
 
                       <div className="text-center text-[10px] text-gray-600 font-mono pt-4">
