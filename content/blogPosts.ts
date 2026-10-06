@@ -283,12 +283,16 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Compare upgrade cost, production gains and reset timing to make better decisions in incremental space clicker runs.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 08, 2026',
-        updatedDate: 'Oct 6, 2026',
+        updatedDate: 'Oct 7, 2026',
         readTime: '3 min read',
         tags: ['clicker game space', 'strategy', 'math', 'optimization'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
             <p class="lead">Behind the flashy particle effects and retro UI of any <strong>clicker game space</strong> title lies a cold, hard engine of mathematics. To master the void, one must master the numbers.</p>
+
+            <h2>Space Clicker Strategy Guide: Start With the Current Bottleneck</h2>
+            <p>A useful <strong>space clicker strategy</strong> starts by identifying what is limiting the current run. Early on, manual output can be the bottleneck. Later, automatic production, a sector multiplier, or the timing of the next Galactic Reset can matter more than another burst of clicking.</p>
+            <p>In <a href="/game/galaxy_miner/">Galaxy Miner</a>, use the live production rate, next-upgrade cost, unlocked sector, and estimated Dark Matter gain together. A purchase is useful when it improves the next meaningful milestone faster than the available alternatives.</p>
 
             <h2>The Power of Exponentials</h2>
             <p>Incremental games often combine linear production with multiplicative cost growth and milestone multipliers, which is why the best purchase can change as a run develops.</p>
@@ -298,6 +302,10 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>A common mistake in any <strong>space click game</strong> is buying the cheapest upgrade available. A useful baseline is to compare each upgrade's cost with the production increase it actually adds.</p>
             <p><em>Formula: Ratio = Cost / Increase_In_Production</em></p>
             <p>The lower the ratio, the faster an upgrade pays for itself. Early in a run, manual upgrades can matter because the player is actively pressing. As automatic production grows, compare the next manual purchase with the next automation purchase instead of assuming one category is always superior.</p>
+
+            <h2>Idle Space Clicker Strategy: When Automation Takes Over</h2>
+            <p>An <strong>idle space clicker</strong> run changes once automatic production becomes large enough that another minute of manual input contributes only a small share of total output. At that point, upgrade payback, sector multipliers, offline production, and permanent bonuses deserve more attention than raw press speed.</p>
+            <p>Galaxy Miner can credit up to 24 hours of supported saved automatic production. That makes automation especially valuable before a longer break, but it still does not make every automation purchase optimal. Compare the cost of the next producer with the production increase it adds, then recalculate after major multipliers or prestige bonuses.</p>
 
             <h2>Prestige: The Art of Starting Over</h2>
             <p>Many incremental games use a prestige layer: reset part of the current run in exchange for a permanent advantage. In our <strong>space click game</strong>, this is represented by Dark Matter.</p>
@@ -325,6 +333,10 @@ export const BLOG_POSTS: BlogPost[] = [
             </ul>
             <p>The game uses the Kardashev scale only as a useful thematic analogy for increasing scale. Its mechanics are fictional and should not be treated as a scientific simulation of that classification system.</p>
 
+            <h2>Space Clicker on Mobile: What Changes</h2>
+            <p>On a phone or tablet, the underlying Galaxy Miner economy is the same: manual mining, upgrades, automation, sectors, offline progress, and Galactic Reset use the same rules. The practical difference is input. Touch controls replace mouse or keyboard input, so a mobile session is better treated as short active bursts around upgrade and prestige decisions rather than a contest to maximize physical click speed.</p>
+            <p>Progress is stored locally in the current browser, so switching devices does not automatically move a run. Use the in-game backup tools when you want to transfer a supported save manually. For keyboard-specific mobile controls and on-screen Space buttons, use the <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
+
             <h2>Practical Optimization Checklist</h2>
             <p>For <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a> and similar incremental games, these checks are more useful than comparing raw totals without considering payback time:</p>
             <ul>
@@ -336,7 +348,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Conclusion</h2>
             <p>Strategy in a <strong>space clicker game</strong> is about seeing the forest for the trees—or rather, the galaxy for the stars. It is about making smart investments today to reap massive rewards tomorrow.</p>
             
-            <p>Apply the upgrade and reset math directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, then use the <a href="/achievements/">Galaxy Miner milestones tracker</a> to check the Stardust, automation, and Dark Matter thresholds discussed in this guide.</p>
+            <p>Apply the upgrade and reset math directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, then use the <a href="/achievements/">Galaxy Miner milestones tracker</a> to check the Stardust, automation, and Dark Matter thresholds discussed in this guide. For the tradeoff between active input and idle production, continue with <a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a>.</p>
         `
     },
     {
