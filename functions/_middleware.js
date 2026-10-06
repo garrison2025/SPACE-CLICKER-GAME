@@ -48,6 +48,7 @@ const isStaticAssetRequest = (pathname) =>
   pathname.startsWith('/assets/') ||
   pathname === '/robots.txt' ||
   pathname === '/sitemap.xml' ||
+  pathname === '/manifest.webmanifest' ||
   /\.[a-z0-9]{2,8}$/i.test(pathname);
 
 const isKnownRoute = (pathname) => {
