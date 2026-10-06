@@ -11,8 +11,8 @@ export const GAMES_CATALOG: GameMeta[] = [
     color: 'from-blue-500 to-cyan-400',
     status: 'LIVE',
     tags: ['Incremental', 'Upgrades', 'Prestige'],
-    briefing: "Commander, your directive is simple: Harvest entropy. We have deployed you to Sector Zero with a standard-issue Mining Beam. Extract Stardust from local asteroids to fund the construction of automated Drone Fleets. The ultimate goal is to reach the Galactic Core, where resource density is theoretically infinite.",
-    manual: "1. CLICK the central asteroid to mine Stardust.\n2. OPEN the Fabricator to purchase automated drills and drones.\n3. WARP to new sectors when you reach resource thresholds.\n4. WATCH for Golden Comets and Crisis Events.",
+    briefing: "Start with a standard Mining Beam, extract Stardust, and reinvest it into automated production. Higher Stardust thresholds advance the run through stronger fictional mining sectors until the Galactic Core, which provides the current 200× planet multiplier.",
+    manual: "1. CLICK the central asteroid to mine Stardust.\n2. OPEN the Fabricator to purchase automated drills and drones.\n3. REACH Stardust thresholds to advance automatically through the current planet progression.\n4. WATCH for Golden Comets and Crisis Events.",
     changelog: ["v2.1: Added Dark Matter tech tree.", "v2.0: Added local dynamic anomaly events.", "v1.5: Fixed warp drive visuals."]
   },
   {
