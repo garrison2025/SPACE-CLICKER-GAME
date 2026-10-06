@@ -186,6 +186,8 @@ export const PLANETS: Planet[] = [
   }
 ];
 
+export const MAX_PRESTIGE_TECH_LEVEL = 1000;
+
 export const PRESTIGE_UPGRADES: PrestigeUpgrade[] = [
   {
     id: 'crit_chance',
