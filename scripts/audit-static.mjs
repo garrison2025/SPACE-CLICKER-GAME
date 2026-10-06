@@ -297,7 +297,7 @@ for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
 
-  const title = getOne(html, /<title>([^<]+)<\/title>/gi, 'title', route).trim();
+  const title = getOne(html, /<title\s+data-rh="true">([^<]+)<\/title>/gi, 'title', route).trim();
   const description = getOne(html, /<meta\s+[^>]*name="description"[^>]*content="([^"]*)"[^>]*>/gi, 'meta description', route).trim();
   const canonical = getOne(html, /<link\s+[^>]*rel="canonical"[^>]*href="([^"]+)"[^>]*>/gi, 'canonical', route).trim();
   const h1Count = (html.match(/<h1\b/gi) || []).length;
@@ -859,7 +859,7 @@ for (const route of auditedRoutes) {
 }
 
 const home = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
-if (!home.includes('<title>Space Clicker – Free Space Clicker Game Online</title>')) {
+if (!home.includes('<title data-rh="true">Space Clicker – Free Space Clicker Game Online</title>')) {
   throw new Error('Homepage title no longer matches the primary Space Clicker target');
 }
 if (!home.includes('<h2>How to play Space Clicker</h2>')) {
