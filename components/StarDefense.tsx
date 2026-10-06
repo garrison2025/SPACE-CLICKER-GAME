@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } from '../types';
 import { formatNumber } from '../utils';
+import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 
 const DEFENSE_SAVE_KEY = 'star_defense_save_v4';
 const MAX_RESOURCE_VALUE = 1e300;
@@ -656,7 +657,7 @@ const StarDefense: React.FC = () => {
     // Keyboard controls
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
-            if (gameOver) return;
+            if (gameOver || isInteractiveKeyboardTarget(e.target)) return;
             if (e.key === '1') activateSkill('emp');
             if (e.key === '2') activateSkill('rapid');
             if (e.key === '3') activateSkill('nuke');
