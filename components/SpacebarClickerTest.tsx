@@ -598,7 +598,47 @@ const SpacebarClickerTest: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">How the Spacebar Clicker Test works</h2>
             <p>
-              Choose a duration or the 100-click sprint and start with your first intentional Space press. Use the timed modes as a spacebar CPS test, or use the 100-click sprint as a fixed-workload space bar click test. Browser key-repeat is ignored, so holding the key down does not inflate the result. If the page is hidden or sent to the background, the test clock pauses and resumes when the page becomes visible again. Average CPS is valid presses divided by active elapsed time, while peak CPS measures the strongest rolling one-second burst. Average interval is 1000 divided by average CPS and reports the mean spacing between presses in milliseconds.
+              Choose a duration or the 100-click sprint and start with your first intentional Space press. Use the timed modes as a spacebar CPS test, or use the 100-click sprint as a fixed-workload space bar click test. Browser key-repeat is ignored, so holding the key down does not inflate the result. If the page is hidden or sent to the background, the test clock pauses and resumes when the page becomes visible again.
+            </p>
+          </section>
+          <section>
+            <h2 className="text-2xl font-display text-white mb-3">How are CPS and press interval calculated?</h2>
+            <div className="overflow-x-auto rounded-xl border border-white/10 bg-black/20">
+              <table className="w-full min-w-[680px] text-sm">
+                <caption className="sr-only">Spacebar Clicker Test formulas and measurement rules</caption>
+                <thead>
+                  <tr className="border-b border-white/10 text-left text-[10px] uppercase tracking-wider text-gray-500">
+                    <th className="px-4 py-3">Metric</th>
+                    <th className="px-4 py-3">Calculation</th>
+                    <th className="px-4 py-3">Important limitation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-white/5">
+                    <td className="px-4 py-3 font-bold text-white">Average CPS</td>
+                    <td className="px-4 py-3">valid presses ÷ active elapsed seconds</td>
+                    <td className="px-4 py-3">Background time is paused.</td>
+                  </tr>
+                  <tr className="border-b border-white/5">
+                    <td className="px-4 py-3 font-bold text-white">Average interval</td>
+                    <td className="px-4 py-3">1000 ÷ average CPS</td>
+                    <td className="px-4 py-3">Reported in milliseconds per valid press.</td>
+                  </tr>
+                  <tr className="border-b border-white/5">
+                    <td className="px-4 py-3 font-bold text-white">Peak CPS</td>
+                    <td className="px-4 py-3">highest valid-press count in a rolling 1-second window</td>
+                    <td className="px-4 py-3">Short bursts can be much higher than sustained average CPS.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-bold text-white">Keyboard input</td>
+                    <td className="px-4 py-3">new deliberate Space keydown events</td>
+                    <td className="px-4 py-3">Browser-generated repeat events from holding Space are ignored.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-sm text-gray-500">
+              Example: 80 valid presses in 10 active seconds = 8 CPS, and 1000 ÷ 8 = 125 ms per press.
             </p>
           </section>
           <section>
