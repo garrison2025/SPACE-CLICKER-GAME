@@ -759,6 +759,12 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                 event.preventDefault();
                 performPress();
               }}
+              onKeyDown={(event) => {
+                if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+                  event.preventDefault();
+                  performPress();
+                }
+              }}
               className="w-full max-w-3xl mx-auto min-h-[118px] md:min-h-[145px] rounded-2xl border-2 border-neon-blue bg-gradient-to-b from-space-700 to-black text-white shadow-[0_12px_0_#062f38,0_0_35px_rgba(0,243,255,0.16)] active:translate-y-2 active:shadow-[0_4px_0_#062f38,0_0_25px_rgba(0,243,255,0.28)] transition-all select-none touch-manipulation"
               aria-label="Press the spacebar clicker"
             >
