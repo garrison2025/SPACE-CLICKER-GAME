@@ -15,10 +15,22 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const hasMountedRef = useRef(false);
 
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, [currentView]);
+  }, [currentView, activeGame]);
+
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      document.getElementById('main-content')?.focus();
+    });
+  }, [currentView, activeGame]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
