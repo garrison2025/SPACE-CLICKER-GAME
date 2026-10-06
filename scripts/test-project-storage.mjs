@@ -1,8 +1,26 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import ts from 'typescript';
 
 const expect = (condition, message) => {
   if (!condition) throw new Error(message);
+};
+
+const projectStorageSource = fs.readFileSync(
+  path.resolve('utils/projectStorage.ts'),
+  'utf8'
+);
+
+const transpiledProjectStorage = ts.transpileModule(projectStorageSource, {
+  compilerOptions: {
+    module: ts.ModuleKind.ESNext,
+    target: ts.ScriptTarget.ES2022,
+  },
+}).outputText;
+
+const loadProjectStorageModule = async (tag) => {
+  const encoded = Buffer.from(transpiledProjectStorage, 'utf8').toString('base64');
+  return import(`data:text/javascript;base64,${encoded}#${tag}`);
 };
 
 class MemoryStorage {
@@ -37,7 +55,7 @@ class MemoryStorage {
 
 const successStorage = new MemoryStorage();
 globalThis.localStorage = successStorage;
-const successModule = await import(new URL('../utils/projectStorage.ts?success', import.meta.url));
+const successModule = await loadProjectStorageModule('success');
 
 expect(successModule.safeSetStorageItem('cosmic-miner-save-v2', 'before'), 'Project save should write before reset');
 expect(successModule.safeSetStorageItem('unrelated-key', 'keep'), 'Unrelated key should write before reset');
@@ -111,7 +129,7 @@ expect(
 const failureStorage = new MemoryStorage({ failRemove: true });
 failureStorage.setItem('spacebar_clicker_save_v1', 'before');
 globalThis.localStorage = failureStorage;
-const failureModule = await import(new URL('../utils/projectStorage.ts?failure', import.meta.url));
+const failureModule = await loadProjectStorageModule('failure');
 
 const failureResult = failureModule.clearProjectStorage();
 expect(!failureResult.success, 'Failed storage deletion should report failure');
