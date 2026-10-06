@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 const FOCUSABLE_SELECTOR = [
@@ -38,4 +39,29 @@ export const trapDialogFocus = (event: ReactKeyboardEvent<HTMLElement>) => {
     event.preventDefault();
     first.focus();
   }
+};
+
+
+export const useDialogFocus = <T extends HTMLElement>(isOpen: boolean) => {
+  const dialogRef = useRef<T | null>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+
+    returnFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    dialogRef.current?.focus({ preventScroll: true });
+
+    return () => {
+      const target = returnFocusRef.current;
+      returnFocusRef.current = null;
+      if (target?.isConnected) {
+        target.focus({ preventScroll: true });
+      }
+    };
+  }, [isOpen]);
+
+  return dialogRef;
 };
