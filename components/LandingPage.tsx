@@ -201,6 +201,7 @@ const BrandHero = ({ onPlay }: { onPlay: () => void }) => {
                             <span className="absolute -bottom-2 -right-2 w-full h-full border-2 border-white/30 -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></span>
                         </a>
                         <button
+                            type="button"
                             onClick={scrollToConsole}
                             className="px-6 py-3.5 border border-white/15 text-gray-300 hover:text-white hover:border-neon-blue/50 rounded font-mono text-xs tracking-wider transition-colors"
                         >
