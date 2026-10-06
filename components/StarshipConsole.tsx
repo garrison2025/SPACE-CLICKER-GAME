@@ -376,6 +376,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
               <div className="min-w-max flex items-end justify-start sm:justify-center gap-2 p-2">
                   {GAMES_CATALOG.map(game => (
                       <button
+                        type="button"
                         key={game.id}
                         ref={activeGame === game.id ? activeDockButtonRef : undefined}
                         onClick={() => onSwitchGame(game.id)}
