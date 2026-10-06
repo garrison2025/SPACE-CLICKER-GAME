@@ -134,6 +134,10 @@ const favicon = await run('https://spaceclickergame.com/favicon.svg');
 expect(favicon.status === 200, 'favicon.svg should pass through');
 expect(favicon.headers.get('x-content-type-options') === 'nosniff', 'favicon.svg must include X-Content-Type-Options');
 
+const manifest = await run('https://spaceclickergame.com/manifest.webmanifest');
+expect(manifest.status === 200, 'manifest.webmanifest should pass through');
+expect(manifest.headers.get('x-content-type-options') === 'nosniff', 'manifest.webmanifest must include X-Content-Type-Options');
+
 const robots = await run('https://spaceclickergame.com/robots.txt');
 expect(robots.status === 200, 'robots.txt should pass through');
 
