@@ -45,27 +45,27 @@ export const GAMES_CATALOG: GameMeta[] = [
     id: 'merge_ships',
     title: 'Merge Spaceships',
     subtitle: 'Fleet Evolution',
-    description: 'Drag and combine ships to evolve them. Deploy your fleet to orbit for passive income generation.',
+    description: 'Merge matching ships, deploy them to orbit for automatic asteroid income, and recover capped orbit earnings after time away.',
     icon: '🚀',
     color: 'from-green-500 to-emerald-400',
     status: 'LIVE',
     tags: ['Merge', 'Casual', 'Collection'],
     briefing: "Our engineers have developed a new modular hull technology. By combining two identical chassis, we can fuse them into a superior vessel. Build the ultimate armada.",
-    manual: "1. DRAG matching ships together to merge them into the next level.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.",
-    changelog: ["v1.0: Hangar bays open. Merge logic active."]
+    manual: "1. DRAG matching ships together to merge them into the next level.\n2. PLACE high-level ships in Orbit to attack asteroids and earn Credits.\n3. UPGRADE Orbit Expansion, Fabrication, and Logistics to grow the fleet faster.\n4. RETURN after time away to recover up to 24 hours of estimated Orbit income.",
+    changelog: ["v1.1: Added capped offline and hidden-tab Orbit earnings plus keyboard fleet controls.", "v1.0: Hangar bays open. Merge logic active."]
   },
   {
     id: 'gravity_idle',
     title: 'Gravity Idle',
     subtitle: 'Physics Simulation',
-    description: 'Launch projectiles into gravity wells. Use orbital mechanics to smash asteroids in a satisfying physics sandbox.',
+    description: 'Launch projectiles through a gravity well, automate orbital cannons, and recover capped estimated Matter output after time away.',
     icon: '☄️',
     color: 'from-yellow-500 to-amber-400',
     status: 'LIVE',
     tags: ['Physics', 'Zen', 'Simulation'],
     briefing: "Observe the dance of the spheres. In this sector, we use kinetic bombardment to break apart resource clusters. Launch probes and let gravity do the work.",
-    manual: "1. BUY Launchers to automate projectile firing.\n2. UPGRADE Gravity Well density to curve trajectories.\n3. UNLOCK Piercing physics to shatter multiple layers.",
-    changelog: ["v1.0: Physics engine calibrated. Singularity stable."]
+    manual: "1. BUY Launchers to automate projectile firing.\n2. UPGRADE Gravity Well density to curve trajectories.\n3. UNLOCK Piercing physics to shatter multiple layers.\n4. RETURN after time away to recover up to 24 hours of estimated launcher output.",
+    changelog: ["v1.1: Added capped offline and hidden-tab Matter recovery plus a keyboard-accessible Gravity Pulse.", "v1.0: Physics engine calibrated. Singularity stable."]
   },
   {
     id: 'deep_signal',
