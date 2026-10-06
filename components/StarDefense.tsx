@@ -747,8 +747,8 @@ const StarDefense: React.FC = () => {
             setScraps(loadedScraps);
             setWave(loadedWave);
             setUpgrades(loadedUpgrades);
-        } catch (error) {
-            console.warn('Could not load Star Defense save.', error);
+        } catch {
+            safeRemoveStorageItem(DEFENSE_SAVE_KEY);
         }
     }, []);
 
