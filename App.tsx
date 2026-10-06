@@ -1181,9 +1181,13 @@ const App: React.FC = () => {
     const upgrade = currentSnapshot.upgrades[id];
     if (!upgrade || amountToBuy < 1) return;
 
+    const remainingLevels = Math.max(0, MAX_SAFE_UPGRADE_COUNT - upgrade.count);
+    const purchaseCount = Math.min(Math.floor(amountToBuy), remainingLevels);
+    if (purchaseCount < 1) return;
+
     let totalCost = 0;
     let tempCount = upgrade.count;
-    for (let i = 0; i < amountToBuy; i++) {
+    for (let i = 0; i < purchaseCount; i++) {
         totalCost += Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, tempCount));
         tempCount++;
     }
@@ -1191,7 +1195,7 @@ const App: React.FC = () => {
     const currentStardust = currentSnapshot.resources[ResourceType.Stardust];
     if (currentStardust < totalCost) return;
 
-    const newCount = upgrade.count + amountToBuy;
+    const newCount = upgrade.count + purchaseCount;
     const nextResources = {
         ...currentSnapshot.resources,
         [ResourceType.Stardust]: currentStardust - totalCost
