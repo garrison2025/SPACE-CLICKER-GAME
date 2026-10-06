@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { DefenseUpgrade, Enemy, Projectile, Particle, FloatingText, PowerUp } from '../types';
 import { formatNumber } from '../utils';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { trapDialogFocus } from '../utils/dialogFocus';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 const DEFENSE_SAVE_KEY = 'star_defense_save_v4';
@@ -1030,13 +1031,22 @@ const StarDefense: React.FC = () => {
 
                  {/* GAME OVER OVERLAY */}
                  {gameOver && (
-                     <div className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm">
-                         <h2 className="text-5xl font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
-                         <p className="text-gray-400 mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
+                     <div
+                        role="alertdialog"
+                        aria-modal="true"
+                        aria-labelledby="star-defense-game-over-title"
+                        aria-describedby="star-defense-game-over-description"
+                        tabIndex={-1}
+                        autoFocus
+                        onKeyDown={trapDialogFocus}
+                        className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm outline-none"
+                     >
+                         <h2 id="star-defense-game-over-title" className="text-5xl font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
+                         <p id="star-defense-game-over-description" className="text-gray-400 mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
                          <button
                             type="button"
                             onClick={handleRestart}
-                            className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded shadow-[0_0_20px_red] transition-all"
+                            className="px-8 py-3 min-h-11 bg-red-600 hover:bg-red-500 text-white font-bold rounded shadow-[0_0_20px_red] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                          >
                              REINITIALIZE SYSTEM
                          </button>
