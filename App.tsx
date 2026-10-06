@@ -4,8 +4,7 @@ import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG } from './constants';
 import { BLOG_POST_META } from './content/blogMeta';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
-import LandingPage from './components/LandingPage';
-import NotFoundPage from './components/NotFoundPage';
+ import NotFoundPage from './components/NotFoundPage';
 import SEOHead from './components/SEOHead';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
@@ -13,7 +12,8 @@ import { formatNumber } from './utils';
 import { isInteractiveKeyboardTarget } from './utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem, STORAGE_WRITE_FAILED_EVENT } from './utils/projectStorage';
 
-// --- LAZY LOAD GAMES (Code Splitting for SEO Performance) ---
+// --- LAZY LOAD ROUTE CONTENT (Code Splitting for SEO Performance) ---
+const LandingPage = React.lazy(() => import('./components/LandingPage'));
 const MarsColony = React.lazy(() => import('./components/MarsColony'));
 const StarDefense = React.lazy(() => import('./components/StarDefense'));
 const MergeShips = React.lazy(() => import('./components/MergeShips'));
@@ -2251,11 +2251,13 @@ const App: React.FC = () => {
         ) : (
             <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
                 {viewMode === 'home' && (
-                    <LandingPage 
-                        onStart={(id) => handleNavigate('game', id)}
-                        onNavigate={handleNavigate}
-                        heroSlot={undefined} 
-                    />
+                    <Suspense fallback={<LoadingSimulation />}>
+                        <LandingPage
+                            onStart={(id) => handleNavigate('game', id)}
+                            onNavigate={handleNavigate}
+                            heroSlot={undefined}
+                        />
+                    </Suspense>
                 )}
 
                 {viewMode === 'compare' && <Suspense fallback={<LoadingSimulation />}><ComparisonPage onNavigate={handleNavigate} /></Suspense>}
