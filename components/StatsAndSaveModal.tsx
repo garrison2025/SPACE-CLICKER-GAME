@@ -33,6 +33,8 @@ const encodeBase64Utf8 = (value: string) => {
   return btoa(binary);
 };
 
+const MAX_SAVE_IMPORT_SIZE = 100_000;
+
 const decodeBase64Utf8 = (value: string) => {
   const binary = atob(value);
   const bytes = new Uint8Array(binary.length);
@@ -159,7 +161,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     picker.onchange = async () => {
       const selected = picker.files?.[0];
       if (!selected) return;
-      if (selected.size > 100_000) {
+      if (selected.size > MAX_SAVE_IMPORT_SIZE) {
         setImportError('Backup file is too large.');
         return;
       }
@@ -179,13 +181,18 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
 
   const handleApplyImport = () => {
     setImportError('');
-    if (!importString.trim()) {
+    const code = importString.trim();
+    if (!code) {
       setImportError('Please enter a valid save string.');
+      return;
+    }
+    if (code.length > MAX_SAVE_IMPORT_SIZE) {
+      setImportError('Save data is too large.');
       return;
     }
 
     try {
-      const decoded = decodeBase64Utf8(importString.trim());
+      const decoded = decodeBase64Utf8(code);
       const parsed = JSON.parse(decoded);
       const validShape =
         parsed &&
@@ -426,6 +433,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                 </div>
                 <textarea
                   value={importString}
+                  maxLength={MAX_SAVE_IMPORT_SIZE}
                   onChange={(e) => setImportString(e.target.value)}
                   placeholder="Paste your base64 save string here..."
                   className="w-full h-20 bg-black/60 border border-white/10 rounded-lg p-2.5 text-[10px] font-mono text-white resize-none focus:outline-none focus:border-neon-blue"
