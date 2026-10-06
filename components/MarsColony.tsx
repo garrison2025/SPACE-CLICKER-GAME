@@ -413,18 +413,21 @@ const MarsColony: React.FC = () => {
         }, 1800);
     };
 
-    // Save Loop & Browser Exit Persistence
+    // Save loop plus page-lifecycle persistence.
     useEffect(() => {
         const timer = setInterval(saveGame, 5000);
-        const handleBeforeUnload = () => {
-            saveGame();
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') saveGame();
         };
+        const handlePageHide = () => saveGame();
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('pagehide', handlePageHide);
 
         return () => {
             clearInterval(timer);
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('pagehide', handlePageHide);
             if (manualSaveTimerRef.current !== undefined) {
                 window.clearTimeout(manualSaveTimerRef.current);
             }
