@@ -13,7 +13,7 @@ export const GAMES_CATALOG: GameMeta[] = [
     tags: ['Incremental', 'Upgrades', 'Prestige'],
     briefing: "Start with a standard Mining Beam, extract Stardust, and reinvest it into automated production. Higher Stardust thresholds advance the run through stronger fictional mining sectors until the Galactic Core, which provides the current 200× planet multiplier.",
     manual: "1. CLICK the central asteroid to mine Stardust.\n2. OPEN the Fabricator to purchase automated drills and drones.\n3. REACH Stardust thresholds to advance automatically through the current planet progression.\n4. WATCH for Golden Comets and Crisis Events.",
-    changelog: ["v2.1: Added Dark Matter tech tree.", "v2.0: Added local dynamic anomaly events.", "v1.5: Fixed warp drive visuals."]
+    changelog: ["Current: Dark Matter permanent technology and Galactic Reset progression.", "Current: Local anomaly scans, Golden Comets, Crisis Events, and Heat Flux active-play systems.", "Current: Local autosave plus portable save-code and .scg backup restore tools."]
   },
   {
     id: 'mars_colony',
