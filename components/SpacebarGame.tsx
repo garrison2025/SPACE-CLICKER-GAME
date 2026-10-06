@@ -813,9 +813,11 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                 onClick={prestige}
                 className="px-5 py-3 rounded-lg font-bold bg-neon-purple text-black disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
-                {prestigeGain > 0
-                  ? 'RESET FOR +' + prestigeGain + ' KEY' + (prestigeGain > 1 ? 'S' : '')
-                  : 'HYPERDRIVE LOCKED'}
+                {quantumKeys >= MAX_IMPORTED_QUANTUM_KEYS
+                  ? 'QUANTUM KEYS MAXED'
+                  : prestigeGain > 0
+                    ? 'RESET FOR +' + prestigeGain + ' KEY' + (prestigeGain > 1 ? 'S' : '')
+                    : 'HYPERDRIVE LOCKED'}
               </button>
             </div>
           </div>
@@ -845,7 +847,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
           <div className="p-4 space-y-3 max-h-[760px] overflow-y-auto">
             {UPGRADE_DEFS.map((def) => {
               const level = upgrades[def.id];
-              const maxed = level >= (def.maxLevel ?? MAX_UPGRADE_LEVEL);
+              const effectiveMax = def.maxLevel ?? MAX_UPGRADE_LEVEL;
+              const maxed = level >= effectiveMax;
               const cost = getUpgradeCost(def);
               const plan = getPurchasePlan(def);
               return (
@@ -859,7 +862,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
                   <div className="flex justify-between gap-3">
                     <strong className="text-white">{def.name}</strong>
                     <span className="text-xs text-neon-blue font-mono">
-                      LV {level}{def.maxLevel ? '/' + def.maxLevel : ''}
+                      LV {level}/{effectiveMax}
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">{def.description}</p>
