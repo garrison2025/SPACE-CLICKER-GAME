@@ -289,18 +289,22 @@ const HowToPlay = () => (
 );
 
 const SpacebarLaunchSection = () => (
-  <section className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-4xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
-    <div className="text-xs font-mono text-neon-blue tracking-[0.3em] mb-3">NEW SIMULATION</div>
-    <h3 className="text-3xl font-display font-black text-white mb-3">SPACEBAR CLICKER</h3>
-    <p className="text-gray-400 max-w-2xl mx-auto mb-7">
-      Press the physical Space key or tap the on-screen key, build CPS, buy upgrades, automate production and reset for permanent Quantum Keys.
+  <section className="relative overflow-hidden rounded-2xl border border-neon-blue/30 bg-space-900/80 p-8 md:p-12 text-center max-w-5xl mx-auto my-16 shadow-[0_0_30px_rgba(0,243,255,0.1)]">
+    <div className="text-xs font-mono text-neon-blue tracking-[0.3em] mb-3">SPACEBAR TOOL SUITE</div>
+    <h2 className="text-3xl font-display font-black text-white mb-3">Spacebar Clicker, Counter & CPS Tests</h2>
+    <p className="text-gray-400 max-w-3xl mx-auto mb-7 leading-relaxed">
+      Choose the page that matches your goal instead of mixing different search intents together. Play the incremental Spacebar Clicker for upgrades and prestige, use the counter for an untimed total, or run the CPS test for a measured speed result.
     </p>
     <div className="flex flex-wrap justify-center gap-3">
-      <a href="/spacebar-games/" className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">EXPLORE SPACEBAR GAMES</a>
-      <a href="/spacebar-clicker/" className="px-6 py-3 rounded border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-colors">PLAY CLICKER</a>
-      <a href="/spacebar-counter/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">OPEN COUNTER</a>
-      <a href="/spacebar-clicker-test/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">CPS TEST</a>
+      <a href="/spacebar-clicker/" className="px-6 py-3 rounded bg-neon-blue text-black font-bold hover:bg-white transition-colors">PLAY SPACEBAR CLICKER</a>
+      <a href="/spacebar-clicker-test/" className="px-6 py-3 rounded border border-neon-blue/40 text-neon-blue hover:bg-neon-blue hover:text-black transition-colors">RUN SPACEBAR CPS TEST</a>
+      <a href="/spacebar-counter/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">OPEN SPACEBAR COUNTER</a>
+      <a href="/spacebar-games/" className="px-6 py-3 rounded border border-white/15 text-white hover:border-neon-blue transition-colors">BROWSE ALL SPACEBAR GAMES</a>
     </div>
+    <p className="mt-6 text-sm text-gray-500">
+      Prefer a second progression system? Try <a href="/spacebar-clicker-2/" className="text-neon-purple hover:text-white">Spacebar Clicker 2</a>.
+      Need direct browser access to the classic game? Open <a href="/spacebar-clicker-unblocked/" className="text-neon-blue hover:text-white">Spacebar Clicker instant browser mode</a>.
+    </p>
   </section>
 );
 
@@ -336,6 +340,9 @@ const GalacticArchives = () => (
                 <p>
                     Galaxy Miner focuses on Stardust mining, heat management, automation, random events, and Dark Matter resets. Other simulations on the site cover colony management, defense, merging, gravity, and signal decoding as separate game modes.
                 </p>
+                <p className="mt-4">
+                    Looking for a walkthrough instead of immediate play? Read the <a href="/blog/strategy-guide-clicker-game-space-empire/" className="text-neon-blue hover:text-white">Space Clicker strategy guide</a>. On phones and tablets, the main game supports touch input, while the dedicated Spacebar pages provide large on-screen controls for mobile play.
+                </p>
             </div>
             <div>
                 <h3 className="text-white font-bold mb-3 text-lg">Why play a browser space clicker?</h3>
@@ -352,6 +359,7 @@ const GalacticArchives = () => (
             <div className="flex flex-wrap gap-3">
                 {[
                     ['/game/galaxy_miner/', 'Galaxy Miner'],
+                    ['/spacebar-clicker/', 'Spacebar Clicker'],
                     ['/spacebar-games/', 'Spacebar Games'],
                     ['/spacebar-clicker-test/', 'Spacebar CPS Test'],
                     ['/compare/', 'Feature Comparison'],
