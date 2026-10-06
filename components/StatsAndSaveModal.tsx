@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
 import { ResourceType, Upgrade, Planet } from '../types';
 import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
+import { decodeBase64Utf8, encodeBase64Utf8 } from '../utils/base64Utf8';
 
 interface StatsAndSaveModalProps {
   isOpen: boolean;
@@ -27,21 +28,7 @@ interface StatsAndSaveModalProps {
   onResetGame: () => void;
 }
 
-const encodeBase64Utf8 = (value: string) => {
-  const bytes = new TextEncoder().encode(value);
-  let binary = '';
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary);
-};
-
 const MAX_SAVE_IMPORT_SIZE = 100_000;
-
-const decodeBase64Utf8 = (value: string) => {
-  const binary = atob(value);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-  return new TextDecoder().decode(bytes);
-};
 
 export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
   isOpen,
