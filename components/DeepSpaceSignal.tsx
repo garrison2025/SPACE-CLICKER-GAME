@@ -816,7 +816,7 @@ const DeepSpaceSignal: React.FC = () => {
             {/* UPGRADE MODAL */}
             {showUpgrades && (
                 <div
-                    className="absolute inset-0 z-[60] bg-black/70 backdrop-blur-[1px]"
+                    className="safe-screen-overlay absolute inset-0 z-[60] bg-black/70 backdrop-blur-[1px]"
                     onClick={() => setShowUpgrades(false)}
                 >
                   <div
