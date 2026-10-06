@@ -74,7 +74,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Explore how visible progress, short goals, feedback loops and milestones influence player motivation in space clicking games.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 28, 2025',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '3 min read',
         tags: ['psychology', 'space clicking game', 'game design', 'player motivation'],
         image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2000',
@@ -265,6 +265,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <h2>Input Lag and Browser Performance</h2>
             <p>In a browser-based <strong>space clicker game</strong>, responsiveness depends on input handling, JavaScript work, rendering, device performance, and display refresh rate. About 16.7 ms corresponds to one frame at 60 Hz, but that is a frame budget rather than a universal threshold for whether a game feels responsive.</p>
             <p>On our <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a>, browser-generated key-repeat events are ignored. Current CPS is based on recent deliberate presses, while the timed result uses valid presses divided by elapsed test time. That is more useful than making an unsupported claim about a particular keyboard or frame rate.</p>
+            <p>For the browser layer, <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat">MDN documents the <code>KeyboardEvent.repeat</code> flag</a> used to identify auto-repeated key events, while the <a href="https://www.w3.org/news/2025/ui-events-keyboardevent-key-values-and-code-values-are-w3c-recommendations/">W3C UI Events recommendations</a> define standardized key and physical-code values used by modern keyboard event handling.</p>
 
             <h2>From Active to Idle: The Transition</h2>
             <p>Some <strong>space bar clicking games</strong> stay focused on raw input speed, while others add upgrades or automation and gradually shift attention from pressing to resource decisions.</p>
@@ -345,7 +346,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'See how incremental space games visualize compounding, scientific notation and resource tradeoffs through interactive progression.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 10, 2026',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '2 min read',
         tags: ['education', 'math', 'space clicker game', 'incremental'],
         image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=2000',
@@ -371,11 +372,11 @@ export const BLOG_POSTS: BlogPost[] = [
             <h3>Scientific Literacy</h3>
             <p>While the physics in a <strong>space bar clicking game</strong> are stylized, the terminology is real. Players encounter:</p>
             <ul>
-                <li><strong>Dyson Spheres:</strong> A hypothetical megastructure that completely encompasses a star to capture a large percentage of its power output.</li>
-                <li><strong>Event Horizons:</strong> The boundary around a black hole beyond which no light or other radiation can escape.</li>
-                <li><strong>Entropy:</strong> A thermodynamic quantity representing the unavailability of a system's thermal energy for conversion into mechanical work.</li>
+                <li><strong>Dyson Spheres:</strong> A speculative class of megastructure built around a star to collect energy; NASA discusses them as a possible technosignature rather than an observed technology.</li>
+                <li><strong>Event Horizons:</strong> The boundary of a black hole beyond which matter and radiation cannot escape back out.</li>
+                <li><strong>Black Holes:</strong> Extremely compact astronomical objects whose gravity is strong enough that light cannot escape from inside the event horizon.</li>
             </ul>
-            <p>Space terminology can create useful follow-up questions. If a game mentions quasars, nebulae, or black holes, players can compare the fictional mechanic with an authoritative astronomy source and see where the game simplifies reality.</p>
+            <p>Space terminology can create useful follow-up questions. NASA's <a href="https://science.nasa.gov/universe/search-for-life/searching-for-signs-of-intelligent-life-technosignatures/">technosignatures overview discusses Dyson spheres as a speculative possibility</a>, while its <a href="https://www.nasa.gov/universe/what-are-black-holes/">black-hole overview explains the event horizon</a>. Comparing those sources with fictional mechanics makes it easier to see where a game deliberately simplifies reality.</p>
 
             <h2>What These Games Can Illustrate</h2>
             <p>Space Clicker Game does not replace a textbook or formal instruction. It can provide concrete examples of changing rates, reinvestment, large-number notation, and resource constraints that a player can then compare with formal explanations.</p>
@@ -494,7 +495,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'A practical guide to switch feel, actuation, stabilizers and ergonomics for repeated Space-key input without unsupported speed claims.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 18, 2026',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 6, 2026',
         readTime: '2 min read',
         tags: ['space bar click game', 'hardware', 'review', 'keyboards'],
         image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000',
@@ -509,6 +510,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h3>2. Tactile/Clicky Switches (Brown/Blue)</h3>
             <p>Tactile and clicky switches provide additional physical or audible feedback. Some players find that feedback helpful for consistency, while others prefer a smoother switch. There is no universal winner for CPS.</p>
+            <p>As one concrete manufacturer example, <a href="https://www.cherry.de/en-gb/product/mx2a-experience-box">CHERRY's official MX2A reference</a> groups current switches into linear, tactile, and clicky variants. Individual product pages also show that pre-travel and actuation characteristics vary by switch, which is why the label alone is not a complete performance measure.</p>
 
             <h2>The Space Bar Stabilizer</h2>
             <p>The space bar is wider than most keys, so a stabilizer helps it travel evenly when pressed away from the center. Stabilizer designs vary across keyboards, and price alone does not guarantee a better result.</p>
