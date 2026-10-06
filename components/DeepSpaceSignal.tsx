@@ -4,7 +4,7 @@ import { DeepSignalSaveData, SignalMessage } from '../types';
 import { generateAlienMessage } from '../services/eventService';
 import { playSound } from '../services/audioService';
 import { formatNumber } from '../utils';
-import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 import { trapDialogFocus } from '../utils/dialogFocus';
 
 const DEEP_SIGNAL_SAVE_KEY = 'deep_signal_save_v3';
@@ -585,8 +585,8 @@ const DeepSpaceSignal: React.FC = () => {
             setUpgrades(loadedUpgrades);
             commitMessages(loadedMessages);
             setFactions(loadedFactions);
-        } catch (error) {
-            console.warn('Could not load Deep Space Signal save.', error);
+        } catch {
+            safeRemoveStorageItem(DEEP_SIGNAL_SAVE_KEY);
         }
     }, []);
 
