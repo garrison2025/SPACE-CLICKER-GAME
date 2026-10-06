@@ -13,7 +13,7 @@ const site = 'https://spaceclickergame.com';
 const ORGANIZATION_ID = site + '/#organization';
 const ORGANIZATION_LOGO = site + '/favicon.svg';
 const EDITORIAL_ID = site + '/#editorial';
-const SITE_CONTENT_UPDATED = '2026-10-06';
+const SITE_CONTENT_UPDATED = '2026-10-07';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
@@ -226,12 +226,12 @@ const ROUTE_SOCIAL_IMAGES = {
   '/game/merge_ships': 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
   '/game/gravity_idle': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
   '/game/deep_signal': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-games': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-clicker': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-clicker-2': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-counter': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-clicker-test': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-clicker-unblocked': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
+  '/spacebar-games': site + '/og/spacebar-games.svg',
+  '/spacebar-clicker': site + '/og/spacebar-clicker.svg',
+  '/spacebar-clicker-2': site + '/og/spacebar-clicker-2.svg',
+  '/spacebar-counter': site + '/og/spacebar-counter.svg',
+  '/spacebar-clicker-test': site + '/og/spacebar-clicker-test.svg',
+  '/spacebar-clicker-unblocked': site + '/og/spacebar-clicker-unblocked.svg',
   '/achievements': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200'
 };
 
@@ -834,8 +834,8 @@ const staticRouteContent = {
       <h2>Idle progression and mobile play</h2>
       <p>Galaxy Miner begins with manual mining and shifts toward automated production. Returning after time away can credit up to 24 hours of saved automatic production. Touch controls are available in modern mobile browsers, while Spacebar tools provide on-screen controls for devices without a physical keyboard.</p>
 
-      <h2>Strategy and progress references</h2>
-      <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning, or use the <a href="/achievements/">Galaxy Miner milestones page</a> to review visible Stardust, automation and Dark Matter thresholds.</p>
+      <h2>Strategy, mobile play, and related tools</h2>
+      <p><a href="/blog/strategy-guide-clicker-game-space-empire/">Read the Space Clicker strategy guide</a> for upgrade and Galactic Reset planning, or use the <a href="/achievements/">Galaxy Miner milestones page</a> to review visible Stardust, automation and Dark Matter thresholds. For keyboard-focused play, open <a href="/spacebar-clicker/">Spacebar Clicker</a>, the <a href="/spacebar-counter/">Spacebar Counter</a>, or the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>. The main game and Spacebar suite include touch controls for mobile browsers.</p>
     </section>`,
   '/game/galaxy_miner': `
 <section>
@@ -922,7 +922,7 @@ const staticRouteContent = {
   '/spacebar-games': `
 <section>
       <h2>Choose the right Spacebar game or tool</h2>
-      <p>Choose the mode that matches what you want to do. Use Spacebar Clicker for an upgrade-based idle game, Spacebar Counter for an untimed press total, and Spacebar Clicker Test for timed CPS challenges.</p>
+      <p>Choose the mode that matches what you want to do. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> for an upgrade-based idle game, <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS challenges. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression game, while <a href="/spacebar-clicker-unblocked/">instant browser mode</a> opens the classic game directly and does not bypass network restrictions.</p>
       <h2>Spacebar Clicker</h2>
       <p><a href="/spacebar-clicker/">Spacebar Clicker</a> turns each deliberate Space press into points. Buy manual upgrades, unlock automatic production, watch CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
       <h2>Spacebar Counter and CPS Test</h2>
