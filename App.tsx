@@ -632,7 +632,6 @@ const App: React.FC = () => {
                 "@id": "https://spaceclickergame.com/game/galaxy_miner/#game",
                 "url": "https://spaceclickergame.com/game/galaxy_miner/",
                 "name": "Galaxy Miner",
-                "alternateName": "Space Clicker Game",
                 "description": "A free browser space clicker game with Stardust mining, automation, Heat Flux, Golden Comets, offline progress, and permanent Dark Matter upgrades.",
                 "genre": ["Clicker", "Incremental", "Idle", "Sci-Fi"],
                 "playMode": "SinglePlayer",
