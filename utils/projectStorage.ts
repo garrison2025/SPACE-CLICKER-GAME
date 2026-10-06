@@ -1,5 +1,12 @@
 let projectStorageResetInProgress = false;
 
+export const STORAGE_WRITE_FAILED_EVENT = 'spaceclicker:storage-write-failed';
+
+const notifyStorageWriteFailure = () => {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new Event(STORAGE_WRITE_FAILED_EVENT));
+};
+
 export const safeGetStorageItem = (key: string) => {
   try {
     return localStorage.getItem(key);
@@ -17,6 +24,7 @@ export const safeSetStorageItem = (key: string, value: string) => {
     localStorage.setItem(key, value);
     return true;
   } catch {
+    notifyStorageWriteFailure();
     return false;
   }
 };
