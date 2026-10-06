@@ -532,7 +532,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
     const faqEntity = isCounter
       ? [
           ['Does the space bar counter have a time limit?', 'No. It keeps counting deliberate Space presses until you reset the current session.'],
-          ['Can I use this as a spacebar CPS counter?', 'Yes. The page shows current CPS, average CPS and peak CPS while also keeping the total press count.'],
+          ['Can I use this as a spacebar CPS counter?', 'Yes. Current, average and peak CPS use only presses made during the current active timing session. A restored or manually set starting total does not inflate the speed metrics.'],
           ['Does holding the Space key increase the count?', 'No. Browser-generated repeat events from holding the key are ignored.'],
           ['Are my current and highest totals saved?', 'Yes. Both are stored locally in this browser. You can also set or correct the current total without creating an account, and nothing is uploaded to a public leaderboard.']
         ]
@@ -944,7 +944,7 @@ const staticRouteContent = {
       <h2>What is a Spacebar Counter?</h2>
       <p>Spacebar Counter is an untimed browser tool for counting deliberate Space key presses. It is useful when you want a running total rather than a fixed 5-second or 10-second challenge. The session continues until you choose to reset it.</p>
       <h2>Total presses and CPS metrics</h2>
-      <p>The counter displays total presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses the full active session, and peak CPS records the strongest rolling one-second burst. When the page is hidden or backgrounded, active timing pauses and resumes when the page becomes visible again, so hidden time does not dilute average CPS.</p>
+      <p>The counter displays the persistent total, current-session presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses only presses made during the current active timing session, and peak CPS records the strongest rolling one-second burst. A restored or manually set starting total does not enter the CPS calculation. When the page is hidden or backgrounded, active timing pauses and resumes when the page becomes visible again, so hidden time does not dilute average CPS.</p>
       <h2>Holding Space does not inflate the count</h2>
       <p>Browser-generated repeat events from holding the key down are ignored. Each count is based on a new deliberate Space keydown or an intentional press on the on-screen control.</p>
       <h2>Saved tally, corrections, and privacy</h2>
