@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MergeShip, FloatingText, MergeUpgradeState, Particle } from '../types';
 import { formatNumber } from '../utils';
+import { trapDialogFocus } from '../utils/dialogFocus';
 import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const MERGE_SAVE_KEY = 'merge_ships_save_v3';
@@ -932,13 +933,14 @@ const MergeShips: React.FC = () => {
 
              {/* Ship Inspector */}
              {selectedShip && (
-                 <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in" onClick={() => setSelectedShip(null)}>
+                 <div className="safe-screen-overlay absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in" onClick={() => setSelectedShip(null)}>
                      <div
                         role="dialog"
                         aria-modal="true"
                         aria-label="Ship inspector"
                         tabIndex={-1}
                         autoFocus
+                        onKeyDown={trapDialogFocus}
                         className="bg-slate-800 border border-blue-500 p-6 rounded-2xl w-72 text-center shadow-[0_0_50px_rgba(59,130,246,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                         onClick={e => e.stopPropagation()}
                      >
@@ -991,8 +993,16 @@ const MergeShips: React.FC = () => {
 
              {/* Offline Report */}
              {offlineProfit && (
-                 <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 animate-in zoom-in-95">
-                     <div role="dialog" aria-modal="true" aria-labelledby="merge-offline-title" className="bg-slate-900 border border-green-500 p-8 rounded-2xl w-full max-w-sm text-center shadow-[0_0_100px_rgba(16,185,129,0.2)]">
+                 <div className="safe-screen-overlay absolute inset-0 z-[100] flex items-center justify-center bg-black/90 animate-in zoom-in-95">
+                     <div
+                       role="dialog"
+                       aria-modal="true"
+                       aria-labelledby="merge-offline-title"
+                       tabIndex={-1}
+                       autoFocus
+                       onKeyDown={trapDialogFocus}
+                       className="bg-slate-900 border border-green-500 p-6 sm:p-8 rounded-2xl w-full max-w-sm max-h-full overflow-y-auto text-center shadow-[0_0_100px_rgba(16,185,129,0.2)] outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+                     >
                          <div className="text-6xl mb-4">💤</div>
                          <h2 id="merge-offline-title" className="text-2xl font-black text-white mb-2">FLEET REPORT</h2>
                          <p className="text-gray-400 text-sm mb-6">Your orbit ships continued to defend the sector while you were away. The earnings below are already credited to this local save.</p>
