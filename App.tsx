@@ -136,6 +136,7 @@ const LoadingSimulation = () => (
 const App: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const shouldFocusRouteRef = useRef(false);
 
   // --- LEGACY ROUTE GUARD & REDIRECTS ---
   // This cleans up old URLs indexed by Google (e.g. /?view=game&id=...)
@@ -231,6 +232,16 @@ const App: React.FC = () => {
       setActiveGame(route.gameId);
       setActivePostId(route.postId);
       setIs404(route.error);
+
+      if (shouldFocusRouteRef.current) {
+          shouldFocusRouteRef.current = false;
+          window.requestAnimationFrame(() => {
+              const target = document.getElementById(
+                  route.view === 'game' && !route.error ? 'game-main-content' : 'main-content'
+              );
+              target?.focus();
+          });
+      }
   }, [location.pathname]);
   
   // Galaxy Miner State
@@ -1539,6 +1550,7 @@ const App: React.FC = () => {
   // Modern Navigation Handler (Replaces handleNavigate)
   const handleNavigate = (target: ViewMode, id?: string) => {
     setIs404(false);
+    shouldFocusRouteRef.current = true;
     window.scrollTo(0, 0);
     
     if (target === 'home') {
