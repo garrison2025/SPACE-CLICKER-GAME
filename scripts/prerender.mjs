@@ -170,7 +170,7 @@ const routes = [
   ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
   ['/spacebar-clicker', 'Spacebar Clicker – Free Space Bar Clicker Game Online', 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.', 'Spacebar Clicker'],
   ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.', 'Spacebar Counter'],
-  ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. Track clicks, average and peak CPS, personal bests and recent local results.', 'Spacebar Clicker Test'],
+  ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test spacebar speed with timed and 100-click modes. Track average CPS, press interval, peak CPS, personal bests and recent local results.', 'Spacebar Clicker Test'],
   ['/spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked - Play Instantly in Your Browser', 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.', 'Spacebar Clicker Unblocked'],
   ['/compare', 'Space Clicker Game vs Classic Incremental Games: Feature Comparison', 'Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.', 'Space Clicker Feature Comparison'],
   ['/achievements', 'Galaxy Miner Milestones & Progress Tracker | Space Clicker Game', 'Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.', 'Galaxy Miner Milestones'],
@@ -542,6 +542,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           ['Can I run a 100-click spacebar test?', 'Yes. Select the 100-click mode and the result records how long it takes to reach one hundred valid presses.'],
           ['Can I choose a custom test duration?', 'Yes. Custom mode accepts durations from 1 to 300 seconds and stores the best result locally for that selected mode.'],
           ['What is a good Spacebar CPS score?', 'There is no universal good CPS threshold across every keyboard and test. Compare results using the same device, browser, test duration, and input rules.'],
+          ['How do I convert Spacebar CPS to milliseconds per press?', 'Divide 1000 by average CPS. For example, 8 CPS corresponds to an average interval of 125 milliseconds per valid press. The result card calculates this automatically.'],
           ['What is the difference between CPS and PPS?', 'CPS means clicks per second and PPS means presses per second. For a Spacebar test they describe the same basic rate here: valid Space presses divided by time.']
         ];
 
@@ -956,8 +957,8 @@ const staticRouteContent = {
 <section>
       <h2>Spacebar Clicker Test modes</h2>
       <p>The Spacebar Clicker Test measures deliberate Space presses over a chosen target. Timed presets include 1, 5, 10, 30, and 60 seconds. Custom mode accepts durations from 1 to 300 seconds, while the 100-click sprint measures how long it takes to reach one hundred valid presses.</p>
-      <h2>Average CPS, current CPS, and peak CPS</h2>
-      <p>Average CPS is the number of valid presses divided by elapsed test time. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Some tools call the same Spacebar rate PPS, or presses per second. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
+      <h2>Average CPS, press interval, current CPS, and peak CPS</h2>
+      <p>Average CPS is the number of valid presses divided by elapsed test time. Average press interval is 1000 divided by average CPS and reports the mean spacing between valid presses in milliseconds; for example, 8 CPS equals 125 ms per press. Current CPS reflects the rolling recent one-second window, while peak CPS records the strongest one-second burst reached during the run. Some tools call the same Spacebar rate PPS, or presses per second. Keeping these metrics separate makes a short burst easier to distinguish from sustained speed.</p>
       <h2>How timed tests start and finish</h2>
       <p>The first valid press starts the timer. Once the selected deadline is reached, later key presses are rejected rather than being counted after time has expired. If the page is hidden or backgrounded, the clock pauses until the page becomes visible again. In 100-click mode, the test ends on the one-hundredth valid press and records active elapsed time.</p>
       <h2>How to compare CPS results</h2>
