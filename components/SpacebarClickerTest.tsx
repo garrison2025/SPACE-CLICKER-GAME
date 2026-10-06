@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { isInteractiveKeyboardTarget } from '../utils/keyboard';
 
 type TestMode = { type: 'time'; seconds: number; label: string } | { type: 'clicks'; clicks: number; label: string };
 
@@ -186,8 +187,7 @@ const SpacebarClickerTest: React.FC = () => {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (isInteractiveKeyboardTarget(event.target)) return;
       if (event.code === 'Space' && !event.repeat) {
         event.preventDefault();
         pressRef.current();
