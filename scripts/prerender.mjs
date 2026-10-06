@@ -878,7 +878,7 @@ const staticRouteContent = {
       <h2>Energy and automation</h2>
       <p>Capacitor Bank raises maximum Energy, Solar Sails improve regeneration, and Auto-Scan AI can automate signal hunting once purchased. This creates a gradual shift from manual scanning toward a more idle signal-processing loop.</p>
       <h2>BIO, TECH, MIL, and VOID factions</h2>
-      <p>Decoded transmissions can advance BIO, TECH, MIL, and VOID progression. Those factions modify Energy regeneration, decryption speed, scan cost, and maximum Energy, so the message stream also functions as a long-term upgrade path.</p>
+      <p>After a transmission is fully decoded, spending Energy to analyze and upload that message can advance BIO, TECH, MIL, or VOID progression. Those faction levels modify Energy regeneration, decryption speed, scan cost, and maximum Energy, so analysis choices also feed the long-term upgrade path.</p>
       <p>For another systems-heavy simulation, try <a href="/game/gravity_idle/">Gravity Idle</a>, or return to the main <a href="/game/galaxy_miner/">Galaxy Miner</a> clicker.</p>
     </section>`,
   '/spacebar-games': `
