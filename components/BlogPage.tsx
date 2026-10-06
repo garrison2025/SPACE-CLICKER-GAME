@@ -281,7 +281,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             return (
                 <div className="min-h-screen pt-32 px-4 text-center">
                     <h2 className="text-2xl text-red-500 mb-4">LOG ENTRY CORRUPTED</h2>
-                    <button onClick={() => onNavigate('blog')} className="text-neon-blue underline">RETURN TO ARCHIVES</button>
+                    <button type="button" onClick={() => onNavigate('blog')} className="text-neon-blue underline">RETURN TO ARCHIVES</button>
                 </div>
             );
         }
@@ -475,7 +475,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
 
                                 {/* Article Footer */}
                                 <div className="mt-12 text-center">
-                                    <button 
+                                    <button
+                                        type="button"
                                         onClick={() => onNavigate('home')}
                                         className="px-8 py-3 bg-white/10 hover:bg-neon-blue hover:text-black text-white font-bold rounded transition-all"
                                     >
