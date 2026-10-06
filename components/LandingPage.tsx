@@ -494,10 +494,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart, onNavigate, hasSave,
                     key={game.id}
                     href={`/game/${game.id}/`}
                     className="group relative h-64 perspective-1000 cursor-pointer block"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        if (game.status === 'LIVE') onStart(game.id);
-                        else alert("Simulation constructing...");
+                    onClick={(event) => {
+                        event.preventDefault();
+                        onStart(game.id);
                     }}
                   >
                      <div className="relative h-full w-full bg-space-800/40 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 rounded-xl overflow-hidden hover:shadow-[0_0_30px_rgba(0,243,255,0.1)] hover:-translate-y-1">
