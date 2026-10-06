@@ -503,6 +503,7 @@ const MarsColony: React.FC = () => {
                         aria-label="Excavate Mars for minerals"
                         onClick={(e) => handleExcavate(e, 0)}
                         onKeyDown={(event) => {
+                            if (event.target !== event.currentTarget) return;
                             if (event.key === 'Enter' || event.key === ' ') {
                                 event.preventDefault();
                                 handleExcavate(null, 0);
