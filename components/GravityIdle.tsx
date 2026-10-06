@@ -785,9 +785,10 @@ const GravityIdle: React.FC = () => {
              
              {/* CANVAS LAYER */}
              <div className="flex-1 relative w-full h-full cursor-crosshair">
-                 <canvas 
-                    ref={canvasRef} 
-                    className="block w-full h-full touch-manipulation" 
+                 <canvas
+                    ref={canvasRef}
+                    aria-hidden="true"
+                    className="block w-full h-full touch-manipulation"
                     onPointerUp={handleCanvasPointerUp}
                  />
                  
