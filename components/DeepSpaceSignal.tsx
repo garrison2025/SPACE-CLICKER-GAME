@@ -137,6 +137,10 @@ const DeepSpaceSignal: React.FC = () => {
         const capped = nextMessages.length > MAX_LIVE_MESSAGES
             ? nextMessages.slice(-MAX_LIVE_MESSAGES)
             : nextMessages;
+        const retainedIds = new Set(capped.map(message => message.id));
+        rewardedMessageIdsRef.current = new Set(
+            [...rewardedMessageIdsRef.current].filter(id => retainedIds.has(id))
+        );
         messagesRef.current = capped;
         saveStateRef.current = { ...saveStateRef.current, messages: capped };
         setMessages(capped);
@@ -249,7 +253,7 @@ const DeepSpaceSignal: React.FC = () => {
                 commitMessages(nextMessages);
             }
             if (rewardEarned > 0) {
-                const nextDataBytes = dataBytesRef.current + rewardEarned;
+                const nextDataBytes = Math.min(MAX_RESOURCE_VALUE, dataBytesRef.current + rewardEarned);
                 dataBytesRef.current = nextDataBytes;
                 saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
                 setDataBytes(nextDataBytes);
@@ -367,7 +371,7 @@ const DeepSpaceSignal: React.FC = () => {
         commitMessages(nextMessages);
 
         if (rewardEarned > 0) {
-            const nextDataBytes = dataBytesRef.current + rewardEarned;
+            const nextDataBytes = Math.min(MAX_RESOURCE_VALUE, dataBytesRef.current + rewardEarned);
             dataBytesRef.current = nextDataBytes;
             saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
             setDataBytes(nextDataBytes);
@@ -393,7 +397,10 @@ const DeepSpaceSignal: React.FC = () => {
             const type = msg.type;
             const nextFactions = {
                 ...factionsRef.current,
-                [type]: (factionsRef.current[type] || 0) + 1
+                [type]: Math.min(
+                    MAX_FACTION_LEVEL,
+                    (factionsRef.current[type] || 0) + 1
+                )
             };
             factionsRef.current = nextFactions;
             saveStateRef.current = { ...saveStateRef.current, factions: nextFactions };
@@ -401,7 +408,10 @@ const DeepSpaceSignal: React.FC = () => {
         }
 
         const analysisReward = Math.floor(msg.rewardData * 0.5);
-        const nextDataBytes = dataBytesRef.current + analysisReward;
+        const nextDataBytes = Math.min(
+            MAX_RESOURCE_VALUE,
+            dataBytesRef.current + analysisReward
+        );
         dataBytesRef.current = nextDataBytes;
         saveStateRef.current = { ...saveStateRef.current, dataBytes: nextDataBytes };
         setDataBytes(nextDataBytes);
