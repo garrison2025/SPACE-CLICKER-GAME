@@ -102,12 +102,12 @@ const GAME_SEO: Record<GameId, { title: string; description: string; genres: str
   },
   merge_ships: {
     title: 'Merge Spaceships - Free Browser Merge Game',
-    description: 'Drag and combine matching ships, evolve higher-level vessels, and place your fleet in orbit for passive income.',
+    description: 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.',
     genres: ['Merge', 'Idle', 'Casual', 'Collection']
   },
   gravity_idle: {
     title: 'Gravity Idle - Free Physics Idle Game',
-    description: 'Launch projectiles into gravity wells, automate firing, upgrade orbital mechanics, and break apart asteroid layers in your browser.',
+    description: 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.',
     genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi']
   },
   deep_signal: {
