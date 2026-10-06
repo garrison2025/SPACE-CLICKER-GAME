@@ -577,6 +577,7 @@ const StarDefense: React.FC = () => {
         const currentUpgrades = upgradesRef.current;
         const u = currentUpgrades.find(up => up.id === id);
         if (!u) return;
+        if (id !== 'repair' && u.level >= MAX_UPGRADE_LEVEL) return;
 
         let cost = Math.floor(u.cost * Math.pow(u.costMult, u.level));
         if (id === 'repair') cost = u.cost;
