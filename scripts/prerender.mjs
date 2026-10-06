@@ -806,7 +806,7 @@ const staticRouteContent = {
       <p>The <a href="/spacebar-games/">Spacebar Games hub</a> separates several different keyboard intents. <a href="/spacebar-clicker/">Spacebar Clicker</a> is an upgrade-based incremental game, <a href="/spacebar-counter/">Spacebar Counter</a> keeps an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> measures timed or click-target CPS. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> uses a separate progression tree with Overdrive and Nova Core ascension.</p>
 
       <h2>Play instantly in your browser</h2>
-      <p>No account or download is required for the current games and tools. Supported progress is stored locally in the current browser rather than a cloud account, so clearing site storage or changing devices can separate or remove local progress. Portable backup options are available in supported clicker modes.</p>
+      <p>No account or download is required for the current games and tools. Supported progress is stored locally in the current browser rather than a cloud account, so clearing site storage or changing devices can separate or remove local progress. Portable backup options are available in Galaxy Miner, Spacebar Clicker, and Spacebar Clicker 2.</p>
 
       <h2>Idle progression and mobile play</h2>
       <p>Galaxy Miner begins with manual mining and shifts toward automated production. Returning after time away can credit up to 24 hours of saved automatic production. Touch controls are available in modern mobile browsers, while Spacebar tools provide on-screen controls for devices without a physical keyboard.</p>
@@ -1375,7 +1375,7 @@ ${guideRows}
 - Primary game: Galaxy Miner
 - Current simulation count: 6
 - Spacebar tools include an incremental clicker, an untimed counter, timed CPS tests, a 100-click sprint and a separate Spacebar Clicker 2 progression mode.
-- Supported saves and personal records use local browser storage rather than automatic cloud sync. Spacebar Clicker and Spacebar Clicker 2 can export and import manual save backups.
+- Supported saves and personal records use local browser storage rather than automatic cloud sync. Galaxy Miner, Spacebar Clicker, and Spacebar Clicker 2 can export and import manual save backups.
 - Privacy: ${site}/privacy/
 - About: ${site}/about/
 - HTML sitemap: ${site}/sitemap/
