@@ -47,11 +47,11 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       {/* Basic Metadata */}
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={fullUrl} />
+      {!noindex && <link rel="canonical" href={fullUrl} />}
 
       {/* International SEO / Hreflang */}
-      <link rel="alternate" href={fullUrl} hrefLang="en" />
-      <link rel="alternate" href={fullUrl} hrefLang="x-default" />
+      {!noindex && <link rel="alternate" href={fullUrl} hrefLang="en" />}
+      {!noindex && <link rel="alternate" href={fullUrl} hrefLang="x-default" />}
 
       {/* Robots Directive */}
       {noindex ? (
@@ -79,7 +79,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="twitter:image:alt" content={title} />
 
       {/* JSON-LD Structured Data */}
-      {schema && (
+      {!noindex && schema && (
         <script id="runtime-route-jsonld" type="application/ld+json">
           {JSON.stringify(schema)}
         </script>
