@@ -114,6 +114,12 @@ expect(legacySpacebarTest.headers.get('location') === 'https://spaceclickergame.
 const invalidLegacyView = await run('https://spaceclickergame.com/?view=not-a-real-view');
 expect(invalidLegacyView.status === 404, 'Unknown legacy view must return HTTP 404 instead of redirecting to home');
 
+const invalidLegacyViewGame = await run('https://spaceclickergame.com/?view=game&id=not-a-real-game');
+expect(invalidLegacyViewGame.status === 404, 'Unknown legacy view=game id must return HTTP 404');
+
+const invalidLegacyViewPost = await run('https://spaceclickergame.com/?view=blog&post=not-a-real-post');
+expect(invalidLegacyViewPost.status === 404, 'Unknown legacy view=blog post must return HTTP 404');
+
 const supportRoutes = ['/about/', '/contact/', '/privacy/', '/terms/', '/cookies/', '/sitemap/', '/compare/', '/achievements/'];
 for (const route of supportRoutes) {
   const response = await run('https://spaceclickergame.com' + route);
