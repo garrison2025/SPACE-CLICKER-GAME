@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { CORE_ROUTE_META, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
 
 const distDir = path.resolve('dist');
 const basePath = path.join(distDir, 'index.html');
@@ -13,7 +14,6 @@ const site = 'https://spaceclickergame.com';
 const ORGANIZATION_ID = site + '/#organization';
 const ORGANIZATION_LOGO = site + '/favicon.svg';
 const EDITORIAL_ID = site + '/#editorial';
-const SITE_CONTENT_UPDATED = '2026-10-07';
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
@@ -159,28 +159,7 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
 }
 
 const routes = [
-  ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
-  ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
-  ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and automated resource production.', 'Mars Colony Idle'],
-  ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.', 'Star Defense'],
-  ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.', 'Merge Spaceships'],
-  ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.', 'Gravity Idle'],
-  ['/game/deep_signal', 'Deep Space Signal - Signal Decoding Idle Game', 'Scan radio frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting in this browser idle simulation.', 'Deep Space Signal'],
-  ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],
-  ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
-  ['/spacebar-clicker', 'Spacebar Clicker – Free Space Bar Clicker Game Online', 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.', 'Spacebar Clicker'],
-  ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.', 'Spacebar Counter'],
-  ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test spacebar speed with timed and 100-click modes. Track average CPS, press interval, peak CPS, personal bests and recent local results.', 'Spacebar Clicker Test'],
-  ['/spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked - Play Instantly in Your Browser', 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.', 'Spacebar Clicker Unblocked'],
-  ['/compare', 'Space Clicker Game vs Classic Incremental Games: Feature Comparison', 'Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.', 'Space Clicker Feature Comparison'],
-  ['/achievements', 'Galaxy Miner Milestones & Progress Tracker | Space Clicker Game', 'Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.', 'Galaxy Miner Milestones'],
-  ['/blog', 'Space Clicker Game Blog - Guides & Strategy', 'Read guides, mechanics explainers and strategy articles for space clicker and incremental browser games.', 'Space Clicker Game Blog'],
-  ['/about', 'About | Space Clicker Game', 'Learn about SpaceClickerGame.com and its free browser-based clicker, idle and spacebar experiences.', 'About Space Clicker Game'],
-  ['/contact', 'Contact | Space Clicker Game', 'Contact SpaceClickerGame.com for player support, bug reports, feedback, business, advertising, or press questions.', 'Contact Space Clicker Game'],
-  ['/privacy', 'Privacy Policy | Space Clicker Game', 'Read how SpaceClickerGame.com handles browser-local game saves, exported save codes, hosting requests, analytics, and advertising technologies.', 'Privacy Policy'],
-  ['/terms', 'Terms of Service | Space Clicker Game', 'Read the terms that apply when using SpaceClickerGame.com and its browser-based games and tools.', 'Terms of Service'],
-  ['/cookies', 'Cookie & Local Storage Settings | Space Clicker Game', 'Learn how SpaceClickerGame.com uses browser localStorage for game progress and what clearing site storage does to local saves.', 'Cookie & Local Storage Settings'],
-  ['/sitemap', 'HTML Sitemap | Space Clicker Game', 'Browse the main games, Spacebar tools, guides, support pages, and legal resources available on SpaceClickerGame.com.', 'HTML Sitemap'],
+  ...CORE_ROUTE_META.map(({ route, title, description, h1 }) => [route, title, description, h1]),
   ...Object.entries(blogStaticMeta).map(([route, meta]) => {
     const slug = route.replace('/blog/', '');
     const lightweight = lightweightBlogMeta[slug];
@@ -209,14 +188,11 @@ const HIGH_VALUE_SCHEMA_ROUTES = new Set([
   '/about'
 ]);
 
-const GAME_SCHEMA_CONFIG = {
-  '/game/galaxy_miner': { name: 'Galaxy Miner', genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi'] },
-  '/game/mars_colony': { name: 'Mars Colony Idle', genres: ['Idle', 'Management', 'Strategy', 'Simulation'] },
-  '/game/star_defense': { name: 'Star Defense', genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi'] },
-  '/game/merge_ships': { name: 'Merge Spaceships', genres: ['Merge', 'Idle', 'Casual', 'Collection'] },
-  '/game/gravity_idle': { name: 'Gravity Idle', genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi'] },
-  '/game/deep_signal': { name: 'Deep Space Signal', genres: ['Idle', 'Simulation', 'Signal Decoding', 'Sci-Fi'] }
-};
+const GAME_SCHEMA_CONFIG = Object.fromEntries(
+  CORE_ROUTE_META
+    .filter((meta) => meta.gameId)
+    .map((meta) => [meta.route, { name: meta.h1, genres: meta.genres }])
+);
 
 const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 const ROUTE_SOCIAL_IMAGES = {
