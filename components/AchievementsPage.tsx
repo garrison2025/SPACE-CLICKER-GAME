@@ -9,6 +9,11 @@ interface AchievementsPageProps {
   onNavigate: (view: ViewMode, id?: string) => void;
 }
 
+const safeProgressNumber = (value: unknown, max = 1e300) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.min(parsed, max) : 0;
+};
+
 interface Achievement {
   id: string;
   category: 'mining' | 'automation' | 'prestige';
@@ -111,10 +116,10 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
   {
     id: 'prestige_1',
     category: 'prestige',
-    title: 'Galactic Reset',
-    description: 'Complete your first Stardust reset and retain Dark Matter for future runs.',
-    unlockCondition: 'Complete your first Galactic Reset',
-    noteText: 'Dark Matter enables permanent technology purchases in the Void Tech panel.',
+    title: 'Dark Matter Initiate',
+    description: 'Hold Dark Matter in the current Galaxy Miner save.',
+    unlockCondition: 'Hold at least 1 Dark Matter',
+    noteText: 'This dashboard reads the current Dark Matter balance; spent Dark Matter is not tracked as historical holdings.',
     icon: '💥',
     targetValue: 1
   },
@@ -122,9 +127,9 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     id: 'prestige_2',
     category: 'prestige',
     title: 'Dark Matter Harvester',
-    description: 'Amass significant reserves of anti-gravitational dark matter.',
-    unlockCondition: 'Accumulate 100 Dark Matter',
-    noteText: '100 Dark Matter itself contributes +1,000% to the production multiplier.',
+    description: 'Build a large current reserve of Dark Matter.',
+    unlockCondition: 'Hold at least 100 Dark Matter',
+    noteText: '100 unspent Dark Matter contributes +1,000% to the production multiplier before permanent-tech effects.',
     icon: '🟣',
     targetValue: 100
   },
@@ -142,11 +147,13 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
       const saved = safeGetStorageItem(SAVE_KEY);
       if (saved) {
         const data = JSON.parse(saved);
-        const stardust = data.lifetimeEarnings || data.resources?.STARDUST || 0;
-        const darkMatter = data.resources?.DARK_MATTER || 0;
-        const drones = data.upgrades?.['drone']?.count || 0;
-        const stations = data.upgrades?.['station']?.count || 0;
-        const dyson = data.upgrades?.['dyson']?.count || 0;
+        const stardust = safeProgressNumber(
+          data.lifetimeEarnings ?? data.resources?.STARDUST
+        );
+        const darkMatter = safeProgressNumber(data.resources?.DARK_MATTER, 1e280);
+        const drones = safeProgressNumber(data.upgrades?.['drone']?.count, 1000);
+        const stations = safeProgressNumber(data.upgrades?.['station']?.count, 1000);
+        const dyson = safeProgressNumber(data.upgrades?.['dyson']?.count, 1000);
 
         setTotalStardust(stardust);
 
@@ -168,8 +175,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             current = dyson;
             isUnlocked = dyson >= ach.targetValue;
           } else if (ach.id === 'prestige_1') {
-            current = darkMatter > 0 ? 1 : 0;
-            isUnlocked = darkMatter > 0;
+            current = darkMatter;
+            isUnlocked = darkMatter >= ach.targetValue;
           } else if (ach.id === 'prestige_2') {
             current = darkMatter;
             isUnlocked = darkMatter >= ach.targetValue;
