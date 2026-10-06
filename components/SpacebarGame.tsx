@@ -148,6 +148,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const [buyMode, setBuyMode] = useState<1 | 10 | 'max'>(1);
   const pressTimes = useRef<number[]>([]);
   const lastPressAt = useRef(0);
+  const comboRef = useRef(0);
 
   const globalMultiplier = useMemo(
     () => (1 + upgrades.quantumKeyboard * 0.25) * (1 + quantumKeys * 0.1),
@@ -179,7 +180,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   const nearestUpgrade = useMemo(() => {
     return UPGRADE_DEFS
-      .filter((def) => def.maxLevel === undefined || upgrades[def.id] < def.maxLevel)
+      .filter((def) => upgrades[def.id] < (def.maxLevel ?? MAX_UPGRADE_LEVEL))
       .map((def) => ({
         def,
         cost: Math.floor(def.baseCost * Math.pow(def.costMultiplier, upgrades[def.id]))
@@ -300,8 +301,9 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     pressTimes.current = [...pressTimes.current.filter((time) => now - time <= 1000), now];
     setCpsTrackingActive(true);
 
-    const nextCombo = now - lastPressAt.current <= 1100 ? Math.min(combo + 1, 100) : 1;
+    const nextCombo = now - lastPressAt.current <= 1100 ? Math.min(comboRef.current + 1, 100) : 1;
     lastPressAt.current = now;
+    comboRef.current = nextCombo;
     setCombo(nextCombo);
 
     const comboBonus = 1 + Math.min(0.5, nextCombo * upgrades.comboEngine * 0.0025);
@@ -425,6 +427,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     setQuantumKeys(nextQuantumKeys);
     setPoints(0);
     setUpgrades(nextUpgrades);
+    comboRef.current = 0;
     setCombo(0);
     pressTimes.current = [];
   };
@@ -496,7 +499,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       setUpgrades(next.upgrades);
       setBestCps(next.bestCps);
       setCurrentCps(0);
-      setCombo(0);
+      comboRef.current = 0;
+    setCombo(0);
       setOfflineEarned(0);
       pressTimes.current = [];
       setSaveTransferStatus('Save imported successfully.');
@@ -602,6 +606,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     setUpgrades(nextUpgrades);
     setBestCps(0);
     setCurrentCps(0);
+    comboRef.current = 0;
     setCombo(0);
     setOfflineEarned(0);
     setSaveImportText('');
