@@ -312,6 +312,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
         if (!target) return;
         const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
         target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        target.focus({ preventScroll: true });
         window.history.replaceState(null, '', `#${id}`);
     };
 
@@ -367,7 +368,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
             // Replace the first occurrence of the header text with the ID injected
             // Note: This is fragile if multiple headers have exact same text, but sufficient for this scale
             const regex = new RegExp(`(<h${item.level}>)(${item.text})(</h${item.level}>)`);
-            processedContent = processedContent.replace(regex, `$1<span id="${item.id}" class="scroll-mt-24 relative">$2</span>$3`);
+            processedContent = processedContent.replace(regex, `$1<span id="${item.id}" tabindex="-1" class="scroll-mt-24 relative focus:outline-none">$2</span>$3`);
         });
 
         return (
@@ -385,7 +386,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                             <a 
                                                 href={`#${item.id}`}
                                                 onClick={(e) => handleTocClick(e, item.id)}
-                                                className="text-gray-400 hover:text-neon-blue transition-colors block leading-tight"
+                                                className="min-h-9 flex items-center rounded px-2 -mx-2 text-gray-400 hover:text-neon-blue transition-colors leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                                             >
                                                 {item.text}
                                             </a>
@@ -416,7 +417,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                                                 <a
                                                     href={`#${item.id}`}
                                                     onClick={(e) => handleTocClick(e, item.id)}
-                                                    className="block text-gray-400 hover:text-neon-blue"
+                                                    className="min-h-11 flex items-center rounded px-2 -mx-2 text-gray-400 hover:text-neon-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                                                 >
                                                     {item.text}
                                                 </a>
