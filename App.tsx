@@ -1042,8 +1042,8 @@ const App: React.FC = () => {
                     },
                     {
                       "@type": "Question",
-                      "name": "Is this the same Spacebar Clicker game?",
-                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page." }
+                      "name": "Is this the same version as the main Spacebar Clicker page on this site?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The instant-play route uses the same upgrades, automation, CPS logic, and Hyperdrive prestige system as the main Spacebar Clicker page on SpaceClickerGame.com." }
                     }
                   ]
                 }
