@@ -76,9 +76,9 @@ export const GAMES_CATALOG: GameMeta[] = [
     color: 'from-gray-700 to-gray-900',
     status: 'LIVE',
     tags: ['Idle', 'Signal Decoder', 'Simulation'],
-    briefing: "You are sitting in front of a terminal. The screen is black. A single green cursor blinks. There is a button labeled 'SEND SIGNAL'. Do you dare press it?",
+    briefing: "A green terminal waits for the next frequency scan. Receive encrypted transmissions, decode them, then analyze recovered data to strengthen BIO, TECH, MIL, and VOID systems.",
     manual: "1. SCAN frequencies to receive encrypted transmissions.\n2. MANAGE Energy while upgrading scan and decryption systems.\n3. DECODE and analyze messages to build BIO, TECH, MIL, and VOID bonuses.",
-    changelog: ["v1.0: Signal receiver active. Connection established."]
+    changelog: ["v1.1: Clarified signal progression and paused background processing in hidden tabs.", "v1.0: Signal receiver active. Connection established."]
   }
 ];
 
