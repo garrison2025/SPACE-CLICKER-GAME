@@ -234,6 +234,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             <div className="flex justify-between items-center mt-3 text-[11px] font-mono text-gray-400">
               <span>Total Lifetime Stardust: {formatNumber(totalStardust)} SD</span>
               <button
+                type="button"
                 onClick={() => onNavigate('game', 'galaxy_miner')}
                 className="text-neon-blue hover:underline font-bold"
               >
@@ -253,6 +254,8 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
           ].map((cat) => (
             <button
               key={cat.id}
+              type="button"
+              aria-pressed={activeCategory === cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all ${
                 activeCategory === cat.id
@@ -314,6 +317,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
               <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-gray-400">
                 <span className="uppercase text-[10px] text-gray-500">Category: {ach.category}</span>
                 <button
+                  type="button"
                   onClick={() => onNavigate('game', 'galaxy_miner')}
                   className="text-neon-green hover:underline font-bold"
                 >
