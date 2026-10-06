@@ -10,13 +10,15 @@ Browser-based clicker and idle game hub for **SpaceClickerGame.com**.
 - Merge Spaceships
 - Gravity Idle
 - Deep Space Signal
-- Spacebar Clicker — incremental keyboard game with CPS, upgrades, automation and Quantum Key prestige
+- Spacebar Clicker — incremental keyboard game with CPS, upgrades, automation, portable backups and Quantum Key prestige
+- Spacebar Clicker 2 — separate progression with Overdrive, automation, Nova Core ascension and portable backups
 - Spacebar Counter
 - Spacebar Clicker Test
+- Spacebar Clicker Unblocked
 
 ## Local development
 
-Prerequisite: Node.js 20 or newer.
+Prerequisite: Node.js 22 or newer (the verification workflow uses Node 22).
 
 ```bash
 npm install
