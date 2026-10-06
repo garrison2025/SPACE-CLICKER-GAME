@@ -212,6 +212,14 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    return () => previousFocus?.focus();
+  }, [isOpen]);
+
   const critRatePercent = totalClicks > 0 ? ((totalCrits / totalClicks) * 100).toFixed(1) : '0.0';
   const totalBuildingLevels = Object.values(upgrades).reduce((sum, u) => sum + u.count, 0);
 
@@ -252,6 +260,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
         {/* Tab Navigation */}
         <div className="grid grid-cols-3 border-b border-white/10 bg-space-900/60 p-2 gap-1.5 sm:gap-2">
           <button
+            type="button"
             onClick={() => setActiveTab('stats')}
             className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'stats' 
@@ -262,6 +271,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
             📈 FLEET STATS
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('save')}
             className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'save' 
@@ -272,6 +282,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
             💾 EXPORT / RESTORE
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('settings')}
             className={`min-w-0 min-h-11 px-1 py-2 rounded-lg text-[9px] sm:text-xs font-mono font-bold transition-all ${
               activeTab === 'settings' 
@@ -368,6 +379,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                   </div>
                   <div className="flex flex-wrap gap-2 sm:justify-end">
                     <button
+                      type="button"
                       onClick={handleCopySave}
                       className={`min-h-11 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all ${
                         copied 
@@ -378,6 +390,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                       {copied ? 'COPIED! ✓' : 'COPY SAVE CODE'}
                     </button>
                     <button
+                      type="button"
                       onClick={handleDownloadSave}
                       className="min-h-11 px-3 py-2 rounded-lg border border-white/15 text-xs font-mono font-bold text-white hover:border-neon-blue transition-colors"
                     >
