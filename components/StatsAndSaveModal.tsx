@@ -448,13 +448,15 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     aria-label="Toggle haptic vibration feedback"
                     aria-pressed={hapticEnabled}
                     onClick={onToggleHaptic}
-                    className={`w-12 h-6 rounded-full relative transition-colors ${
-                      hapticEnabled ? 'bg-neon-blue' : 'bg-gray-700'
-                    }`}
+                    className="w-12 h-11 shrink-0 flex items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                   >
-                    <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
-                      hapticEnabled ? 'left-7' : 'left-1'
-                    }`} />
+                    <span className={`relative block w-12 h-6 rounded-full transition-colors ${
+                      hapticEnabled ? 'bg-neon-blue' : 'bg-gray-700'
+                    }`} aria-hidden="true">
+                      <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                        hapticEnabled ? 'left-7' : 'left-1'
+                      }`} />
+                    </span>
                   </button>
                 </div>
 
@@ -469,13 +471,15 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     aria-label="Toggle impact screen shake"
                     aria-pressed={screenShakeEnabled}
                     onClick={onToggleScreenShake}
-                    className={`w-12 h-6 rounded-full relative transition-colors ${
-                      screenShakeEnabled ? 'bg-neon-blue' : 'bg-gray-700'
-                    }`}
+                    className="w-12 h-11 shrink-0 flex items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                   >
-                    <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
-                      screenShakeEnabled ? 'left-7' : 'left-1'
-                    }`} />
+                    <span className={`relative block w-12 h-6 rounded-full transition-colors ${
+                      screenShakeEnabled ? 'bg-neon-blue' : 'bg-gray-700'
+                    }`} aria-hidden="true">
+                      <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                        screenShakeEnabled ? 'left-7' : 'left-1'
+                      }`} />
+                    </span>
                   </button>
                 </div>
               </div>
