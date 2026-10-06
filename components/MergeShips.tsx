@@ -666,7 +666,7 @@ const MergeShips: React.FC = () => {
     // Auto-save plus page-lifecycle persistence.
     useEffect(() => {
         const t = setInterval(() => {
-            if (!document.hidden) saveGame();
+            saveGame();
         }, 5000);
 
         const creditHiddenProgress = () => {
@@ -712,7 +712,7 @@ const MergeShips: React.FC = () => {
         };
 
         const handlePageHide = () => {
-            if (!document.hidden) saveGame();
+            saveGame();
         };
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
