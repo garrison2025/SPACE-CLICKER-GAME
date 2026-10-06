@@ -259,7 +259,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                       <div className="border-t border-white/10 pt-6">
                           <div className="font-bold text-red-400 text-sm mb-2">DANGER ZONE</div>
                           <p className="text-xs text-gray-500 mb-4">Resetting removes Space Clicker Game saves, Spacebar records, and game settings stored by this site. It does not call localStorage.clear() for unrelated origin data.</p>
-                          <button 
+                          <button
+                            type="button"
                             onClick={handleFactoryReset}
                             className="w-full py-3 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold rounded transition-colors text-xs tracking-widest"
                           >
