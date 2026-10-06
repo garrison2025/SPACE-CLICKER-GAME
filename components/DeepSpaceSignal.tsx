@@ -334,6 +334,11 @@ const DeepSpaceSignal: React.FC = () => {
             setFrequency(prev => prev + (Math.random() * 5 - 2));
 
         } catch {
+            const refundedEnergy = Math.min(maxEnergy, energyRef.current + scanCost);
+            energyRef.current = refundedEnergy;
+            saveStateRef.current = { ...saveStateRef.current, energy: refundedEnergy };
+            setEnergy(refundedEnergy);
+
             const failedAt = Date.now();
             commitMessages([
                 ...messagesRef.current.filter(message => message.id !== tempId),
@@ -341,7 +346,7 @@ const DeepSpaceSignal: React.FC = () => {
                     id: `scan-error-${failedAt}`,
                     timestamp: new Date(failedAt).toLocaleTimeString(),
                     sender: 'SYSTEM',
-                    content: 'SCAN FAILED — no signal data was recovered. Energy spent on this scan is not refunded.',
+                    content: 'SCAN FAILED — no signal data was recovered. The scan Energy cost was refunded.',
                     isDecoded: true,
                     encryptionLevel: 0,
                     rewardData: 0
