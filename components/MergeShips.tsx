@@ -464,7 +464,14 @@ const MergeShips: React.FC = () => {
         const setSource = (val: MergeShip | null) => dragging.origin === 'hangar' ? newHangar[dragging.index] = val : newOrbit[dragging.index] = val;
         const setTarget = (val: MergeShip | null) => target === 'hangar' ? newHangar[targetIndex] = val : newOrbit[targetIndex] = val;
 
-        if (target === 'hangar' && targetItem && !targetItem.isCrate && targetItem.level === sourceItem.level && targetItem.id !== sourceItem.id) {
+        if (
+            target === 'hangar' &&
+            targetItem &&
+            !targetItem.isCrate &&
+            targetItem.level === sourceItem.level &&
+            targetItem.level < MAX_SHIP_LEVEL &&
+            targetItem.id !== sourceItem.id
+        ) {
             setSource(null);
             setTarget({ ...targetItem, level: targetItem.level + 1, id: Date.now().toString() });
             const nextHighestLevel = Math.max(snapshot.highestLevel, targetItem.level + 1);
