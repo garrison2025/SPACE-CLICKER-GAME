@@ -211,9 +211,11 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                             aria-pressed={!isMuted}
                             aria-label={isMuted ? 'Enable game audio' : 'Mute game audio'}
                             onClick={handleMuteToggle}
-                            className={`w-12 h-6 rounded-full relative transition-colors ${!isMuted ? 'bg-neon-blue' : 'bg-gray-700'}`}
+                            className="w-12 h-11 shrink-0 flex items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
                           >
-                              <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${!isMuted ? 'left-7' : 'left-1'}`}></div>
+                              <span className={`relative block w-12 h-6 rounded-full transition-colors ${!isMuted ? 'bg-neon-blue' : 'bg-gray-700'}`} aria-hidden="true">
+                                  <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${!isMuted ? 'left-7' : 'left-1'}`}></span>
+                              </span>
                           </button>
                       </div>
 
