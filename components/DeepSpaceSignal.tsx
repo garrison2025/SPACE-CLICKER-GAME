@@ -816,6 +816,10 @@ const DeepSpaceSignal: React.FC = () => {
             {/* UPGRADE MODAL */}
             {showUpgrades && (
                 <div
+                    className="absolute inset-0 z-50 bg-black/70 backdrop-blur-[1px]"
+                    onClick={() => setShowUpgrades(false)}
+                >
+                  <div
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="deep-space-engineering-title"
@@ -829,7 +833,8 @@ const DeepSpaceSignal: React.FC = () => {
                         }
                         trapDialogFocus(event);
                     }}
-                    className="absolute inset-x-4 bottom-28 top-20 z-50 bg-black/95 border-2 border-green-500 p-6 shadow-[0_0_50px_rgba(0,255,0,0.1)] animate-in slide-in-from-bottom duration-300 flex flex-col outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                    className="absolute inset-x-4 bottom-28 top-20 bg-black/95 border-2 border-green-500 p-6 shadow-[0_0_50px_rgba(0,255,0,0.1)] animate-in slide-in-from-bottom duration-300 flex flex-col outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                    onClick={(event) => event.stopPropagation()}
                 >
                     <div className="flex justify-between items-center mb-6 border-b border-green-800 pb-2">
                         <h2 id="deep-space-engineering-title" className="text-xl font-bold text-glow">ENGINEERING BAY</h2>
@@ -867,6 +872,7 @@ const DeepSpaceSignal: React.FC = () => {
                             )
                         })}
                     </div>
+                  </div>
                 </div>
             )}
 
