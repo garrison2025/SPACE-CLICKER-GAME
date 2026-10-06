@@ -40,7 +40,7 @@ export const generateSpaceEvent = async (gameState: GameState): Promise<{ title:
   };
 };
 
-export const generateAlienMessage = async (frequency: number, antennaLevel: number): Promise<{ sender: string; content: string; dataValue: number; encryption: number; type: 'BIO' | 'TECH' | 'VOID' | 'MIL' }> => {
+export const generateAlienMessage = async (_frequency: number, antennaLevel: number): Promise<{ sender: string; content: string; dataValue: number; encryption: number; type: 'BIO' | 'TECH' | 'VOID' | 'MIL' }> => {
   // Small delay keeps signal feedback readable.
   await new Promise(resolve => setTimeout(resolve, 600));
 
