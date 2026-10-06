@@ -74,6 +74,7 @@ const defaultSave = (): SpacebarSave => ({
 });
 
 const MAX_IMPORTED_RESOURCE = 1e300;
+const MAX_UPGRADE_LEVEL = 1000;
 const MAX_IMPORTED_COUNTER = Number.MAX_SAFE_INTEGER;
 const MAX_IMPORTED_QUANTUM_KEYS = 1e12;
 const MAX_IMPORTED_CPS = 10_000;
@@ -91,7 +92,7 @@ const sanitizeSave = (raw: unknown): SpacebarSave => {
 
   (Object.keys(upgrades) as UpgradeId[]).forEach((id) => {
     const def = UPGRADE_DEFS.find((item) => item.id === id);
-    const maxLevel = def?.maxLevel ?? 1000;
+    const maxLevel = def?.maxLevel ?? MAX_UPGRADE_LEVEL;
     upgrades[id] = Math.min(
       maxLevel,
       Math.max(0, Math.floor(safeNumber((incoming as Record<string, unknown>)[id])))
@@ -220,10 +221,13 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
     if (elapsed >= 60 && initialRate > 0) {
       const earned = Math.floor(initialRate * elapsed);
+      const nextPoints = Math.min(MAX_IMPORTED_RESOURCE, initial.points + earned);
+      const nextLifetimePoints = Math.min(MAX_IMPORTED_RESOURCE, initial.lifetimePoints + earned);
+      const credited = Math.max(0, nextPoints - initial.points);
       const nextSnapshot = {
         ...saveStateRef.current,
-        points: initial.points + earned,
-        lifetimePoints: initial.lifetimePoints + earned,
+        points: nextPoints,
+        lifetimePoints: nextLifetimePoints,
       };
 
       // Persist credited offline production immediately so a fast refresh cannot
@@ -237,7 +241,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
       setPoints(nextSnapshot.points);
       setLifetimePoints(nextSnapshot.lifetimePoints);
-      setOfflineEarned(earned);
+      setOfflineEarned(credited);
     }
   }, [initial]);
 
@@ -245,8 +249,16 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     if (autoRate <= 0) return;
     const timer = window.setInterval(() => {
       const gain = autoRate / 5;
-      setPoints((value) => value + gain);
-      setLifetimePoints((value) => value + gain);
+      const snapshot = saveStateRef.current;
+      const nextPoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.points + gain);
+      const nextLifetimePoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.lifetimePoints + gain);
+      saveStateRef.current = {
+        ...snapshot,
+        points: nextPoints,
+        lifetimePoints: nextLifetimePoints,
+      };
+      setPoints(nextPoints);
+      setLifetimePoints(nextLifetimePoints);
     }, 200);
     return () => window.clearInterval(timer);
   }, [autoRate]);
@@ -291,10 +303,20 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     const isCrit = Math.random() < critChance;
     const amount = clickPower * comboBonus * (isCrit ? 5 : 1);
 
-    setPoints((value) => value + amount);
-    setLifetimePoints((value) => value + amount);
-    setLifetimePresses((value) => value + 1);
-    setLastGain(amount);
+    const snapshot = saveStateRef.current;
+    const nextPoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.points + amount);
+    const nextLifetimePoints = Math.min(MAX_IMPORTED_RESOURCE, snapshot.lifetimePoints + amount);
+    const nextLifetimePresses = Math.min(MAX_IMPORTED_COUNTER, snapshot.lifetimePresses + 1);
+    saveStateRef.current = {
+      ...snapshot,
+      points: nextPoints,
+      lifetimePoints: nextLifetimePoints,
+      lifetimePresses: nextLifetimePresses,
+    };
+    setPoints(nextPoints);
+    setLifetimePoints(nextLifetimePoints);
+    setLifetimePresses(nextLifetimePresses);
+    setLastGain(Math.max(0, nextPoints - snapshot.points));
     setLastWasCrit(isCrit);
   }, [clickPower, combo, upgrades.comboEngine, upgrades.criticalPress]);
 
@@ -316,7 +338,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
 
   const getPurchasePlan = (def: UpgradeDef) => {
     const level = upgrades[def.id];
-    const remainingLevels = def.maxLevel === undefined ? 1000 : Math.max(0, def.maxLevel - level);
+    const effectiveMax = def.maxLevel ?? MAX_UPGRADE_LEVEL;
+    const remainingLevels = Math.max(0, effectiveMax - level);
     const targetCount = buyMode === 'max' ? remainingLevels : Math.min(buyMode, remainingLevels);
     let totalCost = 0;
     let count = 0;
@@ -334,7 +357,8 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
   const buyUpgrade = (def: UpgradeDef) => {
     const snapshot = saveStateRef.current;
     const level = snapshot.upgrades[def.id];
-    const remainingLevels = def.maxLevel === undefined ? 1000 : Math.max(0, def.maxLevel - level);
+    const effectiveMax = def.maxLevel ?? MAX_UPGRADE_LEVEL;
+    const remainingLevels = Math.max(0, effectiveMax - level);
     const targetCount = buyMode === 'max' ? remainingLevels : Math.min(buyMode, remainingLevels);
 
     let totalCost = 0;
@@ -745,7 +769,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
           <div className="p-4 space-y-3 max-h-[760px] overflow-y-auto">
             {UPGRADE_DEFS.map((def) => {
               const level = upgrades[def.id];
-              const maxed = def.maxLevel !== undefined && level >= def.maxLevel;
+              const maxed = level >= (def.maxLevel ?? MAX_UPGRADE_LEVEL);
               const cost = getUpgradeCost(def);
               const plan = getPurchasePlan(def);
               return (
