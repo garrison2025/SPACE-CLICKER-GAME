@@ -94,6 +94,7 @@ const GravityIdle: React.FC = () => {
     const pulseCooldownRef = useRef(pulseCooldown);
     const hiddenAtRef = useRef<number | null>(null);
     const offlineReturnFocusRef = useRef<HTMLElement | null>(null);
+    const shopToggleRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
         matterRef.current = matter;
@@ -127,6 +128,21 @@ const GravityIdle: React.FC = () => {
             offlineReturnFocusRef.current = null;
         };
     }, [offlineReport]);
+
+    useEffect(() => {
+        if (!showShop) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setShowShop(false);
+                window.requestAnimationFrame(() => shopToggleRef.current?.focus());
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [showShop]);
 
     // --- GAME LOOP ---
     const gameLoop = useCallback(() => {
@@ -803,8 +819,10 @@ const GravityIdle: React.FC = () => {
 
                  <div className="absolute bottom-4 right-4 z-10 flex gap-2">
                      <button
+                        ref={shopToggleRef}
                         type="button"
                         aria-expanded={showShop}
+                        aria-controls="gravity-physics-lab"
                         onClick={() => setShowShop(!showShop)}
                         className={`px-4 sm:px-6 py-3 min-h-11 rounded-xl font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 border ${showShop ? 'bg-white text-black border-white' : 'bg-black/60 backdrop-blur border-neon-purple text-neon-purple'}`}
                      >
@@ -814,10 +832,15 @@ const GravityIdle: React.FC = () => {
              </div>
 
              {/* UPGRADE SHOP PANEL */}
-             <div className={`
-                absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
-                ${showShop ? 'translate-x-0' : 'translate-x-full'}
-             `}>
+             <div
+                id="gravity-physics-lab"
+                aria-hidden={!showShop}
+                style={{ visibility: showShop ? 'visible' : 'hidden' }}
+                className={`
+                  absolute top-0 right-0 bottom-0 w-full sm:w-80 bg-stone-950/95 border-l border-neon-purple/30 sm:backdrop-blur-xl z-20 transition-transform duration-300 transform shadow-2xl flex flex-col
+                  ${showShop ? 'translate-x-0' : 'translate-x-full'}
+                `}
+             >
                  <div className="p-6 border-b border-white/10 bg-black/40">
                      <div className="flex justify-between items-center mb-4">
                          <div>
@@ -827,7 +850,10 @@ const GravityIdle: React.FC = () => {
                          <button
                             type="button"
                             aria-label="Close Physics Lab"
-                            onClick={() => setShowShop(false)}
+                            onClick={() => {
+                                setShowShop(false);
+                                window.requestAnimationFrame(() => shopToggleRef.current?.focus());
+                            }}
                             className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
                          >✕</button>
                      </div>
