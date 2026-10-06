@@ -439,6 +439,7 @@ const StarDefense: React.FC = () => {
             const scrapReward = Math.floor(enemy.scoreValue * comboMultiplier);
             const nextScraps = scrapsRef.current + scrapReward;
             scrapsRef.current = nextScraps;
+            saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
             setScraps(nextScraps);
             addFloatingText(enemy.x, enemy.y, `+${scrapReward}`, '#fbbf24');
         } else {
@@ -563,6 +564,7 @@ const StarDefense: React.FC = () => {
             const amount = 100 * wave;
             const nextScraps = scrapsRef.current + amount;
             scrapsRef.current = nextScraps;
+            saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
             setScraps(nextScraps);
             addFloatingText(p.x, p.y, `+${amount} SCRAP`, "#fbbf24", true);
         } else if (p.type === 'double_damage') {
@@ -585,6 +587,7 @@ const StarDefense: React.FC = () => {
 
         const nextScraps = scrapsRef.current - cost;
         scrapsRef.current = nextScraps;
+        saveStateRef.current = { ...saveStateRef.current, scraps: nextScraps };
         setScraps(nextScraps);
 
         if (id === 'repair') {
@@ -599,6 +602,11 @@ const StarDefense: React.FC = () => {
             item.id === id ? { ...item, level: item.level + 1 } : item
         );
         upgradesRef.current = nextUpgrades;
+        saveStateRef.current = {
+            ...saveStateRef.current,
+            scraps: nextScraps,
+            upgrades: nextUpgrades,
+        };
         setUpgrades(nextUpgrades);
     };
 
