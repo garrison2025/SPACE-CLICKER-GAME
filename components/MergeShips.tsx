@@ -118,6 +118,7 @@ const MergeShips: React.FC = () => {
     const bossWarningTimerRef = useRef<number>();
     const floatingTextTimersRef = useRef<Set<number>>(new Set());
     const openedCrateIdsRef = useRef<Set<string>>(new Set());
+    const shipInspectorReturnFocusRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         return () => {
@@ -128,6 +129,24 @@ const MergeShips: React.FC = () => {
             floatingTextTimersRef.current.clear();
         };
     }, []);
+
+    useEffect(() => {
+        if (!selectedShip) return;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setSelectedShip(null);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            shipInspectorReturnFocusRef.current?.focus();
+            shipInspectorReturnFocusRef.current = null;
+        };
+    }, [selectedShip]);
     
     const [_, setRenderTrigger] = useState(0); 
 
@@ -404,6 +423,8 @@ const MergeShips: React.FC = () => {
         if (ship.isCrate) {
             if (region === 'hangar') openCrate(index);
         } else {
+            shipInspectorReturnFocusRef.current =
+                document.activeElement instanceof HTMLElement ? document.activeElement : null;
             setSelectedShip({ ship, index, region });
         }
     };
@@ -907,7 +928,15 @@ const MergeShips: React.FC = () => {
              {/* Ship Inspector */}
              {selectedShip && (
                  <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-[2px] animate-in fade-in" onClick={() => setSelectedShip(null)}>
-                     <div className="bg-slate-800 border border-blue-500 p-6 rounded-2xl w-72 text-center shadow-[0_0_50px_rgba(59,130,246,0.3)]" onClick={e => e.stopPropagation()}>
+                     <div
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Ship inspector"
+                        tabIndex={-1}
+                        autoFocus
+                        className="bg-slate-800 border border-blue-500 p-6 rounded-2xl w-72 text-center shadow-[0_0_50px_rgba(59,130,246,0.3)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+                        onClick={e => e.stopPropagation()}
+                     >
                          <div className="text-gray-400 text-xs font-bold tracking-widest mb-4 uppercase">{selectedShip.region === 'hangar' ? 'Hangar Unit' : 'Active Duty'}</div>
                          <div className="w-32 h-32 mx-auto mb-4 relative">
                              {renderShip(selectedShip.ship.level)}
