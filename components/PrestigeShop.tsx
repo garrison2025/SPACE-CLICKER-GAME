@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PrestigeUpgrade } from '../types';
 import { PRESTIGE_UPGRADES } from '../constants';
 import { formatNumber } from '../utils';
@@ -15,6 +15,13 @@ interface PrestigeShopProps {
 }
 
 const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prestigeGain, canPrestige, thresholdLabel, onPrestige, onBuy, onClose }) => {
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    return () => previousFocus?.focus();
+  }, []);
+
   return (
     <div className="safe-screen-overlay fixed inset-0 z-[70] flex items-center justify-center bg-black/90 md:backdrop-blur-md animate-in fade-in">
       <div
@@ -78,6 +85,7 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
                     </div>
                     
                     <button
+                        type="button"
                         onClick={() => !isMaxed && canAfford && onBuy(u.id)}
                         disabled={isMaxed || !canAfford}
                         className={`w-full py-2 rounded font-bold text-sm transition-all ${
@@ -95,7 +103,7 @@ const PrestigeShop: React.FC<PrestigeShopProps> = ({ darkMatter, upgrades, prest
         </div>
 
         <div className="p-4 border-t border-space-600 bg-space-900 text-center">
-            <button onClick={onClose} className="min-h-11 px-4 text-gray-400 hover:text-white">CLOSE TERMINAL</button>
+            <button type="button" onClick={onClose} className="min-h-11 px-4 text-gray-400 hover:text-white">CLOSE TERMINAL</button>
         </div>
 
       </div>
