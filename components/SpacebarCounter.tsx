@@ -206,8 +206,7 @@ const SpacebarCounter: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Counter vs speed test</h2>
             <p>
-              The counter runs until you reset it. For a timed challenge such as five, ten, thirty, or sixty seconds, use the dedicated
-              Spacebar Clicker Test. For an incremental game with upgrades and prestige, use Spacebar Clicker.
+              The counter runs until you reset it. If you switch to another tab or background the browser, active timing pauses and resumes when the page is visible again, so hidden time does not dilute average CPS. For a timed challenge such as five, ten, thirty, or sixty seconds, use the dedicated Spacebar Clicker Test. For an incremental game with upgrades and prestige, use Spacebar Clicker.
             </p>
           </section>
           <section>
