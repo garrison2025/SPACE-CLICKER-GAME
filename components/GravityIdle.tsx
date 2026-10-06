@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GravitySaveData } from '../types';
 import { formatNumber } from '../utils';
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 const GRAVITY_SAVE_KEY = 'gravity_idle_save_v2';
 
@@ -608,7 +609,7 @@ const GravityIdle: React.FC = () => {
     }, [matter, upgrades]);
 
     const saveGame = useCallback(() => {
-        localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({ 
+        safeSetStorageItem(GRAVITY_SAVE_KEY, JSON.stringify({ 
             ...saveStateRef.current,
             lastSaveTime: Date.now() 
         }));
@@ -634,7 +635,7 @@ const GravityIdle: React.FC = () => {
 
     // Initial Load
     useEffect(() => {
-        const saved = localStorage.getItem(GRAVITY_SAVE_KEY);
+        const saved = safeGetStorageItem(GRAVITY_SAVE_KEY);
         if (!saved) return;
 
         try {
@@ -668,7 +669,7 @@ const GravityIdle: React.FC = () => {
             saveStateRef.current = nextSnapshot;
             matterRef.current = nextMatter;
             upgradesRef.current = loadedUpgrades;
-            localStorage.setItem(GRAVITY_SAVE_KEY, JSON.stringify({
+            safeSetStorageItem(GRAVITY_SAVE_KEY, JSON.stringify({
                 ...nextSnapshot,
                 lastSaveTime: now,
             }));
