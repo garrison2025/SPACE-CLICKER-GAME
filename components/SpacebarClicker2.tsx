@@ -337,7 +337,7 @@ const SpacebarClicker2: React.FC = () => {
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('pagehide', handlePageHide);
-      if (!document.hidden) saveNow();
+      saveNow();
     };
   }, [saveNow]);
 
