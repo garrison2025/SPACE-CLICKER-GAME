@@ -414,11 +414,17 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
                     LOAD BACKUP FILE
                   </button>
                 </div>
+                <label htmlFor="galaxy-save-import" className="sr-only">Galaxy Miner save code</label>
                 <textarea
+                  id="galaxy-save-import"
                   value={importString}
                   maxLength={MAX_SAVE_IMPORT_SIZE}
                   onChange={(e) => setImportString(e.target.value)}
                   placeholder="Paste your base64 save string here..."
+                  spellCheck={false}
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="off"
                   className="w-full h-20 bg-black/60 border border-white/10 rounded-lg p-2.5 text-[10px] font-mono text-white resize-none focus:outline-none focus:border-neon-blue"
                 />
                 {backupNotice && (
