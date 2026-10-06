@@ -731,8 +731,8 @@ const App: React.FC = () => {
             '25 Mining Drones',
             '50 Orbital Stations',
             '1 Dyson Swarm',
-            'First Galactic Reset',
-            '100 Dark Matter'
+            'Hold at least 1 Dark Matter',
+            'Hold at least 100 Dark Matter'
           ];
           const canonical = "https://spaceclickergame.com/achievements/";
           schema = {
