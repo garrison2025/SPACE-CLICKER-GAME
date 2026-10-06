@@ -120,6 +120,7 @@ const MergeShips: React.FC = () => {
     const floatingTextTimersRef = useRef<Set<number>>(new Set());
     const openedCrateIdsRef = useRef<Set<string>>(new Set());
     const shipInspectorReturnFocusRef = useRef<HTMLElement | null>(null);
+    const hiddenAtRef = useRef<number | null>(null);
 
     useEffect(() => {
         return () => {
@@ -184,6 +185,11 @@ const MergeShips: React.FC = () => {
     
     // --- GAME LOOP ---
     const gameLoop = useCallback((timestamp: number) => {
+        if (document.hidden) {
+            lastTimeRef.current = timestamp;
+            animationFrameRef.current = requestAnimationFrame(gameLoop);
+            return;
+        }
         if (!lastTimeRef.current) lastTimeRef.current = timestamp;
         const dt = Math.min((timestamp - lastTimeRef.current) / 1000, 0.1); 
         lastTimeRef.current = timestamp;
@@ -306,6 +312,7 @@ const MergeShips: React.FC = () => {
         const delay = Math.max(2000, baseTime - reduction);
 
         const timer = setInterval(() => {
+             if (document.hidden) return;
              const snapshot = saveStateRef.current;
              const emptyIndices = snapshot.hangar
                  .map((ship, index) => ship === null ? index : -1)
@@ -589,6 +596,7 @@ const MergeShips: React.FC = () => {
             // Offline output models asteroid availability at 50% of orbit DPS.
             const earning = seconds >= 60 ? Math.floor(dps * seconds * 0.5) : 0;
             const nextCredits = Math.min(MAX_RESOURCE_VALUE, loadedCredits + Math.max(0, earning));
+            const credited = Math.max(0, nextCredits - loadedCredits);
 
             const nextSnapshot = {
                 credits: nextCredits,
@@ -614,8 +622,8 @@ const MergeShips: React.FC = () => {
             setShipsPurchased(loadedShipsPurchased);
             setHighestLevel(loadedHighestLevel);
 
-            if (earning > 0) {
-                setOfflineProfit({ time: seconds, amount: earning });
+            if (credited > 0) {
+                setOfflineProfit({ time: seconds, amount: credited });
             }
         } catch (error) {
             console.warn('Could not load Merge Ships save.', error);
