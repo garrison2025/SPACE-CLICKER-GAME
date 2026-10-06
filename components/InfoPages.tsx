@@ -65,7 +65,7 @@ export const AboutPage = () => (
 );
 
 export const ContactPage = () => (
-    <PageContainer title="SUBSPACE COMMUNIQUÉ">
+    <PageContainer title="CONTACT SPACE CLICKER GAME">
         <p>
             Have you encountered a bug in the simulation? Do you have a suggestion for a new starship class? Or perhaps you wish to discuss a business partnership? Our communication channels are open.
         </p>
@@ -95,7 +95,7 @@ export const ContactPage = () => (
 );
 
 export const PrivacyPage = () => (
-    <PageContainer title="DATA PRIVACY PROTOCOLS">
+    <PageContainer title="PRIVACY POLICY">
         <p className="text-sm font-mono text-gray-500">Effective Date: October 6, 2026</p>
         
         <p>
@@ -186,7 +186,7 @@ export const TermsPage = () => (
 );
 
 export const CookiesPage = () => (
-    <PageContainer title="COOKIE & STORAGE SETTINGS">
+    <PageContainer title="COOKIE & LOCAL STORAGE SETTINGS">
         <p>
             Browsers provide several storage technologies. <strong>SpaceClickerGame.com</strong> primarily uses localStorage for game progress and settings; localStorage is different from an HTTP cookie.
         </p>
@@ -240,7 +240,7 @@ export const CookiesPage = () => (
 );
 
 export const SitemapPage = () => (
-    <PageContainer title="SITEMAP">
+    <PageContainer title="HTML SITEMAP">
         <p>Browse every main game, Spacebar tool, guide, and site resource from one crawlable directory.</p>
 
         <h3>Playable Games</h3>
