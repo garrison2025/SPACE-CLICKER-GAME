@@ -219,7 +219,11 @@ export const CookiesPage = () => (
                 type="button"
                 onClick={() => {
                     if(window.confirm("WARNING: This will wipe all Space Clicker Game progress, Spacebar records, and game settings stored in this browser. Are you sure?")) {
-                        clearProjectStorage();
+                        const result = clearProjectStorage();
+                        if (!result.success) {
+                            window.alert("The reset could not access or clear browser storage. Your local saves may still exist.");
+                            return;
+                        }
                         window.location.reload();
                     }
                 }}
