@@ -7,6 +7,7 @@ const FOCUSABLE_SELECTOR = [
   'input:not([disabled])',
   'select:not([disabled])',
   'textarea:not([disabled])',
+  '[contenteditable="true"]',
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
@@ -15,7 +16,11 @@ export const trapDialogFocus = (event: ReactKeyboardEvent<HTMLElement>) => {
 
   const root = event.currentTarget;
   const focusable = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
-    .filter((element) => element.getAttribute('aria-hidden') !== 'true');
+    .filter((element) => {
+      if (element.getAttribute('aria-hidden') === 'true') return false;
+      if (element.closest('[inert]')) return false;
+      return element.getClientRects().length > 0;
+    });
 
   if (focusable.length === 0) {
     event.preventDefault();
