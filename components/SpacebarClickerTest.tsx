@@ -88,9 +88,13 @@ const SpacebarClickerTest: React.FC = () => {
   const clicksRef = useRef(0);
   const peakCpsRef = useRef(0);
   const finishedRef = useRef(false);
+  const bestCpsRef = useRef(bestCps);
+  const historyRef = useRef(history);
 
   const loadBest = (nextMode: TestMode) => {
-    setBestCps(readBestCps(BEST_PREFIX + modeKey(nextMode)));
+    const nextBest = readBestCps(BEST_PREFIX + modeKey(nextMode));
+    bestCpsRef.current = nextBest;
+    setBestCps(nextBest);
   };
 
   const reset = (nextMode: TestMode = mode) => {
@@ -123,11 +127,10 @@ const SpacebarClickerTest: React.FC = () => {
     setFinished(true);
     setFinalElapsed(safeElapsed);
     setTimeLeft(0);
-    setBestCps((best) => {
-      const next = Math.max(best, average);
-      localStorage.setItem(BEST_PREFIX + modeKey(mode), String(next));
-      return next;
-    });
+    const nextBest = Math.min(MAX_STORED_CPS, Math.max(bestCpsRef.current, average));
+    bestCpsRef.current = nextBest;
+    setBestCps(nextBest);
+    localStorage.setItem(BEST_PREFIX + modeKey(mode), String(nextBest));
 
     const entry: TestHistoryEntry = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -139,11 +142,10 @@ const SpacebarClickerTest: React.FC = () => {
       completedAt: Date.now(),
     };
 
-    setHistory((previous) => {
-      const next = [entry, ...previous].slice(0, 10);
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
-      return next;
-    });
+    const nextHistory = [entry, ...historyRef.current].slice(0, 10);
+    historyRef.current = nextHistory;
+    setHistory(nextHistory);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(nextHistory));
   };
 
   const press = () => {
@@ -243,6 +245,7 @@ const SpacebarClickerTest: React.FC = () => {
     : 0;
 
   const clearHistory = () => {
+    historyRef.current = [];
     localStorage.removeItem(HISTORY_KEY);
     setHistory([]);
   };
