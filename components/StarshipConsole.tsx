@@ -144,6 +144,12 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
 
   return (
     <div className="relative w-full h-[100dvh] min-h-0 overflow-hidden flex flex-col bg-space-900 text-white font-sans selection:bg-neon-blue selection:text-black">
+      <a
+        href="#game-main-content"
+        className="fixed left-3 top-3 z-[200] -translate-y-24 rounded-lg bg-neon-blue px-4 py-3 font-bold text-black shadow-xl transition-transform focus:translate-y-0"
+      >
+        Skip to game content
+      </a>
       
       {/* --- TOP HUD --- */}
       <header className="game-console-header flex items-center justify-between px-3 sm:px-4 md:px-6 border-b border-white/10 bg-space-900 md:bg-space-900/90 md:backdrop-blur z-50 shrink-0">
@@ -302,7 +308,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       )}
 
       {/* --- MAIN CONTENT AREA --- */}
-      <main className="flex-1 relative flex overflow-hidden">
+      <main id="game-main-content" tabIndex={-1} className="flex-1 relative flex overflow-hidden focus:outline-none">
          
          {/* Side HUD (Left) */}
          <aside className="hidden lg:flex w-16 hover:w-64 transition-all duration-300 border-r border-white/5 bg-black/20 backdrop-blur flex-col z-40 group shrink-0">
