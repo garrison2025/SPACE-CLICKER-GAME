@@ -680,7 +680,7 @@ const App: React.FC = () => {
                     "name": "Does Galaxy Miner save my progress?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Galaxy Miner auto-saves to local browser storage. Clearing site data, using private browsing, or changing devices can remove or separate that local save."
+                      "text": "Galaxy Miner auto-saves to local browser storage. The Telemetry & Backup panel can also copy a portable save code or download a .scg backup file for manual safekeeping. Clearing site data, using private browsing, or changing devices can remove or separate the local save."
                     }
                   },
                   {
