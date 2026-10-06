@@ -101,6 +101,21 @@ const GAME_OG_IMAGES: Record<GameId, string> = {
 
 const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 const SPACEBAR_OG_IMAGE = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
+
+const normalizeSocialImage = (source: string) => {
+    try {
+        const url = new URL(source);
+        if (url.hostname === 'images.unsplash.com') {
+            url.searchParams.set('w', '1200');
+            url.searchParams.set('h', '630');
+            url.searchParams.set('fit', 'crop');
+            url.searchParams.set('q', '80');
+        }
+        return url.toString();
+    } catch {
+        return source;
+    }
+};
 const SITE_CONTENT_UPDATED = '2026-10-06';
 const SITE_URL = 'https://spaceclickergame.com/';
 const ORGANIZATION_ID = SITE_URL + '#organization';
@@ -512,7 +527,7 @@ const App: React.FC = () => {
               title: "404 - Signal Lost | Space Clicker Game",
               description: "The requested page could not be found.",
               path: location.pathname,
-              image: DEFAULT_OG_IMAGE,
+              image: normalizeSocialImage(DEFAULT_OG_IMAGE),
               type: 'website' as const,
               schema: undefined
           };
@@ -520,7 +535,7 @@ const App: React.FC = () => {
       
       let title = "Space Clicker – Free Space Clicker Game Online";
       let desc = "Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.";
-      let image = viewMode.startsWith('spacebar') ? SPACEBAR_OG_IMAGE : DEFAULT_OG_IMAGE;
+      let image = normalizeSocialImage(viewMode.startsWith('spacebar') ? SPACEBAR_OG_IMAGE : DEFAULT_OG_IMAGE);
       let type: 'website' | 'article' = 'website';
       let schema: any = undefined;
 
@@ -530,7 +545,7 @@ const App: React.FC = () => {
               const gameSeo = GAME_SEO[game.id];
               title = gameSeo.title;
               desc = gameSeo.description;
-              image = GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE;
+              image = normalizeSocialImage(GAME_OG_IMAGES[game.id] || DEFAULT_OG_IMAGE);
               type = 'website';
               schema = {
                 "@context": "https://schema.org",
@@ -583,7 +598,7 @@ const App: React.FC = () => {
               if (post) {
                   title = post.seoTitle;
                   desc = post.excerpt;
-                  if (post.image) image = post.image;
+                  if (post.image) image = normalizeSocialImage(post.image);
                   type = 'article';
               }
           } else {
