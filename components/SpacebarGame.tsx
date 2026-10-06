@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 type UpgradeId =
   | 'strongerKey'
@@ -115,7 +116,7 @@ const sanitizeSave = (raw: unknown): SpacebarSave => {
 const loadSave = (): SpacebarSave => {
   if (typeof window === 'undefined') return defaultSave();
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = safeGetStorageItem(SAVE_KEY);
     return raw ? sanitizeSave(JSON.parse(raw)) : defaultSave();
   } catch {
     return defaultSave();
@@ -216,7 +217,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       ...saveStateRef.current,
       lastSaveTime: Date.now(),
     };
-    localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+    safeSetStorageItem(SAVE_KEY, JSON.stringify(payload));
   }, []);
 
   useEffect(() => {
@@ -241,7 +242,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       // Persist credited offline production immediately so a fast refresh cannot
       // award the same away period more than once.
       saveStateRef.current = nextSnapshot;
-      localStorage.setItem(SAVE_KEY, JSON.stringify({
+      safeSetStorageItem(SAVE_KEY, JSON.stringify({
         version: SAVE_VERSION,
         ...nextSnapshot,
         lastSaveTime: Date.now(),
@@ -408,6 +409,11 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     if (!window.confirm('Initiate Hyperdrive Reset? Current points and standard upgrades will reset, but Quantum Keys and records stay.')) return;
 
     const nextQuantumKeys = snapshot.quantumKeys + availableGain;
+    if (!safeRemoveStorageItem(SAVE_KEY)) {
+      setSaveTransferStatus('Could not clear the saved game because browser storage is unavailable.');
+      return;
+    }
+
     const nextUpgrades = emptyUpgrades();
     const nextSnapshot: Omit<SpacebarSave, 'version' | 'lastSaveTime'> = {
       ...snapshot,
@@ -419,7 +425,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     // Persist permanent currency before the UI update so closing immediately after
     // prestige cannot restore the pre-reset run and award the same keys twice.
     saveStateRef.current = nextSnapshot;
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
+    safeSetStorageItem(SAVE_KEY, JSON.stringify({
       version: SAVE_VERSION,
       ...nextSnapshot,
       lastSaveTime: Date.now(),
@@ -492,7 +498,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
         bestCps: next.bestCps,
       };
 
-      localStorage.setItem(SAVE_KEY, JSON.stringify(next));
+      const persisted = safeSetStorageItem(SAVE_KEY, JSON.stringify(next));
       setPoints(next.points);
       setLifetimePoints(next.lifetimePoints);
       setLifetimePresses(next.lifetimePresses);
@@ -504,7 +510,11 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     setCombo(0);
       setOfflineEarned(0);
       pressTimes.current = [];
-      setSaveTransferStatus('Save imported successfully.');
+      setSaveTransferStatus(
+        persisted
+          ? 'Save imported successfully.'
+          : 'Save restored for this session, but browser storage is unavailable.'
+      );
       return true;
     } catch {
       setSaveTransferStatus('That save backup could not be read.');
@@ -599,7 +609,6 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       bestCps: 0,
     };
 
-    localStorage.removeItem(SAVE_KEY);
     setPoints(0);
     setLifetimePoints(0);
     setLifetimePresses(0);
