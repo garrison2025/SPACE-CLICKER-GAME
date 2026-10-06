@@ -49,6 +49,9 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
   if (/\son[a-z]+\s*=/i.test(content) || /(?:href|src)\s*=\s*["']\s*javascript:/i.test(content)) {
     throw new Error(`Unsafe inline event handler or javascript URL found in blog post ${slug}`);
   }
+  if (/<\/?(?:iframe|object|embed|form|input|button|textarea|select|style|link|meta)\b/i.test(content)) {
+    throw new Error(`Unsupported interactive or executable HTML found in blog post ${slug}`);
+  }
   const externalBlankLinks = [...content.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/gi)];
   for (const match of externalBlankLinks) {
     const tag = match[0];
