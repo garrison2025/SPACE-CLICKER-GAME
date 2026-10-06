@@ -45,7 +45,8 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   hapticEnabled = true, screenShakeEnabled = true
 }) => {
   const [clicks, setClicks] = useState<FloatingText[]>([]);
-  const [debris, setDebris] = useState<Debris[]>([]); 
+  const [debris, setDebris] = useState<Debris[]>([]);
+  const debrisRef = useRef<Debris[]>([]);
   const [beams, setBeams] = useState<{id: number, x: number, y: number, color: string, width: number}[]>([]);
   const [geodes, setGeodes] = useState<Geode[]>([]);
   const [shake, setShake] = useState(0);
@@ -129,10 +130,12 @@ const ClickArea: React.FC<ClickAreaProps> = ({
               size: Math.random() * 3 + 2,
               life: 1.0
           };
-          setDebris(prev => {
-              const next = [...prev, newDebris];
-              return next.length > MAX_DEBRIS ? next.slice(-MAX_DEBRIS) : next;
-          });
+          const nextDebris = [...debrisRef.current, newDebris];
+          const cappedDebris = nextDebris.length > MAX_DEBRIS
+              ? nextDebris.slice(-MAX_DEBRIS)
+              : nextDebris;
+          debrisRef.current = cappedDebris;
+          setDebris(cappedDebris);
 
       }, 500); 
       return () => clearInterval(timer);
@@ -238,10 +241,12 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           life: 1.0
         });
       }
-      setDebris(prev => {
-          const next = [...prev, ...newDebris];
-          return next.length > MAX_DEBRIS ? next.slice(-MAX_DEBRIS) : next;
-      });
+      const nextDebris = [...debrisRef.current, ...newDebris];
+      const cappedDebris = nextDebris.length > MAX_DEBRIS
+          ? nextDebris.slice(-MAX_DEBRIS)
+          : nextDebris;
+      debrisRef.current = cappedDebris;
+      setDebris(cappedDebris);
     }
 
      // 5. Visual: Planet Impact Flash
@@ -279,23 +284,23 @@ const ClickArea: React.FC<ClickAreaProps> = ({
             return;
         }
 
-        let particlesRemain = false;
-        setDebris(prev => {
-            if (prev.length === 0) return prev;
-            const next = prev.map(p => ({
-                ...p,
-                x: p.x + p.vx,
-                y: p.y + p.vy,
-                vx: p.vx * friction,
-                vy: p.vy * friction + gravity, 
-                rotation: p.rotation + p.vRot,
-                life: p.life - 0.02
-            })).filter(p => p.life > 0);
-            particlesRemain = next.length > 0;
-            return next;
-        });
+        const currentDebris = debrisRef.current;
+        if (currentDebris.length === 0) return;
 
-        if (particlesRemain) frameId = requestAnimationFrame(update);
+        const nextDebris = currentDebris.map(p => ({
+            ...p,
+            x: p.x + p.vx,
+            y: p.y + p.vy,
+            vx: p.vx * friction,
+            vy: p.vy * friction + gravity,
+            rotation: p.rotation + p.vRot,
+            life: p.life - 0.02
+        })).filter(p => p.life > 0);
+
+        debrisRef.current = nextDebris;
+        setDebris(nextDebris);
+
+        if (nextDebris.length > 0) frameId = requestAnimationFrame(update);
     };
 
     frameId = requestAnimationFrame(update);
