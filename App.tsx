@@ -1092,7 +1092,7 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'spacebar-counter') {
           title = "Spacebar Counter - Count Space Bar Presses & CPS";
-          desc = "Use a free untimed Spacebar Counter to track total presses, current CPS, average CPS, peak CPS and local best. Keyboard and mobile touch supported.";
+          desc = "Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -1137,8 +1137,8 @@ const App: React.FC = () => {
                     },
                     {
                       "@type": "Question",
-                      "name": "Is my best count saved?",
-                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The best count is stored locally in this browser and is not uploaded to a public leaderboard." }
+                      "name": "Are my current and highest totals saved?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Both are stored locally in this browser. You can also set or correct the current total without creating an account, and nothing is uploaded to a public leaderboard." }
                     }
                   ]
                 }
