@@ -92,7 +92,7 @@ const GAME_SEO: Record<GameId, { title: string; description: string; genres: str
   },
   mars_colony: {
     title: 'Mars Colony Idle - Free Space Strategy Game',
-    description: 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and idle resource progression.',
+    description: 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and automated resource production.',
     genres: ['Idle', 'Management', 'Strategy', 'Simulation']
   },
   star_defense: {
