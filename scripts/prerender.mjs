@@ -46,10 +46,13 @@ for (let index = 0; index < blogSlugMatches.length; index += 1) {
   if (/<script\b/i.test(content) || content.includes('${')) {
     throw new Error(`Unsafe or unsupported template content found in blog post ${slug}`);
   }
-  if (/\son[a-z]+\s*=/i.test(content) || /(?:href|src)\s*=\s*["']\s*javascript:/i.test(content)) {
-    throw new Error(`Unsafe inline event handler or javascript URL found in blog post ${slug}`);
+  if (
+    /\son[a-z]+\s*=/i.test(content) ||
+    /(?:href|src|formaction)\s*=\s*["']\s*(?:javascript:|data:text\/html)/i.test(content)
+  ) {
+    throw new Error(`Unsafe inline event handler or executable URL found in blog post ${slug}`);
   }
-  if (/<\/?(?:iframe|object|embed|form|input|button|textarea|select|style|link|meta)\b/i.test(content)) {
+  if (/<\/?(?:iframe|object|embed|form|input|button|textarea|select|option|style|link|meta|base|svg|math)\b/i.test(content)) {
     throw new Error(`Unsupported interactive or executable HTML found in blog post ${slug}`);
   }
   const externalBlankLinks = [...content.matchAll(/<a\b[^>]*target=["']_blank["'][^>]*>/gi)];
