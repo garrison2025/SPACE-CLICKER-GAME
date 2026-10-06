@@ -1,4 +1,5 @@
 export const SITE_CONTENT_UPDATED = '2026-10-07';
+export const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 export const CORE_ROUTE_META = [
   {
@@ -17,6 +18,7 @@ export const CORE_ROUTE_META = [
     description: 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.',
     h1: 'Galaxy Miner',
     primaryIntent: 'galaxy miner',
+    socialImage: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
     genres: ['Clicker', 'Incremental', 'Idle', 'Sci-Fi']
   },
   {
@@ -27,6 +29,7 @@ export const CORE_ROUTE_META = [
     description: 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and automated resource production.',
     h1: 'Mars Colony Idle',
     primaryIntent: 'mars colony idle',
+    socialImage: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
     genres: ['Idle', 'Management', 'Strategy', 'Simulation']
   },
   {
@@ -37,6 +40,7 @@ export const CORE_ROUTE_META = [
     description: 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.',
     h1: 'Star Defense',
     primaryIntent: 'star defense clicker',
+    socialImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200',
     genres: ['Clicker', 'Defense', 'Action', 'Sci-Fi']
   },
   {
@@ -47,6 +51,7 @@ export const CORE_ROUTE_META = [
     description: 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.',
     h1: 'Merge Spaceships',
     primaryIntent: 'merge spaceships game',
+    socialImage: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
     genres: ['Merge', 'Idle', 'Casual', 'Collection']
   },
   {
@@ -57,6 +62,7 @@ export const CORE_ROUTE_META = [
     description: 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.',
     h1: 'Gravity Idle',
     primaryIntent: 'gravity idle',
+    socialImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
     genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi']
   },
   {
@@ -67,6 +73,7 @@ export const CORE_ROUTE_META = [
     description: 'Scan radio frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting in this browser idle simulation.',
     h1: 'Deep Space Signal',
     primaryIntent: 'deep space signal game',
+    socialImage: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
     genres: ['Idle', 'Simulation', 'Signal Decoding', 'Sci-Fi']
   },
   {
@@ -75,7 +82,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Games - Clicker, Counter & CPS Tests',
     description: 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.',
     h1: 'Spacebar Games',
-    primaryIntent: 'spacebar games'
+    primaryIntent: 'spacebar games',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-games.svg'
   },
   {
     route: '/spacebar-clicker-2',
@@ -83,7 +91,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game',
     description: 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.',
     h1: 'Spacebar Clicker 2',
-    primaryIntent: 'spacebar clicker 2'
+    primaryIntent: 'spacebar clicker 2',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-clicker-2.svg'
   },
   {
     route: '/spacebar-clicker',
@@ -91,7 +100,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Clicker – Free Space Bar Clicker Game Online',
     description: 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.',
     h1: 'Spacebar Clicker',
-    primaryIntent: 'spacebar clicker'
+    primaryIntent: 'spacebar clicker',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-clicker.svg'
   },
   {
     route: '/spacebar-counter',
@@ -99,7 +109,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Counter - Count Space Bar Presses & CPS',
     description: 'Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.',
     h1: 'Spacebar Counter',
-    primaryIntent: 'spacebar counter'
+    primaryIntent: 'spacebar counter',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-counter.svg'
   },
   {
     route: '/spacebar-clicker-test',
@@ -107,7 +118,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Clicker Test - Space Bar CPS & Speed Test',
     description: 'Test spacebar speed with timed and 100-click modes. Track average CPS, press interval, peak CPS, personal bests and recent local results.',
     h1: 'Spacebar Clicker Test',
-    primaryIntent: 'spacebar clicker test'
+    primaryIntent: 'spacebar clicker test',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-clicker-test.svg'
   },
   {
     route: '/spacebar-clicker-unblocked',
@@ -115,7 +127,8 @@ export const CORE_ROUTE_META = [
     title: 'Spacebar Clicker Unblocked - Play Instantly in Your Browser',
     description: 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.',
     h1: 'Spacebar Clicker Unblocked',
-    primaryIntent: 'spacebar clicker unblocked'
+    primaryIntent: 'spacebar clicker unblocked',
+    socialImage: 'https://spaceclickergame.com/og/spacebar-clicker-unblocked.svg'
   },
   {
     route: '/compare',
@@ -131,7 +144,8 @@ export const CORE_ROUTE_META = [
     title: 'Galaxy Miner Milestones & Progress Tracker | Space Clicker Game',
     description: 'Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.',
     h1: 'Galaxy Miner Milestones',
-    primaryIntent: 'galaxy miner milestones'
+    primaryIntent: 'galaxy miner milestones',
+    socialImage: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200'
   },
   {
     route: '/blog',
