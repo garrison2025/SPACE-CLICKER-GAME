@@ -15,8 +15,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version-file: '.node-version'
-          package-manager-cache: false
+          cache: 'npm'
       - run: npm ci --no-audit --no-fund
-      - run: npm run build
-      - run: node scripts/test-project-storage.mjs
-      - run: node scripts/test-middleware.mjs
+      - run: npm run verify
