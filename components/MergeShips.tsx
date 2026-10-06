@@ -136,12 +136,15 @@ const MergeShips: React.FC = () => {
     // Resize Orbit array based on Tech
     useEffect(() => {
         const targetSize = 3 + tech.orbitSlots;
-        setOrbit(prev => {
-            if (prev.length === targetSize) return prev;
-            const next = [...prev];
-            while (next.length < targetSize) next.push(null);
-            return next;
-        });
+        const currentOrbit = saveStateRef.current.orbit;
+        if (currentOrbit.length !== targetSize) {
+            const nextOrbit = [...currentOrbit];
+            while (nextOrbit.length < targetSize) nextOrbit.push(null);
+            nextOrbit.length = targetSize;
+            saveStateRef.current = { ...saveStateRef.current, orbit: nextOrbit };
+            orbitShipsRef.current = nextOrbit;
+            setOrbit(nextOrbit);
+        }
         fireTimersRef.current = Array(targetSize).fill(0);
     }, [tech.orbitSlots]);
 
@@ -231,7 +234,12 @@ const MergeShips: React.FC = () => {
                     fireTimersRef.current[idx] = 0.5; // Fire rate: 2/s
 
                     if (target.hp <= 0) {
-                        setCredits(prev => prev + target.value);
+                        const nextCredits = Math.min(
+                            MAX_RESOURCE_VALUE,
+                            saveStateRef.current.credits + target.value
+                        );
+                        saveStateRef.current = { ...saveStateRef.current, credits: nextCredits };
+                        setCredits(nextCredits);
                         createParticles(target.x, target.y, target.type === 'gold' ? '#facc15' : target.type === 'boss' ? '#bc13fe' : '#ef4444', target.type === 'boss' ? 20 : 8);
                         showFloatText(target.x, target.y, `+$${formatNumber(target.value)}`, target.type === 'gold' ? '#facc15' : '#fff');
                     }
@@ -277,17 +285,18 @@ const MergeShips: React.FC = () => {
         const delay = Math.max(2000, baseTime - reduction);
 
         const timer = setInterval(() => {
-             setHangar(prev => {
-                 const emptyIndices = prev.map((s, i) => s === null ? i : -1).filter(i => i !== -1);
-                 if (emptyIndices.length > 0) {
-                     const idx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-                     const newHangar = [...prev];
-                     const lvl = Math.max(1, Math.floor(highestLevel / 3));
-                     newHangar[idx] = { id: Date.now().toString(), level: lvl, isCrate: true };
-                     return newHangar;
-                 }
-                 return prev;
-             });
+             const snapshot = saveStateRef.current;
+             const emptyIndices = snapshot.hangar
+                 .map((ship, index) => ship === null ? index : -1)
+                 .filter(index => index !== -1);
+             if (emptyIndices.length === 0) return;
+
+             const idx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+             const nextHangar = [...snapshot.hangar];
+             const lvl = Math.max(1, Math.floor(snapshot.highestLevel / 3));
+             nextHangar[idx] = { id: Date.now().toString(), level: lvl, isCrate: true };
+             saveStateRef.current = { ...snapshot, hangar: nextHangar };
+             setHangar(nextHangar);
         }, delay);
         return () => clearInterval(timer);
     }, [tech.crateSpeed, highestLevel]);
@@ -378,17 +387,15 @@ const MergeShips: React.FC = () => {
     };
 
     const openCrate = (index: number) => {
-        const item = hangar[index];
+        const snapshot = saveStateRef.current;
+        const item = snapshot.hangar[index];
         if (!item?.isCrate || openedCrateIdsRef.current.has(item.id)) return;
 
         openedCrateIdsRef.current.add(item.id);
-        setHangar(prev => {
-            const current = prev[index];
-            if (!current?.isCrate || current.id !== item.id) return prev;
-            const next = [...prev];
-            next[index] = { ...current, isCrate: false };
-            return next;
-        });
+        const nextHangar = [...snapshot.hangar];
+        nextHangar[index] = { ...item, isCrate: false };
+        saveStateRef.current = { ...snapshot, hangar: nextHangar };
+        setHangar(nextHangar);
         showFloatText(50, 50, `Lv.${item.level} FOUND!`, '#10b981');
     };
 
@@ -403,19 +410,32 @@ const MergeShips: React.FC = () => {
     const sellShip = () => {
         if (!selectedShip) return;
         const { ship, index, region } = selectedShip;
-        
-        // Sell Value = ~50% of cost to reach this level
-        // Approximation: Base Cost * 2^(level-1) * 0.5
-        const value = Math.floor(BASE_SHIP_COST * Math.pow(2, ship.level - 1) * 0.5);
-        
-        setCredits(prev => prev + value);
-        showFloatText(50, 50, `SOLD +$${formatNumber(value)}`, '#ef4444');
-        
-        if (region === 'hangar') {
-            setHangar(prev => { const n = [...prev]; n[index] = null; return n; });
-        } else {
-            setOrbit(prev => { const n = [...prev]; n[index] = null; return n; });
+        const snapshot = saveStateRef.current;
+        const currentShip = region === 'hangar' ? snapshot.hangar[index] : snapshot.orbit[index];
+        if (!currentShip || currentShip.id !== ship.id) {
+            setSelectedShip(null);
+            return;
         }
+
+        const value = Math.floor(BASE_SHIP_COST * Math.pow(2, currentShip.level - 1) * 0.5);
+        const nextCredits = Math.min(MAX_RESOURCE_VALUE, snapshot.credits + value);
+        const nextHangar = [...snapshot.hangar];
+        const nextOrbit = [...snapshot.orbit];
+
+        if (region === 'hangar') nextHangar[index] = null;
+        else nextOrbit[index] = null;
+
+        saveStateRef.current = {
+            ...snapshot,
+            credits: nextCredits,
+            hangar: nextHangar,
+            orbit: nextOrbit,
+        };
+        orbitShipsRef.current = nextOrbit;
+        setCredits(nextCredits);
+        setHangar(nextHangar);
+        setOrbit(nextOrbit);
+        showFloatText(50, 50, `SOLD +${formatNumber(value)}`, '#ef4444');
         setSelectedShip(null);
     };
 
@@ -430,23 +450,26 @@ const MergeShips: React.FC = () => {
 
     const handleDrop = (target: 'hangar' | 'orbit', targetIndex: number) => {
         if (!dragging) return;
-        
-        const sourceList = dragging.origin === 'hangar' ? hangar : orbit;
-        const targetList = target === 'hangar' ? hangar : orbit;
+
+        const snapshot = saveStateRef.current;
+        const sourceList = dragging.origin === 'hangar' ? snapshot.hangar : snapshot.orbit;
+        const targetList = target === 'hangar' ? snapshot.hangar : snapshot.orbit;
         const sourceItem = sourceList[dragging.index];
         const targetItem = targetList[targetIndex];
 
         if (!sourceItem) return;
 
-        const newHangar = [...hangar];
-        const newOrbit = [...orbit];
+        const newHangar = [...snapshot.hangar];
+        const newOrbit = [...snapshot.orbit];
         const setSource = (val: MergeShip | null) => dragging.origin === 'hangar' ? newHangar[dragging.index] = val : newOrbit[dragging.index] = val;
         const setTarget = (val: MergeShip | null) => target === 'hangar' ? newHangar[targetIndex] = val : newOrbit[targetIndex] = val;
 
         if (target === 'hangar' && targetItem && !targetItem.isCrate && targetItem.level === sourceItem.level && targetItem.id !== sourceItem.id) {
             setSource(null);
             setTarget({ ...targetItem, level: targetItem.level + 1, id: Date.now().toString() });
-            setHighestLevel(prev => Math.max(prev, targetItem.level + 1));
+            const nextHighestLevel = Math.max(snapshot.highestLevel, targetItem.level + 1);
+            saveStateRef.current = { ...saveStateRef.current, highestLevel: nextHighestLevel };
+            setHighestLevel(nextHighestLevel);
             showFloatText(50, 50, "MERGE!", "#a855f7");
         } 
         else if (!targetItem?.isCrate) {
@@ -454,6 +477,12 @@ const MergeShips: React.FC = () => {
             setTarget(sourceItem);
         }
 
+        saveStateRef.current = {
+            ...saveStateRef.current,
+            hangar: newHangar,
+            orbit: newOrbit,
+        };
+        orbitShipsRef.current = newOrbit;
         setHangar(newHangar);
         setOrbit(newOrbit);
         setDragging(null);
