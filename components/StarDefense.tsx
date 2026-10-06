@@ -855,6 +855,7 @@ const StarDefense: React.FC = () => {
                          return (
                              <button
                                 key={skill.id}
+                                type="button"
                                 onPointerDown={(e) => e.stopPropagation()}
                                 onClick={(e) => { e.stopPropagation(); activateSkill(skill.id); }}
                                 disabled={cd > 0}
@@ -1004,7 +1005,8 @@ const StarDefense: React.FC = () => {
                      <div className="absolute inset-0 bg-black/90 z-[100] flex flex-col items-center justify-center animate-in fade-in backdrop-blur-sm">
                          <h2 className="text-5xl font-black text-red-500 mb-4 tracking-widest">CRITICAL FAILURE</h2>
                          <p className="text-gray-400 mb-8 font-mono">SECTOR LOST AT WAVE {wave}</p>
-                         <button 
+                         <button
+                            type="button"
                             onClick={handleRestart}
                             className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded shadow-[0_0_20px_red] transition-all"
                          >
