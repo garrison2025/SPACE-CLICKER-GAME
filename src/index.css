@@ -86,14 +86,13 @@ body {
         scroll-behavior: auto !important;
     }
 
-    .marketing-motion,
-    .marketing-motion *,
-    .animate-pulse,
-    .animate-spin,
-    .animate-bounce {
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
