@@ -2259,7 +2259,7 @@ const App: React.FC = () => {
             </StarshipConsole>
             </Suspense>
         ) : (
-            <SiteLayout currentView={viewMode} onNavigate={handleNavigate}>
+            <SiteLayout currentView={viewMode} activeGame={activeGame} onNavigate={handleNavigate}>
                 {viewMode === 'home' && (
                     <LandingPage
                         onStart={(id) => handleNavigate('game', id)}
