@@ -636,9 +636,105 @@ const App: React.FC = () => {
       } else if (viewMode === 'compare') {
           title = "Space Clicker Game vs Classic Incremental Games: Feature Comparison";
           desc = "Compare gameplay structure, automation, prestige, events, and presentation across Space Clicker Game and several well-known incremental games.";
+          const comparedGames = [
+            'Space Clicker Game (Galaxy Miner)',
+            'Cookie Clicker',
+            'Universal Paperclips',
+            'Antimatter Dimensions',
+            'Spaceplan',
+            'Melvor Idle'
+          ];
+          const canonical = "https://spaceclickergame.com/compare/";
+          schema = {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": canonical + "#webpage",
+                "url": canonical,
+                "name": title,
+                "description": desc,
+                "dateModified": SITE_CONTENT_UPDATED,
+                "isPartOf": {
+                  "@type": "WebSite",
+                  "@id": "https://spaceclickergame.com/#website",
+                  "name": "Space Clicker Game",
+                  "url": "https://spaceclickergame.com/"
+                }
+              },
+              {
+                "@type": "ItemList",
+                "@id": canonical + "#games",
+                "name": "Incremental games in the feature comparison",
+                "itemListElement": comparedGames.map((name, index) => ({
+                  "@type": "ListItem",
+                  "position": index + 1,
+                  "name": name
+                }))
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": canonical + "#breadcrumb",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Feature Comparison", "item": canonical }
+                ]
+              }
+            ]
+          };
       } else if (viewMode === 'achievements') {
           title = "Galaxy Miner Milestones & Progress Tracker | Space Clicker Game";
           desc = "Track Galaxy Miner mining, automation, and Dark Matter milestones from your local browser save.";
+          const milestones = [
+            '1,000 lifetime Stardust',
+            '1 million lifetime Stardust',
+            '1 billion lifetime Stardust',
+            '1 trillion lifetime Stardust',
+            '1 quadrillion lifetime Stardust',
+            '25 Mining Drones',
+            '50 Orbital Stations',
+            '1 Dyson Swarm',
+            'First Galactic Reset',
+            '100 Dark Matter'
+          ];
+          const canonical = "https://spaceclickergame.com/achievements/";
+          schema = {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "CollectionPage",
+                "@id": canonical + "#webpage",
+                "url": canonical,
+                "name": "Galaxy Miner Milestones & Progress Tracker",
+                "description": desc,
+                "dateModified": SITE_CONTENT_UPDATED,
+                "isPartOf": {
+                  "@type": "WebSite",
+                  "@id": "https://spaceclickergame.com/#website",
+                  "name": "Space Clicker Game",
+                  "url": "https://spaceclickergame.com/"
+                }
+              },
+              {
+                "@type": "ItemList",
+                "@id": canonical + "#milestones",
+                "name": "Galaxy Miner tracked milestones",
+                "itemListElement": milestones.map((name, index) => ({
+                  "@type": "ListItem",
+                  "position": index + 1,
+                  "name": name
+                }))
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": canonical + "#breadcrumb",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Space Clicker Game", "item": "https://spaceclickergame.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Galaxy Miner Milestones", "item": canonical }
+                ]
+              }
+            ]
+          };
       } else if (viewMode === 'about') {
           title = "About | Space Clicker Game";
           desc = "Learn about SpaceClickerGame.com and its free browser-based clicker, idle and spacebar experiences.";
