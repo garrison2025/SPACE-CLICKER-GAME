@@ -333,8 +333,21 @@ const DeepSpaceSignal: React.FC = () => {
 
             setFrequency(prev => prev + (Math.random() * 5 - 2));
 
-        } catch (e) {
-            console.error(e);
+        } catch {
+            const failedAt = Date.now();
+            commitMessages([
+                ...messagesRef.current.filter(message => message.id !== tempId),
+                {
+                    id: `scan-error-${failedAt}`,
+                    timestamp: new Date(failedAt).toLocaleTimeString(),
+                    sender: 'SYSTEM',
+                    content: 'SCAN FAILED — no signal data was recovered. Energy spent on this scan is not refunded.',
+                    isDecoded: true,
+                    encryptionLevel: 0,
+                    rewardData: 0
+                }
+            ]);
+            playSound('error');
         } finally {
             isScanningRef.current = false;
             setIsScanning(false);
