@@ -242,6 +242,7 @@ const App: React.FC = () => {
   const [planetIndex, setPlanetIndex] = useState(0);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isScanning, setIsScanning] = useState(false);
+  const isScanningRef = useRef(false);
   const [showPrestigeShop, setShowPrestigeShop] = useState(false);
   const [showMobileShop, setShowMobileShop] = useState(false);
   
@@ -368,11 +369,27 @@ const App: React.FC = () => {
         const earned = rate * elapsedSeconds;
         if (earned <= 0) return;
 
-        setResources(prev => ({
-            ...prev,
-            [ResourceType.Stardust]: prev[ResourceType.Stardust] + earned
-        }));
-        setLifetimeEarnings(prev => prev + earned);
+        const snapshot = gameStateRef.current;
+        const currentStardust = snapshot.resources[ResourceType.Stardust];
+        const nextStardust = Math.min(MAX_SAFE_RESOURCE_VALUE, currentStardust + earned);
+        const credited = Math.max(0, nextStardust - currentStardust);
+        if (credited <= 0) return;
+
+        const nextResources = {
+            ...snapshot.resources,
+            [ResourceType.Stardust]: nextStardust
+        };
+        const nextLifetimeEarnings = Math.min(
+            MAX_SAFE_RESOURCE_VALUE,
+            snapshot.lifetimeEarnings + credited
+        );
+        gameStateRef.current = {
+            ...snapshot,
+            resources: nextResources,
+            lifetimeEarnings: nextLifetimeEarnings
+        };
+        setResources(nextResources);
+        setLifetimeEarnings(nextLifetimeEarnings);
     }, intervalTime);
 
     return () => clearInterval(timer);
@@ -1000,8 +1017,32 @@ const App: React.FC = () => {
   };
 
   const addResources = (amount: number) => {
-    setResources(prev => ({ ...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] + amount }));
-    setLifetimeEarnings(prev => prev + amount);
+    const safeAmount = finiteNonNegative(amount);
+    if (safeAmount <= 0) return 0;
+
+    const snapshot = gameStateRef.current;
+    const currentStardust = snapshot.resources[ResourceType.Stardust];
+    const nextStardust = Math.min(MAX_SAFE_RESOURCE_VALUE, currentStardust + safeAmount);
+    const credited = Math.max(0, nextStardust - currentStardust);
+    if (credited <= 0) return 0;
+
+    const nextResources = {
+      ...snapshot.resources,
+      [ResourceType.Stardust]: nextStardust
+    };
+    const nextLifetimeEarnings = Math.min(
+      MAX_SAFE_RESOURCE_VALUE,
+      snapshot.lifetimeEarnings + credited
+    );
+
+    gameStateRef.current = {
+      ...snapshot,
+      resources: nextResources,
+      lifetimeEarnings: nextLifetimeEarnings
+    };
+    setResources(nextResources);
+    setLifetimeEarnings(nextLifetimeEarnings);
+    return credited;
   };
 
   // Restore the intended per-run planet progression defined in PLANETS.
@@ -1023,8 +1064,14 @@ const App: React.FC = () => {
     }
 
     if (nextIndex > planetIndex) {
+      const nextLevel = nextIndex + 1;
+      gameStateRef.current = {
+        ...gameStateRef.current,
+        planetIndex: nextIndex,
+        level: nextLevel
+      };
       setPlanetIndex(nextIndex);
-      setLevel(nextIndex + 1);
+      setLevel(nextLevel);
       const destination = PLANETS[nextIndex];
       addLog(
         `WARP COMPLETE: ${destination.name.toUpperCase()} • x${destination.productionMultiplier} PRODUCTION`,
@@ -1036,7 +1083,10 @@ const App: React.FC = () => {
   const handleMine = (x: number, y: number, multiplier: number = 1, isGeode: boolean = false): { amount: number, isCrit: boolean } => {
     if (overheated && !isGeode) return { amount: 0, isCrit: false };
 
-    setTotalClicks(prev => prev + 1);
+    const clickSnapshot = gameStateRef.current;
+    const nextTotalClicks = Math.min(Number.MAX_SAFE_INTEGER, clickSnapshot.totalClicks + 1);
+    gameStateRef.current = { ...clickSnapshot, totalClicks: nextTotalClicks };
+    setTotalClicks(nextTotalClicks);
 
     if (isGeode) {
         setHeat(prev => Math.max(0, prev - 20));
@@ -1060,11 +1110,16 @@ const App: React.FC = () => {
     const fluxBonus = isFlux ? 2 : 1;
     const base = getClickPower() * multiplier * fluxBonus;
     const isCrit = Math.random() < critChance;
-    if (isCrit) setTotalCrits(prev => prev + 1);
+    if (isCrit) {
+        const critSnapshot = gameStateRef.current;
+        const nextTotalCrits = Math.min(Number.MAX_SAFE_INTEGER, critSnapshot.totalCrits + 1);
+        gameStateRef.current = { ...critSnapshot, totalCrits: nextTotalCrits };
+        setTotalCrits(nextTotalCrits);
+    }
 
     const finalAmount = isCrit ? base * critMultiplier : base;
-    addResources(finalAmount);
-    return { amount: finalAmount, isCrit };
+    const credited = addResources(finalAmount);
+    return { amount: credited, isCrit };
   };
 
   const hasHeat = heat > 0;
@@ -1080,21 +1135,36 @@ const App: React.FC = () => {
   }, [viewMode, activeGame, hasHeat, overheated]);
 
   const handleCometCatch = () => {
-    setCometsCaught(prev => prev + 1);
+    const snapshot = gameStateRef.current;
+    const nextCometsCaught = Math.min(Number.MAX_SAFE_INTEGER, snapshot.cometsCaught + 1);
+    gameStateRef.current = { ...snapshot, cometsCaught: nextCometsCaught };
+    setCometsCaught(nextCometsCaught);
+
     const reward = Math.max(getProductionRate() * 300, getClickPower() * 50);
-    addResources(reward);
-    addLog(`COMET CAPTURED! +${formatNumber(reward)} SD`, 'success');
+    const credited = addResources(reward);
+    addLog(`COMET CAPTURED! +${formatNumber(credited)} SD`, 'success');
   };
 
   const handleCrisisResolve = (success: boolean) => {
      if (success) {
-         setCrisesResolved(prev => prev + 1);
+         const snapshot = gameStateRef.current;
+         const nextCrisesResolved = Math.min(Number.MAX_SAFE_INTEGER, snapshot.crisesResolved + 1);
+         gameStateRef.current = { ...snapshot, crisesResolved: nextCrisesResolved };
+         setCrisesResolved(nextCrisesResolved);
+
          const reward = getClickPower() * 200;
-         addResources(reward);
-         addLog(`DEFENSE SUCCESS! +${formatNumber(reward)} SD`, 'success');
+         const credited = addResources(reward);
+         addLog(`DEFENSE SUCCESS! +${formatNumber(credited)} SD`, 'success');
      } else {
-         const penalty = Math.floor(resources[ResourceType.Stardust] * 0.1);
-         setResources(prev => ({ ...prev, [ResourceType.Stardust]: Math.max(0, prev[ResourceType.Stardust] - penalty) }));
+         const snapshot = gameStateRef.current;
+         const currentStardust = snapshot.resources[ResourceType.Stardust];
+         const penalty = Math.floor(currentStardust * 0.1);
+         const nextResources = {
+             ...snapshot.resources,
+             [ResourceType.Stardust]: Math.max(0, currentStardust - penalty)
+         };
+         gameStateRef.current = { ...snapshot, resources: nextResources };
+         setResources(nextResources);
          addLog(`DEFENSE FAILED! -${formatNumber(penalty)} SD`, 'alert');
      }
   };
@@ -1177,22 +1247,25 @@ const App: React.FC = () => {
     const u = PRESTIGE_UPGRADES.find(p => p.id === id);
     if (!u) return;
 
-    const currentLevel = prestigeUpgrades[id] || 0;
-    if (u.maxLevel !== -1 && currentLevel >= u.maxLevel) return;
+    const snapshot = gameStateRef.current;
+    const currentLevel = snapshot.prestigeUpgrades[id] || 0;
+    const maxLevel = u.maxLevel === -1 ? MAX_SAFE_UNBOUNDED_TECH_LEVEL : u.maxLevel;
+    if (currentLevel >= maxLevel) return;
 
     const cost = Math.floor(u.cost * Math.pow(1.5, currentLevel));
-    if (resources[ResourceType.DarkMatter] < cost) return;
+    const currentDarkMatter = snapshot.resources[ResourceType.DarkMatter];
+    if (currentDarkMatter < cost) return;
 
     const nextResources = {
-      ...resources,
-      [ResourceType.DarkMatter]: resources[ResourceType.DarkMatter] - cost
+      ...snapshot.resources,
+      [ResourceType.DarkMatter]: currentDarkMatter - cost
     };
     const nextPrestigeUpgrades = {
-      ...prestigeUpgrades,
+      ...snapshot.prestigeUpgrades,
       [id]: currentLevel + 1
     };
     const nextSnapshot = {
-      ...gameStateRef.current,
+      ...snapshot,
       resources: nextResources,
       prestigeUpgrades: nextPrestigeUpgrades
     };
@@ -1209,9 +1282,17 @@ const App: React.FC = () => {
   };
 
   const handlePrestigeReset = () => {
-    if (!canPrestige) return;
+    const snapshot = gameStateRef.current;
+    const currentStardust = snapshot.resources[ResourceType.Stardust];
+    const availableDarkMatter = Math.max(0, MAX_SAFE_DARK_MATTER - snapshot.resources[ResourceType.DarkMatter]);
+    const availableGain = Math.min(
+      Math.floor(5 * Math.sqrt(currentStardust / PRESTIGE_THRESHOLD)),
+      availableDarkMatter
+    );
+    if (availableGain < 1) return;
+
     const confirmed = window.confirm(
-      `Reset current Stardust and standard upgrades for +${prestigeGain} Dark Matter? Permanent technology, lifetime stats, and Dark Matter are retained.`
+      `Reset current Stardust and standard upgrades for +${formatNumber(availableGain)} Dark Matter? Permanent technology, lifetime stats, and Dark Matter are retained.`
     );
     if (!confirmed) return;
 
@@ -1222,10 +1303,10 @@ const App: React.FC = () => {
 
     const nextResources = {
       [ResourceType.Stardust]: 0,
-      [ResourceType.DarkMatter]: resources[ResourceType.DarkMatter] + prestigeGain
+      [ResourceType.DarkMatter]: snapshot.resources[ResourceType.DarkMatter] + availableGain
     };
     const nextSnapshot = {
-      ...gameStateRef.current,
+      ...snapshot,
       resources: nextResources,
       upgrades: resetUpgrades,
       level: 1,
@@ -1248,23 +1329,52 @@ const App: React.FC = () => {
     setHeat(0);
     setOverheated(false);
     setShowPrestigeShop(true);
-    addLog(`GALACTIC RESET COMPLETE: +${prestigeGain} DARK MATTER`, 'success');
+    addLog(`GALACTIC RESET COMPLETE: +${formatNumber(availableGain)} DARK MATTER`, 'success');
   };
 
   const handleScan = async () => {
-    if (resources[ResourceType.Stardust] < EVENT_SCAN_COST) return;
+    if (isScanningRef.current) return;
+
+    const snapshot = gameStateRef.current;
+    const currentStardust = snapshot.resources[ResourceType.Stardust];
+    if (currentStardust < EVENT_SCAN_COST) return;
+
+    const nextResources = {
+      ...snapshot.resources,
+      [ResourceType.Stardust]: currentStardust - EVENT_SCAN_COST
+    };
+    const paidSnapshot = { ...snapshot, resources: nextResources };
+    gameStateRef.current = paidSnapshot;
+    isScanningRef.current = true;
     setIsScanning(true);
-    setResources(prev => ({...prev, [ResourceType.Stardust]: prev[ResourceType.Stardust] - EVENT_SCAN_COST}));
-    const event = await generateSpaceEvent({ 
-      resources, upgrades, level, totalMined: resources[ResourceType.Stardust], lifetimeEarnings, lastSaveTime: Date.now(), prestigeUpgrades, planetIndex,
-      heat, overheated 
-    });
-    setIsScanning(false);
-    addLog(event.title, 'event');
-    if (event.reward) {
-      const reward = event.reward * prestigeMultiplier * currentPlanet.productionMultiplier;
-      addResources(reward);
-      addLog(`Reward: ${formatNumber(reward)} SD`, 'success');
+    setResources(nextResources);
+
+    try {
+      const event = await generateSpaceEvent({
+        resources: nextResources,
+        upgrades: paidSnapshot.upgrades,
+        level: paidSnapshot.level,
+        totalMined: nextResources[ResourceType.Stardust],
+        lifetimeEarnings: paidSnapshot.lifetimeEarnings,
+        lastSaveTime: Date.now(),
+        prestigeUpgrades: paidSnapshot.prestigeUpgrades,
+        planetIndex: paidSnapshot.planetIndex,
+        heat,
+        overheated
+      });
+
+      addLog(event.title, 'event');
+      if (event.reward) {
+        const planet = PLANETS[paidSnapshot.planetIndex] || PLANETS[0];
+        const rewardPrestigeMultiplier =
+          1 + paidSnapshot.resources[ResourceType.DarkMatter] * 0.1;
+        const reward = event.reward * rewardPrestigeMultiplier * planet.productionMultiplier;
+        const credited = addResources(reward);
+        addLog(`Reward: ${formatNumber(credited)} SD`, 'success');
+      }
+    } finally {
+      isScanningRef.current = false;
+      setIsScanning(false);
     }
   };
 
