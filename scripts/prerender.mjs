@@ -169,7 +169,7 @@ const routes = [
   ['/spacebar-games', 'Spacebar Games - Clicker, Counter & CPS Tests', 'Play free spacebar games online: Spacebar Clicker, Spacebar Counter, timed CPS tests, a 100-click sprint and instant browser play.', 'Spacebar Games'],
   ['/spacebar-clicker-2', 'Spacebar Clicker 2 - Upgraded Idle Space Bar Game', 'Play Spacebar Clicker 2, an enhanced browser idle game with Overdrive, auto-production, upgrades, offline earnings and Nova Core ascension.', 'Spacebar Clicker 2'],
   ['/spacebar-clicker', 'Spacebar Clicker – Free Space Bar Clicker Game Online', 'Play Spacebar Clicker free online. Press Space, track CPS, buy upgrades, automate production and prestige for Quantum Keys. No download or account.', 'Spacebar Clicker'],
-  ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Use a free untimed Spacebar Counter to track total presses, current CPS, average CPS, peak CPS and local best. Keyboard and mobile touch supported.', 'Spacebar Counter'],
+  ['/spacebar-counter', 'Spacebar Counter - Count Space Bar Presses & CPS', 'Use a free untimed Spacebar Counter with a saved current total, minus-one correction, editable starting value, live CPS and local highest total.', 'Spacebar Counter'],
   ['/spacebar-clicker-test', 'Spacebar Clicker Test - Space Bar CPS & Speed Test', 'Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. Track clicks, average and peak CPS, personal bests and recent local results.', 'Spacebar Clicker Test'],
   ['/spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked - Play Instantly in Your Browser', 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.', 'Spacebar Clicker Unblocked'],
   ['/compare', 'Space Clicker Game vs Classic Incremental Games: Feature Comparison', 'Compare gameplay structure, automation, progression and reset systems, events, and presentation across Space Clicker Game and well-known incremental games.', 'Space Clicker Feature Comparison'],
@@ -534,7 +534,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           ['Does the space bar counter have a time limit?', 'No. It keeps counting deliberate Space presses until you reset the current session.'],
           ['Can I use this as a spacebar CPS counter?', 'Yes. The page shows current CPS, average CPS and peak CPS while also keeping the total press count.'],
           ['Does holding the Space key increase the count?', 'No. Browser-generated repeat events from holding the key are ignored.'],
-          ['Is my best count saved?', 'Yes. The best count is stored locally in this browser and is not uploaded to a public leaderboard.']
+          ['Are my current and highest totals saved?', 'Yes. Both are stored locally in this browser. You can also set or correct the current total without creating an account, and nothing is uploaded to a public leaderboard.']
         ]
       : [
           ['What is a space bar click test?', 'It measures how many intentional Space presses you can make during a selected time window and converts the result into clicks per second.'],
@@ -900,7 +900,7 @@ const staticRouteContent = {
       <h2>Spacebar Clicker</h2>
       <p><a href="/spacebar-clicker/">Spacebar Clicker</a> turns each deliberate Space press into points. Buy manual upgrades, unlock automatic production, watch CPS, and use Hyperdrive Prestige to convert large runs into permanent Quantum Keys.</p>
       <h2>Spacebar Counter and CPS Test</h2>
-      <p><a href="/spacebar-counter/">Spacebar Counter</a> keeps counting until you reset the session and shows total presses plus current, average, and peak CPS. <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> adds 1, 5, 10, 30, and 60 second modes, custom durations up to 300 seconds, and a 100-click sprint.</p>
+      <p><a href="/spacebar-counter/">Spacebar Counter</a> keeps an untimed total, saves the current tally locally, supports minus-one corrections and a chosen starting total, and shows current, average, and peak CPS. <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> adds 1, 5, 10, 30, and 60 second modes, custom durations up to 300 seconds, and a 100-click sprint.</p>
       <h2>Spacebar Clicker 2 and instant browser mode</h2>
       <p><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression mode with Overdrive, offline production, and Nova Core ascension. <a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a> opens the classic game directly with no download or account; it does not bypass school, workplace, firewall, parental-control, or administrator restrictions.</p>
       <p>All current Spacebar modes work in a modern browser. Desktop users can use the physical Space key where supported, while mobile users can use the large on-screen controls.</p>
@@ -946,8 +946,8 @@ const staticRouteContent = {
       <p>The counter displays total presses, current CPS, average CPS, and peak CPS. Current CPS reflects the recent one-second window, average CPS uses the full active session, and peak CPS records the strongest rolling one-second burst. When the page is hidden or backgrounded, active timing pauses and resumes when the page becomes visible again, so hidden time does not dilute average CPS.</p>
       <h2>Holding Space does not inflate the count</h2>
       <p>Browser-generated repeat events from holding the key down are ignored. Each count is based on a new deliberate Space keydown or an intentional press on the on-screen control.</p>
-      <h2>Local best and privacy</h2>
-      <p>The best count is stored locally in the current browser. It is not uploaded to a public leaderboard, and clearing site storage can remove the saved local best.</p>
+      <h2>Saved tally, corrections, and privacy</h2>
+      <p>The current total and highest total are stored locally in the current browser. The current tally survives a normal reload, can be reduced by one to correct an accidental count, and can be set to a chosen non-negative starting value when continuing an existing tally. Setting a total restarts the timing metrics so CPS is not mixed with the imported baseline. Nothing is uploaded to a public leaderboard, and clearing site storage can remove these local values.</p>
       <h2>Counter vs Spacebar Clicker Test</h2>
       <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige, or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
       <p>For more detail on repeated keyboard input, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">keyboard factors guide</a>.</p>
