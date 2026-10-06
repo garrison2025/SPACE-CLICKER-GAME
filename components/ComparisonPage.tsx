@@ -112,12 +112,14 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <button
+              type="button"
               onClick={() => onNavigate('game', 'galaxy_miner')}
               className="px-8 py-3.5 bg-gradient-to-r from-neon-blue to-blue-600 text-black font-display font-black rounded-xl hover:shadow-[0_0_30px_rgba(0,243,255,0.4)] transition-all transform hover:-translate-y-0.5"
             >
               LAUNCH SPACE CLICKER NOW
             </button>
             <button
+              type="button"
               onClick={() => onNavigate('home')}
               className="px-6 py-3.5 bg-space-900 border border-white/10 hover:border-white/30 text-white font-mono text-sm rounded-xl transition-colors"
             >
@@ -239,6 +241,7 @@ const ComparisonPage: React.FC<ComparisonPageProps> = ({ onNavigate }) => {
 
                 {game.name.includes("Space Clicker") ? (
                   <button
+                    type="button"
                     onClick={() => onNavigate('game', 'galaxy_miner')}
                     className="w-full py-2.5 bg-neon-blue text-black font-bold font-mono text-xs rounded-lg hover:brightness-110 transition-all uppercase tracking-wider"
                   >
