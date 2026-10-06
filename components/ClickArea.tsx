@@ -37,6 +37,9 @@ interface Debris {
     life: number;
 }
 
+const MAX_DEBRIS = 240;
+const MAX_BEAMS = 80;
+
 const ClickArea: React.FC<ClickAreaProps> = ({ 
   onMine, productionRate, currency, clickPower, planet, heat, overheated, upgrades, isFlux,
   hapticEnabled = true, screenShakeEnabled = true
@@ -126,7 +129,10 @@ const ClickArea: React.FC<ClickAreaProps> = ({
               size: Math.random() * 3 + 2,
               life: 1.0
           };
-          setDebris(prev => [...prev, newDebris]);
+          setDebris(prev => {
+              const next = [...prev, newDebris];
+              return next.length > MAX_DEBRIS ? next.slice(-MAX_DEBRIS) : next;
+          });
 
       }, 500); 
       return () => clearInterval(timer);
@@ -191,7 +197,10 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           color: beamColor,
           width: beamWidth
       };
-      setBeams(prev => [...prev, newBeam]);
+      setBeams(prev => {
+          const next = [...prev, newBeam];
+          return next.length > MAX_BEAMS ? next.slice(-MAX_BEAMS) : next;
+      });
       scheduleTransient(() => setBeams(prev => prev.filter(b => b.id !== newBeam.id)), 150);
     }
 
@@ -229,11 +238,14 @@ const ClickArea: React.FC<ClickAreaProps> = ({
           life: 1.0
         });
       }
-      setDebris(prev => [...prev, ...newDebris]);
+      setDebris(prev => {
+          const next = [...prev, ...newDebris];
+          return next.length > MAX_DEBRIS ? next.slice(-MAX_DEBRIS) : next;
+      });
     }
 
      // 5. Visual: Planet Impact Flash
-    if (planetRef.current) {
+    if (!reduceMotion && planetRef.current) {
       planetRef.current.animate([
         { filter: 'brightness(1)' },
         { filter: `brightness(${isCrit ? 2 : 1.3})` }, 
@@ -298,7 +310,7 @@ const ClickArea: React.FC<ClickAreaProps> = ({
   // Shake Style
   const containerStyle = { 
       transform: `translate(${Math.random() * shake - shake/2}px, ${Math.random() * shake - shake/2}px)`,
-      filter: isFlux || shake > 10 ? `drop-shadow(${Math.random()*4-2}px 0 0 rgba(255,0,0,0.5)) drop-shadow(${Math.random()*-4+2}px 0 0 rgba(0,0,255,0.5))` : 'none'
+      filter: !reduceMotion && (isFlux || shake > 10) ? `drop-shadow(${Math.random()*4-2}px 0 0 rgba(255,0,0,0.5)) drop-shadow(${Math.random()*-4+2}px 0 0 rgba(0,0,255,0.5))` : 'none'
   };
 
   return (
