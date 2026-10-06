@@ -619,7 +619,8 @@ const MarsColony: React.FC = () => {
             <div className="w-full md:w-80 h-[360px] md:h-auto shrink-0 bg-orange-950 border-t md:border-t-0 md:border-l border-orange-500/30 flex flex-col z-20">
                 <div className="p-4 border-b border-orange-500/30 bg-black/20 flex justify-between items-center">
                     <h2 className="font-display font-bold text-xl text-orange-400 tracking-wider">CONSTRUCTION</h2>
-                    <button 
+                    <button
+                        type="button"
                         onClick={saveGame} 
                         className="min-h-11 px-3 py-2 text-[10px] border border-orange-500/50 text-orange-300 rounded hover:bg-orange-900 transition-colors"
                     >
@@ -628,38 +629,34 @@ const MarsColony: React.FC = () => {
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                     {buildings.map(b => {
+                        const isMaxed = b.count >= MAX_BUILDING_COUNT;
                         const cost = Math.floor(b.cost * Math.pow(1.15, b.count));
-                        const canAfford = resources.minerals >= cost;
+                        const canAfford = !isMaxed && Number.isFinite(cost) && resources.minerals >= cost;
                         return (
-                            <div 
+                            <button
                                 key={b.id}
-                                role="button"
-                                tabIndex={canAfford ? 0 : -1}
-                                aria-disabled={!canAfford}
-                                onKeyDown={(event) => {
-                                    if (canAfford && (event.key === 'Enter' || event.key === ' ')) {
-                                        event.preventDefault();
-                                        handleBuy(b.id);
-                                    }
-                                }}
-                                onClick={() => canAfford && handleBuy(b.id)}
-                                className={`p-3 rounded border flex items-center gap-3 transition-all select-none
+                                type="button"
+                                disabled={!canAfford}
+                                onClick={() => handleBuy(b.id)}
+                                className={`w-full text-left p-3 rounded border flex items-center gap-3 transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300
                                     ${canAfford ? 'bg-orange-900/40 border-orange-500/50 hover:bg-orange-800 cursor-pointer active:scale-95' : 'opacity-50 grayscale cursor-not-allowed border-transparent bg-black/20'}
                                 `}
                             >
-                                <div className="text-2xl w-10 h-10 flex items-center justify-center bg-black/40 rounded">{b.icon}</div>
-                                <div className="flex-1">
-                                    <div className="flex justify-between">
+                                <span className="text-2xl w-10 h-10 flex items-center justify-center bg-black/40 rounded" aria-hidden="true">{b.icon}</span>
+                                <span className="flex-1">
+                                    <span className="flex justify-between">
                                         <span className="font-bold text-sm text-orange-100">{b.name}</span>
                                         <span className="text-xs bg-black/40 px-1.5 rounded text-orange-300">x{b.count}</span>
-                                    </div>
-                                    <div className="text-[10px] text-orange-200/60 mb-1">{b.description}</div>
-                                    <div className="flex justify-between items-center">
-                                        <span className={`text-xs font-mono font-bold ${canAfford ? 'text-white' : 'text-red-400'}`}>{formatNumber(cost)} MIN</span>
+                                    </span>
+                                    <span className="block text-[10px] text-orange-200/60 mb-1">{b.description}</span>
+                                    <span className="flex justify-between items-center">
+                                        <span className={`text-xs font-mono font-bold ${canAfford ? 'text-white' : 'text-red-400'}`}>
+                                            {isMaxed ? 'MAXED' : `${formatNumber(cost)} MIN`}
+                                        </span>
                                         <span className="text-[10px] text-yellow-500 font-mono">-{b.energyCost}⚡</span>
-                                    </div>
-                                </div>
-                            </div>
+                                    </span>
+                                </span>
+                            </button>
                         )
                     })}
                 </div>
