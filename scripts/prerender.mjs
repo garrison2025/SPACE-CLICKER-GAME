@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { CORE_ROUTE_META, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
+import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
 
 const distDir = path.resolve('dist');
 const basePath = path.join(distDir, 'index.html');
@@ -194,23 +194,6 @@ const GAME_SCHEMA_CONFIG = Object.fromEntries(
     .map((meta) => [meta.route, { name: meta.h1, genres: meta.genres }])
 );
 
-const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
-const ROUTE_SOCIAL_IMAGES = {
-  '/game/galaxy_miner': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-  '/game/mars_colony': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200',
-  '/game/star_defense': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200',
-  '/game/merge_ships': 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200',
-  '/game/gravity_idle': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200',
-  '/game/deep_signal': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  '/spacebar-games': site + '/og/spacebar-games.svg',
-  '/spacebar-clicker': site + '/og/spacebar-clicker.svg',
-  '/spacebar-clicker-2': site + '/og/spacebar-clicker-2.svg',
-  '/spacebar-counter': site + '/og/spacebar-counter.svg',
-  '/spacebar-clicker-test': site + '/og/spacebar-clicker-test.svg',
-  '/spacebar-clicker-unblocked': site + '/og/spacebar-clicker-unblocked.svg',
-  '/achievements': 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=1200'
-};
-
 const normalizeSocialImage = (source) => {
   try {
     const url = new URL(source);
@@ -227,7 +210,11 @@ const normalizeSocialImage = (source) => {
 };
 
 const getRouteSocialImage = (route) =>
-  normalizeSocialImage(blogStaticMeta[route]?.image || ROUTE_SOCIAL_IMAGES[route] || DEFAULT_SOCIAL_IMAGE);
+  normalizeSocialImage(
+    blogStaticMeta[route]?.image ||
+    CORE_ROUTE_META_BY_PATH[route]?.socialImage ||
+    DEFAULT_SOCIAL_IMAGE
+  );
 
 const buildStaticRouteSchema = (route, description, canonical) => {
   if (route === '/') {
