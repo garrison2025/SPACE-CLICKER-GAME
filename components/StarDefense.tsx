@@ -76,6 +76,7 @@ const StarDefense: React.FC = () => {
     const floatTextRef = useRef<FloatingText[]>([]);
     
     const comboTimerRef = useRef(0);
+    const lastComboUiSyncRef = useRef(0);
     const lastTimeRef = useRef<number>(0);
     const lastHitTimeRef = useRef<number>(0);
     const waveTimerRef = useRef<number>(0);
@@ -135,12 +136,16 @@ const StarDefense: React.FC = () => {
 
         // 1. Combo Decay
         if (comboTimerRef.current > 0) {
-            comboTimerRef.current -= deltaTime;
-            setComboTimer(comboTimerRef.current); // Sync to state for UI bar
+            comboTimerRef.current = Math.max(0, comboTimerRef.current - deltaTime);
+
+            if (timestamp - lastComboUiSyncRef.current >= 100 || comboTimerRef.current <= 0) {
+                lastComboUiSyncRef.current = timestamp;
+                setComboTimer(comboTimerRef.current);
+            }
+
             if (comboTimerRef.current <= 0) {
                 comboRef.current = 0;
-                comboRef.current = 0;
-        setCombo(0);
+                setCombo(0);
                 addFloatingText(50, 50, "COMBO LOST", "#ef4444");
             }
         }
@@ -450,6 +455,8 @@ const StarDefense: React.FC = () => {
             comboRef.current = nextCombo;
             setCombo(nextCombo);
             comboTimerRef.current = COMBO_TIMEOUT;
+            lastComboUiSyncRef.current = performance.now();
+            setComboTimer(COMBO_TIMEOUT);
             
             const scrapReward = Math.floor(enemy.scoreValue * scrapMultiplier);
             const nextScraps = Math.min(MAX_RESOURCE_VALUE, scrapsRef.current + scrapReward);
@@ -650,6 +657,7 @@ const StarDefense: React.FC = () => {
         setScraps(0);
         comboRef.current = 0;
         comboTimerRef.current = 0;
+        lastComboUiSyncRef.current = 0;
         setCombo(0);
         setComboTimer(0);
         skillCooldownsRef.current = {};
