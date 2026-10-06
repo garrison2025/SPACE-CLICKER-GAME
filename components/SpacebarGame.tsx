@@ -78,6 +78,7 @@ const MAX_UPGRADE_LEVEL = 1000;
 const MAX_IMPORTED_COUNTER = Number.MAX_SAFE_INTEGER;
 const MAX_IMPORTED_QUANTUM_KEYS = 1e12;
 const MAX_IMPORTED_CPS = 10_000;
+const MAX_SAVE_IMPORT_SIZE = 100_000;
 
 const safeNumber = (value: unknown, fallback = 0, max = MAX_IMPORTED_RESOURCE) =>
   typeof value === 'number' && Number.isFinite(value) && value >= 0
@@ -447,7 +448,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
       setSaveTransferStatus('No save data was provided.');
       return false;
     }
-    if (code.length > 50_000) {
+    if (code.length > MAX_SAVE_IMPORT_SIZE) {
       setSaveTransferStatus('Save code is too large.');
       return false;
     }
@@ -567,7 +568,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
     picker.onchange = async () => {
       const selected = picker.files?.[0];
       if (!selected) return;
-      if (selected.size > 100_000) {
+      if (selected.size > MAX_SAVE_IMPORT_SIZE) {
         setSaveTransferStatus('Backup file is too large.');
         return;
       }
@@ -917,6 +918,7 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
             <textarea
               id="spacebar-save-import"
               value={saveImportText}
+              maxLength={MAX_SAVE_IMPORT_SIZE}
               onChange={(event) => setSaveImportText(event.target.value)}
               placeholder="Paste SCG1 save code here..."
               spellCheck={false}
