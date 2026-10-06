@@ -38,6 +38,7 @@ const getOne = (html, regex, label, route) => {
 };
 
 const titles = new Map();
+const descriptions = new Map();
 const auditedRoutes = [];
 const gameRoutes = new Set([
   '/game/galaxy_miner/',
@@ -172,6 +173,11 @@ for (const file of htmlFiles) {
     throw new Error(route + ': duplicate title with ' + titles.get(title) + ': ' + title);
   }
   titles.set(title, route);
+
+  if (descriptions.has(description)) {
+    throw new Error(route + ': duplicate meta description with ' + descriptions.get(description));
+  }
+  descriptions.set(description, route);
 
   if (gameRoutes.has(route)) {
     const gameH2Count = (html.match(/<h2\b/gi) || []).length;
