@@ -60,12 +60,15 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
     } else {
       setHealth(prev => prev - 1);
       const target = e.currentTarget as HTMLElement;
-      target.animate([
-        { transform: 'translate(0,0) scale(1)' },
-        { transform: 'translate(-5px, 5px) scale(0.9)' },
-        { transform: 'translate(5px, -5px) scale(1.1)' },
-        { transform: 'translate(0,0) scale(1)' }
-      ], { duration: 100 });
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+      if (!reduceMotion) {
+        target.animate([
+          { transform: 'translate(0,0) scale(1)' },
+          { transform: 'translate(-5px, 5px) scale(0.9)' },
+          { transform: 'translate(5px, -5px) scale(1.1)' },
+          { transform: 'translate(0,0) scale(1)' }
+        ], { duration: 100 });
+      }
     }
   };
 
@@ -83,9 +86,22 @@ const CrisisEvent: React.FC<CrisisEventProps> = ({ onResolve }) => {
       </div>
 
       {/* The Meteor */}
-      <div 
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label={`Deflect incoming meteor. ${health} hits remaining.`}
         onClick={handleClick}
-        className="absolute z-[90] cursor-crosshair w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl animate-spin-slow"
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            if (health <= 1) {
+              resolveCrisis(true);
+            } else {
+              setHealth(prev => prev - 1);
+            }
+          }
+        }}
+        className="absolute z-[90] cursor-crosshair w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl animate-spin-slow focus:outline-none focus:ring-2 focus:ring-red-300"
         style={{
             top: '50%',
             left: '50%',
