@@ -593,7 +593,7 @@ const DeepSpaceSignal: React.FC = () => {
             {/* VISUALIZER & HEADER */}
             <header className="relative z-20 mb-4 border-b-2 border-green-900/50 pb-2 flex-shrink-0">
                 <div className="absolute inset-0 opacity-30">
-                    <canvas ref={spectrumCanvasRef} width={600} height={100} className="w-full h-full object-cover opacity-50" />
+                    <canvas ref={spectrumCanvasRef} width={600} height={100} aria-hidden="true" className="w-full h-full object-cover opacity-50" />
                 </div>
                 
                 <div className="relative flex justify-between items-end px-2">
