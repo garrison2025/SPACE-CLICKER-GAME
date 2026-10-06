@@ -319,7 +319,7 @@ const SpacebarClicker2: React.FC = () => {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      if (!document.hidden) saveNow();
+      saveNow();
     }, 10000);
 
     const handleVisibilityChange = () => {
@@ -327,7 +327,7 @@ const SpacebarClicker2: React.FC = () => {
     };
 
     const handlePageHide = () => {
-      if (!document.hidden) saveNow();
+      saveNow();
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
