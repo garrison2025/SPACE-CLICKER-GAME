@@ -890,10 +890,20 @@ const StarDefense: React.FC = () => {
                         className="absolute w-11 h-11 -translate-x-1/2 -translate-y-1/2 z-30 cursor-pointer animate-bounce flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-full"
                         style={{ left: `${p.x}%`, top: `${p.y}%` }}
                      >
-                         <span className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs bg-black shadow-lg
-                            ${p.type === 'heal' ? 'border-green-500 text-green-500 shadow-green-500/50' : p.type === 'scrap' ? 'border-yellow-500 text-yellow-500 shadow-yellow-500/50' : 'border-red-500 text-red-500 shadow-red-500/50'}
-                         `} aria-hidden="true">
-                             {p.type === 'heal' ? '+' : p.type === 'scrap' ? '
+                         <span
+                            className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs bg-black shadow-lg ${
+                                p.type === 'heal'
+                                    ? 'border-green-500 text-green-500 shadow-green-500/50'
+                                    : p.type === 'scrap'
+                                      ? 'border-yellow-500 text-yellow-500 shadow-yellow-500/50'
+                                      : 'border-red-500 text-red-500 shadow-red-500/50'
+                            }`}
+                            aria-hidden="true"
+                         >
+                             {p.type === 'heal' ? '+' : p.type === 'scrap' ? 'S' : '⚡'}
+                         </span>
+                     </button>
+                 ))}
 
                  {enemiesRef.current.map(e => (
                      <div 
