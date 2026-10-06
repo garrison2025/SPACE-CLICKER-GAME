@@ -917,6 +917,8 @@ const staticRouteContent = {
       <p>The game tracks clicks per second so you can see how quickly you are pressing during active play. Browser-generated repeat events from holding the Space key are ignored, which means the counter is based on repeated deliberate keydown events rather than a single held key.</p>
       <h2>Hyperdrive Prestige and Quantum Keys</h2>
       <p>Large runs can be converted through Hyperdrive Prestige. Prestige resets the current point economy and standard upgrades while retaining permanent Quantum Keys and supported lifetime records, giving later runs a stronger starting multiplier.</p>
+      <h2>Persistent achievements</h2>
+      <p>The classic mode also shows six achievement goals based only on records that survive Prestige: lifetime presses, best CPS, lifetime points, and Quantum Keys. Because the badges are derived from permanent records instead of current-run automation, an unlocked achievement does not relock after a Hyperdrive reset.</p>
       <h2>Local browser save and portable backup</h2>
       <p>Current progress is stored locally in the browser rather than in a cloud account. Clearing site storage, using private browsing, or moving to another device can separate or remove that save. The game can copy a validated text save code or download a portable .scg backup file, and either format can be imported into another browser or device as a manual backup.</p>
       <p>For a pure speed benchmark, use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>. For an endless press total without upgrades, use the <a href="/spacebar-counter/">Spacebar Counter</a>. You can also browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
