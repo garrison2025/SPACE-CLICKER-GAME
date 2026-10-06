@@ -1146,7 +1146,7 @@ const App: React.FC = () => {
           };
       } else if (viewMode === 'spacebar-clicker-test') {
           title = "Spacebar Clicker Test - Space Bar CPS & Speed Test";
-          desc = "Test your spacebar speed with 1, 5, 10, 30 or 60 second CPS tests. Track clicks, average and peak CPS, personal bests and recent local results.";
+          desc = "Test spacebar speed with timed and 100-click modes. Track average CPS, press interval, peak CPS, personal bests and recent local results.";
           schema = {
               "@context": "https://schema.org",
               "@graph": [
@@ -1198,6 +1198,11 @@ const App: React.FC = () => {
                       "@type": "Question",
                       "name": "What is a good Spacebar CPS score?",
                       "acceptedAnswer": { "@type": "Answer", "text": "There is no universal good CPS threshold across every keyboard and test. Compare results using the same device, browser, test duration, and input rules." }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": "How do I convert Spacebar CPS to milliseconds per press?",
+                      "acceptedAnswer": { "@type": "Answer", "text": "Divide 1000 by average CPS. For example, 8 CPS corresponds to an average interval of 125 milliseconds per valid press. The result card calculates this automatically." }
                     },
                     {
                       "@type": "Question",
