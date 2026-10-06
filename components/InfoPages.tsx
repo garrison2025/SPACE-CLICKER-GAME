@@ -4,6 +4,10 @@ import { GAMES_CATALOG } from '../constants';
 import { BLOG_POST_META } from '../content/blogMeta';
 import { clearProjectStorage } from '../utils/projectStorage';
 
+const SORTED_BLOG_POST_META = [...BLOG_POST_META].sort(
+    (a, b) => Date.parse(b.publishedDate) - Date.parse(a.publishedDate)
+);
+
 const PageContainer: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="w-full min-h-screen bg-space-950 text-gray-300 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto bg-space-900/80 border border-white/10 rounded-2xl p-8 md:p-12 backdrop-blur-md shadow-2xl relative overflow-hidden">
@@ -272,7 +276,7 @@ export const SitemapPage = () => (
 
         <h3>Mission Logs</h3>
         <ul className="space-y-3 text-base">
-            {BLOG_POST_META.map((post) => (
+            {SORTED_BLOG_POST_META.map((post) => (
                 <li key={post.slug}>
                     <a href={`/blog/${post.slug}/`} className="hover:text-neon-blue transition-colors">{post.title}</a>
                 </li>
