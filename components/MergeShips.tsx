@@ -722,7 +722,7 @@ const MergeShips: React.FC = () => {
             clearInterval(t);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             window.removeEventListener('pagehide', handlePageHide);
-            if (!document.hidden) saveGame();
+            saveGame();
         };
     }, [saveGame]);
 
