@@ -70,6 +70,7 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
           <div className="grid grid-cols-4 gap-1 bg-space-900 rounded-lg p-1 border border-space-600">
              {[1, 10, 100, 'MAX'].map((amt) => (
                  <button
+                    type="button"
                     key={amt}
                     onClick={() => setBuyAmount(amt as BuyAmount)}
                     className={`text-xs font-bold font-mono py-1 rounded transition-all ${
