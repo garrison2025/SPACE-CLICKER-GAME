@@ -441,7 +441,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             {
               "@type": "Question",
               "name": "Do Spacebar Clicker saves sync between devices?",
-              "acceptedAnswer": { "@type": "Answer", "text": "No. Current game progress is stored locally in the browser on the device being used." }
+              "acceptedAnswer": { "@type": "Answer", "text": "No automatic cloud sync is provided. Supported clicker modes store progress locally, but Spacebar Clicker and Spacebar Clicker 2 can export a save code or backup file for manual transfer and restore." }
             }
           ]
         }
