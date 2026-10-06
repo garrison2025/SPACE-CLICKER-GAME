@@ -1,9 +1,10 @@
+import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
 
 // A simple synth for retro UI sounds without external assets
 
 const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
 let ctx: AudioContext | null = null;
-let isMuted = localStorage.getItem('sc_mute') === 'true';
+let isMuted = safeGetStorageItem('sc_mute') === 'true';
 
 const getCtx = () => {
     if (!ctx) ctx = new AudioContextClass();
@@ -12,7 +13,7 @@ const getCtx = () => {
 
 export const toggleMute = (muted: boolean) => {
     isMuted = muted;
-    localStorage.setItem('sc_mute', muted.toString());
+    safeSetStorageItem('sc_mute', muted.toString());
 };
 
 export const getMuteState = () => isMuted;
