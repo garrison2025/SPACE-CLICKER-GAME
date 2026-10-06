@@ -115,7 +115,16 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                   VS IDLE GAMES
                 </a>
 
-                <div ref={mobileMenuRef} className="md:hidden relative">
+                <div
+                  ref={mobileMenuRef}
+                  className="md:hidden relative"
+                  onBlur={(event) => {
+                    const nextFocus = event.relatedTarget as Node | null;
+                    if (!nextFocus || !event.currentTarget.contains(nextFocus)) {
+                      setMobileMenuOpen(false);
+                    }
+                  }}
+                >
                   <button
                     ref={mobileMenuButtonRef}
                     type="button"
@@ -182,8 +191,8 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                     <Logo withText={true} className="w-8 h-8" />
                  </div>
                  <p className="text-xs leading-relaxed mb-4 text-gray-500">
-                     A browser hub for <strong>space clicker game</strong> simulations and Spacebar tools. 
-                     Play browser-based clicker games, build idle economies, and test your spacebar speed without downloads.
+                     A browser hub for space-themed clicker and idle simulations plus dedicated Spacebar tools.
+                     Play browser-based games, build incremental economies, and test your spacebar speed without downloads.
                  </p>
                  </div>
              
@@ -201,7 +210,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                      <li><NavLink view="achievements" label="Galaxy Miner Milestones" className="font-normal text-xs" /></li>
                      <li><NavLink view="blog" label="Mission Logs (Blog)" className="font-normal text-xs" /></li>
                      <li><NavLink view="about" label="About Us" className="font-normal text-xs" /></li>
-                     <li><NavLink view="contact" label="Contact Command" className="font-normal text-xs" /></li>
+                     <li><NavLink view="contact" label="Contact" className="font-normal text-xs" /></li>
                  </ul>
              </div>
 
@@ -229,7 +238,7 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
              </div>
          </div>
          <div className="border-t border-white/5 pt-8 text-center text-[10px] text-gray-600 font-mono uppercase tracking-widest">
-             &copy; 2026 Space Clicker Game Network. All systems nominal.
+             &copy; 2026 Space Clicker Game.
          </div>
       </footer>
     </div>
