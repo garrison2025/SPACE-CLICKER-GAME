@@ -714,8 +714,8 @@ const buildStaticRouteSchema = (route, description, canonical) => {
       '25 Mining Drones',
       '50 Orbital Stations',
       '1 Dyson Swarm',
-      'First Galactic Reset',
-      '100 Dark Matter'
+      'Hold at least 1 Dark Matter',
+      'Hold at least 100 Dark Matter'
     ];
 
     return {
@@ -1107,8 +1107,8 @@ const staticRouteContent = {
       <p>The lifetime Stardust ladder tracks 1,000, 1 million, 1 billion, 1 trillion, and 1 quadrillion Stardust. Reaching 1 trillion Stardust also reaches the first threshold at which Galactic Reset becomes available.</p>
       <h2>Automation milestones</h2>
       <p>Automation goals include owning 25 Mining Drones, 50 Orbital Stations, and at least one Dyson Swarm. The normal production system also applies upgrade milestone multipliers at key ownership thresholds, so these goals connect directly to the game's economy.</p>
-      <h2>Prestige and Dark Matter milestones</h2>
-      <p>The tracker recognizes the first Galactic Reset once Dark Matter has been earned and also tracks a 100 Dark Matter target. Dark Matter persists through Galactic Reset and contributes to permanent production progression and Void Technology purchases.</p>
+      <h2>Dark Matter milestones</h2>
+      <p>The tracker reads the current Dark Matter balance from the local Galaxy Miner save. It marks milestones at 1 and 100 currently held Dark Matter. Because Dark Matter can be spent on Void Technology, this page does not claim to preserve a historical count of past resets or previously spent Dark Matter.</p>
       <p>Progress is local to this browser. Clearing the site's local storage or using a reset action can remove locally saved progress. Open <a href="/game/galaxy_miner/">Galaxy Miner</a> to continue a run or read the <a href="/blog/strategy-guide-clicker-game-space-empire/">strategy guide</a> for upgrade and reset planning.</p>
     </section>`
 };
