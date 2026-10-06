@@ -775,13 +775,16 @@ const MergeShips: React.FC = () => {
                  </div>
 
                  <div className="flex gap-1.5 md:gap-2">
-                     <button 
+                     <button
+                        type="button"
+                        aria-expanded={showShop}
                         onClick={() => setShowShop(!showShop)}
                         className={`px-3 md:px-4 py-2 min-h-11 rounded font-bold text-[11px] md:text-xs flex items-center gap-1 md:gap-2 transition-all ${showShop ? 'bg-white text-black' : 'bg-slate-800 text-neon-blue border border-neon-blue'}`}
                      >
                          <span>🛠️</span> UPGRADES
                      </button>
                      <button
+                        type="button"
                         onClick={buyShip}
                         disabled={credits < nextShipCost || !hangar.some(s => s === null)}
                         className={`px-3 md:px-6 py-2 min-h-11 rounded font-bold text-[11px] md:text-xs flex flex-col items-center leading-tight transition-all
@@ -859,7 +862,12 @@ const MergeShips: React.FC = () => {
                      <div className="bg-slate-900 border border-white/20 w-full max-w-lg rounded-t-2xl md:rounded-2xl p-6 shadow-2xl">
                          <div className="flex justify-between items-center mb-6">
                              <h3 className="font-display font-bold text-xl text-white">TECH BAY</h3>
-                             <button onClick={() => setShowShop(false)} className="text-gray-400 hover:text-white text-xl">✕</button>
+                             <button
+                                type="button"
+                                aria-label="Close upgrades"
+                                onClick={() => setShowShop(false)}
+                                className="w-11 h-11 flex items-center justify-center text-gray-400 hover:text-white text-xl rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-blue"
+                             >✕</button>
                          </div>
                          
                          <div className="space-y-4">
@@ -877,6 +885,7 @@ const MergeShips: React.FC = () => {
                                              <div className="text-xs text-gray-400">{cfg.desc}</div>
                                          </div>
                                          <button
+                                            type="button"
                                             onClick={() => buyTech(key)}
                                             disabled={isMax || !canAfford}
                                             className={`px-4 py-2 rounded text-xs font-bold w-24 ${
@@ -927,13 +936,15 @@ const MergeShips: React.FC = () => {
                          </button>
                          <p className="text-[10px] text-gray-500 mb-3">On touch screens, choose MOVE / MERGE and then tap the destination slot.</p>
                          <div className="flex gap-2">
-                             <button 
+                             <button
+                                type="button"
                                 onClick={() => setSelectedShip(null)}
                                 className="flex-1 min-h-11 py-2 bg-slate-700 text-white rounded font-bold hover:bg-slate-600"
                              >
                                 CLOSE
                              </button>
-                             <button 
+                             <button
+                                type="button"
                                 onClick={sellShip}
                                 className="flex-1 min-h-11 py-2 bg-red-900/50 text-red-400 border border-red-900 rounded font-bold hover:bg-red-900 hover:text-white"
                              >
@@ -961,7 +972,8 @@ const MergeShips: React.FC = () => {
                                  <span className="font-mono text-neon-green text-xl font-bold">+${formatNumber(offlineProfit.amount)}</span>
                              </div>
                          </div>
-                         <button 
+                         <button
+                            type="button"
                             onClick={() => setOfflineProfit(null)}
                             className="w-full py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded shadow-lg transition-transform hover:scale-105"
                          >
