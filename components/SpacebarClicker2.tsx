@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
 import { isInteractiveKeyboardTarget } from '../utils/keyboard';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 type UpgradeId = 'carbonKey' | 'torqueMultiplier' | 'microBot' | 'reactorBank' | 'overdriveCapacitor' | 'fluxAmplifier';
 
@@ -96,7 +97,7 @@ const sanitize = (raw: unknown): SaveData => {
 
 const loadSave = (): SaveData => {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = safeGetStorageItem(SAVE_KEY);
     return raw ? sanitize(JSON.parse(raw)) : defaultSave();
   } catch {
     return defaultSave();
@@ -195,7 +196,7 @@ const SpacebarClicker2: React.FC = () => {
       ...saveRef.current,
       lastSaveTime: Date.now(),
     };
-    localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+    safeSetStorageItem(SAVE_KEY, JSON.stringify(payload));
   }, []);
 
   useEffect(() => {
@@ -217,7 +218,7 @@ const SpacebarClicker2: React.FC = () => {
       // Credit and persist offline production immediately. Refreshing before the
       // next autosave must not award the same away period a second time.
       saveRef.current = nextSnapshot;
-      localStorage.setItem(SAVE_KEY, JSON.stringify({
+      safeSetStorageItem(SAVE_KEY, JSON.stringify({
         version: SAVE_VERSION,
         ...nextSnapshot,
         lastSaveTime: Date.now(),
@@ -387,7 +388,7 @@ const SpacebarClicker2: React.FC = () => {
     // Persist permanent Nova Cores before updating the UI so an immediate close
     // cannot restore the pre-ascension run and duplicate the same reward.
     saveRef.current = nextSnapshot;
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
+    safeSetStorageItem(SAVE_KEY, JSON.stringify({
       version: SAVE_VERSION,
       ...nextSnapshot,
       lastSaveTime: Date.now(),
@@ -461,7 +462,7 @@ const SpacebarClicker2: React.FC = () => {
         bestCps: next.bestCps,
       };
 
-      localStorage.setItem(SAVE_KEY, JSON.stringify(next));
+      const persisted = safeSetStorageItem(SAVE_KEY, JSON.stringify(next));
       setPoints(next.points);
       setLifetimePoints(next.lifetimePoints);
       setPresses(next.presses);
@@ -473,7 +474,11 @@ const SpacebarClicker2: React.FC = () => {
       setOverdriveUntil(0);
       setOfflineEarned(0);
       pressTimes.current = [];
-      setSaveTransferStatus('Save imported successfully.');
+      setSaveTransferStatus(
+        persisted
+          ? 'Save imported successfully.'
+          : 'Save restored for this session, but browser storage is unavailable.'
+      );
       return true;
     } catch {
       setSaveTransferStatus('That Spacebar Clicker 2 backup could not be read.');
@@ -557,7 +562,10 @@ const SpacebarClicker2: React.FC = () => {
 
   const resetAll = () => {
     if (!window.confirm('Erase all Spacebar Clicker 2 progress from this browser?')) return;
-    localStorage.removeItem(SAVE_KEY);
+    if (!safeRemoveStorageItem(SAVE_KEY)) {
+      setSaveTransferStatus('Could not clear the saved game because browser storage is unavailable.');
+      return;
+    }
     saveRef.current = {
       points: 0,
       lifetimePoints: 0,
