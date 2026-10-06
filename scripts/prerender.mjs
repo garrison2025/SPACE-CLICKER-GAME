@@ -160,7 +160,7 @@ for (let index = 0; index < lightweightSlugMatches.length; index += 1) {
 const routes = [
   ['/', 'Space Clicker – Free Space Clicker Game Online', 'Play Space Clicker free online. Mine Stardust, automate production, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Space Clicker Game'],
   ['/game/galaxy_miner', 'Galaxy Miner – Space Mining Idle Clicker Online', 'Play Galaxy Miner online: mine Stardust, automate a space economy, manage Heat Flux, catch Golden Comets, and reset for permanent Dark Matter upgrades.', 'Galaxy Miner'],
-  ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and idle resource progression.', 'Mars Colony Idle'],
+  ['/game/mars_colony', 'Mars Colony Idle - Free Space Strategy Game', 'Build and balance a browser-based Mars colony with Oxygen, Food, Energy, population growth, and automated resource production.', 'Mars Colony Idle'],
   ['/game/star_defense', 'Star Defense - Free Space Defense Clicker', 'Defend your mothership from alien waves, click enemies for direct damage, and upgrade auto-turrets in a browser defense game.', 'Star Defense'],
   ['/game/merge_ships', 'Merge Spaceships - Free Browser Merge Game', 'Merge matching ships, deploy stronger vessels to orbit, earn automatic Credits, and recover up to 24 hours of capped offline fleet income.', 'Merge Spaceships'],
   ['/game/gravity_idle', 'Gravity Idle - Free Physics Idle Game', 'Play Gravity Idle: automate orbital cannons, curve projectiles through a gravity well, earn Matter, and recover up to 24 hours of capped offline progress.', 'Gravity Idle'],
@@ -826,7 +826,7 @@ const staticRouteContent = {
       <h2>Food, oxygen, and population</h2>
       <p>Colonists need both Food and Oxygen. Hydroponics raises Food production, Oxygenators replenish breathable reserves, and Habitat Modules raise housing capacity. Population grows only when life-support reserves remain healthy, while shortages can reverse that growth.</p>
       <h2>Minerals and Credits</h2>
-      <p>Minerals pay for construction and can be generated manually or by Auto-Excavators. Colonists generate Credits over time, creating a second progression layer tied to maintaining a stable population rather than simply buying every building as soon as it appears.</p>
+      <p>Minerals pay for all current construction and can be generated manually or by Auto-Excavators. Colonists also generate Credits over time, but the current build uses Credits as a visible colony-economy indicator rather than a spendable construction currency.</p>
       <p>Use the simulation switcher to compare this management loop with <a href="/game/galaxy_miner/">Galaxy Miner</a> and <a href="/game/star_defense/">Star Defense</a>.</p>
     </section>`,
   '/game/star_defense': `
