@@ -25,7 +25,7 @@ jobs:
           path: package-lock.json
           if-no-files-found: error
           retention-days: 1
-      - run: npm install --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
       - run: npm run build
       - run: node scripts/test-project-storage.mjs
       - run: node scripts/test-middleware.mjs
