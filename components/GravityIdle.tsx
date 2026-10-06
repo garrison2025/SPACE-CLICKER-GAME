@@ -9,7 +9,7 @@ const GRAVITY_SAVE_KEY = 'gravity_idle_save_v2';
 
 // --- CONFIG ---
 const UPGRADE_CONFIG = {
-    gravity: { name: 'Event Horizon', desc: 'Increases gravity & Click Pulse area.', base: 100, mult: 1.6, max: 50 },
+    gravity: { name: 'Event Horizon', desc: 'Increases gravity strength and Gravity Pulse damage.', base: 100, mult: 1.6, max: 50 },
     launchers: { name: 'Orbital Cannon', desc: 'Adds more projectile sources.', base: 500, mult: 2.5, max: 12 },
     fireRate: { name: 'Auto-Loader', desc: 'Increases firing speed.', base: 200, mult: 1.4, max: 20 },
     power: { name: 'Kinetic Mass', desc: 'Increases impact damage.', base: 150, mult: 1.4, max: 100 },
