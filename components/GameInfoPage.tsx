@@ -31,7 +31,8 @@ const GameInfoPage: React.FC<GameInfoPageProps> = ({ game, onLaunch, isPlayable 
                 </div>
                 
                 {onLaunch && (
-                    <button 
+                    <button
+                        type="button"
                         onClick={onLaunch}
                         disabled={!isPlayable}
                         className={`px-8 py-4 rounded font-display font-bold text-lg tracking-widest shadow-lg transition-all
