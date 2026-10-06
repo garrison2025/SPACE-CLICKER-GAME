@@ -53,14 +53,19 @@ export const clearProjectStorage = () => {
       .filter((key): key is string => Boolean(key));
 
     let removed = 0;
+    let success = true;
+
     keys.forEach((key) => {
-      if (isProjectStorageKey(key) && safeRemoveStorageItem(key)) {
+      if (!isProjectStorageKey(key)) return;
+      if (safeRemoveStorageItem(key)) {
         removed += 1;
+      } else {
+        success = false;
       }
     });
 
-    return removed;
+    return { success, removed };
   } catch {
-    return 0;
+    return { success: false, removed: 0 };
   }
 };
