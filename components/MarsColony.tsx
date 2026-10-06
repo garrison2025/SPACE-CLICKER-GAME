@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MarsBuilding, MarsResourceState, FloatingText } from '../types';
 import { formatNumber } from '../utils';
-import { safeGetStorageItem, safeSetStorageItem } from '../utils/projectStorage';
+import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem } from '../utils/projectStorage';
 
 const MARS_SAVE_KEY = 'mars_colony_save_v2';
 const MAX_RESOURCE_VALUE = 1e300;
@@ -395,8 +395,8 @@ const MarsColony: React.FC = () => {
             stateRef.current = nextSnapshot;
             setResources(loadedResources);
             setBuildings(loadedBuildings);
-        } catch (error) {
-            console.warn('Could not load Mars Colony save.', error);
+        } catch {
+            safeRemoveStorageItem(MARS_SAVE_KEY);
         }
     }, []);
 
