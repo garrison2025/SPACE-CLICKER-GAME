@@ -40,6 +40,26 @@ const getOne = (html, regex, label, route) => {
 const titles = new Map();
 const descriptions = new Map();
 const auditedRoutes = [];
+
+// Runtime <head> ownership contract:
+// App.tsx owns route-level title/meta/canonical/schema through SEOHead.
+// BlogPage may replace only the prerendered Article JSON-LD block after hydration.
+// Other page components must not create a second route-level SEO source.
+const componentsDir = path.resolve('components');
+for (const sourceName of fs.readdirSync(componentsDir).filter((name) => name.endsWith('.tsx'))) {
+  const sourcePath = path.join(componentsDir, sourceName);
+  const source = fs.readFileSync(sourcePath, 'utf8');
+
+  if (sourceName !== 'SEOHead.tsx' && /(?:import\s+SEOHead\b|<SEOHead\b)/.test(source)) {
+    throw new Error(sourceName + ': route-level SEOHead must be owned by App.tsx');
+  }
+
+  if (sourceName !== 'BlogPage.tsx' && sourceName !== 'SEOHead.tsx') {
+    if (/document\.title\s*=|document\.head\./.test(source)) {
+      throw new Error(sourceName + ': direct document head/title mutation is not allowed');
+    }
+  }
+}
 const gameRoutes = new Set([
   '/game/galaxy_miner/',
   '/game/mars_colony/',
