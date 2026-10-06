@@ -10,6 +10,7 @@ import SEOHead from './components/SEOHead';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
+import { isInteractiveKeyboardTarget } from './utils/keyboard';
 
 // --- LAZY LOAD GAMES (Code Splitting for SEO Performance) ---
 const MarsColony = React.lazy(() => import('./components/MarsColony'));
@@ -1508,10 +1509,6 @@ const App: React.FC = () => {
   // Keyboard Shortcuts Listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
-        return;
-      }
       if (viewMode !== 'game' || activeGame !== 'galaxy_miner') return;
 
       const hasOpenLayer =
@@ -1529,6 +1526,8 @@ const App: React.FC = () => {
         else if (offlineEarnings.isOpen) setOfflineEarnings(prev => ({ ...prev, isOpen: false }));
         return;
       }
+
+      if (isInteractiveKeyboardTarget(e.target)) return;
 
       // Do not let gameplay shortcuts fire through a modal or mobile drawer.
       if (hasOpenLayer) return;
