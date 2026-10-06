@@ -1003,6 +1003,14 @@ const staticRouteContent = {
     <section>
       <h2>Space clicker guides and strategy</h2>
       <p>The Mission Logs cover browser clicker mechanics, Spacebar speed tests, idle automation, prestige planning, keyboard input, progression design, and the systems behind incremental space games.</p>
+      <h2>Start with the practical guides</h2>
+      <ul>
+        <li><a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker Strategy Guide</a> — upgrade payback, idle automation, prestige timing, mobile play, and Galactic Reset planning.</li>
+        <li><a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a> — decide when manual input still matters and when idle production should take over.</li>
+        <li><a href="/blog/mastering-the-space-bar-clicking-game/">Mastering Space Bar Clicking Games</a> — deliberate input, automation, and the difference between playing a clicker and running a speed test.</li>
+        <li><a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> — CPS measurement, key-repeat rules, browser input, and repeatable testing.</li>
+      </ul>
+      <h2>All Mission Logs</h2>
       <ul>
         ${Object.entries(blogStaticMeta).sort(([, a], [, b]) => Date.parse(b.datePublished) - Date.parse(a.datePublished)).map(([postRoute, meta]) => `<li><a href="${postRoute}/">${escapeHtml(meta.title)}</a> — ${escapeHtml(meta.description)}</li>`).join('')}
       </ul>
