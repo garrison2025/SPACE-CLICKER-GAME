@@ -707,7 +707,9 @@ const GravityIdle: React.FC = () => {
                  </div>
 
                  <div className="absolute bottom-4 right-4 z-10 flex gap-2">
-                     <button 
+                     <button
+                        type="button"
+                        aria-expanded={showShop}
                         onClick={() => setShowShop(!showShop)}
                         className={`px-4 sm:px-6 py-3 min-h-11 rounded-xl font-bold text-xs shadow-lg transition-all hover:scale-105 active:scale-95 border ${showShop ? 'bg-white text-black border-white' : 'bg-black/60 backdrop-blur border-neon-purple text-neon-purple'}`}
                      >
@@ -727,7 +729,12 @@ const GravityIdle: React.FC = () => {
                              <h3 className="font-display font-black text-xl text-neon-purple tracking-wide">PHYSICS LAB</h3>
                              <p className="text-[10px] text-gray-500">UPGRADE CONSTANTS</p>
                          </div>
-                         <button onClick={() => setShowShop(false)} className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20">✕</button>
+                         <button
+                            type="button"
+                            aria-label="Close Physics Lab"
+                            onClick={() => setShowShop(false)}
+                            className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-purple"
+                         >✕</button>
                      </div>
                      
                      {/* Buy Amount Toggle */}
@@ -735,6 +742,8 @@ const GravityIdle: React.FC = () => {
                         {[1, 10, 'MAX'].map(opt => (
                             <button
                                 key={opt}
+                                type="button"
+                                aria-pressed={buyAmount === opt}
                                 onClick={() => setBuyAmount(opt as any)}
                                 className={`flex-1 min-h-11 py-2 text-[10px] font-bold rounded transition-colors ${buyAmount === opt ? 'bg-neon-purple text-black' : 'text-gray-500 hover:text-white'}`}
                             >
@@ -825,7 +834,8 @@ const GravityIdle: React.FC = () => {
                              </div>
                          </div>
                          
-                         <button 
+                         <button
+                            type="button"
                             onClick={() => setOfflineReport(null)}
                             className="w-full py-3 bg-neon-purple text-black font-bold rounded hover:bg-white transition-colors"
                          >
