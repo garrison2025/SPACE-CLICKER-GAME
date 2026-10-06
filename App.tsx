@@ -111,9 +111,9 @@ const GAME_SEO: Record<GameId, { title: string; description: string; genres: str
     genres: ['Idle', 'Physics', 'Simulation', 'Sci-Fi']
   },
   deep_signal: {
-    title: 'Deep Space Signal - Free Browser Text Adventure',
-    description: 'Send signals, manage energy, decode strange transmissions, and uncover a text-based deep-space mystery in your browser.',
-    genres: ['Text Adventure', 'Mystery', 'Sci-Fi', 'Single Player']
+    title: 'Deep Space Signal - Signal Decoding Idle Game',
+    description: 'Scan radio frequencies, manage Energy, decrypt transmissions, analyze faction data, and automate signal hunting in this browser idle simulation.',
+    genres: ['Idle', 'Simulation', 'Signal Decoding', 'Sci-Fi']
   }
 };
 
