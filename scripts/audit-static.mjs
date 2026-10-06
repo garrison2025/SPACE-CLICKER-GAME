@@ -669,6 +669,17 @@ for (const required of [
   if (!llms.includes(required)) throw new Error('llms.txt is missing ' + required);
 }
 
+for (const route of auditedRoutes) {
+  const canonicalUrl = 'https://spaceclickergame.com' + route;
+  if (!llms.includes(canonicalUrl)) {
+    throw new Error('llms.txt is missing indexable route: ' + canonicalUrl);
+  }
+}
+
+if (/https:\/\/spaceclickergame\.com\/[^\s)]+\\_/.test(llms)) {
+  throw new Error('llms.txt contains a backslash-escaped underscore inside a URL');
+}
+
 const sitemap = fs.readFileSync(sitemapPath, 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((match) => match[1]);
