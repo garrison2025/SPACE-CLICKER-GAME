@@ -298,23 +298,41 @@ const App: React.FC = () => {
           ? 'game-main-content'
           : 'main-content';
       let frame = 0;
-      let attempts = 0;
+      let timeout = 0;
+      let observer: MutationObserver | null = null;
 
       const focusRouteTarget = () => {
           const target = document.getElementById(targetId);
-          if (target) {
-              target.focus({ preventScroll: true });
-              return;
-          }
-
-          attempts += 1;
-          if (attempts < 20) {
-              frame = window.requestAnimationFrame(focusRouteTarget);
-          }
+          if (!target) return false;
+          target.focus({ preventScroll: true });
+          return true;
       };
 
-      frame = window.requestAnimationFrame(focusRouteTarget);
-      return () => window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+          if (focusRouteTarget()) return;
+
+          observer = new MutationObserver(() => {
+              if (!focusRouteTarget()) return;
+              observer?.disconnect();
+              observer = null;
+              if (timeout) {
+                  window.clearTimeout(timeout);
+                  timeout = 0;
+              }
+          });
+          observer.observe(document.body, { childList: true, subtree: true });
+          timeout = window.setTimeout(() => {
+              observer?.disconnect();
+              observer = null;
+              timeout = 0;
+          }, 5000);
+      });
+
+      return () => {
+          window.cancelAnimationFrame(frame);
+          observer?.disconnect();
+          if (timeout) window.clearTimeout(timeout);
+      };
   }, [location.pathname]);
 
   useEffect(() => {
