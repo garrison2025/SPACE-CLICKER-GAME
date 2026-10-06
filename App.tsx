@@ -2078,7 +2078,7 @@ const App: React.FC = () => {
       };
 
       const handlePageHide = () => {
-          if (!document.hidden) saveGame();
+          saveGame();
       };
 
       document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -2088,7 +2088,7 @@ const App: React.FC = () => {
           clearInterval(timer);
           document.removeEventListener('visibilitychange', handleVisibilityChange);
           window.removeEventListener('pagehide', handlePageHide);
-          if (!document.hidden) saveGame();
+          saveGame();
       };
   }, [saveGame, creditHiddenGalaxyProgress]);
 
