@@ -592,7 +592,7 @@ for (const file of htmlFiles) {
       .replace(/<script[\s\S]*?<\/script>/gi, ' ')
       .replace(/<style[\s\S]*?<\/style>/gi, ' ')
       .replace(/<[^>]+>/g, ' ')
-      .replace(/&[^;]+;/g, ' ')
+      .replace(/&(?:[a-zA-Z][a-zA-Z0-9]+|#\d+|#x[0-9a-fA-F]+);/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
       .split(' ')
