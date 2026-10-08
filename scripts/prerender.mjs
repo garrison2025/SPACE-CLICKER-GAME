@@ -763,7 +763,10 @@ const escapeHtml = (value) =>
   String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
 const renderGameEditorial = (route) => {
-  const gameId = CORE_ROUTE_META_BY_PATH[route]?.gameId;
+  const normalizedRoute = String(route).replace(/\/+$/, '');
+  const gameId = normalizedRoute.startsWith('/game/')
+    ? normalizedRoute.slice('/game/'.length)
+    : CORE_ROUTE_META_BY_PATH[normalizedRoute]?.gameId;
   const guide = gameId ? getGameEditorialGuide(gameId) : null;
   if (!guide) return '';
 
