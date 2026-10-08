@@ -310,6 +310,23 @@ const strategyGuideRequiredHeadings = [
   'Space Clicker on Mobile: What Changes'
 ];
 
+const adsenseGameContentRoutes = new Set([
+  '/game/galaxy_miner/',
+  '/game/mars_colony/',
+  '/game/star_defense/',
+  '/game/merge_ships/',
+  '/game/gravity_idle/',
+  '/game/deep_signal/'
+]);
+
+const adsenseEditorialMarkers = [
+  'Reviewed against the current browser build:',
+  'What makes this game different?',
+  'Decision guide',
+  'Beginner plan',
+  'Limits and save behavior'
+];
+
 const geoExtractionRequirements = new Map([
   ['/', ['Space Clicker is a free browser-based incremental space game.']],
   ['/spacebar-games/', ['Spacebar mode comparison', '<table>']],
@@ -559,6 +576,37 @@ for (const file of htmlFiles) {
     }
   } else if (html.includes('id="prerender-route-jsonld"')) {
     throw new Error(route + ': unexpected static route JSON-LD on a non-core route');
+  }
+
+  if (/lorem ipsum|simulation under construction|coming soon/i.test(html)) {
+    throw new Error(route + ': indexable page contains placeholder or unfinished-content language');
+  }
+  if (/monetag|adsterra|popunder/i.test(html)) {
+    throw new Error(route + ': legacy third-party ad-network code/content must not appear in the AdSense review build');
+  }
+
+  if (adsenseGameContentRoutes.has(route)) {
+    const siteNavIndex = html.lastIndexOf('<nav aria-label="Site navigation"');
+    const publisherHtml = siteNavIndex >= 0 ? html.slice(0, siteNavIndex) : html;
+    const publisherWords = publisherHtml
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&(?:[a-zA-Z][a-zA-Z0-9]+|#\d+|#x[0-9a-fA-F]+);/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .filter(Boolean).length;
+
+    // Internal review guardrail only; Google does not publish a minimum word count.
+    if (publisherWords < 425) {
+      throw new Error(route + ': internal AdSense content-depth guardrail failed with ' + publisherWords + ' publisher words');
+    }
+    for (const marker of adsenseEditorialMarkers) {
+      if (!html.includes(marker)) {
+        throw new Error(route + ': missing original editorial value marker: ' + marker);
+      }
+    }
   }
 
   if (geoExtractionRequirements.has(route)) {
@@ -986,4 +1034,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO/GEO audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO/GEO/AdSense-readiness audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, original game decision guides above the internal publisher-content guardrail, no placeholder/legacy ad-network markers, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');

@@ -1,0 +1,194 @@
+{
+  "galaxy_miner": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Galaxy Miner is the flagship incremental mode on SpaceClickerGame.com. Its distinctive decision is not simply how fast to click: active players balance Heat for the 2x Heat Flux window, while longer runs increasingly depend on automation, planet multipliers, Dark Matter, and reset timing.",
+    "whyItMatters": [
+      "The game deliberately changes emphasis as a run grows. Manual mining matters most at the start, but automatic producers, planet multipliers, and permanent Void Technology become more important later. That shift creates a useful decision loop: buy more immediate output, save for a milestone, or reset for a permanent advantage.",
+      "Heat adds a second active constraint. Mining inside the 80%–99% Heat Flux window doubles output, but crossing the overheat threshold temporarily stops normal mining. Geodes can vent Heat, so the best active pattern is controlled timing rather than holding an input continuously."
+    ],
+    "decisions": [
+      {
+        "situation": "Early run",
+        "action": "Favor affordable manual output and first automation",
+        "reason": "The first producers reduce dependence on constant input while manual upgrades still have a short payback."
+      },
+      {
+        "situation": "Near a planet threshold",
+        "action": "Compare saving with another upgrade",
+        "reason": "Unlocking a larger production multiplier can change the value of every producer that follows."
+      },
+      {
+        "situation": "Dark Matter available",
+        "action": "Compare reset gain with time to the next meaningful milestone",
+        "reason": "Resetting too early produces little permanent value; waiting too long can waste time on a slow marginal gain."
+      }
+    ],
+    "starterPlan": [
+      "Mine manually until the first useful upgrades are affordable, then add automation instead of relying on clicks alone.",
+      "Use the Heat Flux window deliberately; avoid treating 100% Heat as a target because overheat interrupts active mining.",
+      "Recalculate upgrade value after a planet unlock or major milestone because multipliers change payback time.",
+      "Before a Galactic Reset, review the Dark Matter gain and the next reachable production milestone rather than resetting on a fixed timer."
+    ],
+    "limits": "Galaxy Miner is a browser game, not a cloud service. Progress is stored locally unless you export a portable backup. Offline production is capped and calculated from saved automation state; it is not a hidden background process that runs indefinitely."
+  },
+  "mars_colony": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Mars Colony Idle is a resource-management simulation rather than a pure clicker. The core challenge is keeping Energy, Food, Oxygen, housing, Minerals, and population growth in balance so that adding one building does not quietly weaken another part of the colony.",
+    "whyItMatters": [
+      "The colony economy is linked. Energy-producing buildings create capacity, while Auto-Excavators, Hydroponics, Oxygenators, and Habitat Modules consume or depend on that capacity. Expanding one system without supporting the others can reduce effective output even when the new building looks useful in isolation.",
+      "Life support gives population growth a practical constraint. Food and Oxygen are not decorative counters: reserves determine whether the settlement can sustain expansion. Minerals remain the construction currency, while Credits are a visible economic indicator in the current build rather than a general-purpose spendable resource."
+    ],
+    "decisions": [
+      {
+        "situation": "Energy margin is small",
+        "action": "Add generation before another consumer",
+        "reason": "A new consumer is less useful if the colony cannot supply it consistently."
+      },
+      {
+        "situation": "Food or Oxygen is falling",
+        "action": "Stabilize life support before adding housing",
+        "reason": "More capacity does not help if the settlement cannot support the population that uses it."
+      },
+      {
+        "situation": "Mineral income is slow",
+        "action": "Mix manual excavation with Auto-Excavators",
+        "reason": "Manual input helps bridge early costs, while automation makes later construction less dependent on constant clicking."
+      }
+    ],
+    "starterPlan": [
+      "Build a small Energy surplus first so later production buildings have room to operate.",
+      "Watch Food and Oxygen together; improving only one life-support resource can still leave population growth constrained by the other.",
+      "Use Habitat Modules after life support is stable instead of treating housing capacity as the first bottleneck.",
+      "Recheck the whole resource panel after each purchase because a building can change both production and consumption."
+    ],
+    "limits": "Mars Colony is intentionally a compact management simulation. It does not model real Mars engineering, agriculture, or life-support requirements, and its resource values are game mechanics rather than scientific forecasts. Current progress is stored in the browser, so clearing site storage can remove the save."
+  },
+  "star_defense": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Star Defense is a wave-defense clicker that combines direct fire with automated weapons. The useful decision is how much Scrap to spend on immediate damage versus shields, hull, repairs, and automation before faster or tougher enemies reach the mothership.",
+    "whyItMatters": [
+      "Manual fire gives the player immediate control, but auto-turrets make later waves less dependent on constant clicking. Plasma Cannons improve direct damage, while Alpha Turrets and Missile Batteries add automatic pressure. The mix matters because a run can fail from insufficient sustained damage even when manual burst damage feels strong.",
+      "Defense is a separate economy. Void Shield generators, Hull Plating, and repair options protect against sustained enemy pressure. Tactical abilities such as EMP Shock, Rapid Fire, and Nuke are most valuable when used to solve a specific dangerous wave rather than activated as soon as they become available."
+    ],
+    "decisions": [
+      {
+        "situation": "Enemies survive too long",
+        "action": "Improve sustained damage or automation",
+        "reason": "Longer enemy survival increases the time they have to pressure the mothership."
+      },
+      {
+        "situation": "Hull is dropping despite adequate damage",
+        "action": "Invest in shield, hull, or repair",
+        "reason": "More offense does not recover survivability that is already failing."
+      },
+      {
+        "situation": "A boss or dense wave appears",
+        "action": "Use a tactical ability for the pressure spike",
+        "reason": "Timed abilities are more valuable when they prevent a specific failure than when used without a threat."
+      }
+    ],
+    "starterPlan": [
+      "Use direct fire to clear early waves while saving enough Scrap for the first durable upgrade.",
+      "Add automated damage before manual firing becomes the only way to keep up with wave speed.",
+      "Treat survivability as a real upgrade category; a run with high damage can still end if shields and hull lag behind.",
+      "Keep one tactical response available for a boss or sudden pressure spike instead of spending every cooldown immediately."
+    ],
+    "limits": "Star Defense is a browser arcade simulation. Enemy scaling, weapon behavior, shields, and Scrap are fictional game systems. The mode is designed around its own current wave rules and should not be read as a simulation of real spacecraft combat."
+  },
+  "merge_ships": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Merge Spaceships combines a finite hangar board with automated orbit combat. The central tradeoff is whether to keep ships in the hangar for future merges or deploy them immediately so they can damage asteroids and generate Credits.",
+    "whyItMatters": [
+      "Board space turns merging into a planning problem. Two matching ships can be fused into a stronger level, but each slot used by an unmerged ship reduces the room available for future combinations. Deploying a ship frees hangar space and creates income, but that unit is no longer available for an immediate merge on the board.",
+      "Technology changes the value of both choices. Orbit Expansion creates more deployment room, Advanced Fabrication improves newly acquired ship quality, and Logistics Net affects incoming crate frequency. Because those upgrades alter the flow of ships and Credits, the best hangar strategy changes as the run develops."
+    ],
+    "decisions": [
+      {
+        "situation": "Hangar nearly full",
+        "action": "Complete a merge or deploy a useful ship",
+        "reason": "A full board blocks flexibility and can waste incoming opportunities."
+      },
+      {
+        "situation": "Orbit damage is too low",
+        "action": "Deploy stronger merged ships",
+        "reason": "Orbit DPS drives asteroid destruction and therefore Credit generation."
+      },
+      {
+        "situation": "Purchases create too many weak ships",
+        "action": "Consider fabrication upgrades",
+        "reason": "Improving the starting level of new ships reduces the number of merge steps needed later."
+      }
+    ],
+    "starterPlan": [
+      "Keep enough free hangar space to combine matching levels instead of filling every slot immediately.",
+      "Deploy ships when the Credit income from orbit is more useful than keeping those ships available for another merge.",
+      "Upgrade fabrication when repetitive low-level merges become the main bottleneck.",
+      "Use offline income as a convenience, not as a perfect combat simulation; it is an estimate based on the saved deployed fleet."
+    ],
+    "limits": "Offline and background recovery is capped at 24 hours and uses an estimated Orbit-income model rather than simulating every asteroid and projectile while the page is closed. Progress is local to the current browser unless the mode provides an explicit backup feature."
+  },
+  "gravity_idle": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Gravity Idle is a physics-themed idle game where launchers fire projectiles through a central gravity well. The interesting variable is not raw click speed but how gravity strength, fire rate, projectile damage, and piercing combine to turn moving targets into Matter.",
+    "whyItMatters": [
+      "Changing gravity changes trajectories rather than simply multiplying a score. The Event Horizon upgrade strengthens the central pull, so projectiles curve differently through the play field. Orbital Cannons and Auto-Loader increase projectile frequency, while Kinetic Mass and Quantum Drill affect damage and piercing.",
+      "The manual gravity pulse provides a periodic active intervention, but most long-run output comes from the automated launcher system. That makes the mode useful for players who want to watch a system evolve and occasionally intervene rather than repeatedly press a single button."
+    ],
+    "decisions": [
+      {
+        "situation": "Too few projectiles reach targets",
+        "action": "Compare gravity strength with launcher frequency",
+        "reason": "A stronger pull changes paths, but more shots can also improve hit opportunities."
+      },
+      {
+        "situation": "Hits occur but targets survive",
+        "action": "Increase Kinetic Mass or piercing",
+        "reason": "Trajectory alone does not solve insufficient impact damage."
+      },
+      {
+        "situation": "Matter growth stalls while idle",
+        "action": "Improve automated launch systems",
+        "reason": "Long-run production depends more on sustained automated interactions than on the manual pulse."
+      }
+    ],
+    "starterPlan": [
+      "Increase launch frequency enough to create a steady stream of projectiles before over-investing in one damage stat.",
+      "Watch how a gravity upgrade changes trajectories; the best value is visual and systemic, not only a larger number.",
+      "Use the manual pulse when it can meaningfully alter an active cluster of objects instead of treating it as a spam action.",
+      "After a major automation upgrade, reassess whether damage, piercing, or gravity is now the limiting factor."
+    ],
+    "limits": "Gravity Idle uses simplified game physics and is not an educational orbital-mechanics simulator. Offline Matter recovery is capped at 24 hours and estimated from saved launcher state; the full projectile simulation does not continue offscreen."
+  },
+  "deep_signal": {
+    "reviewed": "2026-10-09",
+    "directAnswer": "Deep Space Signal is an idle scanning and decryption game. Each scan spends Energy to create encrypted transmissions, then the player chooses between manual decryption, passive processing, more Energy infrastructure, automated scanning, and faction analysis.",
+    "whyItMatters": [
+      "Energy is the pacing resource. Capacitor Bank increases maximum Energy, Solar Sails improve regeneration, and Auto-Scan AI can remove part of the manual scanning burden. Crypto Core improves passive decryption, while the Antenna Array increases the Data value of newly scanned signals.",
+      "Decoded transmissions are not just score objects. Analyzed messages can advance BIO, TECH, MIL, or VOID progression, and those faction levels feed back into regeneration, decryption speed, scan cost, and Energy capacity. That makes the long-run loop about choosing which supporting system to strengthen next."
+    ],
+    "decisions": [
+      {
+        "situation": "Energy empties before useful scans accumulate",
+        "action": "Improve capacity or regeneration",
+        "reason": "More scanning speed has little value when the Energy budget cannot support it."
+      },
+      {
+        "situation": "Inbox fills with encrypted messages",
+        "action": "Improve Crypto Core or decrypt manually",
+        "reason": "Scanning faster only increases backlog if processing is the true bottleneck."
+      },
+      {
+        "situation": "Core systems feel balanced",
+        "action": "Use faction analysis to shape the next constraint",
+        "reason": "Faction bonuses can change regeneration, decoding, scan cost, or maximum Energy."
+      }
+    ],
+    "starterPlan": [
+      "Do not buy only scan-related upgrades; keep Energy generation and decryption capacity close enough to prevent a permanent backlog.",
+      "Use manual decryption when one nearly finished message blocks useful analysis, then let passive processing handle the rest.",
+      "Treat faction analysis as a long-term system choice rather than a cosmetic collection step.",
+      "Once Auto-Scan AI is active, watch whether Energy or decryption becomes the new bottleneck and invest there next."
+    ],
+    "limits": "Deep Space Signal is fictional. BIO, TECH, MIL, VOID transmissions and their analysis effects are game systems, not real intercepted communications or scientific signal-processing claims. Progress is stored in the current browser and can be affected by local storage settings."
+  }
+}
