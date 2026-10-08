@@ -1041,11 +1041,14 @@ const staticRouteContent = {
       <h2>Editorial and testing principles</h2>
       <p>Guides and mechanics articles are checked against the current browser implementation whenever they describe this site's own games or tools. We avoid presenting unsupported averages, hardware claims, or universal performance thresholds as facts. Device-, browser-, duration-, and input-rule differences are stated when they materially affect a result.</p>
       <p>Upgrade costs, prestige thresholds, local save rules, CPS counting, offline progress, and milestone requirements are checked against the current code before publication or revision. External factual references are linked when they materially support a claim.</p>
+      <h2>Who creates and reviews the site</h2>
+      <p>The games, tools, and editorial pages are maintained under the <strong>SpaceClickerGame.com Editorial</strong> identity. Articles about this site's mechanics are reviewed against the current browser implementation rather than copied from another game or generated from an external feed. Questions, corrections, and bug reports can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.</p>
+      <p>The main game pages include version-specific mechanics, decision guides, limitations, and save behavior so a visitor can understand what is unique about each simulation before or after playing it. We do not publish fabricated testimonials, invented player counts, unsupported earnings claims, or universal CPS rankings.</p>
       <h2>Games and tools on the site</h2>
       <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
       <h2>Technology and local saves</h2>
       <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
-      <p>Site/content review date: October 7, 2026. Privacy and Terms policy date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
+      <p>Site/content review date: October 9, 2026. Privacy and Terms policy date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
     </section>`,
   '/contact': `
     <section>
@@ -1061,7 +1064,7 @@ const staticRouteContent = {
       <h2>Local game data</h2>
       <p>SpaceClickerGame.com is primarily a client-side browser experience. Supported games store progress, settings, local records, upgrades, and offline-progression timestamps in browser localStorage. This game-state data is not sent to a site analytics database by the current build.</p>
       <h2>Analytics, advertising, and network requests</h2>
-      <p>The current production build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests can still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.</p>
+      <p>The site may use Google AdSense for site review, verification, and advertising. When Google advertising services are enabled, Google and its partners may use cookies, device identifiers, or similar technologies to serve, measure, limit, and personalize ads as permitted by applicable law and the consent choices available to the visitor. Normal web requests can also expose standard connection information such as IP address and browser headers to the hosting provider and third-party asset hosts used by a page.</p>
       <p>Current pages may request font files from Google Fonts and editorial or social-preview images from Unsplash. Those requests are made directly by the browser to the relevant provider and can include standard network information such as IP address, user agent, and request headers.</p>
       <h2>Saving, exporting, and clearing data</h2>
       <p>Local game data is used to restore supported progress and calculate offline earnings. Clearing browser site storage can permanently remove local saves. Exported save codes and .scg backup files are portable data and should be treated as backups rather than encrypted secrets.</p>
@@ -1089,7 +1092,8 @@ const staticRouteContent = {
       <h2>Examples of functional storage</h2>
       <p>Current game modes use local storage keys for Galaxy Miner, Spacebar Clicker, Spacebar Clicker 2, Spacebar Counter, CPS Test records, and other simulations. The exact key list can change as games are updated.</p>
       <h2>Analytics and advertising</h2>
-      <p>The current build does not include Google Analytics, Google Tag Manager, or Google AdSense scripts. If third-party analytics or advertising services are introduced later, this notice should be updated before those services are enabled.</p>
+      <p>SpaceClickerGame.com may use Google AdSense for site review, verification, and advertising. When Google advertising services are enabled, Google and its partners may use cookies, device identifiers, or similar technologies for ad delivery, measurement, frequency control, fraud prevention, and—where permitted—personalization. Consent controls may be required for visitors in jurisdictions such as the EEA, United Kingdom, and Switzerland before personalized advertising is enabled.</p>
+      <p>Advertising is separate from local game-save data. The site does not intentionally send Galaxy Miner resources, Spacebar scores, upgrade inventories, or exported save codes to Google as ad-targeting fields.</p>
       <h2>Clearing site data</h2>
       <p>Browser controls can clear cookies and local storage. Clearing the browser's site storage will remove supported local game progress unless you kept an exported save code or backup file. The in-site reset control removes Space Clicker Game saves, Spacebar records, and game settings without calling localStorage.clear() for unrelated origin data.</p>
     </section>`,
