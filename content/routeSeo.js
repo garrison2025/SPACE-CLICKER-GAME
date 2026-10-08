@@ -1,4 +1,4 @@
-export const SITE_CONTENT_UPDATED = '2026-10-07';
+export const SITE_CONTENT_UPDATED = '2026-10-09';
 export const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 export const CORE_ROUTE_META = [
