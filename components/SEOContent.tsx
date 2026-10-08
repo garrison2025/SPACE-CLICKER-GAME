@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { GameMeta } from '../types';
 import { INITIAL_UPGRADES } from '../constants';
 import { BLOG_POST_META } from '../content/blogMeta';
+import { getGameEditorialGuide } from '../content/gameEditorial';
 import { formatNumber } from '../utils';
 
 interface SEOContentProps {
@@ -50,6 +51,8 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
           .map(slug => BLOG_POST_META.find(post => post.slug === slug))
           .filter((post): post is NonNullable<typeof post> => Boolean(post));
   }, [game.id]);
+
+  const editorial = useMemo(() => getGameEditorialGuide(game.id), [game.id]);
 
   // Helper to render wiki tables based on game ID
   const renderWikiTable = () => {
@@ -113,6 +116,65 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
                     </li>
                 ))}
              </ul>
+
+             {editorial && (
+                 <section className="mt-12 space-y-8" aria-labelledby={`editorial-${game.id}`}>
+                     <div>
+                         <div className="text-[10px] font-mono uppercase tracking-[0.25em] text-neon-green mb-2">
+                             Reviewed against the current browser build • {editorial.reviewed}
+                         </div>
+                         <h3 id={`editorial-${game.id}`} className="text-2xl font-display text-white mb-4">
+                             What makes {game.title} different?
+                         </h3>
+                         <p className="text-gray-300 leading-relaxed mb-4">{editorial.directAnswer}</p>
+                         {editorial.whyItMatters.map((paragraph: string) => (
+                             <p key={paragraph} className="text-gray-400 leading-relaxed mb-4">{paragraph}</p>
+                         ))}
+                     </div>
+
+                     <div>
+                         <h3 className="text-2xl font-display text-white mb-4">Decision guide</h3>
+                         <div className="overflow-x-auto rounded-xl border border-white/10 bg-space-900/60">
+                             <table className="w-full min-w-[760px] text-left text-sm">
+                                 <thead className="border-b border-white/10 text-[10px] uppercase tracking-wider text-gray-500">
+                                     <tr>
+                                         <th className="px-4 py-3">Situation</th>
+                                         <th className="px-4 py-3">Practical action</th>
+                                         <th className="px-4 py-3">Why</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     {editorial.decisions.map((row: { situation: string; action: string; reason: string }) => (
+                                         <tr key={row.situation} className="border-b border-white/5 last:border-b-0 align-top">
+                                             <td className="px-4 py-3 font-bold text-white">{row.situation}</td>
+                                             <td className="px-4 py-3 text-neon-blue">{row.action}</td>
+                                             <td className="px-4 py-3 text-gray-400">{row.reason}</td>
+                                         </tr>
+                                     ))}
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+
+                     <div className="grid md:grid-cols-2 gap-6">
+                         <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+                             <h3 className="text-xl font-display text-white mb-4">Beginner plan</h3>
+                             <ol className="space-y-3 text-sm text-gray-300">
+                                 {editorial.starterPlan.map((step: string, index: number) => (
+                                     <li key={step} className="flex gap-3">
+                                         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neon-blue/15 text-xs font-bold text-neon-blue">{index + 1}</span>
+                                         <span>{step}</span>
+                                     </li>
+                                 ))}
+                             </ol>
+                         </div>
+                         <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                             <h3 className="text-xl font-display text-white mb-4">Limits and save behavior</h3>
+                             <p className="text-sm text-gray-400 leading-relaxed">{editorial.limits}</p>
+                         </div>
+                     </div>
+                 </section>
+             )}
 
              {/* Dynamic Wiki Table for SEO Long-tail Keywords */}
              {game.id === 'galaxy_miner' && (
