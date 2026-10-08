@@ -40,6 +40,14 @@ export const AboutPage = () => (
             You can mine Stardust in <em>Galaxy Miner</em>, build a colony on Mars, defend a sector, merge ships, experiment with gravity, decode signals, or use the Spacebar Clicker tools. Each experience runs in the browser, and supported games store progress locally on the current device.
         </p>
 
+        <h3>Who Creates and Reviews the Site</h3>
+        <p>
+            The games, tools, and editorial pages are maintained under the <strong>SpaceClickerGame.com Editorial</strong> identity. Articles about this site&apos;s mechanics are reviewed against the current browser implementation rather than copied from another game or generated from an external feed. Questions, corrections, and bug reports can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.
+        </p>
+        <p>
+            The main game pages include version-specific mechanics, decision guides, limitations, and save behavior so a visitor can understand what is unique about each simulation before or after playing it. We do not publish fabricated testimonials, invented player counts, unsupported earnings claims, or universal CPS rankings.
+        </p>
+
         <h3>The Technology</h3>
         <p>
             The site uses React 18, Vite, Tailwind CSS, and lightweight browser graphics. The priority is responsive interaction, readable interfaces, and fast loading rather than requiring a game client or paid API.
@@ -56,7 +64,7 @@ export const AboutPage = () => (
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
-                <li>Site/content review: October 7, 2026</li>
+                <li>Site/content review: October 9, 2026</li>
                 <li>Privacy/terms policy date: October 6, 2026</li>
                 <li>Game simulations in the main catalog: 6</li>
                 <li>Required paid API for gameplay: None</li>
@@ -108,7 +116,7 @@ export const PrivacyPage = () => (
             <strong>Local Game Data:</strong> Space Clicker Game is primarily a client-side experience. Your game progress (resources mined, buildings constructed, upgrades unlocked) is stored locally on your device using browser LocalStorage. This data does not leave your device unless you explicitly create a portable save code or backup file.
         </p>
         <p>
-            <strong>Analytics and advertising:</strong> The current site build does not include Google Analytics, Google Tag Manager, or Google AdSense code. Normal web requests may still expose standard connection information such as IP address and browser headers to the hosting provider and to third-party asset hosts used by a page.
+            <strong>Analytics and advertising:</strong> The site may use Google AdSense for site review, verification, and advertising. When Google advertising services are enabled, Google and its partners may use cookies, device identifiers, or similar technologies to serve, measure, limit, and personalize ads as permitted by applicable law and the consent choices available to the visitor. Normal web requests can also expose standard connection information such as IP address and browser headers to the hosting provider and third-party asset hosts used by a page.
         </p>
         <p>
             <strong>External assets:</strong> Current pages may request font files from Google Fonts and editorial or social-preview images from Unsplash. Those requests are made directly by the browser to the relevant provider and can include standard network information such as IP address, user agent, and request headers.
@@ -207,7 +215,10 @@ export const CookiesPage = () => (
 
         <h3>2. Analytics and Advertising</h3>
         <p>
-            The current build does not include Google Analytics, Google Tag Manager, or Google AdSense scripts. If those services are introduced later, this notice should be updated to describe the relevant cookies or identifiers before they are enabled.
+            SpaceClickerGame.com may use Google AdSense for site review, verification, and advertising. When Google advertising services are enabled, Google and its partners may use cookies, device identifiers, or similar technologies for ad delivery, measurement, frequency control, fraud prevention, and—where permitted—personalization. Consent controls may be required for visitors in jurisdictions such as the EEA, United Kingdom, and Switzerland before personalized advertising is enabled.
+        </p>
+        <p>
+            Advertising is separate from local game-save data. The site does not intentionally send Galaxy Miner resources, Spacebar scores, upgrade inventories, or exported save codes to Google as ad-targeting fields.
         </p>
 
         <h3>3. Managing Your Preferences</h3>
