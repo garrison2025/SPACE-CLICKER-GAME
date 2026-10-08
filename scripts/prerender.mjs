@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
-import { getGameEditorialGuide } from '../content/gameEditorial.js';
 
 const distDir = path.resolve('dist');
 const basePath = path.join(distDir, 'index.html');
@@ -15,6 +14,13 @@ const site = 'https://spaceclickergame.com';
 const ORGANIZATION_ID = site + '/#organization';
 const ORGANIZATION_LOGO = site + '/favicon.svg';
 const EDITORIAL_ID = site + '/#editorial';
+
+const gameEditorialPath = path.resolve('public/game-editorial.json');
+if (!fs.existsSync(gameEditorialPath)) {
+  throw new Error('public/game-editorial.json not found. Game editorial content cannot be prerendered.');
+}
+const GAME_EDITORIAL_GUIDES = JSON.parse(fs.readFileSync(gameEditorialPath, 'utf8'));
+const getGameEditorialGuide = (gameId) => GAME_EDITORIAL_GUIDES[gameId] || null;
 
 const blogSourcePath = path.resolve('content/blogPosts.ts');
 const blogStaticContent = {};
