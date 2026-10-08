@@ -586,7 +586,8 @@ for (const file of htmlFiles) {
   }
 
   if (adsenseGameContentRoutes.has(route)) {
-    const publisherHtml = html.split('<nav aria-label="Site navigation"')[0];
+    const siteNavIndex = html.lastIndexOf('<nav aria-label="Site navigation"');
+    const publisherHtml = siteNavIndex >= 0 ? html.slice(0, siteNavIndex) : html;
     const publisherWords = publisherHtml
       .replace(/<script[\s\S]*?<\/script>/gi, ' ')
       .replace(/<style[\s\S]*?<\/style>/gi, ' ')
