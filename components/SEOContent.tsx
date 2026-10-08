@@ -1,9 +1,8 @@
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { GameMeta } from '../types';
 import { INITIAL_UPGRADES } from '../constants';
 import { BLOG_POST_META } from '../content/blogMeta';
-import { getGameEditorialGuide } from '../content/gameEditorial';
 import { formatNumber } from '../utils';
 
 interface SEOContentProps {
@@ -52,7 +51,27 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
           .filter((post): post is NonNullable<typeof post> => Boolean(post));
   }, [game.id]);
 
-  const editorial = useMemo(() => getGameEditorialGuide(game.id), [game.id]);
+  const [editorial, setEditorial] = useState<any>(null);
+
+  useEffect(() => {
+      let active = true;
+      setEditorial(null);
+      fetch('/game-editorial.json', { credentials: 'same-origin' })
+          .then(response => {
+              if (!response.ok) throw new Error('Game editorial guide request failed');
+              return response.json();
+          })
+          .then(data => {
+              if (active) setEditorial(data?.[game.id] || null);
+          })
+          .catch(() => {
+              if (active) setEditorial(null);
+          });
+
+      return () => {
+          active = false;
+      };
+  }, [game.id]);
 
   // Helper to render wiki tables based on game ID
   const renderWikiTable = () => {
