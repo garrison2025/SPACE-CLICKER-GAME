@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
+import { getGameEditorialGuide } from '../content/gameEditorial.js';
 
 const distDir = path.resolve('dist');
 const basePath = path.join(distDir, 'index.html');
@@ -759,7 +760,40 @@ const buildStaticRouteSchema = (route, description, canonical) => {
 };
 
 const escapeHtml = (value) =>
-  value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+  String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+
+const renderGameEditorial = (route) => {
+  const gameId = CORE_ROUTE_META_BY_PATH[route]?.gameId;
+  const guide = gameId ? getGameEditorialGuide(gameId) : null;
+  if (!guide) return '';
+
+  const paragraphs = guide.whyItMatters
+    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .join('');
+  const decisionRows = guide.decisions
+    .map((row) => `<tr><td>${escapeHtml(row.situation)}</td><td>${escapeHtml(row.action)}</td><td>${escapeHtml(row.reason)}</td></tr>`)
+    .join('');
+  const starterSteps = guide.starterPlan
+    .map((step) => `<li>${escapeHtml(step)}</li>`)
+    .join('');
+
+  return `
+    <section class="static-game-editorial">
+      <p><strong>Reviewed against the current browser build:</strong> ${escapeHtml(guide.reviewed)}</p>
+      <h2>What makes this game different?</h2>
+      <p>${escapeHtml(guide.directAnswer)}</p>
+      ${paragraphs}
+      <h2>Decision guide</h2>
+      <table>
+        <thead><tr><th>Situation</th><th>Practical action</th><th>Why</th></tr></thead>
+        <tbody>${decisionRows}</tbody>
+      </table>
+      <h2>Beginner plan</h2>
+      <ol>${starterSteps}</ol>
+      <h2>Limits and save behavior</h2>
+      <p>${escapeHtml(guide.limits)}</p>
+    </section>`;
+};
 
 const escapeXml = (value) =>
   String(value)
@@ -1252,7 +1286,7 @@ const renderHtml = (route, title, description, h1) => {
   html = html.replace('</head>', `  <meta name="robots" data-rh="true" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />\n  <link rel="canonical" data-rh="true" href="${canonical}" />\n</head>`);
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}<nav aria-label="Site navigation" style="margin-top:32px;line-height:1.9">
+    `<div id="root"><main style="max-width:900px;margin:0 auto;padding:48px 20px;color:#e5e7eb;background:#0b0d17;min-height:100vh"><h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${blogStaticContent[route] || staticRouteContent[route] || ''}${renderGameEditorial(route)}<nav aria-label="Site navigation" style="margin-top:32px;line-height:1.9">
 <a href="/" style="color:#00f3ff">Home</a> ·
 <a href="/game/galaxy_miner/" style="color:#00f3ff">Galaxy Miner</a> ·
 <a href="/game/mars_colony/" style="color:#00f3ff">Mars Colony</a> ·
