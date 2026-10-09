@@ -5,6 +5,9 @@ import { CORE_ROUTE_META } from '../content/routeSeo.js';
 const distDir = path.resolve('dist');
 const site = 'https://spaceclickergame.com';
 const legacyPublicSitemap = path.resolve('public/sitemap.xml');
+const ADSENSE_PUBLISHER_ID = 'ca-pub-1528586776567779';
+const ADSENSE_SCRIPT_URL = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADSENSE_PUBLISHER_ID;
+const ADS_TXT_LINE = 'google.com, pub-1528586776567779, DIRECT, f08c47fec0942fa0';
 
 const coreRoutes = new Set();
 const coreViews = new Set();
@@ -140,6 +143,18 @@ if (appleTouchDimensions.width !== 180 || appleTouchDimensions.height !== 180) {
     'apple-touch-icon.png must be 180x180; found ' +
     appleTouchDimensions.width + 'x' + appleTouchDimensions.height
   );
+}
+
+const adsTxtPath = path.join(distDir, 'ads.txt');
+if (!fs.existsSync(adsTxtPath)) {
+  throw new Error('ads.txt is missing from dist/.');
+}
+const adsTxtLines = fs.readFileSync(adsTxtPath, 'utf8')
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean);
+if (!adsTxtLines.includes(ADS_TXT_LINE)) {
+  throw new Error('ads.txt is missing the required Google AdSense publisher record.');
 }
 
 const rootHtmlPath = path.join(distDir, 'index.html');
@@ -390,6 +405,14 @@ for (const file of htmlFiles) {
   const route = routeForFile(file);
   const html = fs.readFileSync(file, 'utf8');
   const normalizedHtml = html.toLowerCase();
+
+  const adsenseScriptMatches = [...html.matchAll(/<script\b[^>]*src="([^"]*pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-1528586776567779)"[^>]*>/gi)];
+  if (adsenseScriptMatches.length !== 1) {
+    throw new Error(route + ': expected exactly one AdSense publisher loader in <head>, found ' + adsenseScriptMatches.length);
+  }
+  if (!html.includes(ADSENSE_SCRIPT_URL) || !/crossorigin="anonymous"/i.test(adsenseScriptMatches[0][0])) {
+    throw new Error(route + ': AdSense loader must use the approved publisher ID and crossorigin=anonymous.');
+  }
 
   for (const staleClaim of forbiddenStaleTrustClaims) {
     if (normalizedHtml.includes(staleClaim)) {
@@ -1034,4 +1057,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO/GEO/AdSense-readiness audit passed: ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, original game decision guides above the internal publisher-content guardrail, no placeholder/legacy ad-network markers, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO/GEO/AdSense-readiness audit passed: AdSense publisher loader on every prerendered route, verified ads.txt publisher record, ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, original game decision guides above the internal publisher-content guardrail, no placeholder/legacy ad-network markers, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
