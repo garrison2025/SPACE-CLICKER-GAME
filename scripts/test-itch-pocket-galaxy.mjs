@@ -67,6 +67,7 @@ assert.equal(play.read().drones, 1);
 assert.equal(play.read().dust, 4);
 const before=play.read().dust;
 play.intervals[0]();
+play.intervals[1]();
 assert.ok(play.read().dust > before,'Automated drones must produce Stardust');
 
 const ascension = session({dust:2500,runEarned:2500,drill:0,drones:0,dm:0,last:Date.now()});
