@@ -1,0 +1,56 @@
+name: Build playable itch.io HTML5 package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "distribution/itch-io/**"
+      - "scripts/test-itch-pocket-galaxy.mjs"
+      - ".github/workflows/itch-io.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: space-clicker-itch-io
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Space Clicker
+        uses: actions/checkout@v4
+
+      - name: Test playable offline edition
+        run: node scripts/test-itch-pocket-galaxy.mjs
+
+      - name: Package ZIP with index.html at archive root
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import re
+          html=Path('distribution/itch-io/index.html').read_text(encoding='utf-8')
+          assert '<!doctype html>' in html.lower()
+          assert '<script>' in html and '</script>' in html
+          assert not re.search(r'<iframe|<script[^>]*src=|<link[^>]*href=["\\x27]/',html,re.I)
+          target=Path('dist/itchio/space-clicker-pocket-galaxy.zip')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          with ZipFile(target, 'w', ZIP_DEFLATED, compresslevel=9) as z:
+              z.write('distribution/itch-io/index.html',arcname='index.html')
+          with ZipFile(target) as z:
+              assert z.namelist()==['index.html']
+              assert z.testzip() is None
+          print(f'Valid itch.io upload: {target} ({target.stat().st_size} bytes)')
+          PY
+
+      - name: Upload ready-to-publish game ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: itch-io-pocket-galaxy-game
+          path: dist/itchio/space-clicker-pocket-galaxy.zip
+          if-no-files-found: error
+          retention-days: 30
