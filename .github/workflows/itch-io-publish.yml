@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ inputs.confirm_publish }} == true
+    if: ${{ inputs.confirm_publish == true }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
