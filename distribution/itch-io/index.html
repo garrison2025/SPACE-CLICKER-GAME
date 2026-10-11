@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Space Clicker: Pocket Galaxy. A complete offline-playable incremental space mining game for HTML5 portals.">
+  <title>Space Clicker: Pocket Galaxy</title>
+  <style>
+  :root{color-scheme:dark;--bg:#070b1b;--ink:#f2f6ff;--muted:#a4b2d6;--line:#2e3c60;--cyan:#54e4dc;--gold:#ffc76c}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:radial-gradient(circle at 53% 15%,#1c2c58 0,#080e23 44%,#070b1b 78%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+  body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.21;background-image:radial-gradient(#fff 0.7px,transparent 1px);background-size:33px 31px}
+  button{font:inherit;cursor:pointer;touch-action:manipulation}
+  button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+  .wrap{position:relative;max-width:960px;margin:auto;padding:20px 18px 35px}
+  header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:19px}
+  .brand{font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--cyan)}
+  h1{margin:5px 0 0;font-size:clamp(26px,5vw,41px);line-height:1.08;letter-spacing:-.04em}
+  .hint{font-size:12px;color:var(--muted);max-width:310px;text-align:right}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .stat,.panel{background:rgba(15,24,49,.91);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 35px #02061150}
+  .stat{padding:15px}
+  .eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+  .value{font-size:clamp(18px,3vw,29px);font-weight:850;margin-top:6px;overflow-wrap:anywhere}
+  .main{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:14px}
+  .mine{padding:18px;display:flex;flex-direction:column;align-items:center;min-height:390px}
+  .planetZone{position:relative;width:min(100%,340px);aspect-ratio:1;display:grid;place-items:center}
+  .orbit{position:absolute;width:94%;height:94%;border:1px dashed #596ba062;border-radius:50%;transform:rotate(-17deg)}
+  .planet{width:64%;height:64%;border-radius:50%;border:3px solid #77dbffb6;box-shadow:0 0 60px #28c7ff36, inset -25px -18px 40px #010d35,0 0 0 16px #2b4d732b;background:radial-gradient(circle at 29% 23%,#bcecff 1%,#5cb6f1 16%,#326ba5 43%,#163f7b 68%,#070b2f 95%);transition:transform .12s ease;display:grid;place-items:center;color:#e8faff;font-weight:900;font-size:16px;letter-spacing:.1em;text-shadow:0 2px 8px #002}
+  .planet:hover{transform:scale(1.04)}
+  .planet:active,.planet.hit{transform:scale(.96)}
+  .planet span{background:#061b3ba8;border-radius:20px;padding:6px 12px}
+  .orb{position:absolute;width:8px;height:8px;background:#75ffe3;border-radius:50%;box-shadow:0 0 12px #75ffe3}
+  .orb.one{top:10%;left:28%}.orb.two{bottom:13%;right:9%}.orb.three{top:21%;right:11%}
+  .clickline{font-size:13px;text-align:center;color:var(--muted);margin:4px 0 16px}
+  .cta{border:0;background:linear-gradient(135deg,#58ffdc,#5cc9ff);color:#042036;border-radius:11px;padding:14px 20px;font-size:16px;font-weight:900;letter-spacing:.04em;width:min(100%,280px);box-shadow:0 10px 30px #39e4cf27}
+  .cta:hover{filter:brightness(1.07)}
+  .shop{padding:17px}
+  h2{font-size:17px;margin:0 0 7px}
+  .sub{font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 15px}
+  .buy{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:13px 10px;margin:10px 0;border:1px solid #3a5078;border-radius:12px;color:var(--ink);background:linear-gradient(135deg,#1c3157,#172744);text-align:left}
+  .buy:hover:not(:disabled){border-color:var(--cyan)}
+  .buy:disabled{opacity:.44;cursor:not-allowed}
+  .buy b{display:block;font-size:14px}
+  .buy small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+  .price{white-space:nowrap;color:var(--gold);font-size:12px;font-weight:800}
+  .prestige{border-color:#7054a9;background:linear-gradient(135deg,#32224e,#1d2445)}
+  .bottom{margin-top:13px;display:grid;grid-template-columns:1.3fr 1fr;gap:13px}
+  .information{padding:17px}.information p{color:var(--muted);font-size:12px;line-height:1.65;margin:7px 0}
+  .progress{background:#0a1731;height:9px;border:1px solid #3b5782;border-radius:10px;overflow:hidden;margin-top:10px}
+  .bar{height:100%;width:0;background:linear-gradient(90deg,#31cabf,#f8ca77);transition:width .25s}
+  #toast{height:20px;font-size:12px;color:var(--gold);margin-top:10px}
+  .links{display:flex;gap:15px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:18px}
+  a{color:#a2ebff;text-underline-offset:3px}
+  .quiet{background:transparent;color:var(--muted);border:1px solid #435374;border-radius:9px;padding:6px 10px}
+  .quiet:hover{color:white}
+  .float{position:absolute;color:#85ffe4;font-weight:850;pointer-events:none;font-size:16px;animation:rise .65s ease-out forwards}
+  @keyframes rise{to{transform:translateY(-55px);opacity:0}}
+  @media(max-width:690px){.stats{grid-template-columns:repeat(2,1fr)}.main,.bottom{grid-template-columns:1fr}.mine{min-height:340px}.hint{text-align:left}.stat{padding:11px}.wrap{padding:14px 12px 25px}}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header><div><div class="brand">SPACE CLICKER · OFFLINE HTML5 EDITION</div><h1>Pocket Galaxy</h1></div><div class="hint">Mine Stardust, deploy drones, and transcend your galaxy. Everything runs locally in this browser.</div></header>
+  <section class="stats" aria-label="Game statistics">
+    <div class="stat"><div class="eyebrow">Stardust</div><div class="value" id="dust">0</div></div>
+    <div class="stat"><div class="eyebrow">Per click</div><div class="value" id="clickPower">1</div></div>
+    <div class="stat"><div class="eyebrow">Per second</div><div class="value" id="perSecond">0</div></div>
+    <div class="stat"><div class="eyebrow">Dark Matter</div><div class="value" id="darkMatter">0</div></div>
+  </section>
+  <main class="main">
+    <section class="panel mine" aria-label="Stardust mining">
+      <div class="planetZone" id="planetZone">
+        <div class="orbit" aria-hidden="true"></div><div class="orb one" aria-hidden="true"></div><div class="orb two" aria-hidden="true"></div><div class="orb three" aria-hidden="true"></div>
+        <button type="button" class="planet" id="planet" aria-label="Mine Stardust"><span>STARDUST</span></button>
+      </div>
+      <p class="clickline">Tap the planet or press <strong>Space</strong> to mine.</p>
+      <button type="button" class="cta" id="mine">MINE STARDUST +<span id="mineAmt">1</span></button>
+      <div id="toast" aria-live="polite"></div>
+    </section>
+    <section class="panel shop">
+      <h2>Upgrade your fleet</h2>
+      <p class="sub">Each run starts small. Dark Matter permanently boosts your output.</p>
+      <button type="button" class="buy" id="upgrade"><span><b>Plasma Drill · Lv <span id="drillLevel">0</span></b><small>Mine more Stardust per click</small></span><span class="price"><span id="drillPrice">10</span> ✧</span></button>
+      <button type="button" class="buy" id="drone"><span><b>Mining Drone · <span id="droneCount">0</span></b><small>Automatically mines 2 Stardust/s per drone</small></span><span class="price"><span id="dronePrice">25</span> ✧</span></button>
+      <button type="button" class="buy prestige" id="prestige"><span><b>Dark Matter Ascension</b><small>Reset this run for permanent +20% per Dark Matter</small></span><span class="price"><span id="prestigeGain">0</span> DM</span></button>
+      <p class="sub" style="margin-top:20px">Transcend after earning at least 2,500 Stardust in a single run.</p>
+    </section>
+  </main>
+  <section class="bottom">
+    <div class="panel information"><h2>Galaxy mission</h2><p id="mission">Mine 10 Stardust to unlock the first Plasma Drill.</p><div class="progress" aria-label="Progress to the next Dark Matter ascension"><div class="bar" id="progressBar"></div></div><p id="progressText">0 / 2,500 Stardust this run</p></div>
+    <div class="panel information"><h2>Play anywhere</h2><p>No account, ads, paid API, external assets, or required internet connection. Progress is stored on your device when browser storage is available.</p><p id="saveState">Autosave enabled.</p></div>
+  </section>
+  <footer class="links"><span>Pocket Galaxy is a self-contained mini edition of Space Clicker.</span><a href="https://spaceclickergame.com/" target="_blank" rel="noopener noreferrer">Explore the full game ↗</a><button type="button" class="quiet" id="reset">Reset local progress</button></footer>
+</div>
+<script>
+(function(){
+  "use strict";
+  var STORE="space-clicker-pocket-galaxy-v1";
+  var initial={dust:0,runEarned:0,drill:0,drones:0,dm:0,last:Date.now()};
+  var state;
+  try {
+    var saved=JSON.parse(localStorage.getItem(STORE)||"null");
+    state=saved&&typeof saved==="object"?Object.assign({},initial,saved):Object.assign({},initial);
+  }catch(e){state=Object.assign({},initial);}
+  ["dust","runEarned","drill","drones","dm"].forEach(function(k){
+    if(!Number.isFinite(Number(state[k]))||Number(state[k])<0)state[k]=0;
+    state[k]=Math.min(Number(state[k]),1e14);
+  });
+  var el=function(id){return document.getElementById(id)};
+  var fmt=function(n){if(n>=1e12)return(n/1e12).toFixed(2)+"T";if(n>=1e9)return(n/1e9).toFixed(2)+"B";if(n>=1e6)return(n/1e6).toFixed(2)+"M";if(n>=1e4)return(n/1000).toFixed(1)+"K";return Math.floor(n).toLocaleString("en-US")};
+  var mult=function(){return 1+state.dm*.2};
+  var perClick=function(){return (1+state.drill)*mult()};
+  var income=function(){return state.drones*2*mult()};
+  var drillPrice=function(){return Math.ceil(10*Math.pow(1.65,state.drill))};
+  var dronePrice=function(){return Math.ceil(25*Math.pow(1.82,state.drones))};
+  var prestigeGain=function(){return Math.floor(Math.sqrt(state.runEarned/2500))};
+  var noticeTimer=0;
+  function notice(message){el("toast").textContent=message;noticeTimer=Date.now()+1800}
+  function save(){state.last=Date.now();try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){el("saveState").textContent="Session only: browser storage is unavailable."}}
+  function addDust(amount){
+    var next=Math.min(1e14,state.dust+amount);
+    var actual=next-state.dust;
+    state.dust=next;state.runEarned=Math.min(1e14,state.runEarned+actual);
+  }
+  function show(){
+    el("dust").textContent=fmt(state.dust);
+    el("clickPower").textContent=fmt(perClick());
+    el("perSecond").textContent=fmt(income());
+    el("darkMatter").textContent=fmt(state.dm);
+    el("mineAmt").textContent=fmt(perClick());
+    el("drillLevel").textContent=fmt(state.drill);
+    el("droneCount").textContent=fmt(state.drones);
+    el("drillPrice").textContent=fmt(drillPrice());
+    el("dronePrice").textContent=fmt(dronePrice());
+    el("prestigeGain").textContent=fmt(prestigeGain());
+    el("upgrade").disabled=state.dust<drillPrice()||state.drill>=150;
+    el("drone").disabled=state.dust<dronePrice()||state.drones>=150;
+    el("prestige").disabled=prestigeGain()<1;
+    el("progressBar").style.width=Math.min(100,state.runEarned/2500*100)+"%";
+    el("progressText").textContent=fmt(state.runEarned)+" / 2,500 Stardust this run";
+    el("mission").textContent=state.runEarned<10?"Mine 10 Stardust to unlock your first drill.":
+      state.drones<1?"Upgrade your drill and build your first automated mining drone.":
+      prestigeGain()<1?"Keep expanding. Reach 2,500 earned Stardust to ascend.":"Ascension available! Gain permanent Dark Matter for all future runs.";
+    if(noticeTimer&&Date.now()>noticeTimer){el("toast").textContent="";noticeTimer=0;}
+  }
+  function mine(){
+    addDust(perClick());
+    var planet=el("planet"),zone=el("planetZone");
+    planet.classList.add("hit");setTimeout(function(){planet.classList.remove("hit")},100);
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      var f=document.createElement("span");f.className="float";f.textContent="+"+fmt(perClick());
+      f.style.left=(40+Math.random()*20)+"%";f.style.top=(20+Math.random()*30)+"%";
+      zone.appendChild(f);setTimeout(function(){f.remove()},700);
+    }
+    show();save();
+  }
+  el("planet").addEventListener("click",mine);
+  el("mine").addEventListener("click",mine);
+  document.addEventListener("keydown",function(e){
+    if(e.code==="Space"&&!e.repeat&&!(document.activeElement&&["BUTTON","INPUT","TEXTAREA"].includes(document.activeElement.tagName))){
+      e.preventDefault();mine();
+    }
+  });
+  el("upgrade").addEventListener("click",function(){var c=drillPrice();if(state.dust>=c&&state.drill<150){state.dust-=c;state.drill++;notice("Plasma Drill upgraded.");show();save()}});
+  el("drone").addEventListener("click",function(){var c=dronePrice();if(state.dust>=c&&state.drones<150){state.dust-=c;state.drones++;notice("Drone deployed!");show();save()}});
+  el("prestige").addEventListener("click",function(){var g=prestigeGain();if(g<1)return;if(!confirm("Restart this run for +"+g+" Dark Matter? Your permanent bonuses stay."))return;state.dm+=g;state.dust=0;state.runEarned=0;state.drill=0;state.drones=0;notice("Ascension complete. Your galaxy is stronger!");show();save()});
+  el("reset").addEventListener("click",function(){if(!confirm("Erase Pocket Galaxy progress on this device?"))return;state=Object.assign({},initial,{last:Date.now()});save();show();notice("Progress cleared.")});
+  var now=Date.now(),elapsed=Math.max(0,Math.min(8*3600,(now-(Number(state.last)||now))/1000));
+  if(elapsed>3&&income()>0){addDust(income()*elapsed*.5);notice("Offline drones collected "+fmt(income()*elapsed*.5)+" Stardust!")}
+  show();save();
+  setInterval(function(){addDust(income()*.2);show()},200);
+  setInterval(save,5000);
+  document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
+})();
+</script>
+</body>
+</html>
