@@ -1,0 +1,82 @@
+name: Publish Pocket Galaxy to existing itch.io project (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      itch_target:
+        description: "Existing itch.io project slug: username/space-clicker-pocket-galaxy"
+        required: true
+        type: string
+      confirm_publish:
+        description: "I own this existing itch.io project and approve sending this build"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: itch-publish-manual
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: ${{ inputs.confirm_publish }} == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out the game's source
+        uses: actions/checkout@v4
+
+      - name: Verify self-contained gameplay
+        run: node scripts/test-itch-pocket-galaxy.mjs
+
+      - name: Validate authorization and target before any upload
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          TARGET: ${{ inputs.itch_target }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$BUTLER_API_KEY" ]]; then
+            echo "::error::Missing BUTLER_API_KEY repository secret."
+            exit 1
+          fi
+          if [[ ! "$TARGET" =~ ^[a-z0-9][a-z0-9_-]*/[a-z0-9][a-z0-9_-]*$ ]]; then
+            echo "::error::Invalid target. Use existing lowercase username/game-slug."
+            exit 1
+          fi
+          echo "Owner-approved upload target syntax validated."
+
+      - name: Prepare only the playable HTML5 payload
+        run: |
+          mkdir -p dist/butler
+          cp distribution/itch-io/index.html dist/butler/index.html
+          test -s dist/butler/index.html
+
+      - name: Install itch.io official butler CLI (free)
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/butler"
+          curl -fLsS --retry 2 --connect-timeout 15 \
+            https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default \
+            -o "$RUNNER_TEMP/butler.zip"
+          unzip -oq "$RUNNER_TEMP/butler.zip" -d "$RUNNER_TEMP/butler"
+          chmod +x "$RUNNER_TEMP/butler/butler"
+          echo "$RUNNER_TEMP/butler" >> "$GITHUB_PATH"
+
+      - name: Upload to manually authorized itch.io project
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          TARGET: ${{ inputs.itch_target }}
+        run: |
+          set -euo pipefail
+          butler push dist/butler "$TARGET:html5" --if-changed
+
+      - name: Post-upload reminder
+        env:
+          TARGET: ${{ inputs.itch_target }}
+        run: |
+          echo "Build uploaded to user-selected itch.io project."
+          echo "Open itch.io Edit game, set Kind=HTML and channel=HTML5 / Playable in browser."
+          echo "Verify preview, mark game public manually, configure Homepage link, and record final URL in Backlink OS."
