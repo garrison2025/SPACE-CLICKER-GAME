@@ -39,3 +39,19 @@ An **independent playable mini-edition**, not a wrapper around the production we
 [13-Site Backlink OS publication queue](https://github.com/chenmu2024/13-Site-Backlink-OS/blob/main/reports/actionable_queue.md) — opportunity `L027`.
 
 *The game ZIP is generated as a GitHub Actions artifact with 30-day retention; regenerate it at any time using the workflow.*
+
+
+## Optional: GitHub-only automated uploads after initial setup
+
+itch.io's **free [butler](https://itch.io/docs/butler/pushing.html)** CLI can send an HTML5 build without your computer being powered on. It does NOT create the game page, set it public, or configure browser-playable flags. It needs an itch.io account and one manual project-page creation.
+
+1. Sign in to [itch.io New Game](https://itch.io/game/new), create the `space-clicker-pocket-galaxy` project, initially private.
+2. In [itch.io API keys](https://itch.io/user/settings/api-keys), create/get a *butler/wharf* key. **Never paste a key into chat or commit it into code.**
+3. In [Space Clicker GitHub repository secrets](https://github.com/garrison2025/SPACE-CLICKER-GAME/settings/secrets/actions), create repository secret named `BUTLER_API_KEY`. Do not enable any scheduled publishing yet.
+4. Open [Publish Pocket Galaxy — manual only](https://github.com/garrison2025/SPACE-CLICKER-GAME/actions/workflows/itch-io-publish.yml), choose **Run workflow**, enter the *existing* itch username and slug in the format `username/space-clicker-pocket-galaxy`, and check the explicit **confirm_publish** box.
+5. GitHub verifies the game, downloads the official butler CLI and runs `butler push dist/butler username/space-clicker-pocket-galaxy:html5 --if-changed`. There is **no cron** or unattended publishing.
+6. In itch.io **Edit game**, set Kind to **HTML Game**, mark the uploaded `html5` channel **HTML5 / Playable in browser**, set mobile settings only after preview tests, and make the game public when satisfied. Metadata may include the original site homepage.
+
+This keeps future builds free and one-click from GitHub, while protecting the initial external publication behind your direct approval. Neither the game page nor any backlink exists until you carry out that one-time publisher action.
+
+Official documentation: [butler authentication](https://itch.io/docs/butler/login.html) · [pushing channels](https://itch.io/docs/butler/pushing.html) · [CI-friendly install](https://itch.io/docs/butler/installing.html).
