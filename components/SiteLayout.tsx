@@ -11,13 +11,35 @@ interface SiteLayoutProps {
   activeGame?: GameId;
 }
 
+// Shared menu entries keep desktop dropdowns and the responsive menu in sync.
+const SPACEBAR_TOOLS: Array<[ViewMode, string]> = [
+  ['spacebar-games', 'Spacebar Games'],
+  ['spacebar-clicker', 'Spacebar Clicker'],
+  ['spacebar-clicker-test', 'Spacebar Clicker Test'],
+  ['spacebar-counter', 'Spacebar Counter'],
+  ['spacebar-clicker-2', 'Spacebar Clicker 2'],
+  ['spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked']
+];
+
+const MORE_PAGES: Array<[ViewMode, string]> = [
+  ['compare', 'Feature Comparison'],
+  ['achievements', 'Milestones'],
+  ['about', 'About'],
+  ['contact', 'Contact']
+];
+
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentView, activeGame }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const spacebarMenuRef = useRef<HTMLDetailsElement | null>(null);
+  const moreMenuRef = useRef<HTMLDetailsElement | null>(null);
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    // Close any open dropdown after a route change.
+    if (spacebarMenuRef.current) spacebarMenuRef.current.open = false;
+    if (moreMenuRef.current) moreMenuRef.current.open = false;
   }, [currentView, activeGame]);
 
   useEffect(() => {
@@ -45,6 +67,34 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
     };
   }, [mobileMenuOpen]);
   
+  useEffect(() => {
+    const handleDesktopPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (spacebarMenuRef.current && !spacebarMenuRef.current.contains(target)) {
+        spacebarMenuRef.current.open = false;
+      }
+      if (moreMenuRef.current && !moreMenuRef.current.contains(target)) {
+        moreMenuRef.current.open = false;
+      }
+    };
+
+    const handleDesktopEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      const openMenu = [spacebarMenuRef.current, moreMenuRef.current].find((menu) => menu?.open);
+      if (openMenu) {
+        openMenu.open = false;
+        openMenu.querySelector('summary')?.focus();
+      }
+    };
+
+    document.addEventListener('pointerdown', handleDesktopPointerDown);
+    document.addEventListener('keydown', handleDesktopEscape);
+    return () => {
+      document.removeEventListener('pointerdown', handleDesktopPointerDown);
+      document.removeEventListener('keydown', handleDesktopEscape);
+    };
+  }, []);
+
   // Helper to create SPA-friendly links that bots can also follow
   const NavLink = ({ view, label, className = "" }: { view: ViewMode, label: string, className?: string }) => {
     // Determine path based on view
@@ -61,7 +111,12 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
         <a
           href={path}
           aria-current={isCurrent ? 'page' : undefined}
-          onClick={(e) => { e.preventDefault(); onNavigate(view); }}
+          onClick={(e) => {
+            e.preventDefault();
+            if (spacebarMenuRef.current) spacebarMenuRef.current.open = false;
+            if (moreMenuRef.current) moreMenuRef.current.open = false;
+            onNavigate(view);
+          }}
           className={`transition-colors font-bold tracking-wide text-sm ${isCurrent ? 'text-neon-blue' : 'text-gray-400 hover:text-white'} ${className}`}
         >
           {label}
@@ -92,28 +147,50 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                 <Logo withText={true} className="w-8 h-8 md:w-10 md:h-10" />
             </a>
 
-            {/* Desktop Nav */}
-            <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-5 xl:gap-7">
-                <NavLink view="home" label="HOME" />
-                <NavLink view="game" label="GALAXY MINER" />
-                <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" />
-                <NavLink view="compare" label="COMPARE" />
-                <NavLink view="achievements" label="ACHIEVEMENTS" />
-                <NavLink view="blog" label="BLOG" />
-                <NavLink view="about" label="ABOUT" />
+            {/* Desktop navigation: high-value pages first, full tool coverage in crawlable dropdown links. */}
+            <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-3 xl:gap-5">
+                <NavLink view="home" label="HOME" className="text-xs xl:text-sm" />
+                <NavLink view="game" label="GALAXY MINER" className="text-xs xl:text-sm" />
+                <NavLink view="spacebar-clicker" label="SPACEBAR CLICKER" className="text-xs xl:text-sm" />
+
+                <details ref={spacebarMenuRef} className="relative group">
+                  <summary
+                    onClick={() => { if (moreMenuRef.current) moreMenuRef.current.open = false; }}
+                    className={`flex cursor-pointer list-none items-center gap-1.5 text-xs xl:text-sm font-bold tracking-wide transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-neon-blue [&::-webkit-details-marker]:hidden ${SPACEBAR_TOOLS.some(([view]) => view === currentView) ? 'text-neon-blue' : 'text-gray-400'}`}
+                  >
+                    SPACEBAR TOOLS
+                    <span className="text-[10px] transition-transform group-open:rotate-180" aria-hidden="true">▼</span>
+                  </summary>
+                  <div className="absolute right-0 top-full z-[130] w-64 pt-3">
+                    <div className="rounded-xl border border-white/15 bg-space-950 p-2 shadow-2xl">
+                      {SPACEBAR_TOOLS.map(([view, label]) => (
+                        <NavLink key={view} view={view} label={label} className="block rounded-lg px-3 py-2.5 hover:bg-white/10" />
+                      ))}
+                    </div>
+                  </div>
+                </details>
+
+                <NavLink view="blog" label="BLOG" className="text-xs xl:text-sm" />
+                <details ref={moreMenuRef} className="relative group">
+                  <summary
+                    onClick={() => { if (spacebarMenuRef.current) spacebarMenuRef.current.open = false; }}
+                    className={`flex cursor-pointer list-none items-center gap-1.5 text-xs xl:text-sm font-bold tracking-wide transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-neon-blue [&::-webkit-details-marker]:hidden ${MORE_PAGES.some(([view]) => view === currentView) ? 'text-neon-blue' : 'text-gray-400'}`}
+                  >
+                    MORE
+                    <span className="text-[10px] transition-transform group-open:rotate-180" aria-hidden="true">▼</span>
+                  </summary>
+                  <div className="absolute right-0 top-full z-[130] w-52 pt-3">
+                    <div className="rounded-xl border border-white/15 bg-space-950 p-2 shadow-2xl">
+                      {MORE_PAGES.map(([view, label]) => (
+                        <NavLink key={view} view={view} label={label} className="block rounded-lg px-3 py-2.5 hover:bg-white/10" />
+                      ))}
+                    </div>
+                  </div>
+                </details>
             </nav>
 
             {/* Right Actions */}
             <div className="flex items-center gap-2 md:gap-3">
-                <a
-                  href="/spacebar-games/"
-                  aria-current={currentView === 'spacebar-games' ? 'page' : undefined}
-                  onClick={(event) => { event.preventDefault(); onNavigate('spacebar-games'); }}
-                  className="hidden xl:inline-flex px-3.5 py-1.5 bg-neon-purple/10 border border-neon-purple/40 text-neon-purple hover:bg-neon-purple hover:text-black transition-all rounded-full font-mono text-xs font-bold"
-                >
-                  SPACEBAR TOOLS
-                </a>
-
                 <div
                   ref={mobileMenuRef}
                   className="lg:hidden relative"
@@ -146,15 +223,9 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, onNavigate, currentVi
                       {[
                         ['home', 'Home'],
                         ['game', 'Galaxy Miner'],
-                        ['spacebar-games', 'Spacebar Games'],
-                        ['spacebar-clicker', 'Spacebar Clicker'],
-                        ['spacebar-clicker-2', 'Spacebar Clicker 2'],
-                        ['spacebar-clicker-test', 'CPS Test'],
-                        ['spacebar-counter', 'Spacebar Counter'],
-                        ['compare', 'Feature Comparison'],
-                        ['achievements', 'Milestones'],
+                        ...SPACEBAR_TOOLS,
                         ['blog', 'Blog'],
-                        ['about', 'About']
+                        ...MORE_PAGES
                       ].map(([view, label]) => (
                         <a
                           key={view}
