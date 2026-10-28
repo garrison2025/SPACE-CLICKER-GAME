@@ -143,6 +143,12 @@ export async function onRequest(context) {
   const legacyGame = url.searchParams.get('game');
   const legacyPost = url.searchParams.get('post');
 
+  // Consolidate the former /home route to the canonical homepage. Google
+  // previously discovered /home, but the route is no longer published.
+  if (normalizePath(pathname) === '/home') {
+    return redirectResponse(new URL('/', url.origin).toString(), 301);
+  }
+
   if (pathname === '/index.html') {
     const homeUrl = new URL('/', url.origin);
     return redirectResponse(homeUrl.toString(), 301);
