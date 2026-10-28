@@ -48,6 +48,9 @@ export const AboutPage = () => (
             The main game pages include version-specific mechanics, decision guides, limitations, and save behavior so a visitor can understand what is unique about each simulation before or after playing it. We do not publish fabricated testimonials, invented player counts, unsupported earnings claims, or universal CPS rankings.
         </p>
 
+        <h3>Source and Reproducible Examples</h3>
+        <p>The public source and change history are available in the <a href="https://github.com/garrison2025/SPACE-CLICKER-GAME" target="_blank" rel="noopener noreferrer">Space Clicker Game repository</a>. Worked examples state their starting balance, unit counts and active bonuses so readers can reproduce the arithmetic. They are calculations from the game rules, not hardware benchmarks or recorded playthroughs.</p>
+
         <h3>The Technology</h3>
         <p>
             The site uses React 18, Vite, Tailwind CSS, and lightweight browser graphics. The priority is responsive interaction, readable interfaces, and fast loading rather than requiring a game client or paid API.
@@ -64,7 +67,7 @@ export const AboutPage = () => (
         <div className="bg-space-800 p-6 rounded-lg border-l-4 border-neon-blue my-8">
             <h4 className="m-0 mb-2 text-neon-blue">System Status</h4>
             <ul className="list-none p-0 m-0 text-sm font-mono">
-                <li>Site/content review: October 9, 2026</li>
+                <li>Site/content review: October 28, 2026</li>
                 <li>Privacy/terms policy date: October 6, 2026</li>
                 <li>Game simulations in the main catalog: 6</li>
                 <li>Required paid API for gameplay: None</li>
@@ -271,7 +274,6 @@ export const SitemapPage = () => (
             <li><a href="/spacebar-clicker-2/" className="hover:text-neon-blue transition-colors">Spacebar Clicker 2</a></li>
             <li><a href="/spacebar-counter/" className="hover:text-neon-blue transition-colors">Spacebar Counter</a></li>
             <li><a href="/spacebar-clicker-test/" className="hover:text-neon-blue transition-colors">Spacebar Clicker Test</a></li>
-            <li><a href="/spacebar-clicker-unblocked/" className="hover:text-neon-blue transition-colors">Spacebar Clicker Instant Browser Mode</a></li>
         </ul>
 
         <h3>Guides & Site Resources</h3>

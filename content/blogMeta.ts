@@ -23,11 +23,11 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "2",
     "slug": "psychology-of-space-clicking-games",
-    "title": "Why We Click: The Psychology Behind Space Clicking Games",
-    "seoTitle": "Psychology of Space Clicking Games | Space Clicker Blog",
+    "title": "Galaxy Miner Progress Checklist: What to Check When a Run Slows Down",
+    "seoTitle": "Galaxy Miner Progress Checklist | Space Clicker Game",
     "publishedDate": "2025-12-28",
     "readTime": "3 min read",
-    "excerpt": "Explore how visible progress, short goals, feedback loops and milestones influence player motivation in space clicking games.",
+    "excerpt": "Diagnose slow Galaxy Miner progress using upgrade costs, unit milestones, planet multipliers, Heat Flux and the current Dark Matter preview.",
     "image": "https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2000"
   },
   {
@@ -103,11 +103,11 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "10",
     "slug": "ultimate-hardware-guide-space-bar-click-game",
-    "title": "Keyboard Factors for Space Bar Click Games: Switches, Stabilizers, and Ergonomics",
-    "seoTitle": "Keyboard Factors for Space Bar Click Games | Space Clicker Blog",
+    "title": "Spacebar CPS Troubleshooting: Repeat Keys, Timing and Comparable Results",
+    "seoTitle": "Spacebar CPS Troubleshooting | Space Clicker Game",
     "publishedDate": "2026-01-18",
     "readTime": "2 min read",
-    "excerpt": "A practical guide to switch feel, actuation, stabilizers and ergonomics for repeated Space-key input without unsupported speed claims.",
+    "excerpt": "Resolve unexpected Spacebar Clicker Test results with the actual counting rules, timed-mode formulas, background pause behavior and local-history checks.",
     "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000"
   }
 ];

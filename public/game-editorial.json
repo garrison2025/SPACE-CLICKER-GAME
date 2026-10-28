@@ -1,33 +1,33 @@
 {
   "galaxy_miner": {
-    "reviewed": "2026-10-09",
-    "directAnswer": "Galaxy Miner is the flagship incremental mode on SpaceClickerGame.com. Its distinctive decision is not simply how fast to click: active players balance Heat for the 2x Heat Flux window, while longer runs increasingly depend on automation, planet multipliers, Dark Matter, and reset timing.",
+    "reviewed": "2026-10-28",
+    "directAnswer": "Use this checklist after a purchase, a break, or a reset when the resource panel behaves differently from what you expected. The figures below describe this build; they are calculation examples rather than measured completion times.",
     "whyItMatters": [
-      "The game deliberately changes emphasis as a run grows. Manual mining matters most at the start, but automatic producers, planet multipliers, and permanent Void Technology become more important later. That shift creates a useful decision loop: buy more immediate output, save for a milestone, or reset for a permanent advantage.",
-      "Heat adds a second active constraint. Mining inside the 80%–99% Heat Flux window doubles output, but crossing the overheat threshold temporarily stops normal mining. Geodes can vent Heat, so the best active pattern is controlled timing rather than holding an input continuously."
+      "A producer milestone affects every unit in that tier. At 24 Mining Drones, base output is 48 Stardust/s; the 25th doubles the tier to 100/s. Its added output is 52/s before planet, Dark Matter, technology and Heat Flux multipliers. Check the next unit count before comparing purchases.",
+      "Galactic Reset uses current Stardust: floor(5 × sqrt(Stardust / 1 trillion)). It awards 1 Dark Matter at 40 billion, 5 at 1 trillion, and 10 at 4 trillion. Lifetime Stardust in the milestones tracker does not determine this reward. The live reset preview is the final check before confirming."
     ],
     "decisions": [
       {
-        "situation": "Early run",
-        "action": "Favor affordable manual output and first automation",
-        "reason": "The first producers reduce dependence on constant input while manual upgrades still have a short payback."
+        "situation": "Production falls without losing units",
+        "action": "Check Heat Flux and compare the same Heat state",
+        "reason": "The active 2x bonus ends as Heat cools. A lower rate alone does not mean the save lost an upgrade."
       },
       {
-        "situation": "Near a planet threshold",
-        "action": "Compare saving with another upgrade",
-        "reason": "Unlocking a larger production multiplier can change the value of every producer that follows."
+        "situation": "Lifetime total is large but reset reward is small",
+        "action": "Read current Stardust and the live Dark Matter preview",
+        "reason": "Spent Stardust still contributes to lifetime statistics but is unavailable to the reset calculation."
       },
       {
-        "situation": "Dark Matter available",
-        "action": "Compare reset gain with time to the next meaningful milestone",
-        "reason": "Resetting too early produces little permanent value; waiting too long can waste time on a slow marginal gain."
+        "situation": "Returning gives no offline income",
+        "action": "Check for purchased automatic producers and the saved state",
+        "reason": "Manual click power alone does not produce offline Stardust. Credit is capped at 24 hours and depends on saved automation."
       }
     ],
     "starterPlan": [
-      "Mine manually until the first useful upgrades are affordable, then add automation instead of relying on clicks alone.",
-      "Use the Heat Flux window deliberately; avoid treating 100% Heat as a target because overheat interrupts active mining.",
-      "Recalculate upgrade value after a planet unlock or major milestone because multipliers change payback time.",
-      "Before a Galactic Reset, review the Dark Matter gain and the next reachable production milestone rather than resetting on a fixed timer."
+      "For the first upgrade, Laser Drill costs 15 Stardust and adds 1 base output per click; Mining Drone costs 50 and adds 2 base Stardust/s. Choose according to whether you will keep mining or leave the game.",
+      "At 10 Drones and no Rovers, the next Drone costs 309 for +2 base Stardust/s, while the first Rover costs 350 for +15/s. With 350 available, the Rover has the shorter incremental payback before bonuses.",
+      "Export a portable save code or .scg file from Telemetry & Backup before a reset or device change. Store it outside this browser before clearing site data.",
+      "Before confirming Galactic Reset, check what clears: current Stardust, ordinary upgrades, current planet and Heat. Dark Matter, purchased Void Technology and lifetime statistics remain."
     ],
     "limits": "Galaxy Miner is a browser game, not a cloud service. Progress is stored locally unless you export a portable backup. Offline production is capped and calculated from saved automation state; it is not a hidden background process that runs indefinitely."
   },

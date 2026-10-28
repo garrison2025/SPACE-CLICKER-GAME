@@ -930,14 +930,6 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
           <a href="/spacebar-clicker-test/" className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm">
             Spacebar Clicker Test
           </a>
-          {mode !== 'unblocked' && (
-            <a
-              href="/spacebar-clicker-unblocked/"
-              className="px-4 py-2 rounded border border-white/10 hover:border-neon-blue text-sm"
-            >
-              Instant browser mode
-            </a>
-          )}
           <button
             type="button"
             onClick={exportSave}

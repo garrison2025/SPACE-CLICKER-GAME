@@ -4,6 +4,15 @@ Purpose: reduce the risk of another **Low value content** rejection while keepin
 
 This is an internal quality baseline, not a promise of approval. Google does not publish a guaranteed word-count threshold or a checklist that guarantees site approval.
 
+## October 28, 2026 follow-up
+
+- Retired the duplicate /spacebar-clicker-unblocked/ entry with a 301 to /spacebar-clicker/. Removed its navigation, collection schema and sitemap entries; the same game and local save remain available at the primary URL.
+- Replaced the generic psychology and hardware essays with a Galaxy Miner progress checklist and Spacebar CPS troubleshooting guide, retaining their published URLs and updating titles, excerpts and revision dates.
+- Added a real fresh-run screenshot, explicit upgrade/payback calculations, the 25-Drone milestone calculation, reset reward examples and reset retention details to the strategy guide.
+- Corrected reset descriptions to match the existing formula: 40 billion current Stardust yields 1 Dark Matter; 1 trillion yields 5. Gameplay rules were not changed.
+- Replaced repeated flagship editorial prose with failure diagnosis and concrete next steps. Added public source/change-history access and explained the distinction between calculated examples and recorded playthroughs.
+- Verification must include the existing build, storage and routing checks, retired-route redirects (including legacy queries), 31 sitemap entries and absence of internal links to the retired entry. Run the existing date-based prerender checks with TZ=UTC, matching CI.
+
 ## What changed
 
 - Added original, version-specific editorial guides to all six core game pages.

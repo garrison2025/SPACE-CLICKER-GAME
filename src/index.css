@@ -114,6 +114,32 @@ body {
     padding-right: max(0.5rem, env(safe-area-inset-right));
 }
 
+.worked-example {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+}
+
+.worked-example table {
+    width: 100%;
+    min-width: 36rem;
+    border-collapse: collapse;
+}
+
+.worked-example th,
+.worked-example td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #334155;
+}
+
+.worked-example th {
+    background: #0f172a;
+    color: #f8fafc;
+}
+
 @media (min-width: 640px) {
     .game-console-header {
         padding-left: max(1rem, env(safe-area-inset-left));

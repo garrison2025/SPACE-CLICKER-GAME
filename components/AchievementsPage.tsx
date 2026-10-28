@@ -65,7 +65,7 @@ const ACHIEVEMENTS_DATA: Achievement[] = [
     title: 'Galactic Sovereign',
     description: 'Reach the pinnacle of raw mineral wealth across the galaxy.',
     unlockCondition: 'Accumulate 1,000,000,000,000 (1T) Total Stardust',
-    noteText: 'This milestone also reaches the first Galactic Reset threshold.',
+    noteText: 'Lifetime Stardust is a separate tracker; reset rewards use the current Stardust balance.',
     icon: '👑',
     targetValue: 1000000000000
   },
@@ -356,7 +356,7 @@ const AchievementsPage: React.FC<AchievementsPageProps> = ({ onNavigate }) => {
             <div className="space-y-2">
               <h3 className="text-neon-purple font-bold font-display text-base">3. Strategic Dark Matter Resets</h3>
               <p className="text-xs text-gray-400 leading-relaxed">
-                Galactic Reset first becomes available at 1 Trillion Stardust and grants 5 Dark Matter at that threshold. A larger run can grant more Dark Matter, so compare the value of resetting now with the time needed to reach the next meaningful gain.
+                Galactic Reset first awards 1 Dark Matter at 40 billion current Stardust and grants 5 at 1 trillion. Lifetime totals do not determine the reward. A larger run can grant more Dark Matter, so compare the value of resetting now with the time needed to reach the next meaningful gain.
               </p>
             </div>
           </div>

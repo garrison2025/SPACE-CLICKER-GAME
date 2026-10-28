@@ -32,7 +32,7 @@ Core route intent ownership lives in `content/routeSeo.js`. One primary intent m
 | `/spacebar-clicker-2/` | spacebar clicker 2 | game |
 | `/spacebar-counter/` | spacebar counter | utility |
 | `/spacebar-clicker-test/` | spacebar clicker test | utility |
-| `/spacebar-clicker-unblocked/` | spacebar clicker unblocked | instant-access route |
+| `/spacebar-clicker-unblocked/` | retired duplicate | 301 to `/spacebar-clicker/`; excluded from sitemap and navigation |
 | `/compare/` | space clicker comparison | comparison |
 | `/achievements/` | galaxy miner milestones | progress utility |
 | `/blog/` | space clicker blog | content hub |

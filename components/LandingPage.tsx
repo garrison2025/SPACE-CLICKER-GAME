@@ -106,7 +106,7 @@ const QuickStart = ({ onPlay }: { onPlay: () => void }) => (
           ['1', 'Mine Stardust', 'Click the central asteroid to generate your first resources.'],
           ['2', 'Buy Automation', 'Mining Drones, Rovers, Bases, Stations, and Dyson Swarms add passive production.'],
           ['3', 'Manage Heat Flux', 'Active mining between 80% and 99% heat doubles output until the beam overheats.'],
-          ['4', 'Reset Stronger', 'At 1 trillion Stardust, Galactic Reset can convert the run into permanent Dark Matter.']
+          ['4', 'Reset Stronger', 'From 40 billion current Stardust, Galactic Reset can award Dark Matter; 1 trillion awards 5.']
         ].map(([step, title, text]) => (
           <div key={step} className="rounded-xl border border-white/10 bg-space-900/60 p-5">
             <div className="text-neon-blue font-mono text-xs mb-2">STEP {step}</div>
@@ -303,7 +303,7 @@ const SpacebarLaunchSection = () => (
     </div>
     <p className="mt-6 text-sm text-gray-500">
       Prefer a second progression system? Try <a href="/spacebar-clicker-2/" className="text-neon-purple hover:text-white">Spacebar Clicker 2</a>.
-      Need direct browser access to the classic game? Open <a href="/spacebar-clicker-unblocked/" className="text-neon-blue hover:text-white">Spacebar Clicker instant browser mode</a>.
+      Need direct browser access to the classic game? Open <a href="/spacebar-clicker/" className="text-neon-blue hover:text-white">Spacebar Clicker instant browser mode</a>.
     </p>
   </section>
 );

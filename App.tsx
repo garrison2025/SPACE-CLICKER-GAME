@@ -149,7 +149,7 @@ const App: React.FC = () => {
             const post = params.get('post');
             newPath = post ? `/blog/${post}/` : '/blog/';
         } else if (VALID_VIEWS.includes(legacyView as ViewMode)) {
-            newPath = legacyView === 'home' ? '/' : `/${legacyView}/`;
+            newPath = legacyView === 'home' ? '/' : legacyView === 'spacebar-clicker-unblocked' ? '/spacebar-clicker/' : `/${legacyView}/`;
         }
         
         // Perform replacement redirect
@@ -157,9 +157,16 @@ const App: React.FC = () => {
     }
   }, [location, navigate]);
 
+  useEffect(() => {
+      if (location.pathname.replace(/\/+$/, '') === '/spacebar-clicker-unblocked') {
+          navigate('/spacebar-clicker/' + location.search + location.hash, { replace: true });
+      }
+  }, [location.pathname, location.search, location.hash, navigate]);
+
   // --- ROUTING LOGIC (Using useLocation) ---
   const parsePath = () => {
-      const path = location.pathname;
+      const path = location.pathname.replace(/\/+$/, '') === '/spacebar-clicker-unblocked'
+          ? '/spacebar-clicker/' : location.pathname;
       
       let view: ViewMode = 'home';
       let gameId: GameId = 'galaxy_miner';
@@ -883,7 +890,6 @@ const App: React.FC = () => {
                     { "@type": "ListItem", "position": 2, "url": "https://spaceclickergame.com/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
                     { "@type": "ListItem", "position": 3, "url": "https://spaceclickergame.com/spacebar-counter/", "name": "Spacebar Counter" },
                     { "@type": "ListItem", "position": 4, "url": "https://spaceclickergame.com/spacebar-clicker-2/", "name": "Spacebar Clicker 2" },
-                    { "@type": "ListItem", "position": 5, "url": "https://spaceclickergame.com/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
                   ]
                 },
                 {
@@ -2245,7 +2251,7 @@ const App: React.FC = () => {
                         upgrades={prestigeUpgrades}
                         prestigeGain={prestigeGain}
                         canPrestige={canPrestige}
-                        thresholdLabel={formatNumber(PRESTIGE_THRESHOLD)}
+                        thresholdLabel={formatNumber(PRESTIGE_THRESHOLD / 25)}
                         onPrestige={handlePrestigeReset}
                         onBuy={handleBuyPrestige}
                         onClose={() => setShowPrestigeShop(false)}

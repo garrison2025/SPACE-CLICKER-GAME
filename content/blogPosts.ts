@@ -70,56 +70,33 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '2',
         slug: 'psychology-of-space-clicking-games',
-        title: 'Why We Click: The Psychology Behind Space Clicking Games',
-        excerpt: 'Explore how visible progress, short goals, feedback loops and milestones influence player motivation in space clicking games.',
+        title: 'Galaxy Miner Progress Checklist: What to Check When a Run Slows Down',
+        excerpt: 'Diagnose slow Galaxy Miner progress using upgrade costs, unit milestones, planet multipliers, Heat Flux and the current Dark Matter preview.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 28, 2025',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Oct 28, 2026',
         readTime: '3 min read',
-        tags: ['psychology', 'space clicking game', 'game design', 'player motivation'],
+        tags: ['Galaxy Miner', 'troubleshooting', 'milestones', 'Dark Matter'],
         image: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">You open the tab. You see a number: 0. You click. It becomes 1. Suddenly, an hour has passed, you have a billion resources, and you feel immensely satisfied. This is the power of the <strong>space clicking game</strong>.</p>
-
-            <h2>Feedback Loops in Incremental Games</h2>
-            <p>Incremental games usually combine predictable rewards with occasional bonus events. That mix can make short actions feel meaningful because the player can see both immediate progress and a longer-term target. It is more accurate to describe this as a feedback loop than to equate the game with gambling.</p>
-            
-            <p>When you play <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a>, upgrades provide immediate visual and numerical feedback. Critical hits, milestone unlocks, and new planets make progress easy to notice without requiring a separate analytics screen.</p>
-
-            <h3>The Zeigarnik Effect</h3>
-            <p>One idea often discussed around unfinished goals is the Zeigarnik effect: incomplete tasks can remain easier to recall than completed ones. Incremental games can create a similar sense of continuity by keeping the next milestone visible.</p>
-            <ul>
-                <li>Reach the next affordable upgrade.</li>
-                <li>Hit the next production milestone.</li>
-                <li>Unlock the next sector or permanent upgrade.</li>
-            </ul>
-            <p>Because there is usually another visible milestone nearby, unfinished goals can encourage one more short session. That helps explain why incremental games are easy to resume after a break.</p>
-
-            <h2>Immersion through Minimalism</h2>
-            <p>Why do we prefer a <strong>space clicking game</strong> over a realistic flight simulator? Sometimes, realistic graphics add friction. In a clicker, the abstraction allows players to project their own imagination onto the numbers.</p>
-            <p>Large-number notation lets a small interface represent scales that would be impossible to draw literally. Text-based experiences such as <a href="https://spaceclickergame.com/game/deep_signal/">Deep Space Signal</a> use the same kind of abstraction: a short line of text can stand in for a much larger fictional event.</p>
-
-            <h2>The "Space Bar" Phenomenon</h2>
-            <p>There is a tactile satisfaction to the input. While many play with a mouse, the <strong>space bar clicking game</strong> variant appeals to our desire for physical feedback. Hitting the biggest key on the keyboard feels powerful. It mimics the "Launch" button of a rocket.</p>
-            <p>Automation gives players another way to progress without relying on continuous rapid input. That shifts part of the decision-making from pressing faster to choosing what to upgrade and when.</p>
-
-            <h3>Flow State in Idle Games</h3>
-            <p>The concept of <a href="https://www.psychologytoday.com/us/basics/flow" target="_blank" rel="noopener noreferrer">flow</a> is often discussed in game design, but an idle game does not automatically create it. What these games can do well is keep goals, feedback, and difficulty readable enough that players know what to do next.</p>
-
-            <h2>Community and Competition</h2>
-            <p>Even when a <strong>space clicking game</strong> is single-player, players can still compare upgrade math, prestige timing, and different playstyles in forums or friend groups.</p>
-            <p>Common discussion topics include:</p>
-            <ul>
-                <li>Optimal layouts for <a href="https://spaceclickergame.com/game/mars_colony/">Mars Colony</a>.</li>
-                <li>The exact math behind the Dark Matter multiplier.</li>
-                <li>Speedrun strategies for the <strong>space bar click game</strong> challenges.</li>
-            </ul>
-
-            <h2>Conclusion: A Universe in Your Pocket</h2>
-            <p>Space themes can work well with gathering, reinvestment, automation, and expansion because the setting gives simple numerical systems room to grow without assuming every player responds to them in the same way.</p>
-            <p>In practice, the appeal is simpler: an action produces visible progress, the next milestone is understandable, and the player can decide whether to keep clicking, automate, or change strategy.</p>
-            
-            <p>Try the feedback loop directly in <a href="/game/galaxy_miner/">Galaxy Miner</a>, or use <a href="/spacebar-clicker/">Spacebar Clicker</a> if you want a simpler press-upgrade-automation loop.</p>
+<p class="lead">When Galaxy Miner slows down, use the production panel and Fabricator to identify the next useful decision. This checklist follows this site's mining systems; it is not a claim about player psychology or a universal speedrun route.</p>
+<h2>1. Separate current Stardust from lifetime progress</h2>
+<p>Current Stardust pays for upgrades and determines Dark Matter at reset. Lifetime Stardust records accumulated progress. A lifetime milestone does not mean you still have the spendable balance required for a reset. Check the resource balance and the actual prestige preview before buying or resetting.</p>
+<h2>2. Check whether a producer is near a unit milestone</h2>
+<p>Mining Drones start at 2 Stardust per second each. At 24 Drones, their base output is 48 per second. The 25th activates a 2x unit milestone: 25 × 2 × 2 = 100 per second. That one purchase adds 52 base output per second, rather than the usual 2. Planet and permanent multipliers apply afterward.</p>
+<p>Before another cheap purchase, inspect each producer count. Unit multipliers double at 25, 50, 100 and 200, then receive another 4x at 500. A nearby milestone can change which purchase pays back fastest. The <a href="/blog/strategy-guide-clicker-game-space-empire/">worked upgrade guide</a> shows how to compare them.</p>
+<h2>3. Read the current planet</h2>
+<p>Proxima Centauri B starts at 1x production. Kepler-186f unlocks at 1 million Stardust for 10x; Trappist-1e at 1 billion for 50x; the Galactic Core at 1 trillion for 200x. These are current-run resource thresholds. Once reached, spending Stardust does not send you back to an earlier planet during that run.</p>
+<p>If you are close to a threshold, compare the wait without spending against an upgrade's extra production. There is no fixed best choice: another producer may shorten the wait, while an expensive manual upgrade may delay it.</p>
+<h2>4. Distinguish Heat Flux from reliable unattended output</h2>
+<p>The 80%–99% Heat window provides 2x Heat Flux. At 100%, the beam overheats and normal mining is interrupted. If the visible rate falls after Heat cools, first check whether Flux ended before assuming your save lost an upgrade.</p>
+<p>For unattended planning, compare production under the same Heat state. Do not project a temporary active bonus across an entire break. Offline credit is capped and uses saved production state; it does not simulate continuous manual mining.</p>
+<h2>5. Read the reset preview before committing</h2>
+<p>The current formula is floor(5 × sqrt(current Stardust / 1 trillion)). It first yields 1 Dark Matter at 40 billion Stardust, 5 at 1 trillion and 10 at 4 trillion. Those are calculation checkpoints, not promises about how long a run takes.</p>
+<p>Reset clears current Stardust, ordinary upgrades and planet progress. It retains Dark Matter, purchased permanent technology and lifetime statistics. Export a backup from Telemetry &amp; Backup before a reset if you want a recoverable copy of the run.</p>
+<h2>A short checklist before leaving</h2>
+<ol><li>Confirm automatic production is nonzero; manual click strength alone does not provide offline income.</li><li>Check the next producer milestone and planet threshold.</li><li>Export a backup if the run matters to you, especially before clearing browser data.</li><li>On return, review the credited amount before purchasing upgrades so the change is understandable.</li></ol>
+<p>Play <a href="/game/galaxy_miner/">Galaxy Miner</a> with this checklist beside the Fabricator, or open <a href="/achievements/">Milestones</a> for the separate lifetime tracker.</p>
         `
     },
     {
@@ -283,7 +260,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Compare upgrade cost, production gains and reset timing to make better decisions in incremental space clicker runs.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 08, 2026',
-        updatedDate: 'Oct 7, 2026',
+        updatedDate: 'Oct 28, 2026',
         readTime: '5 min read',
         tags: ['clicker game space', 'strategy', 'math', 'optimization'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
@@ -324,14 +301,19 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Nanobot Swarm:</strong> increases automated production.</li>
             </ol>
 
-            <h2>The Kardashev Scale</h2>
-            <p>Space-themed incremental games can borrow imagery from large-scale civilization concepts such as the <a href="https://en.wikipedia.org/wiki/Kardashev_scale" target="_blank" rel="noopener noreferrer">Kardashev Scale</a>, but Galaxy Miner uses its own fictional progression rather than attempting to simulate that scientific framework directly.</p>
-            <ul>
-                <li><strong>Type I:</strong> Planetary mastery (Mars Colony).</li>
-                <li><strong>Type II:</strong> Stellar mastery (Dyson Swarm in Galaxy Miner).</li>
-                <li><strong>Type III:</strong> Galactic mastery (The Galactic Core).</li>
-            </ul>
-            <p>The game uses the Kardashev scale only as a useful thematic analogy for increasing scale. Its mechanics are fictional and should not be treated as a scientific simulation of that classification system.</p>
+<figure><img src="/guides/galaxy-miner-start.png" alt="Galaxy Miner fresh run showing Stardust, Heat, the Fabricator and the Stats backup entry" width="1280" height="720" loading="lazy" /><figcaption>Actual fresh-run interface, captured October 28, 2026. The Fabricator lists upgrade costs; Stats [S] opens Telemetry &amp; Backup. The numerical examples below use a separate stated calculation scenario.</figcaption></figure>
+<h2>Worked upgrade comparison: one Drone or the first Rover?</h2>
+<p>This reproducible calculation uses the current upgrade constants, not a recorded playthrough. Assume 350 Stardust, 10 Mining Drones, no Rovers, the starting 1x planet, no Dark Matter or permanent technology, and no Heat Flux. Ignore manual clicks and random events while comparing automatic income.</p>
+<div class="worked-example" role="region" aria-label="Worked game calculation" tabindex="0"><table><thead><tr><th scope="col">Next purchase</th><th scope="col">Cost</th><th scope="col">Added Stardust/s</th><th scope="col">Cost / added output</th></tr></thead><tbody><tr><td>11th Mining Drone</td><td>floor(50 × 1.2^10) = 309</td><td>2</td><td>154.5 seconds</td></tr><tr><td>First Space Rover</td><td>350</td><td>15</td><td>23.33 seconds</td></tr></tbody></table></div>
+<p>The first Rover has the shorter incremental payback. Existing Drones produce 20/s; adding the Rover takes the total to 35/s, while adding one Drone takes it to 22/s. This comparison holds only for the stated state. Recalculate when counts, planets, Flux or permanent bonuses change.</p>
+<h2>A milestone changes the same calculation</h2>
+<p>At 24 Drones, their base output is 48/s. The 25th costs floor(50 × 1.2^24) = 3974 and doubles the whole Drone tier: 25 × 2 × 2 = 100/s. Its incremental gain is 52/s, giving about 76.42 seconds of payback at 1x without bonuses. Applying a flat +2/s to this purchase would miss the milestone.</p>
+<h2>Galactic Reset: exact rewards and what survives</h2>
+<p>The current reward is floor(5 × sqrt(current Stardust / 1 trillion)), subject to the game's numeric capacity limit. Use current spendable Stardust, not lifetime Stardust. The first reward is available at 40 billion, earlier than the 1-trillion Galactic Core planet unlock.</p>
+<div class="worked-example" role="region" aria-label="Worked game calculation" tabindex="0"><table><thead><tr><th scope="col">Current Stardust</th><th scope="col">Dark Matter awarded</th></tr></thead><tbody><tr><td>40 billion</td><td>1</td></tr><tr><td>1 trillion</td><td>5</td></tr><tr><td>1.44 trillion</td><td>6</td></tr><tr><td>4 trillion</td><td>10</td></tr></tbody></table></div>
+<p>If you already have 5 Dark Matter and reset at 1 trillion for 5 more, the base permanent multiplier rises from 1.5x to 2x, before technology bonuses. That is a 33.33% relative increase, not a doubling of your existing output. Spending Dark Matter on permanent technology also lowers the unspent-currency multiplier, so compare both effects before purchasing.</p>
+<div class="worked-example" role="region" aria-label="Worked game calculation" tabindex="0"><table><thead><tr><th scope="col">Reset clears</th><th scope="col">Reset retains</th></tr></thead><tbody><tr><td>Current Stardust, ordinary upgrades, current planet, Heat</td><td>Dark Matter, purchased Void Technology, lifetime statistics</td></tr></tbody></table></div>
+<p>Before confirming, export a backup in Telemetry &amp; Backup, read the live Dark Matter preview, and compare the next reward threshold with the time needed to rebuild. There is no universal reset timer. See <a href="/blog/psychology-of-space-clicking-games/">the progress checklist</a> if current and lifetime totals appear inconsistent.</p>
 
             <h2>Space Clicker on Mobile: What Changes</h2>
             <p>On a phone or tablet, the underlying Galaxy Miner economy is the same: manual mining, upgrades, automation, sectors, offline progress, and Galactic Reset use the same rules. The practical difference is input. Touch controls replace mouse or keyboard input, so a mobile session is better treated as short active bursts around upgrade and prestige decisions rather than a contest to maximize physical click speed.</p>
@@ -503,46 +485,34 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '10',
         slug: 'ultimate-hardware-guide-space-bar-click-game',
-        title: 'Keyboard Factors for Space Bar Click Games: Switches, Stabilizers, and Ergonomics',
-        excerpt: 'A practical guide to switch feel, actuation, stabilizers and ergonomics for repeated Space-key input without unsupported speed claims.',
+        title: 'Spacebar CPS Troubleshooting: Repeat Keys, Timing and Comparable Results',
+        excerpt: 'Resolve unexpected Spacebar Clicker Test results with the actual counting rules, timed-mode formulas, background pause behavior and local-history checks.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 18, 2026',
-        updatedDate: 'Oct 6, 2026',
+        updatedDate: 'Oct 28, 2026',
         readTime: '2 min read',
-        tags: ['space bar click game', 'hardware', 'review', 'keyboards'],
+        tags: ['Spacebar Clicker Test', 'CPS', 'timing', 'troubleshooting'],
         image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Keyboard feel can affect comfort during a <strong>space bar click game</strong>, but a more expensive or mechanical keyboard does not automatically produce a better CPS result. Travel, stabilizer feel, layout, and technique all matter.</p>
-
-            <h2>The Switch Debate: Linear vs. Tactile</h2>
-            <p>The switch or sensing mechanism under the keycap changes how repeated input feels. Two common mechanical-switch feel categories are:</p>
-
-            <h3>1. Linear Switches (Red/Silver/Black)</h3>
-            <p>Linear switches move without a tactile bump. Some players prefer that feel for repeated presses, but actuation distance and reset behavior vary by switch and keyboard design.</p>
-
-            <h3>2. Tactile/Clicky Switches (Brown/Blue)</h3>
-            <p>Tactile and clicky switches provide additional physical or audible feedback. Some players find that feedback helpful for consistency, while others prefer a smoother switch. There is no universal winner for CPS.</p>
-            <p>As one concrete manufacturer example, <a href="https://www.cherry.de/en-gb/product/mx2a-experience-box" target="_blank" rel="noopener noreferrer">CHERRY's official MX2A reference</a> groups current switches into linear, tactile, and clicky variants. Individual product pages also show that pre-travel and actuation characteristics vary by switch, which is why the label alone is not a complete performance measure.</p>
-
-            <h2>The Space Bar Stabilizer</h2>
-            <p>The space bar is wider than most keys, so a stabilizer helps it travel evenly when pressed away from the center. Stabilizer designs vary across keyboards, and price alone does not guarantee a better result.</p>
-            <p><strong>Maintenance note:</strong> A rattling space bar can come from the stabilizer or keycap fit. Follow the keyboard manufacturer's maintenance guidance before lubricating or disassembling anything, especially on a laptop or sealed board.</p>
-
-            <h2>Mice for the Clicker</h2>
-            <p>While the space bar is iconic, the mouse is the workhorse of games like <em>Star Defense</em>. You want a mouse with:</p>
-            <ol>
-                <li><strong>Reliable Switches:</strong> Different optical and mechanical switch designs have different debounce behavior and durability characteristics.</li>
-                <li><strong>Comfortable Shape and Weight:</strong> Choose a mouse that feels comfortable for your grip rather than chasing a specific weight target.</li>
-            </ol>
-
-            <h2>Ergonomics and Health</h2>
-            <p>For repeated-input sessions, use a comfortable posture and take breaks. A wrist rest or other setup choice may help some people, but comfort varies by person and device.</p>
-            <p>If repeated input causes pain or persistent discomfort, stop the session rather than trying to push through it.</p>
-
-            <h2>Conclusion</h2>
-            <p>Hardware can change comfort and feel, but technique, consistency, and avoiding fatigue matter more than the price of the keyboard. If repeated input becomes uncomfortable, stop the test and rest your hand.</p>
-            
-            <p>Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS runs, or the <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total. Neither tool requires an account or download.</p>
+<p class="lead">Use this guide when the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> reports an unexpected score. Start with the counting and timing rules before blaming the keyboard or buying hardware. The examples below are arithmetic illustrations, not measured hardware benchmarks.</p>
+<h2>Holding Space only counts once</h2>
+<p>The test counts deliberate Space keydown events and ignores browser repeat events. Press and release for each new count. Holding the key down produces repeated browser events, but those do not become extra presses. This prevents operating-system repeat settings from deciding the score.</p>
+<p>If Space appears unresponsive, click the test area and check focus. Input fields and other interactive controls handle their own keys. On touch devices, use the test's on-screen control and compare those runs separately from physical-keyboard results.</p>
+<h2>Check the mode before comparing CPS</h2>
+<p>For a completed timed run, average CPS equals accepted presses divided by the selected active duration. For example, 42 presses in a 10-second test gives 4.2 CPS. The average interval display is 1000 / 4.2, approximately 238.1 milliseconds; it is derived from CPS, not a measurement of keyboard latency.</p>
+<p>The 100-click sprint ends at the target press count and divides by elapsed active time. A hypothetical 100 presses over 20 seconds gives 5 CPS. The first press starts the clock and is counted, so very short runs are sensitive to the start convention. Compare like modes and durations.</p>
+<h2>Peak CPS and average CPS answer different questions</h2>
+<p>Peak CPS is the largest rolling one-second count observed during the run. Average CPS covers the complete active run. A short burst can produce a high peak while pauses reduce the average. Neither number is a population percentile or a universal ranking.</p>
+<p>For a consistent comparison, select one mode, use one input method, keep the page visible and repeat a small set of runs with rests between them. Record every result rather than selecting only the highest. Fatigue and technique can change the result even on the same device.</p>
+<h2>Switching tabs pauses this test</h2>
+<p>When the document is hidden, the test pauses its clock and resumes when visible again. Time spent in another tab therefore should not be treated as active test time. A phone stopwatch that includes a background break will disagree with the test by design.</p>
+<p>Use an uninterrupted visible run when checking timing. Avoid treating scores gathered with different pause patterns as a controlled comparison.</p>
+<h2>Why a best score or history entry disappears</h2>
+<p>Personal bests are stored per mode in the current browser. Recent history retains the latest ten completed runs. Changing the duration selects a different best-score record; changing browser, using private browsing or clearing site storage can remove access to old results. There is no account-based synchronization.</p>
+<p>Before changing devices, use the result-copy or download controls if you need to keep a record. A screenshot should include the mode, accepted presses, active elapsed time, average CPS and input method so another result can be compared fairly.</p>
+<h2>When to check the device</h2>
+<p>If a complete press-and-release cycle still fails to count, first test the same key in a plain text field, then repeat a short run in another browser. Check whether the problem follows the device or only the page. These checks isolate a symptom; they do not prove a switch type is faster.</p>
+<p>For an untimed tally, use <a href="/spacebar-counter/">Spacebar Counter</a>. For upgrades and automatic points, use <a href="/spacebar-clicker/">Spacebar Clicker</a>; that game's point total is not a raw CPS test result.</p>
         `
     }
 ];

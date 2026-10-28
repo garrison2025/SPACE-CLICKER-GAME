@@ -664,7 +664,7 @@ const SpacebarClickerTest: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Related CPS and hardware guides</h2>
             <p>
-              Read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Space Bar Clicking Game Mechanics</a> for input and CPS details, or <a href="/blog/ultimate-hardware-guide-space-bar-click-game/" className="text-neon-blue hover:text-white">Keyboard Factors for Space Bar Click Games</a> for hardware and ergonomics.
+              Read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Space Bar Clicking Game Mechanics</a> for input and CPS details, or <a href="/blog/ultimate-hardware-guide-space-bar-click-game/" className="text-neon-blue hover:text-white">Spacebar CPS Troubleshooting</a> for counting, timing and local history.
             </p>
           </section>
 

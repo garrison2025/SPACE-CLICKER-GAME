@@ -383,7 +383,6 @@ const buildStaticRouteSchema = (route, description, canonical) => {
             { "@type": "ListItem", "position": 2, "url": site + "/spacebar-clicker-test/", "name": "Spacebar Clicker Test" },
             { "@type": "ListItem", "position": 3, "url": site + "/spacebar-counter/", "name": "Spacebar Counter" },
             { "@type": "ListItem", "position": 4, "url": site + "/spacebar-clicker-2/", "name": "Spacebar Clicker 2" },
-            { "@type": "ListItem", "position": 5, "url": site + "/spacebar-clicker-unblocked/", "name": "Spacebar Clicker Instant Play" }
           ]
         },
         {
@@ -821,7 +820,7 @@ const staticRouteContent = {
         <li>Mine Stardust manually to start the run.</li>
         <li>Buy Mining Drones, Rovers, Bases, Orbital Stations and Dyson Swarms for automatic production.</li>
         <li>Keep active mining between 80% and 99% Heat to use the 2x Heat Flux bonus without overheating.</li>
-        <li>Reach 1 trillion Stardust to unlock Galactic Reset and permanent Dark Matter upgrades.</li>
+        <li>Reach 40 billion current Stardust for the first Dark Matter; 1 trillion awards 5.</li>
       </ol>
 
       <h2>What Space Clicker Game includes</h2>
@@ -859,7 +858,7 @@ const staticRouteContent = {
       <h2>Keyboard controls</h2>
       <p>On desktop, Space fires the mining laser, number keys 1 through 8 quick-buy the eight standard upgrade tiers, P toggles the Dark Matter prestige chamber, S toggles Telemetry & Backup, M toggles game audio, and H or ? toggles the hotkeys reference. When a form control or backup textarea has focus, gameplay shortcuts do not intercept typed input.</p>
       <h2>Galactic Reset and Dark Matter</h2>
-      <p>Galactic Reset becomes available from 1 trillion Stardust. A reset removes current Stardust and standard upgrades but keeps Dark Matter, permanent Void Technology, and lifetime progress. Larger runs can award more Dark Matter, so reset timing becomes a long-term efficiency decision.</p>
+      <p>Galactic Reset first awards 1 Dark Matter at 40 billion current Stardust; 1 trillion awards 5. A reset removes current Stardust and standard upgrades but keeps Dark Matter, permanent Void Technology, and lifetime progress. Larger runs can award more Dark Matter, so reset timing becomes a long-term efficiency decision.</p>
       <p>For upgrade planning, see the <a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker strategy guide</a> or track thresholds on the <a href="/achievements/">Galaxy Miner milestones page</a>.</p>
     </section>`,
   '/game/mars_colony': `
@@ -929,7 +928,7 @@ const staticRouteContent = {
   '/spacebar-games': `
 <section>
       <h2>Choose the right Spacebar game or tool</h2>
-      <p>Choose the mode that matches what you want to do. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> for an upgrade-based idle game, <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS challenges. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression game, while <a href="/spacebar-clicker-unblocked/">instant browser mode</a> opens the classic game directly and does not bypass network restrictions.</p>
+      <p>Choose the mode that matches what you want to do. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> for an upgrade-based idle game, <a href="/spacebar-counter/">Spacebar Counter</a> for an untimed press total, and <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed CPS challenges. <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression game. All modes open directly in your browser.</p>
       <h2>Spacebar mode comparison</h2>
       <table>
         <thead><tr><th>Mode</th><th>Best for</th><th>Timing</th><th>Progression</th><th>Local data</th></tr></thead>
@@ -938,7 +937,6 @@ const staticRouteContent = {
           <tr><td><a href="/spacebar-clicker-test/">Spacebar Clicker Test</a></td><td>Measuring Spacebar speed</td><td>1–60s, custom 1–300s, or 100 presses</td><td>None</td><td>Mode bests + last 10 runs</td></tr>
           <tr><td><a href="/spacebar-counter/">Spacebar Counter</a></td><td>Untimed counting</td><td>Untimed</td><td>None</td><td>Current + highest total</td></tr>
           <tr><td><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a></td><td>Second progression loop</td><td>Open-ended</td><td>Upgrades + Nova Cores</td><td>Local save + export/import</td></tr>
-          <tr><td><a href="/spacebar-clicker-unblocked/">Instant browser mode</a></td><td>Quick browser access</td><td>Open-ended</td><td>Same classic progression</td><td>Classic local save</td></tr>
         </tbody>
       </table>
       <h2>Spacebar Clicker</h2>
@@ -946,7 +944,7 @@ const staticRouteContent = {
       <h2>Spacebar Counter and CPS Test</h2>
       <p><a href="/spacebar-counter/">Spacebar Counter</a> keeps an untimed total, saves the current tally locally, supports minus-one corrections and a chosen starting total, and shows current, average, and peak CPS. <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> adds 1, 5, 10, 30, and 60 second modes, custom durations up to 300 seconds, and a 100-click sprint.</p>
       <h2>Spacebar Clicker 2 and instant browser mode</h2>
-      <p><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression mode with Overdrive, offline production, and Nova Core ascension. <a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a> opens the classic game directly with no download or account; it does not bypass school, workplace, firewall, parental-control, or administrator restrictions.</p>
+      <p><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> is a separate progression mode with Overdrive, offline production, and Nova Core ascension. The classic game also opens directly with no download or account.</p>
       <p>All current Spacebar modes work in a modern browser. Desktop users can use the physical Space key where supported, while mobile users can use the large on-screen controls.</p>
       <p>Related guides: <a href="/blog/mastering-the-space-bar-clicking-game/">Mastering the Space Bar</a> explains the transition from manual input to automation, while <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> covers deliberate key input and CPS.</p>
     </section>`,
@@ -998,7 +996,7 @@ const staticRouteContent = {
       <p>The current total and highest total are stored locally in the current browser. The current tally survives a normal reload, can be reduced by one to correct an accidental count, and can be set to a chosen non-negative starting value when continuing an existing tally. Setting a total restarts the timing metrics so CPS is not mixed with the imported baseline. Nothing is uploaded to a public leaderboard, and clearing site storage can remove these local values.</p>
       <h2>Counter vs Spacebar Clicker Test</h2>
       <p>Use this page when you want an endless count. Use the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> for timed 1, 5, 10, 30, or 60 second CPS tests, custom durations, and the 100-click sprint. Use <a href="/spacebar-clicker/">Spacebar Clicker</a> when you want upgrades, automation, and prestige, or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
-      <p>For more detail on repeated keyboard input, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">keyboard factors guide</a>.</p>
+      <p>For more detail on repeated keyboard input, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">CPS troubleshooting guide</a>.</p>
     </section>`,
   '/spacebar-clicker-test': `
 <section>
@@ -1024,7 +1022,7 @@ const staticRouteContent = {
       <h2>Personal bests, recent results, and sharing</h2>
       <p>The best result for each selected mode is stored locally in the current browser. The page also keeps the last 10 completed runs locally with mode, clicks, elapsed time, average CPS, peak CPS, and completion time. The history can be cleared at any time. After a completed test, supported devices can use the share sheet, copy the result where clipboard access is available, or save a locally generated 1200×630 PNG result card.</p>
       <p>For an untimed session, use the <a href="/spacebar-counter/">Spacebar Counter</a>. For a progression game with upgrades and prestige, play <a href="/spacebar-clicker/">Spacebar Clicker</a>, or browse the full <a href="/spacebar-games/">Spacebar Games hub</a>.</p>
-      <p>For technique and hardware context, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> and <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">Keyboard Factors for Space Bar Click Games</a>.</p>
+      <p>For input rules and result interpretation, read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> and <a href="/blog/ultimate-hardware-guide-space-bar-click-game/">Spacebar CPS Troubleshooting</a>.</p>
     </section>`,
   '/blog': `
     <section>
@@ -1053,11 +1051,13 @@ const staticRouteContent = {
       <h2>Who creates and reviews the site</h2>
       <p>The games, tools, and editorial pages are maintained under the <strong>SpaceClickerGame.com Editorial</strong> identity. Articles about this site's mechanics are reviewed against the current browser implementation rather than copied from another game or generated from an external feed. Questions, corrections, and bug reports can be sent to <a href="mailto:info@spaceclickergame.com">info@spaceclickergame.com</a>.</p>
       <p>The main game pages include version-specific mechanics, decision guides, limitations, and save behavior so a visitor can understand what is unique about each simulation before or after playing it. We do not publish fabricated testimonials, invented player counts, unsupported earnings claims, or universal CPS rankings.</p>
+      <h2>Source and reproducible examples</h2>
+      <p>The public source and change history are available in the <a href="https://github.com/garrison2025/SPACE-CLICKER-GAME" target="_blank" rel="noopener noreferrer">Space Clicker Game repository</a>. Worked examples state their starting balance, unit counts and active bonuses so readers can reproduce the arithmetic. They are calculations from the game rules, not hardware benchmarks or recorded playthroughs.</p>
       <h2>Games and tools on the site</h2>
       <p>The main catalog includes six simulations: Galaxy Miner, Mars Colony, Star Defense, Merge Spaceships, Gravity Idle, and Deep Space Signal. The Spacebar section includes an upgrade-based clicker, a counter, timed CPS tests, a 100-click sprint, and a separate Spacebar Clicker 2 progression mode.</p>
       <h2>Technology and local saves</h2>
       <p>The site uses React, Vite, Tailwind CSS, and lightweight browser graphics. Supported games store progress in the current browser rather than requiring a cloud account. Gameplay does not require a paid API.</p>
-      <p>Site/content review date: October 9, 2026. Privacy and Terms policy date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
+      <p>Site/content review date: October 28, 2026. Privacy and Terms policy date: October 6, 2026. See the <a href="/privacy/">Privacy Policy</a>, <a href="/contact/">contact page</a>, or <a href="/sitemap/">HTML Sitemap</a> for more information.</p>
     </section>`,
   '/contact': `
     <section>
@@ -1124,7 +1124,6 @@ const staticRouteContent = {
         <li><a href="/spacebar-clicker-2/">Spacebar Clicker 2</a></li>
         <li><a href="/spacebar-counter/">Spacebar Counter</a></li>
         <li><a href="/spacebar-clicker-test/">Spacebar Clicker Test</a></li>
-        <li><a href="/spacebar-clicker-unblocked/">Spacebar Clicker Instant Browser Mode</a></li>
       </ul>
       <h2>Guides and site pages</h2>
       <ul>
@@ -1186,7 +1185,7 @@ const staticRouteContent = {
       <h2>How Galaxy Miner milestones are tracked</h2>
       <p>The milestone dashboard reads supported progress from the Galaxy Miner save stored in the current browser. It tracks visible progression goals; it is not a cloud account, public leaderboard, or separate hidden-reward system.</p>
       <h2>Mining milestones</h2>
-      <p>The lifetime Stardust ladder tracks 1,000, 1 million, 1 billion, 1 trillion, and 1 quadrillion Stardust. Reaching 1 trillion Stardust also reaches the first threshold at which Galactic Reset becomes available.</p>
+      <p>The lifetime Stardust ladder tracks 1,000, 1 million, 1 billion, 1 trillion, and 1 quadrillion Stardust. Galactic Reset uses current spendable Stardust rather than this lifetime total: 40 billion awards 1 Dark Matter, and 1 trillion awards 5.</p>
       <h2>Automation milestones</h2>
       <p>Automation goals include owning 25 Mining Drones, 50 Orbital Stations, and at least one Dyson Swarm. The normal production system also applies upgrade milestone multipliers at key ownership thresholds, so these goals connect directly to the game's economy.</p>
       <h2>Dark Matter milestones</h2>
@@ -1312,7 +1311,6 @@ const renderHtml = (route, title, description, h1) => {
 <a href="/spacebar-clicker-2/" style="color:#00f3ff">Spacebar Clicker 2</a> ·
 <a href="/spacebar-counter/" style="color:#00f3ff">Spacebar Counter</a> ·
 <a href="/spacebar-clicker-test/" style="color:#00f3ff">Spacebar Clicker Test</a> ·
-<a href="/spacebar-clicker-unblocked/" style="color:#00f3ff">Instant Play</a> ·
 <a href="/compare/" style="color:#00f3ff">Compare</a> ·
 <a href="/achievements/" style="color:#00f3ff">Milestones</a> ·
 <a href="/blog/" style="color:#00f3ff">Blog</a> ·

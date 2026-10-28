@@ -219,9 +219,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 ['/blog/strategy-guide-clicker-game-space-empire/', 'Strategy Guide', 'Upgrade math']
             ],
             'psychology-of-space-clicking-games': [
-                ['/game/galaxy_miner/', 'Galaxy Miner', 'Feedback loop'],
+                ['/game/galaxy_miner/', 'Galaxy Miner', 'Check your run'],
                 ['/spacebar-clicker/', 'Spacebar Clicker', 'Press + upgrade'],
-                ['/spacebar-clicker-test/', 'CPS Test', 'Short benchmark'],
+                ['/achievements/', 'Milestones', 'Lifetime progress'],
                 ['/compare/', 'Feature Comparison', 'Different designs']
             ],
             'mastering-the-space-bar-clicking-game': [
