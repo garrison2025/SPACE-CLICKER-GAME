@@ -17,4 +17,3 @@ export const MASS_HTML = `
 <h2>Credits and license</h2><p>Mass © 2024 Abhrankan Chakrabarti. Distributed under the <a href="/community-assets/mass/LICENSE.txt">MIT License</a>. See the <a href="/community-assets/mass/NOTICE.txt">source revision and adaptation notes</a>. This edition omits upstream audio and image files and uses CSS planet shapes; it does not claim authorship of the original game. Source attribution: github.com/Abhrankan-Chakrabarti/mass.</p>
 <p><a href="/space-clicker-games/">← Back to the game collection</a></p>
 `;
-

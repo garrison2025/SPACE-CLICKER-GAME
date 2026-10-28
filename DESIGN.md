@@ -20,4 +20,3 @@ References are the incumbent homepage catalog (game card semantics), Spacebar hu
 - Credits, license, source revision and adaptation notes are visible. Do not portray the pilot as self-developed, an officially endorsed port, a popularity winner or a game with cloud/offline saves.
 
 Review: desktop and phone screenshots were inspected. At nominal widths 360/390/768/1024/1440 the collection layout was observed and measured without page-level horizontal overflow. Keyboard activation was confirmed with a native Return keypress on the focused in-frame Generate Mass button (visible mass changed from 1 to 2).
-

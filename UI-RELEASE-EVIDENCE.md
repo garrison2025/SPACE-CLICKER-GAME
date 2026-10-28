@@ -22,4 +22,3 @@ Design scope: DESIGN.md. Production is not published.
 | Impeccable CLI / extensions | NOT RUN | Review process applied; no optional binary, extension or hook installed. |
 
 The existing site was not redesigned. No claim of full accessibility certification, field performance improvement or increased search traffic is made.
-

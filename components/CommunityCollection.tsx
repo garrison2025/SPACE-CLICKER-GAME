@@ -15,4 +15,3 @@ export default function CommunityCollection({ play = false }: { play?: boolean }
         <article dangerouslySetInnerHTML={{ __html: play ? MASS_HTML : COLLECTION_HTML }} />
     </div>;
 }
-
