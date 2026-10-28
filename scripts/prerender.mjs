@@ -1,3 +1,4 @@
+import { COLLECTION_HTML, MASS_HTML } from '../content/communityCollection.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
@@ -812,6 +813,8 @@ const escapeXml = (value) =>
     .replaceAll("'", '&apos;');
 
 const staticRouteContent = {
+  '/space-clicker-games': COLLECTION_HTML,
+  '/play/mass': MASS_HTML,
   '/': `
     <section>
       <p><strong>Space Clicker is a free browser-based incremental space game.</strong> Galaxy Miner is the flagship mode: mine Stardust, automate production, manage Heat Flux, and use Galactic Reset for permanent Dark Matter upgrades. The site also includes five separate space simulations plus Spacebar clicker, counter, and CPS tools.</p>

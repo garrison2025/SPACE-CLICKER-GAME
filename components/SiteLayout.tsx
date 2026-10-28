@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Logo } from './Logo';
 import { GameId } from '../types';
 
-export type ViewMode = 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements' | 'spacebar-clicker' | 'spacebar-counter' | 'spacebar-clicker-test' | 'spacebar-clicker-unblocked' | 'spacebar-games' | 'spacebar-clicker-2';
+export type ViewMode = 'space-clicker-games' | 'play/mass' | 'home' | 'game' | 'about' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'blog' | 'sitemap' | 'compare' | 'achievements' | 'spacebar-clicker' | 'spacebar-counter' | 'spacebar-clicker-test' | 'spacebar-clicker-unblocked' | 'spacebar-games' | 'spacebar-clicker-2';
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ const SPACEBAR_TOOLS: Array<[ViewMode, string]> = [
 ];
 
 const MORE_PAGES: Array<[ViewMode, string]> = [
+  ['space-clicker-games', 'More Games'],
   ['compare', 'Feature Comparison'],
   ['achievements', 'Milestones'],
   ['about', 'About'],

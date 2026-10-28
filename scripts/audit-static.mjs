@@ -35,8 +35,8 @@ for (const meta of CORE_ROUTE_META) {
   primaryIntentOwners.set(meta.primaryIntent, meta.route);
 }
 
-if (CORE_ROUTE_META.length !== 21) {
-  throw new Error('Expected 21 core route metadata records, found ' + CORE_ROUTE_META.length);
+if (CORE_ROUTE_META.length !== 23) {
+  throw new Error('Expected 23 core route metadata records, found ' + CORE_ROUTE_META.length);
 }
 
 if (fs.existsSync(legacyPublicSitemap)) {

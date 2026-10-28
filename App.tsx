@@ -16,6 +16,7 @@ import { isInteractiveKeyboardTarget } from './utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem, STORAGE_WRITE_FAILED_EVENT } from './utils/projectStorage';
 
 // --- LAZY LOAD GAMES AND SECONDARY ROUTES (Code Splitting for SEO Performance) ---
+const CommunityCollection = React.lazy(() => import('./components/CommunityCollection'));
 const MarsColony = React.lazy(() => import('./components/MarsColony'));
 const StarDefense = React.lazy(() => import('./components/StarDefense'));
 const MergeShips = React.lazy(() => import('./components/MergeShips'));
@@ -113,7 +114,7 @@ const SORTED_BLOG_POST_META = [...BLOG_POST_META].sort(
 );
 
 // Define valid views for strict routing
-const VALID_VIEWS: ViewMode[] = ['home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games', 'spacebar-clicker-2'];
+const VALID_VIEWS: ViewMode[] = ['space-clicker-games', 'play/mass', 'home', 'game', 'about', 'contact', 'privacy', 'terms', 'cookies', 'blog', 'sitemap', 'compare', 'achievements', 'spacebar-clicker', 'spacebar-counter', 'spacebar-clicker-test', 'spacebar-clicker-unblocked', 'spacebar-games', 'spacebar-clicker-2'];
 
 // Loading Spinner for Suspense
 const LoadingSimulation = () => (
@@ -2309,6 +2310,7 @@ const App: React.FC = () => {
 
                 {viewMode === 'compare' && <Suspense fallback={<LoadingSimulation />}><ComparisonPage onNavigate={handleNavigate} /></Suspense>}
                 {viewMode === 'achievements' && <Suspense fallback={<LoadingSimulation />}><AchievementsPage onNavigate={handleNavigate} /></Suspense>}
+                {(viewMode === 'space-clicker-games' || viewMode === 'play/mass') && <Suspense fallback={<LoadingSimulation />}><CommunityCollection key={viewMode} play={viewMode === 'play/mass'} /></Suspense>}
                 {viewMode === 'spacebar-games' && <Suspense fallback={<LoadingSimulation />}><SpacebarGamesPage /></Suspense>}
                 {viewMode === 'spacebar-clicker-2' && <Suspense fallback={<LoadingSimulation />}><SpacebarClicker2 /></Suspense>}
                 {viewMode === 'spacebar-clicker' && <Suspense fallback={<LoadingSimulation />}><SpacebarGame /></Suspense>}
