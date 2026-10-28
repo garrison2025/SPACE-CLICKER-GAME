@@ -35,6 +35,15 @@ expect(hub.status === 200, 'Known Spacebar games hub should pass through');
 
 const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
+
+for (const path of ['/spacebar-clicker-unblocked', '/spacebar-clicker-unblocked/', '//spacebar-clicker-unblocked//']) {
+  const response = await run('https://spaceclickergame.com' + path + '?utm_source=bookmark');
+  expect(response.status === 301, 'Retired duplicate must redirect permanently: ' + path);
+  expect(response.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/?utm_source=bookmark', 'Duplicate redirect must preserve tracking and use the primary route');
+}
+const legacyDuplicate = await run('https://spaceclickergame.com/?view=spacebar-clicker-unblocked');
+expect(legacyDuplicate.status === 301, 'Legacy duplicate query must redirect');
+expect(legacyDuplicate.headers.get('location') === 'https://spaceclickergame.com/spacebar-clicker/', 'Legacy duplicate query must resolve directly to the primary route');
 expect(known.headers.get('referrer-policy') === 'strict-origin-when-cross-origin', 'Known route must include Referrer-Policy');
 expect(known.headers.get('x-content-type-options') === 'nosniff', 'Known route must include X-Content-Type-Options');
 expect(known.headers.get('x-frame-options') === 'DENY', 'Known route must deny framing');
@@ -220,7 +229,13 @@ expect(invalidBlog.status === 404, 'Unknown blog route must return HTTP 404');
 // no-trailing-slash variant with a permanent redirect.
 const builtSitemap = fs.readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
 const sitemapUrls = [...builtSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-expect(sitemapUrls.length === 32, 'Middleware test expected all 32 sitemap URLs');
+expect(sitemapUrls.length === 31, 'Middleware test expected all 31 sitemap URLs');
+expect(!builtSitemap.includes('/spacebar-clicker-unblocked/'), 'Retired duplicate must not appear in sitemap');
+for (const canonicalUrl of sitemapUrls) {
+  const pathname = new URL(canonicalUrl).pathname;
+  const html = fs.readFileSync(new URL('../dist' + (pathname === '/' ? '/index.html' : pathname + 'index.html'), import.meta.url), 'utf8');
+  expect(!html.includes('href="/spacebar-clicker-unblocked/"'), 'Published internal links must use the primary route: ' + pathname);
+}
 
 for (const canonicalUrl of sitemapUrls) {
   const canonicalResponse = await run(canonicalUrl);
@@ -238,4 +253,4 @@ for (const canonicalUrl of sitemapUrls) {
   );
 }
 
-console.log('Middleware routing tests passed: canonical routes, redirects, 404s, security headers, static discovery files, and 32/32 sitemap URLs are verified.');
+console.log('Middleware routing tests passed: canonical routes, redirects, 404s, security headers, static discovery files, and 31/31 sitemap URLs are verified.');

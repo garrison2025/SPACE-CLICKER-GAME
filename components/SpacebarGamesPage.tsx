@@ -45,17 +45,6 @@ const SpacebarGamesPage: React.FC = () => {
       progression: 'Upgrades + Nova Cores',
       localData: 'Local save + export/import',
       cta: 'Play Spacebar Clicker 2'
-    },
-    {
-      href: '/spacebar-clicker-unblocked/',
-      title: 'Spacebar Clicker Instant Play',
-      badge: 'NO DOWNLOAD',
-      description: 'Open the full Spacebar Clicker game directly in a modern browser with keyboard and mobile controls and local browser saves.',
-      bestFor: 'Quick browser access',
-      timing: 'Open-ended',
-      progression: 'Same classic progression',
-      localData: 'Classic local save',
-      cta: 'Open Instant Browser Mode'
     }
   ];
 
@@ -127,7 +116,7 @@ const SpacebarGamesPage: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Which spacebar game should you play?</h2>
             <p>
-              Use <a href="/spacebar-clicker/" className="text-neon-blue hover:text-white">Spacebar Clicker</a> when you want an incremental game with upgrades, automation, offline progress and prestige. Use the <a href="/spacebar-counter/" className="text-neon-blue hover:text-white">Spacebar Counter</a> when you only want an untimed tally. Use the <a href="/spacebar-clicker-test/" className="text-neon-blue hover:text-white">Spacebar Clicker Test</a> when the goal is a measurable CPS result over a fixed duration. <a href="/spacebar-clicker-2/" className="text-neon-blue hover:text-white">Spacebar Clicker 2</a> is a separate progression game, while the <a href="/spacebar-clicker-unblocked/" className="text-neon-blue hover:text-white">instant browser route</a> opens the classic game without an installation step and does not bypass network restrictions.
+              Use <a href="/spacebar-clicker/" className="text-neon-blue hover:text-white">Spacebar Clicker</a> when you want an incremental game with upgrades, automation, offline progress and prestige. Use the <a href="/spacebar-counter/" className="text-neon-blue hover:text-white">Spacebar Counter</a> when you only want an untimed tally. Use the <a href="/spacebar-clicker-test/" className="text-neon-blue hover:text-white">Spacebar Clicker Test</a> when the goal is a measurable CPS result over a fixed duration. <a href="/spacebar-clicker-2/" className="text-neon-blue hover:text-white">Spacebar Clicker 2</a> is a separate progression game. All modes open directly in your browser without an installation step.
             </p>
           </section>
 

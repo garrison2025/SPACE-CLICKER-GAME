@@ -1,4 +1,4 @@
-export const SITE_CONTENT_UPDATED = '2026-10-09';
+export const SITE_CONTENT_UPDATED = '2026-10-28';
 export const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 export const CORE_ROUTE_META = [
@@ -120,15 +120,6 @@ export const CORE_ROUTE_META = [
     h1: 'Spacebar Clicker Test',
     primaryIntent: 'spacebar clicker test',
     socialImage: 'https://spaceclickergame.com/og/spacebar-clicker-test.svg'
-  },
-  {
-    route: '/spacebar-clicker-unblocked',
-    view: 'spacebar-clicker-unblocked',
-    title: 'Spacebar Clicker Unblocked - Play Instantly in Your Browser',
-    description: 'Play Spacebar Clicker instantly in your browser with no download or account. Keyboard and mobile controls, upgrades, local save and prestige.',
-    h1: 'Spacebar Clicker Unblocked',
-    primaryIntent: 'spacebar clicker unblocked',
-    socialImage: 'https://spaceclickergame.com/og/spacebar-clicker-unblocked.svg'
   },
   {
     route: '/compare',

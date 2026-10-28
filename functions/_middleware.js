@@ -35,8 +35,7 @@ const STATIC_ROUTES = new Set([
   '/spacebar-clicker',
   '/spacebar-clicker-2',
   '/spacebar-counter',
-  '/spacebar-clicker-test',
-  '/spacebar-clicker-unblocked'
+  '/spacebar-clicker-test'
 ]);
 
 const normalizePath = (pathname) => {
@@ -134,6 +133,12 @@ const notFoundResponse = (url) => new Response(html404(url), {
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname;
+  if (normalizePath(pathname) === '/spacebar-clicker-unblocked') {
+    const destination = new URL(url);
+    destination.pathname = '/spacebar-clicker/';
+    destination.searchParams.delete('view');
+    return redirectResponse(destination.toString(), 301);
+  }
   const legacyView = url.searchParams.get('view');
   const legacyGame = url.searchParams.get('game');
   const legacyPost = url.searchParams.get('post');
@@ -168,6 +173,8 @@ export async function onRequest(context) {
       const post = url.searchParams.get('post');
       if (post && !BLOG_ROUTES.has(post)) return notFoundResponse(url);
       destination = post ? `/blog/${encodeURIComponent(post)}/` : '/blog/';
+    } else if (legacyView === 'spacebar-clicker-unblocked') {
+      destination = '/spacebar-clicker/';
     } else if (legacyView === 'home') {
       destination = '/';
     } else {

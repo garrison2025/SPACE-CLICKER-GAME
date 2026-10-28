@@ -18,7 +18,6 @@ const SPACEBAR_TOOLS: Array<[ViewMode, string]> = [
   ['spacebar-clicker-test', 'Spacebar Clicker Test'],
   ['spacebar-counter', 'Spacebar Counter'],
   ['spacebar-clicker-2', 'Spacebar Clicker 2'],
-  ['spacebar-clicker-unblocked', 'Spacebar Clicker Unblocked']
 ];
 
 const MORE_PAGES: Array<[ViewMode, string]> = [

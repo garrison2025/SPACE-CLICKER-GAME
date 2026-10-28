@@ -35,8 +35,8 @@ for (const meta of CORE_ROUTE_META) {
   primaryIntentOwners.set(meta.primaryIntent, meta.route);
 }
 
-if (CORE_ROUTE_META.length !== 22) {
-  throw new Error('Expected 22 core route metadata records, found ' + CORE_ROUTE_META.length);
+if (CORE_ROUTE_META.length !== 21) {
+  throw new Error('Expected 21 core route metadata records, found ' + CORE_ROUTE_META.length);
 }
 
 if (fs.existsSync(legacyPublicSitemap)) {
@@ -256,7 +256,6 @@ const highValueSchemaRoutes = new Set([
   '/spacebar-clicker-2/',
   '/spacebar-counter/',
   '/spacebar-clicker-test/',
-  '/spacebar-clicker-unblocked/',
   '/compare/',
   '/achievements/',
   '/blog/',
@@ -269,7 +268,6 @@ const spacebarSchemaRoutes = new Set([
   '/spacebar-clicker-2/',
   '/spacebar-counter/',
   '/spacebar-clicker-test/',
-  '/spacebar-clicker-unblocked/'
 ]);
 
 const requiredSpacebarHubLinks = [
@@ -277,7 +275,6 @@ const requiredSpacebarHubLinks = [
   '/spacebar-clicker-test/',
   '/spacebar-counter/',
   '/spacebar-clicker-2/',
-  '/spacebar-clicker-unblocked/'
 ];
 
 const requiredHomeClusterLinks = [
@@ -293,7 +290,6 @@ const expectedSpacebarOgImages = new Map([
   ['/spacebar-clicker-2/', site + '/og/spacebar-clicker-2.svg'],
   ['/spacebar-counter/', site + '/og/spacebar-counter.svg'],
   ['/spacebar-clicker-test/', site + '/og/spacebar-clicker-test.svg'],
-  ['/spacebar-clicker-unblocked/', site + '/og/spacebar-clicker-unblocked.svg']
 ]);
 
 const deepSpacebarContentRoutes = new Set([
@@ -302,7 +298,6 @@ const deepSpacebarContentRoutes = new Set([
   '/spacebar-clicker-2/',
   '/spacebar-counter/',
   '/spacebar-clicker-test/',
-  '/spacebar-clicker-unblocked/'
 ]);
 
 const trustContentRoutes = new Set([
