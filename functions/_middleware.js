@@ -21,6 +21,8 @@ const BLOG_ROUTES = new Set([
 ]);
 
 const STATIC_ROUTES = new Set([
+  '/space-clicker-games',
+  '/play/mass',
   '/',
   '/blog',
   '/about',
@@ -205,6 +207,14 @@ export async function onRequest(context) {
     return withSecurityHeaders(await context.next());
   }
 
+  if (pathname.startsWith('/community-assets/')) {
+    const response = context.env?.ASSETS?.fetch ? await context.env.ASSETS.fetch(context.request) : await context.next();
+    if (response.status === 404) return notFoundResponse(url);
+    const headers = applySecurityHeaders(new Headers(response.headers));
+    headers.set('x-frame-options', 'SAMEORIGIN');
+    headers.set('x-robots-tag', 'noindex');
+    return new Response(response.body, { status: response.status, headers });
+  }
   if (isStaticAssetRequest(pathname)) {
     // Ask Pages' static asset binding directly instead of falling through the
     // SPA route chain. Existing hashed assets and generated discovery files are

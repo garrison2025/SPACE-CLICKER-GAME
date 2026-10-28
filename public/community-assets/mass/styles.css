@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background: radial-gradient(ellipse at top, #182b54, #080d1b);
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+#title {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 2em;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+#musicControls {
+    position: fixed; /* Fixed position to avoid overlapping with other elements */
+    top: 10px; /* Adjust to prevent hiding the title */
+    right: 10px; /* Keep it on the right side */
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+/* Media query to adjust position for smaller screens */
+@media (max-width: 600px) {
+    #musicControls {
+        top: 50px; /* Increase top margin to avoid overlapping with the title */
+    }
+}
+
+/* Other existing styles */
+#game {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin: 10px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.progress-fill {
+    width: 0;
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 10px;
+    transition: width 0.5s;
+}
+
+@media (max-width: 768px) {
+    #title {
+        font-size: 1.5em;
+    }
+    #musicControls {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+#upgrades, #achievements {
+    margin-top: 20px;
+}
+
+#planetList img.planet-img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
+#planetList p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #ddd;
+}
+button { min-height:44px; margin:6px; padding:10px 16px; cursor:pointer; }
+.planet-orb {font-size:50px;color:#70d9ff;}
+#game {max-width:100%;box-sizing:border-box;}

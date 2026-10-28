@@ -2,6 +2,8 @@ export const SITE_CONTENT_UPDATED = '2026-10-28';
 export const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
 export const CORE_ROUTE_META = [
+  { route: '/space-clicker-games', view: 'space-clicker-games', title: 'Space Clicker Games Collection — Play More Games', description: 'Explore a curated collection of playable space games, including an open-source solar-system clicker and our mining and colony simulations.', h1: 'Space Clicker Games Collection', primaryIntent: 'space clicker games collection' },
+  { route: '/play/mass', view: 'play/mass', title: 'Play Mass — Solar System Clicker | Space Clicker Game', description: 'Play Mass on this site: generate mass, buy planets and build automatic income. Includes controls, a beginner guide, session limits and MIT license credits.', h1: 'Mass — Build a Solar System', primaryIntent: 'play mass solar system clicker' },
   {
     route: '/',
     view: 'home',

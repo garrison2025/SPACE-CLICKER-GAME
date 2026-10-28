@@ -1,0 +1,20 @@
+export const COLLECTION_HTML = `
+<p>Discover space games you can play here without leaving the site. This collection brings one independently developed open-source game together with two of our existing simulations. Entries are grouped by play style, not ranked.</p>
+<section class="collection-grid" aria-label="Games">
+<a class="collection-card" href="/play/mass/"><span class="collection-icon" aria-hidden="true">◉</span><small>OPEN SOURCE · CLICKER</small><h2>Mass</h2><p>Build a solar system by generating mass and buying planets. A short, simple resource loop with session-only progress.</p><strong>Play Mass →</strong></a>
+<a class="collection-card" href="/game/galaxy_miner/"><span class="collection-icon" aria-hidden="true">✦</span><small>OUR GAME · IDLE MINING</small><h2>Galaxy Miner</h2><p>Balance Heat Flux, buy automated producers and reset for Dark Matter in the site's flagship game.</p><strong>Play Galaxy Miner →</strong></a>
+<a class="collection-card" href="/game/mars_colony/"><span class="collection-icon" aria-hidden="true">◎</span><small>OUR GAME · MANAGEMENT</small><h2>Mars Colony Idle</h2><p>Balance life support, Energy and Minerals while expanding a browser-based settlement.</p><strong>Play Mars Colony →</strong></a>
+</section>
+<h2>Choose a play style</h2><p>Choose Mass for a compact click-and-buy session, Galaxy Miner for layered automation and reset decisions, or Mars Colony for linked resource management. Mass does not save between reloads; the existing games have their own local save behavior.</p>
+<h2>How games join this collection</h2><p>Independently developed games are identified separately from our own games. We check their license, host the selected build here and provide controls, limitations and source credits on the play page. No paid sponsorship or popularity ranking determines the order.</p>
+`;
+export const MASS_HTML = `
+<p>Mass is an independently developed solar-system clicker by Abhrankan Chakrabarti. Generate mass manually, buy planets for automatic income and decide when to improve each click. This hosted edition uses the upstream game code with a lightweight procedural appearance.</p>
+<h2>How to play</h2><ol><li>Press Generate Mass ten times to afford the first planet.</li><li>Buy Planet spends 10 mass. The next price becomes 15, and the first purchase generates 1 mass per second.</li><li>Compare another planet against the 50-mass click upgrade. The upgrade doubles manual output; it does not directly raise planet income.</li></ol>
+<h2>Beginner decisions</h2><p>The progress bar compares your current mass with the next planet's price. Buying a planet lowers your balance while adding automatic income. Early on, manual generation bridges the gap between purchases; after buying planets, you can let automatic income fund the next one. Planet appearances are not a promise of different resource types.</p>
+<p>In this build, each planet purchase costs the displayed amount, then raises the next price by 1.5x rounded down. That new price also determines the purchased planet's income, rounded down after dividing by ten. For example, the second purchase costs 15, the next price becomes 22 and the added income is 2 mass per second. These are calculations from the included code, not completion-time benchmarks.</p>
+<h2>Controls and session limits</h2><p>Use pointer or touch buttons; keyboard users can Tab to a button and activate it with Enter or Space. There is no cloud account, offline earnings calculation, or persistent save in this edition. Reloading, closing the page or leaving the game starts a fresh session. Unload the game when finished to stop its timer.</p>
+<h2>Credits and license</h2><p>Mass © 2024 Abhrankan Chakrabarti. Distributed under the <a href="/community-assets/mass/LICENSE.txt">MIT License</a>. See the <a href="/community-assets/mass/NOTICE.txt">source revision and adaptation notes</a>. This edition omits upstream audio and image files and uses CSS planet shapes; it does not claim authorship of the original game. Source attribution: github.com/Abhrankan-Chakrabarti/mass.</p>
+<p><a href="/space-clicker-games/">← Back to the game collection</a></p>
+`;
+
