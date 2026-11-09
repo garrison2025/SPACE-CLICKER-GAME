@@ -8,6 +8,7 @@ const legacyPublicSitemap = path.resolve('public/sitemap.xml');
 const ADSENSE_PUBLISHER_ID = 'ca-pub-1528586776567779';
 const ADSENSE_SCRIPT_URL = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADSENSE_PUBLISHER_ID;
 const ADS_TXT_LINE = 'google.com, pub-1528586776567779, DIRECT, f08c47fec0942fa0';
+const ADSTERRA_SOCIAL_BAR_URL = 'https://bauval.org/14/0a3e711aae4def14470cc33e505bc705';
 
 const coreRoutes = new Set();
 const coreViews = new Set();
@@ -409,6 +410,24 @@ for (const file of htmlFiles) {
     throw new Error(route + ': AdSense loader must use the approved publisher ID and crossorigin=anonymous.');
   }
 
+  // An approved Adsterra Social Bar is allowed sitewide. Require exactly one
+  // copy in each prerendered HTML page, immediately before the closing body tag.
+  const socialBarTags = [...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*><\/script>/gi)]
+    .filter((match) => match[1] === ADSTERRA_SOCIAL_BAR_URL);
+  if (socialBarTags.length !== 1) {
+    throw new Error(route + ': expected exactly one approved Adsterra Social Bar, found ' + socialBarTags.length);
+  }
+  const socialBarTag = socialBarTags[0][0];
+  if (!/\bdata-cfasync="false"/i.test(socialBarTag)) {
+    throw new Error(route + ': Adsterra Social Bar must set data-cfasync="false".');
+  }
+  const closingBodyOffset = html.lastIndexOf('</body>');
+  const socialBarOffset = html.indexOf(socialBarTag);
+  if (closingBodyOffset < 0 || socialBarOffset < 0 ||
+      html.slice(socialBarOffset + socialBarTag.length, closingBodyOffset).trim() !== '') {
+    throw new Error(route + ': Adsterra Social Bar must be immediately before </body>.');
+  }
+
   for (const staleClaim of forbiddenStaleTrustClaims) {
     if (normalizedHtml.includes(staleClaim)) {
       throw new Error(route + ': stale or unverified trust claim reintroduced: ' + staleClaim);
@@ -599,8 +618,8 @@ for (const file of htmlFiles) {
   if (/lorem ipsum|simulation under construction|coming soon/i.test(html)) {
     throw new Error(route + ': indexable page contains placeholder or unfinished-content language');
   }
-  if (/monetag|adsterra|popunder/i.test(html)) {
-    throw new Error(route + ': legacy third-party ad-network code/content must not appear in the AdSense review build');
+  if (/monetag|popunder/i.test(html)) {
+    throw new Error(route + ': unapproved legacy ad-network marker detected');
   }
 
   if (adsenseGameContentRoutes.has(route)) {
@@ -1052,4 +1071,4 @@ if (!home.includes('<h2>How to play Space Clicker</h2>')) {
   throw new Error('Homepage static search-intent answer is missing');
 }
 
-console.log('Static SEO/GEO/AdSense-readiness audit passed: AdSense publisher loader on every prerendered route, verified ads.txt publisher record, ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, original game decision guides above the internal publisher-content guardrail, no placeholder/legacy ad-network markers, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
+console.log('Static SEO/GEO/advertising audit passed: AdSense publisher loader and approved Adsterra Social Bar on every prerendered route, verified ads.txt publisher record, ' + auditedRoutes.length + ' prerendered routes, shared core metadata with unique primary-intent ownership, monolingual canonical policy without premature hreflang/x-default, custom noindex 404.html, ' + locs.length + ' sitemap URLs with lastmod, canonical/robots and 1200x630 social preview handoff, extractable comparison/formula blocks, original game decision guides above the internal publisher-content guardrail, no placeholder/legacy ad-network markers, 17 core route schemas, Spacebar breadcrumbs/crawl links and deep core intent pages, full compare/milestone/blog/about hubs and trust pages, 6 deep game summaries, 10 full blog articles, topic-cluster authority links, RSS/llms discovery files, and internal link integrity.');
