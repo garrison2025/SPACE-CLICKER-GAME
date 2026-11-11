@@ -35,6 +35,10 @@ expect(hub.status === 200, 'Known Spacebar games hub should pass through');
 
 const known = await run('https://spaceclickergame.com/spacebar-clicker/');
 expect(known.status === 200, 'Known Spacebar route should pass through');
+const communityPlayer = await run('https://spaceclickergame.com/community-assets/mass/player.html');
+expect(communityPlayer.status === 200, 'Hosted game player should load');
+expect(communityPlayer.headers.get('x-frame-options') === 'SAMEORIGIN', 'Hosted game may only be framed on this site');
+expect(communityPlayer.headers.get('x-robots-tag') === 'noindex', 'Raw player must not compete with the editorial play page');
 
 for (const path of ['/spacebar-clicker-unblocked', '/spacebar-clicker-unblocked/', '//spacebar-clicker-unblocked//']) {
   const response = await run('https://spaceclickergame.com' + path + '?utm_source=bookmark');
@@ -229,7 +233,7 @@ expect(invalidBlog.status === 404, 'Unknown blog route must return HTTP 404');
 // no-trailing-slash variant with a permanent redirect.
 const builtSitemap = fs.readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
 const sitemapUrls = [...builtSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-expect(sitemapUrls.length === 31, 'Middleware test expected all 31 sitemap URLs');
+expect(sitemapUrls.length === 33, 'Middleware test expected all 33 sitemap URLs');
 expect(!builtSitemap.includes('/spacebar-clicker-unblocked/'), 'Retired duplicate must not appear in sitemap');
 for (const canonicalUrl of sitemapUrls) {
   const pathname = new URL(canonicalUrl).pathname;
@@ -253,4 +257,4 @@ for (const canonicalUrl of sitemapUrls) {
   );
 }
 
-console.log('Middleware routing tests passed: canonical routes, redirects, 404s, security headers, static discovery files, and 31/31 sitemap URLs are verified.');
+console.log('Middleware routing tests passed: canonical routes, redirects, 404s, security headers, static discovery files, and 33/33 sitemap URLs are verified.');

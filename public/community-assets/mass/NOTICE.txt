@@ -1,0 +1,5 @@
+Mass by Abhrankan Chakrabarti. MIT License.
+Source: https://github.com/Abhrankan-Chakrabarti/mass
+Revision: 80d5d5de0d6131ff39a9a4fbef974ab3ee9fa013
+Hosted adaptation: original game logic retained; audio and image assets omitted, procedural CSS presentation, button sizing adjusted. No persistence added: refreshing starts a new session.
+The included LICENSE applies to the adapted code.
