@@ -4,67 +4,38 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '1',
         slug: 'evolution-of-space-clicker-game-genre',
-        title: 'The Evolution of the Space Clicker Game: From Simple Pixels to Galactic Empires',
-        excerpt: 'Explore how space clicker games evolved from manual input into automation, prestige, offline progress, and long-run incremental strategy.',
+        title: 'How Space Clicker Progression Works in Six Playable Games',
+        excerpt: 'Try six playable Space Clicker modes and learn which decisions drive progress, from Galaxy Miner upgrade breakpoints to Mars Colony power reserves.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 29, 2025',
-        updatedDate: 'Oct 6, 2026',
+        updatedDate: 'Nov 19, 2026',
         readTime: '4 min read',
-        tags: ['space clicker game', 'incremental', 'history', 'mechanics'],
+        tags: ['space clicker game', 'incremental', 'progression', 'game comparison'],
         image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead"><strong>Space clicker games</strong> combine repeated input with reinvestment, automation, large-number progression, and sometimes prestige resets. What begins as one manual action can expand into a resource-management system with passive production and permanent upgrades.</p>
+            <p class="lead">A click can mine Stardust, start an individual scan, or fire at an incoming enemy. The six games on this site reward different decisions after that first action. Try the observations below in a fresh run or a low-stakes part of an existing save, then choose the mode that fits how you like to play.</p>
 
-            <h2>Defining the Space Clicker Game</h2>
-            <p>At its core, a <strong>space clicker game</strong> (or incremental space game) is about visible growth. The player starts with a small production rate, reinvests resources into upgrades, and gradually shifts from manual input toward automation and larger multipliers.</p>
-            
-            <p>Unlike traditional RTS games like <em>StarCraft</em>, a <strong>clicker game space</strong> adventure doesn't demand high APM (actions per minute) forever. Instead, it shifts from active clicking to strategic management. This transition is what separates a shallow "tapper" from a deep strategy simulation.</p>
+            <h2>Galaxy Miner: payback changes near a milestone</h2>
+            <p>In <a href="/game/galaxy_miner/">Galaxy Miner</a>, a first Laser Drill costs 15 Stardust and adds 1 base Stardust per click. A first Mining Drone costs 50 and adds 2 base Stardust per second. The Drill helps while you click. The Drone starts generating resources while you watch the Fabricator or step away.</p>
+            <p>Check the unit count before deciding what to buy next. The move from 24 to 25 Mining Drones takes their combined base output from 48 to 100 Stardust per second because the milestone doubles the whole tier. The <a href="/blog/strategy-guide-clicker-game-space-empire/">upgrade and reset guide</a> shows how to compare purchases using added output and current prices.</p>
 
-            <h3>The Core Loop of Space Clicking Games</h3>
-            <p>Many <strong>space clicking games</strong> use a progression loop that moves from active input to automation and, in some games, a prestige reset. A common version looks like this:</p>
-            <ul>
-                <li><strong>Phase 1: Active Input.</strong> You use your mouse (or space bar) to generate initial currency. This is the "grind" phase.</li>
-                <li><strong>Phase 2: Automation.</strong> You spend that currency on "Auto-Miners" or "Drones." Now, the game plays itself while you watch.</li>
-                <li><strong>Phase 3: The Wall.</strong> Eventually, upgrades become too expensive. Progress slows down.</li>
-                <li><strong>Phase 4: Prestige.</strong> You reset the universe. You lose your buildings but gain a permanent multiplier (like Dark Matter in <a href="https://spaceclickergame.com">Space Clicker Game</a>).</li>
-            </ul>
+            <h2>Mars Colony: a full battery can hide a deficit</h2>
+            <p><a href="/game/mars_colony/">Mars Colony</a> starts with one Solar Panel generating 5 Energy and a Habitat Module consuming 10 per tick. The 100 Energy reserve covers the starting deficit for a while. An additional Solar Panel costs 10 Minerals and makes the starting generation and load equal. A first Auto-Excavator then adds 2 load, so check generation again before adding automated mining.</p>
+            <p>If the battery is empty and generation still trails consumption, output from automated Minerals, Food, and Oxygen runs at 10% efficiency. Check the Energy balance when several production figures fall together. Another food or mining building adds load and may make the deficit worse.</p>
 
-            <p>The interesting design shift happens when manual input stops being the only meaningful source of progress and the player starts optimizing an automated system instead.</p>
+            <h2>Star Defense: read the hull as well as the wave number</h2>
+            <p>In <a href="/game/star_defense/">Star Defense</a>, watch whether enemies linger under fire and whether the hull keeps losing health. Enemies surviving too long point to a damage problem. A collapsing hull calls for a look at shields, hull upgrades, or repairs. Compare the next wave after one purchase so you can see what it changed. Keep a tactical ability available for a pressure spike.</p>
 
-            <h2>Why Space Fits Incremental Progression</h2>
-            <p>A space setting is a natural thematic fit for <strong>space clicker games</strong> because the same resource loop can expand across increasingly large fictional scales.</p>
-            <p>A space theme makes very large numerical scales easier to represent: progression can move from an asteroid to planets, stations, stellar infrastructure, and other fictional large-scale systems without changing the basic incremental loop.</p>
-            <p>Space gives incremental games a natural sense of scale. Designers can move from a single mining action to planets, nebulae, black holes, and large resource economies without changing the basic progression language. For real astronomy background, NASA's <a href="https://science.nasa.gov/universe/" target="_blank" rel="noopener noreferrer">Universe</a> resources are a useful reference.</p>
+            <h2>Merge Spaceships: trade a hangar slot for operating income</h2>
+            <p>In <a href="/game/merge_ships/">Merge Spaceships</a>, keep two matching ships in the hangar if you can merge them soon. Deploy a useful ship when you need room or orbit damage. Compare free hangar slots and deployed DPS after the decision. A ship waiting for a merge is a future upgrade, while a deployed ship contributes to asteroid destruction now.</p>
 
-            <h2>Space Bar Input in Clicker Games</h2>
-            <p>A <strong>space bar clicking game</strong> uses keyboard input instead of, or alongside, pointer clicks. The same input pattern also appears in browser speed tests and short mini-games.</p>
-            <p>Repeated input can become tiring, so automation provides an alternative to continuous manual pressing. If repeated input becomes uncomfortable, stop and rest.</p>
+            <h2>Gravity Idle: follow the projectile before buying damage</h2>
+            <p>Watch a few ordinary shots in <a href="/game/gravity_idle/">Gravity Idle</a>. If they repeatedly miss, try changing shot frequency or gravity. If they hit and targets survive, look at projectile damage or piercing. Buy one upgrade and watch the same part of the field again. The observation gives you a reason to choose the next upgrade even when several buttons are affordable.</p>
 
-            <h3>Top Features of a Modern Space Clicker</h3>
-            <ol>
-                <li><strong>Visual Feedback:</strong> Seeing the lasers fire (like in our <em>Star Defense</em> module) makes the math feel tangible.</li>
-                <li><strong>Offline Progress:</strong> Some idle games calculate capped production while the player is away. Galaxy Miner, for example, can credit up to 24 hours of offline automatic production.</li>
-                <li><strong>Unfolding Complexity:</strong> New systems can appear as progression grows, such as resource balancing in Mars Colony or permanent technology in Galaxy Miner.</li>
-            </ol>
+            <h2>Deep Space Signal: identify the waiting step</h2>
+            <p>In <a href="/game/deep_signal/">Deep Space Signal</a>, a disabled scan button can mean the receiver is already scanning or Energy is below its current scan cost. If the log is full of encrypted messages, click a transmission to help decode it or consider a Crypto Core. Use the <a href="/blog/narrative-design-clicker-game-space-adventure/">signal log walkthrough</a> to decide when to spend Energy on an upload.</p>
 
-            <h2>Strategy Questions That Matter</h2>
-            <p>Incremental strategy is mostly about comparing the cost of the next action with the production or permanent progress it adds.</p>
-            
-            <h4>1. Compare Payback Time</h4>
-            <p>For an automation upgrade, divide its cost by the production increase it provides. A shorter payback time usually means the purchase starts helping the run sooner.</p>
-
-            <h4>2. Recalculate After Multipliers</h4>
-            <p>A multiplier can be valuable, but its value still depends on price, the current production base, and what other upgrades are available. Compare the actual increase rather than assuming one upgrade type is always superior.</p>
-
-            <h4>3. Use Active Events When They Matter</h4>
-            <p>In Galaxy Miner, Heat Flux, Golden Comets, and crisis events can add bursts of active progress, while automation supplies the baseline. The better choice depends on whether you are actively playing or leaving the run unattended.</p>
-
-            <h2>The Future of the Genre</h2>
-            <p>Modern browser APIs such as Canvas, WebGL, and WebAssembly make it possible to build richer incremental interfaces without requiring a native download. <a href="https://en.wikipedia.org/wiki/Incremental_game" target="_blank" rel="noopener noreferrer">Incremental games</a> can range from simple counters to layered resource simulations.</p>
-            
-            <p>On SpaceClickerGame.com, that range includes quick Spacebar tests as well as longer browser simulations built around mining, colony management, defense, merging, gravity, and signal decoding.</p>
-            
-            <p>Ready to try the systems described above? <a href="/game/galaxy_miner/">Play Galaxy Miner</a> for the full mining-and-prestige loop, or browse the <a href="/spacebar-games/">Spacebar Games hub</a> for shorter keyboard-focused modes.</p>
+            <p>For a side-by-side view of the six games, see the <a href="/compare/">game comparison</a>. If your goal is to measure Space-key speed, use the separate <a href="/spacebar-clicker-test/">Spacebar CPS Test</a>.</p>
         `
     },
     {
@@ -440,46 +411,47 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '9',
         slug: 'narrative-design-clicker-game-space-adventure',
-        title: 'Storytelling in the Void: Narrative Design in the Clicker Game Space Genre',
-        excerpt: 'See how flavor text, event logs and abstract systems create narrative context in browser-based incremental space games.',
+        title: 'Deep Space Signal Guide: Scan, Decode, and Upload Your First Signal',
+        excerpt: 'Work through the Deep Space Signal log, budget Energy for scans and uploads, and choose upgrades based on where your run stalls.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 15, 2026',
-        updatedDate: 'Oct 5, 2026',
-        readTime: '2 min read',
-        tags: ['clicker game space', 'narrative', 'writing', 'lore'],
+        updatedDate: 'Nov 19, 2026',
+        readTime: '4 min read',
+        tags: ['deep space signal', 'beginner guide', 'decryption', 'idle game'],
         image: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">At first glance, a <strong>clicker game space</strong> adventure can look like little more than numbers going up. Upgrade descriptions, event logs, and short transmissions can still carry setting, tone, and narrative context.</p>
+            <p class="lead">The log in <a href="/game/deep_signal/">Deep Space Signal</a> is both the story feed and the place you make progress. Each scan can add an encrypted transmission. Decoding reveals and pays out the message, and uploading the decoded entry can build a faction bonus. Follow one entry through all three steps before filling the log.</p>
 
-            <h2>The Power of "Flavor Text"</h2>
-            <p>In high-fidelity games like <em>Mass Effect</em>, story is told through cutscenes. In a <strong>space clicker game</strong>, story is told through context. This is known as "Environmental Storytelling."</p>
-            
-            <p>Consider an upgrade in <a href="https://spaceclickergame.com">Mars Colony</a> called "Atmospheric Scrubber."</p>
+            <h2>1. Leave Energy for the upload</h2>
+            <p>A fresh run starts with 100 Energy. The starting scan cost is 20 and a decoded entry costs another 10 Energy to upload. Click <strong>Scan Frequency</strong> once and find the encrypted message in the log. Reserve at least 10 Energy if you intend to upload immediately. While a scan is still in progress, the scan button is unavailable even when your Energy is high enough.</p>
+            <p>Ignoring regeneration, four scans leave 20 Energy and five scans leave zero. That budget is an illustration based on the starting costs. The Energy meter can recover while you play, and faction bonuses can change future scan costs.</p>
+
+            <h2>2. Decode one message and check the Data balance</h2>
+            <p>Activate the encrypted entry to reduce its encryption. A manual activation removes 5.5 points at the starting Crypto Core level with no TECH faction bonus. Passive decryption also works on encrypted entries during play. When a message reaches zero encryption, the game credits its listed Data reward once.</p>
+            <p>If Data is slow, first look at the number of encrypted entries. A backlog means a faster scan rate alone will leave more work queued. Decode a few entries manually and check whether the balance rises before buying a scan-related upgrade.</p>
+
+            <h2>3. Read the decoded entry and choose whether to upload</h2>
+            <p>The decoded entry shows an <strong>Upload to</strong> button with the faction name and a cost of 10 Energy. Uploading adds half the original Data reward, rounded down, and a faction level for a typed message. For example, a 75-Data message would award 75 on decoding and another 37 on upload. Each message can be uploaded once. If Energy is tight, decide whether you need that faction bonus or another scan first.</p>
             <ul>
-                <li><strong>Mechanical Text:</strong> +2 Oxygen/sec.</li>
-                <li><strong>Flavor Text:</strong> <em>"Filters out the toxic perchlorates. The air finally smells like ozone instead of dust."</em></li>
+                <li><strong>BIO</strong> improves Energy regeneration.</li>
+                <li><strong>TECH</strong> speeds passive decryption.</li>
+                <li><strong>MIL</strong> lowers scan cost. The game applies a 5-Energy floor.</li>
+                <li><strong>VOID</strong> increases maximum Energy.</li>
             </ul>
-            <p>That single sentence implies a struggle. It tells you the colonists have been suffering. It adds emotional weight to a simple math upgrade.</p>
 
-            <h2>Emergent Gameplay as Story</h2>
-            <p>In the text-adventure module <em>Deep Space Signal</em>, the narrative is presented through terminal-style transmissions, signal choices, decoding, and resource decisions. The current build should be read as an interactive text system rather than a promise of specific branching outcomes such as trade-route closures.</p>
-            <p>This is the strength of the <strong>space clicking game</strong> medium. Because the graphics are abstract (or text-based), the player's imagination fills in the gaps. It is the same mechanism that makes reading a book often more vivid than watching a movie.</p>
+            <h2>Choose an upgrade based on what is holding you up</h2>
+            <table>
+                <thead><tr><th scope="col">What you see</th><th scope="col">What to check</th><th scope="col">First upgrade price</th></tr></thead>
+                <tbody>
+                    <tr><td>You reach the Energy cap between bursts while the game is open but run out during several scans</td><td>Capacitor Bank increases maximum Energy from 100 to 120 before faction bonuses.</td><td>70 Data</td></tr>
+                    <tr><td>You have Energy and decoded messages but want more Data per new scan</td><td>Antenna Array improves rewards for newly scanned messages.</td><td>200 Data</td></tr>
+                    <tr><td>Encrypted entries accumulate while you can afford more scans</td><td>Crypto Core improves passive decryption.</td><td>225 Data</td></tr>
+                    <tr><td>You keep waiting for Energy to come back</td><td>Solar Sails improve the regeneration rate.</td><td>320 Data</td></tr>
+                </tbody>
+            </table>
+            <p>The table uses starting upgrade levels. Check the live price after each purchase. Auto-Scan AI starts at 1,000 Data and can attempt a scan when Energy covers its current scan cost plus 10. Resolve a persistent Energy or decryption bottleneck before relying on it.</p>
 
-            <h3>The Scale of the Narrative</h3>
-            <p>A <strong>space click game</strong> allows us to tell stories that span eons. In a traditional RPG, playing through 1,000 years takes too long. In a clicker, we can say "1,000 years pass" and update your resource count instantly.</p>
-            <p>This format can reference <a href="https://en.wikipedia.org/wiki/Deep_time" target="_blank" rel="noopener noreferrer">deep time</a>, long-lived civilizations, stellar evolution, and other large time scales without requiring the game to simulate every intervening moment.</p>
-
-            <h2>Writing for UI</h2>
-            <p>Short transmission-style writing suits a compact game interface because a few lines can establish a situation without covering the controls or resource information.</p>
-            <blockquote>
-                "Signal Lost. The probe entered the event horizon. Its final telemetry packet contained impossible data."
-            </blockquote>
-            <p>Two sentences. Infinite mystery. That is the goal.</p>
-
-            <h2>Conclusion</h2>
-            <p>Next time you play a <strong>clicker game space</strong> title, stop clicking for a moment. Read the logs. Read the item descriptions. You might find that the most exciting thing isn't the number going up, but the reason <em>why</em> it's going up.</p>
-            
-            <p>For a text-first example, open <a href="/game/deep_signal/">Deep Space Signal</a>. For a more systems-driven incremental loop, play <a href="/game/galaxy_miner/">Galaxy Miner</a>.</p>
+            <p>Messages are generated locally for the game. Follow the Data balance and faction panel to see the effect of decisions. For a different kind of automated progression, use the <a href="/blog/evolution-of-space-clicker-game-genre/">six-game progression guide</a>.</p>
         `
     },
     {

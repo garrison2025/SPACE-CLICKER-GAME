@@ -13,11 +13,11 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "1",
     "slug": "evolution-of-space-clicker-game-genre",
-    "title": "The Evolution of the Space Clicker Game: From Simple Pixels to Galactic Empires",
-    "seoTitle": "Space Clicker Game Evolution | Space Clicker Game Blog",
+    "title": "How Space Clicker Progression Works in Six Playable Games",
+    "seoTitle": "How Space Clicker Progression Works | Space Clicker Game",
     "publishedDate": "2025-12-29",
     "readTime": "4 min read",
-    "excerpt": "Explore how space clicker games evolved from manual input into automation, prestige, offline progress, and long-run incremental strategy.",
+    "excerpt": "Try six playable Space Clicker modes and learn which decisions drive progress, from Galaxy Miner upgrade breakpoints to Mars Colony power reserves.",
     "image": "https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000"
   },
   {
@@ -93,11 +93,11 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "9",
     "slug": "narrative-design-clicker-game-space-adventure",
-    "title": "Storytelling in the Void: Narrative Design in the Clicker Game Space Genre",
-    "seoTitle": "Narrative Design in Space Clicker Games | Space Clicker Blog",
+    "title": "Deep Space Signal Guide: Scan, Decode, and Upload Your First Signal",
+    "seoTitle": "Deep Space Signal Guide | Scan, Decode and Upload",
     "publishedDate": "2026-01-15",
-    "readTime": "2 min read",
-    "excerpt": "See how flavor text, event logs and abstract systems create narrative context in browser-based incremental space games.",
+    "readTime": "4 min read",
+    "excerpt": "Work through the Deep Space Signal log, budget Energy for scans and uploads, and choose upgrades based on where your run stalls.",
     "image": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2000"
   },
   {

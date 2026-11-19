@@ -1027,13 +1027,13 @@ const staticRouteContent = {
   '/blog': `
     <section>
       <h2>Space clicker guides and strategy</h2>
-      <p>The Mission Logs cover browser clicker mechanics, Spacebar speed tests, idle automation, prestige planning, keyboard input, progression design, and the systems behind incremental space games.</p>
+      <p>The Mission Logs cover game walkthroughs, upgrade planning, prestige timing, and troubleshooting for the Spacebar CPS Test.</p>
       <h2>Start with the practical guides</h2>
       <ul>
         <li><a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker Strategy Guide</a> — upgrade payback, idle automation, prestige timing, mobile play, and Galactic Reset planning.</li>
-        <li><a href="/blog/active-vs-passive-space-click-game-styles/">Active Clicking vs. Passive Mining</a> — decide when manual input still matters and when idle production should take over.</li>
-        <li><a href="/blog/mastering-the-space-bar-clicking-game/">Mastering Space Bar Clicking Games</a> — deliberate input, automation, and the difference between playing a clicker and running a speed test.</li>
-        <li><a href="/blog/mechanics-of-space-bar-clicking-game-physics/">Space Bar Clicking Game Mechanics</a> — CPS measurement, key-repeat rules, browser input, and repeatable testing.</li>
+        <li><a href="/blog/evolution-of-space-clicker-game-genre/">${escapeHtml(blogStaticMeta['/blog/evolution-of-space-clicker-game-genre'].title)}</a> — ${escapeHtml(blogStaticMeta['/blog/evolution-of-space-clicker-game-genre'].description)}</li>
+        <li><a href="/blog/narrative-design-clicker-game-space-adventure/">${escapeHtml(blogStaticMeta['/blog/narrative-design-clicker-game-space-adventure'].title)}</a> — ${escapeHtml(blogStaticMeta['/blog/narrative-design-clicker-game-space-adventure'].description)}</li>
+        <li><a href="/blog/ultimate-hardware-guide-space-bar-click-game/">${escapeHtml(blogStaticMeta['/blog/ultimate-hardware-guide-space-bar-click-game'].title)}</a> — ${escapeHtml(blogStaticMeta['/blog/ultimate-hardware-guide-space-bar-click-game'].description)}</li>
       </ul>
       <h2>All Mission Logs</h2>
       <ul>

@@ -28,9 +28,9 @@ const prefetchBlogPosts = () => {
 
 const FEATURED_GUIDE_SLUGS = new Set([
     'strategy-guide-clicker-game-space-empire',
-    'active-vs-passive-space-click-game-styles',
-    'mastering-the-space-bar-clicking-game',
-    'mechanics-of-space-bar-clicking-game-physics'
+    'evolution-of-space-clicker-game-genre',
+    'narrative-design-clicker-game-space-adventure',
+    'ultimate-hardware-guide-space-bar-click-game'
 ]);
 
 const sanitizeArticleHtml = (html: string) => {
@@ -261,9 +261,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 ['/achievements/', 'Milestones', 'Progress targets']
             ],
             'narrative-design-clicker-game-space-adventure': [
-                ['/game/deep_signal/', 'Deep Space Signal', 'Text-first game'],
+                ['/game/deep_signal/', 'Deep Space Signal', 'Try your first scan'],
                 ['/game/galaxy_miner/', 'Galaxy Miner', 'System-driven game'],
-                ['/blog/evolution-of-space-clicker-game-genre/', 'Genre Evolution', 'Design context'],
+                ['/blog/evolution-of-space-clicker-game-genre/', 'Six-Game Progression Guide', 'Choose a play style'],
                 ['/compare/', 'Feature Comparison', 'Compare formats']
             ],
             'ultimate-hardware-guide-space-bar-click-game': [
