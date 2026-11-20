@@ -30,7 +30,10 @@ const FEATURED_GUIDE_SLUGS = new Set([
     'strategy-guide-clicker-game-space-empire',
     'evolution-of-space-clicker-game-genre',
     'narrative-design-clicker-game-space-adventure',
-    'ultimate-hardware-guide-space-bar-click-game'
+    'ultimate-hardware-guide-space-bar-click-game',
+    'top-10-space-clicking-games-features-2025',
+    'mastering-the-space-bar-clicking-game',
+    'mechanics-of-space-bar-clicking-game-physics'
 ]);
 
 const sanitizeArticleHtml = (html: string) => {
@@ -231,16 +234,14 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                 ['/spacebar-clicker-2/', 'Spacebar Clicker 2', 'Enhanced mode']
             ],
             'top-10-space-clicking-games-features-2025': [
-                ['/compare/', 'Feature Comparison', 'Compare systems'],
-                ['/game/galaxy_miner/', 'Galaxy Miner', 'Full idle loop'],
-                ['/spacebar-games/', 'Spacebar Games', 'Tool cluster'],
-                ['/blog/active-vs-passive-space-click-game-styles/', 'Active vs Passive', 'Playstyle guide']
+                ['/game/mars_colony/', 'Mars Colony Idle', 'Check colony power'],
+                ['/compare/', 'Feature Comparison', 'Compare simulations']
             ],
             'mechanics-of-space-bar-clicking-game-physics': [
                 ['/spacebar-clicker-test/', 'CPS Test', 'Measure input'],
                 ['/spacebar-counter/', 'Spacebar Counter', 'Track presses'],
-                ['/game/gravity_idle/', 'Gravity Idle', 'Physics simulation'],
-                ['/spacebar-clicker/', 'Spacebar Clicker', 'Input + upgrades']
+                ['/spacebar-clicker/', 'Spacebar Clicker', 'Work toward a Quantum Key'],
+                ['/spacebar-clicker-2/', 'Spacebar Clicker 2', 'Separate Nova Core progression']
             ],
             'strategy-guide-clicker-game-space-empire': [
                 ['/game/galaxy_miner/', 'Galaxy Miner', 'Apply strategy'],
@@ -649,7 +650,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ postId, onNavigate }) => {
                         High-intent Space Clicker guides
                     </h2>
                     <p className="text-gray-400 max-w-3xl leading-relaxed mb-6">
-                        Start with the pages that answer the most practical search intents: upgrade and prestige strategy, active-vs-idle progression, deliberate Space-key input, and CPS mechanics.
+                        Find a walkthrough for your game, compare upgrade costs and reset rewards, or troubleshoot your Spacebar CPS results.
                     </p>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
                         {featuredGuides.map((guide) => (

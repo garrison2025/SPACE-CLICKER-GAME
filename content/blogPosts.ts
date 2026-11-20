@@ -8,7 +8,7 @@ export const BLOG_POSTS: BlogPost[] = [
         excerpt: 'Try six playable Space Clicker modes and learn which decisions drive progress, from Galaxy Miner upgrade breakpoints to Mars Colony power reserves.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 29, 2025',
-        updatedDate: 'Nov 19, 2026',
+        updatedDate: 'Nov 20, 2026',
         readTime: '4 min read',
         tags: ['space clicker game', 'incremental', 'progression', 'game comparison'],
         image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=2000',
@@ -20,8 +20,8 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>Check the unit count before deciding what to buy next. The move from 24 to 25 Mining Drones takes their combined base output from 48 to 100 Stardust per second because the milestone doubles the whole tier. The <a href="/blog/strategy-guide-clicker-game-space-empire/">upgrade and reset guide</a> shows how to compare purchases using added output and current prices.</p>
 
             <h2>Mars Colony: a full battery can hide a deficit</h2>
-            <p><a href="/game/mars_colony/">Mars Colony</a> starts with one Solar Panel generating 5 Energy and a Habitat Module consuming 10 per tick. The 100 Energy reserve covers the starting deficit for a while. An additional Solar Panel costs 10 Minerals and makes the starting generation and load equal. A first Auto-Excavator then adds 2 load, so check generation again before adding automated mining.</p>
-            <p>If the battery is empty and generation still trails consumption, output from automated Minerals, Food, and Oxygen runs at 10% efficiency. Check the Energy balance when several production figures fall together. Another food or mining building adds load and may make the deficit worse.</p>
+            <p><a href="/game/mars_colony/">Mars Colony</a> starts with one Solar Panel generating 5 Energy and a Habitat Module consuming 10 per tick. The 100 Energy reserve covers the starting deficit for a while. An additional Solar Panel costs 11 Minerals and makes the starting generation and load equal. A first Auto-Excavator then adds 2 load, so check generation again before adding automated mining.</p>
+            <p>If the battery is empty and generation still trails consumption, output from automated Minerals, Food, and Oxygen runs at 10% efficiency. Check the Energy balance when several production figures fall together. Another food or mining building adds load and may make the deficit worse. See the <a href="/blog/top-10-space-clicking-games-features-2025/">Mars Colony power guide</a> for the first three Solar Panel decisions.</p>
 
             <h2>Star Defense: read the hull as well as the wave number</h2>
             <p>In <a href="/game/star_defense/">Star Defense</a>, watch whether enemies linger under fire and whether the hull keeps losing health. Enemies surviving too long point to a damage problem. A collapsing hull calls for a look at shields, hull upgrades, or repairs. Compare the next wave after one purchase so you can see what it changed. Keep a tactical ability available for a pressure spike.</p>
@@ -73,155 +73,108 @@ export const BLOG_POSTS: BlogPost[] = [
     {
         id: '3',
         slug: 'mastering-the-space-bar-clicking-game',
-        title: 'Mastering the Space Bar: From Speed Tests to Interstellar Conquest',
-        excerpt: 'Learn how deliberate Space-key input, CPS tests, upgrades, and automation fit together in space bar clicking games without relying on unsupported speed claims.',
+        title: 'Spacebar Clicker 2 Guide: From Overdrive to Your First Nova Core',
+        excerpt: 'Learn how to charge Overdrive, compare automation upgrades, and decide when to ascend for your first Nova Core.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Dec 25, 2025',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Nov 20, 2026',
         readTime: '3 min read',
-        tags: ['space bar clicking game', 'hardware', 'gaming tips', 'automation'],
+        tags: ["Spacebar Clicker 2","Overdrive","Nova Cores","beginner guide"],
         image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Before there were complex simulations, there was the <strong>space bar clicking game</strong>. The challenge was simple: how fast can you hit the space bar? Today, we use that same energy to power warp drives and mining lasers. This is your guide to physical inputs in the genre.</p>
+            <p class="lead">In <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a>, Overdrive raises output temporarily. Nova Cores raise your permanent production after ascension. You can use both by choosing upgrades that help during the way you actually play, then checking the reward preview before resetting.</p>
 
-            <h2>The Physics of the Space Bar Click Game</h2>
-            <p>In the early game of any <strong>space clicker game</strong>, your physical input speed matters. This phase is often called the "active phase."</p>
-            
-            <h3>Techniques for Consistent Input</h3>
-            <ul>
-                <li><strong>Use separate presses:</strong> Release the key between inputs so the browser records deliberate keydown events instead of automatic key-repeat.</li>
-                <li><strong>Try alternating fingers if it feels natural:</strong> A wide spacebar allows more than one finger position, but speed and comfort depend on the keyboard and the player.</li>
-                <li><strong>Match the technique to the test:</strong> Short runs measure burst speed, while longer tests are more useful for consistency and repeatability.</li>
-            </ul>
-            <p><em>If repeated pressing becomes uncomfortable, stop the test or game and rest your hand. Automation is available in the idle modes when you prefer less manual input.</em></p>
+            <h2>Buy for the next stretch of play</h2>
+            <p>The first Carbon Key costs 25 points and raises an ordinary press from 1 to 3 base points. A first Micro Bot costs 120 and adds 3 base points per second. Carbon Key helps while you keep pressing. Micro Bot gives you a rate that can run while you stop pressing. If you already have a Micro Bot, consider the next affordable upgrade using the change in points per second shown in the game.</p>
+            <p>A first Reactor Bank costs 2,400 points and doubles existing automatic production. With one Micro Bot and no other bonuses, it takes your rate from 3 to 6 points per second. That adds just 3 points per second at that stage. With four Micro Bots, the same first Reactor Bank takes you from 12 to 24. The cost is the same and the added output is four times as large.</p>
 
-            <h2>Transitioning to Automation</h2>
-            <p>A useful transition point in a <strong>clicker game space</strong> adventure is when passive generation becomes more important than another burst of manual input. The exact point depends on current upgrades, multipliers, and how actively the player is pressing.</p>
-            
-            <h3>Math Breakdown: Click vs. Idle</h3>
-            <p>Here is a deliberately simplified example for comparing manual and automatic output. These numbers are illustrative and do not describe a specific SpaceClickerGame.com mode:</p>
-            <ul>
-                <li><strong>Manual example:</strong> 5 presses/sec × 10 resources/press = 50 resources/sec.</li>
-                <li><strong>Automation example:</strong> 10 producers × 5 resources/sec = 50 resources/sec.</li>
-            </ul>
-            <p>Once automatic production approaches the value of manual input, upgrade selection and payback time become more important than simply pressing faster.</p>
+            <h2>Use Overdrive while you have production to multiply</h2>
+            <p>From an empty meter with no Capacitor, 15 accepted presses at 7 charge each reach the trigger. The base surge lasts 10 seconds and triples manual and automatic production. The press that fills the meter is evaluated at the previous rate. If your automation normally earns 12 points per second, a full 10-second surge earns about 360 automatic points instead of 120, assuming a steady rate and no purchases during the window.</p>
+            <p>The first Overdrive Capacitor costs 4,500 points. It makes each qualifying press add 8.5 charge and extends the surge to 11 seconds. That means 12 accepted presses from empty. The Capacitor earns its value when you trigger Overdrive regularly. Away from the game, eligible offline earnings use the saved automatic rate for up to 12 hours, without an Overdrive multiplier.</p>
 
-            <h2>Hardware for the Dedicated Space Clicker</h2>
-            <p>Keyboard construction, key travel, stabilizer feel, and actuation distance can change how repeated presses feel, but no switch type guarantees a higher CPS score. Comfort and consistent input matter more than a specific switch label.</p>
-            <p>Because <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a> runs in the browser, its input rules are transparent: a deliberate Space keydown counts, while browser-generated repeat events from simply holding the key are ignored. That makes the result easier to interpret.</p>
-
-            <h2>The "Space" in Space Bar</h2>
-            <p>It is a happy linguistic accident that the "Space Bar" shares a name with the setting of our genre. Pressing the space bar to launch a rocket or fire a laser feels thematically appropriate.</p>
-            <p>In our <em>Gravity Idle</em> module, we experiment with physics-based inputs where the timing of your click matters more than the speed. This evolves the concept of the <strong>space click game</strong> into something requiring skill and precision, not just brute force.</p>
-
-            <h2>Summary</h2>
-            <p>Whether you use a <strong>space bar clicking game</strong> for a short speed challenge or play a longer incremental simulation, input is only one part of the experience; upgrades, automation, timing, and resource choices determine what happens after the first presses.</p>
-            
-            <p>For a pure benchmark, run the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a> or keep an untimed total with the <a href="/spacebar-counter/">Spacebar Counter</a>. If you want progression instead of a benchmark, play <a href="/spacebar-clicker/">Spacebar Clicker</a> or the separate <a href="/spacebar-clicker-2/">Spacebar Clicker 2</a> mode.</p>
+            <h2>Read the Nova Ascension preview before spending or resetting</h2>
+            <p>The first Nova Core requires 250 million <strong>current</strong> points. The reward grows as the square root of current points divided by 250 million, rounded down, subject to the game's Core cap. Purchases reduce the current balance, so check the live preview before confirming the reset.</p>
+            <table>
+                <thead><tr><th scope="col">Current points</th><th scope="col">Nova Cores earned</th><th scope="col">Permanent production in a fresh save after the reset</th></tr></thead>
+                <tbody>
+                    <tr><td>250 million</td><td>1</td><td>1.15×</td></tr>
+                    <tr><td>1 billion</td><td>2</td><td>1.30×</td></tr>
+                    <tr><td>2.25 billion</td><td>3</td><td>1.45×</td></tr>
+                </tbody>
+            </table>
+            <p>Ascension resets current points and regular upgrades. Nova Cores, lifetime points, recorded presses, and best CPS carry over. Choose the first Core if the next threshold still looks far away with your present output. If you are already close to the next threshold, compare the gap with the production you would give up by restarting. Export a backup using the game's save controls if you want to preserve a copy of the run first.</p>
+            <p>The <a href="/blog/mechanics-of-space-bar-clicking-game-physics/">original Spacebar Clicker guide</a> covers the separate Quantum Key progression.</p>
         `
     },
     {
         id: '4',
         slug: 'top-10-space-clicking-games-features-2025',
-        title: 'Beyond the Click: Features Defining Modern Space Clicking Games',
-        excerpt: 'Explore the progression, automation, offline systems and active choices that define modern space clicking games.',
+        title: 'Mars Colony Idle Guide: Recover From a Power Shortage',
+        excerpt: 'Read the Energy balance, calculate Solar Panel costs, and recover Minerals, Food, and Oxygen production in Mars Colony Idle.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 02, 2026',
-        updatedDate: 'Oct 5, 2026',
+        updatedDate: 'Nov 20, 2026',
         readTime: '3 min read',
-        tags: ['space clicking games', 'game design', 'features', 'incremental games'],
+        tags: ["Mars Colony","Energy","resource management","beginner guide"],
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">Modern <strong>space clicking games</strong> can combine idle mechanics, resource management, and visual storytelling. The strongest designs make progression legible: the player should understand what changed, why output increased, and what meaningful goal comes next.</p>
+            <p class="lead">In <a href="/game/mars_colony/">Mars Colony Idle</a>, the amount stored in the Energy bar and the colony's Energy balance answer different questions. Storage tells you how much power is available now. Generation minus consumption tells you whether the reserve will last. Use the balance before committing Minerals to another consumer.</p>
 
-            <h2>The Renaissance of the Space Clicking Game</h2>
-            <p>One reason clicker games remain easy to understand is that their feedback is explicit: an action changes a number, an upgrade changes a rate, and the next milestone is usually visible.</p>
-            <p>Browser clickers can be text-heavy, visual, or a mix of both. On SpaceClickerGame.com, different simulations use separate interfaces rather than forcing every game into the same presentation.</p>
+            <h2>Stabilize the starting base</h2>
+            <p>A fresh colony starts with a Solar Panel generating 5 Energy per second, a Habitat Module consuming 10, and a 100-Energy reserve. At a deficit of 5 per second, that reserve lasts about 20 simulation ticks if you buy nothing. The next Solar Panel costs 11 Minerals because one panel is already installed. Use the excavation control to earn the Minerals even if the reserve runs out.</p>
+            <table>
+                <thead><tr><th scope="col">Step</th><th scope="col">Available generation</th><th scope="col">Total consumption</th><th scope="col">Energy change per second</th></tr></thead>
+                <tbody>
+                    <tr><td>Starting colony</td><td>5</td><td>10</td><td>−5</td></tr>
+                    <tr><td>Purchase the second Solar Panel for 11 Minerals</td><td>10</td><td>10</td><td>0</td></tr>
+                    <tr><td>Add a third Solar Panel for 13 Minerals</td><td>15</td><td>10</td><td>+5</td></tr>
+                    <tr><td>Add the first Auto-Excavator for 50 Minerals</td><td>15</td><td>12</td><td>+3</td></tr>
+                </tbody>
+            </table>
+            <p>These are calculated examples from a fresh save. The price for an existing save depends on how many buildings of that type you already own.</p>
 
-            <h3>Key Feature 1: The "Unfolding" Mechanic</h3>
-            <p>Many <strong>space clicking games</strong> start with a small set of actions and add systems over time. A manual resource button can lead to automation, permanent upgrades, new sectors, or other management layers.</p>
-            <ul>
-                <li><strong>Phase 1:</strong> Manual labor (The <strong>space bar click game</strong> phase).</li>
-                <li><strong>Phase 2:</strong> Automation (Drones and Rovers).</li>
-                <li><strong>Phase 3:</strong> Paradigm Shift (Leaving the planet).</li>
-            </ul>
-            <p>This unfolding nature keeps the player engaged. You aren't just playing the same loop forever; the rules of the <strong>clicker game space</strong> are constantly evolving.</p>
+            <h2>Diagnose a reserve stuck at zero</h2>
+            <p>If the reserve is empty and total consumption exceeds generation, the game runs automated Minerals, Food, and Oxygen at 10% efficiency. An Auto-Excavator that normally gives 2 Minerals per second contributes 0.2 per second in that state. If several outputs fall together, add generation. Manual excavation remains available to fund the purchase.</p>
+            <p>A zero balance restores full efficiency but leaves an empty reserve empty. Build a positive margin to refill the battery and leave room for construction. With generation at 15 and consumption at 12, the colony gains 3 Energy per tick until the reserve reaches its cap.</p>
 
-            <h2>Visual Fidelity in Browser Games</h2>
-            <p>Modern <strong>space clicker games</strong> can use standard HTML, Canvas, WebGL, or combinations of browser technologies depending on the experience.</p>
-            <p>In <a href="https://spaceclickergame.com/game/galaxy_miner/">Galaxy Miner</a>, the interface uses visual feedback for mining, critical hits, Heat Flux, comets, and other events so players can see when a mechanic has changed the production loop.</p>
-
-            <h3>Key Feature 2: Offline Progression (True Idle)</h3>
-            <p>Offline progression is one common idle-game mechanic. It lets a saved automatic production rate contribute while the game is closed, usually with a cap.</p>
-            <p>Galaxy Miner calculates offline automatic production for up to 24 hours and shows the credited Stardust when the save is loaded again.</p>
-
-            <h2>The Economy of the Void</h2>
-            <p>Balancing a <strong>space clicking game</strong> economy is an art form. If resources come too easily, the game is boring. If they are too hard to get, it feels like work.</p>
-            <p>Prestige currencies such as Dark Matter create a second progression layer. In Galaxy Miner, a Galactic Reset removes current Stardust and standard upgrades, then awards Dark Matter that remains for later runs and permanent technology.</p>
-
-            <h3>Key Feature 3: Active vs. Passive Playstyles</h3>
-            <p>Great game design caters to both types of players:</p>
-            <ol>
-                <li><strong>The Active Clicker:</strong> Prefers manual input, critical hits, timing windows, or short active events.</li>
-                <li><strong>The Idle Strategist:</strong> Focuses on automatic production, upgrade payback time, and permanent progression.</li>
-            </ol>
-
-            <h2>Why "Space" is the Ultimate Setting</h2>
-            <p>A space setting can make very large fictional resource scales feel thematically coherent because the player can move from local mining to planetary and stellar infrastructure.</p>
-            <p>Galaxy Miner eventually unlocks a Dyson Swarm production tier, which fits that progression from small extraction tools to much larger automation.</p>
-
-            <h2>Where Browser Clickers Are Going</h2>
-            <p>Browser technology now supports richer incremental systems without requiring a download. Whether you prefer active input or passive optimization, the useful question is the same: does each new system create a clear decision rather than simply another number?</p>
-            
-            <p>See these systems in practice in <a href="/game/galaxy_miner/">Galaxy Miner</a>, browse the <a href="/spacebar-games/">Spacebar Games hub</a>, or use the <a href="/compare/">incremental game feature comparison</a> to compare different progression structures.</p>
+            <h2>Budget the next building before buying it</h2>
+            <p>From that +3 margin, a first Hydroponics unit adds 5 load and would move the colony to −2. Buy a Solar Panel first if you want to stay above zero. A first Oxygenator draws 8 and adds 3 base Oxygen per second at full power. Compare both Food and Oxygen after the purchase, since population consumes both at 0.1 units per colonist per second.</p>
+            <p>For example, five colonists consume 0.5 Food and 0.5 Oxygen per second. One Hydroponics unit at full power supplies 2 Food per second. Under a brownout it supplies 0.2, so food reserves fall by about 0.3 per tick at that population. Check the power margin before spending scarce Minerals on another food building.</p>
+            <p>Return to <a href="/game/mars_colony/">Mars Colony Idle</a> to check your own balance, or see the <a href="/blog/evolution-of-space-clicker-game-genre/">six-game progression guide</a> to compare how other modes handle automation.</p>
         `
     },
     {
         id: '5',
         slug: 'mechanics-of-space-bar-clicking-game-physics',
-        title: 'The Mechanics of the Space Bar Clicking Game: Physics, Input, and Endurance',
-        excerpt: 'A technical look at Space-key input, switch and firmware behavior, browser key-repeat rules, CPS measurement, latency, and repeatable speed testing.',
+        title: 'Spacebar Clicker Guide: From Manual Presses to Quantum Keys',
+        excerpt: 'Compare points per press with points per second, choose your first upgrades, and read the original Spacebar Clicker Hyperdrive Reset preview.',
         author: 'SpaceClickerGame.com Editorial',
         date: 'Jan 05, 2026',
-        updatedDate: 'Oct 6, 2026',
+        updatedDate: 'Nov 20, 2026',
         readTime: '3 min read',
-        tags: ['space bar clicking game', 'hardware', 'speedrun', 'input lag'],
+        tags: ["Spacebar Clicker","Quantum Keys","upgrades","beginner guide"],
         image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000',
         content: `
-            <p class="lead">The keyboard is your cockpit controls. The monitor is your viewport. And the space bar? That is your main thruster. In the world of the <strong>space bar clicking game</strong>, physical input is the engine of progression.</p>
+            <p class="lead">The original <a href="/spacebar-clicker/">Spacebar Clicker</a> tracks deliberate Space presses and awards game points. At the start one press gives one base point, but upgrades, combos and automation can make points rise much faster than the press count. Follow the points and automatic rate when choosing upgrades, and use the press count to track input.</p>
 
-            <h2>The Anatomy of a Click</h2>
-            <p>When you play a <strong>space bar clicking game</strong>, you aren't just sending a signal to a computer; you are engaging in a physical cycle. <em>Press, Actuate, Bottom-out, Release, Reset.</em></p>
-            <p>During the early active phase of <a href="https://spaceclickergame.com">Space Clicker Game</a>, shorter deliberate press cycles can increase manual input frequency, but the result still depends on the player, keyboard, browser, and counting rules.</p>
+            <h2>Choose how to spend your first 25 to 80 points</h2>
+            <p>The first Stronger Key costs 25 points and raises base output from 1 to 2 per press. The first Auto Presser costs 80 points and adds 2 points per second. If you plan to keep pressing, spending 25 on Stronger Key and then making another 40 ordinary presses reaches 80 points from zero after the purchase. If you already have 80 and want progress while you pause, the Auto Presser is immediately useful.</p>
+            <p>After you buy Auto Presser, stop pressing briefly and watch points increase while the press count stays fixed. At the starting rate, 30 seconds of automatic production adds about 60 points. That example assumes a visible session and no other bonuses.</p>
 
-            <h3>Hardware Factors: Switches, Travel, and Firmware</h3>
-            <p>No single switch category determines the maximum speed of a <strong>space bar click game</strong>. Key travel, actuation and reset behavior, stabilizer feel, keyboard firmware, debounce handling, layout, and the player's technique can all affect how repeated presses feel and register.</p>
-            <ul>
-                <li><strong>Membrane keyboards:</strong> Often feel softer and may use different travel or return characteristics, but they can still register rapid deliberate presses.</li>
-                <li><strong>Mechanical switches:</strong> Linear, tactile, and clicky designs provide different feedback; none is universally fastest for every player.</li>
-                <li><strong>Optical or magnetic designs:</strong> These can use different sensing and firmware approaches, but the complete keyboard implementation matters more than the marketing label alone.</li>
-            </ul>
-            <p>Before buying new hardware, test the keyboard you already own. Key feel, stabilizer quality, layout, firmware, and hand position can affect comfort and consistency, but a more expensive keyboard does not guarantee a higher CPS result.</p>
+            <h2>Check what a multiplier will act on</h2>
+            <table>
+                <thead><tr><th scope="col">First purchase</th><th scope="col">Cost</th><th scope="col">What it changes</th></tr></thead>
+                <tbody>
+                    <tr><td>Mechanical Switch</td><td>300 points</td><td>Doubles manual press output. With one Stronger Key, an ordinary press goes from 2 to 4 base points.</td></tr>
+                    <tr><td>Turbo Switch</td><td>1,200 points</td><td>Doubles automatic production. With four Auto Pressers, the base rate goes from 8 to 16 points per second.</td></tr>
+                    <tr><td>Quantum Keyboard</td><td>5,000 points</td><td>The first level adds 25% to both manual and automatic production.</td></tr>
+                </tbody>
+            </table>
+            <p>Compare the points per second gained with the current price before spending on automation. Turbo Switch adds zero automatic output if you have no Auto Pressers or Spacebar Reactors. Combo Engine rewards consecutive presses within the combo window. Critical Press adds a chance of a fivefold manual hit, so a single press can award more than the number you expect from base output.</p>
 
-            <h2>Why CPS Benchmarks Vary</h2>
-            <p>There is no single reliable “average CPS” that applies across keyboards, browsers, test lengths, and input rules. A test that counts operating-system key-repeat is measuring something different from a test that counts only separate physical presses.</p>
-            <p>For a useful comparison, keep the device, browser, duration, and counting rule the same between attempts. One- or five-second tests emphasize short bursts, while longer tests put more weight on consistency.</p>
-
-            <h3>Consistent Pressing</h3>
-            <p>Some players alternate fingers on a wide spacebar, while others use one comfortable finger position. Neither approach guarantees a faster result. Use deliberate presses and stop if repeated input becomes uncomfortable.</p>
-
-            <h2>Input Lag and Browser Performance</h2>
-            <p>In a browser-based <strong>space clicker game</strong>, responsiveness depends on input handling, JavaScript work, rendering, device performance, and display refresh rate. About 16.7 ms corresponds to one frame at 60 Hz, but that is a frame budget rather than a universal threshold for whether a game feels responsive.</p>
-            <p>On our <a href="https://spaceclickergame.com/spacebar-clicker-test/">Spacebar Clicker Test</a>, browser-generated key-repeat events are ignored. Current CPS is based on recent deliberate presses, while the timed result uses valid presses divided by elapsed test time. That is more useful than making an unsupported claim about a particular keyboard or frame rate.</p>
-            <p>For the browser layer, <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat" target="_blank" rel="noopener noreferrer">MDN documents the <code>KeyboardEvent.repeat</code> flag</a> used to identify auto-repeated key events, while the <a href="https://www.w3.org/news/2025/ui-events-keyboardevent-key-values-and-code-values-are-w3c-recommendations/" target="_blank" rel="noopener noreferrer">W3C UI Events recommendations</a> define standardized key and physical-code values used by modern keyboard event handling.</p>
-
-            <h2>From Active to Idle: The Transition</h2>
-            <p>Some <strong>space bar clicking games</strong> stay focused on raw input speed, while others add upgrades or automation and gradually shift attention from pressing to resource decisions.</p>
-            <p>In our game <em>Star Defense</em>, direct clicks can damage enemies while automated turrets provide passive fire. That creates a hybrid active-and-automatic loop without turning the game into a pure input-speed test.</p>
-
-            <h2>Conclusion</h2>
-            <p>The humble space bar is the most satisfying key on the board. It's big, it's loud, and it feels powerful. By centering a game around this input, the <strong>space bar clicking game</strong> genre taps into a primal satisfaction of cause and effect.</p>
-            <p>Measure deliberate key presses with the <a href="/spacebar-clicker-test/">Spacebar Clicker Test</a>, or use the <a href="/spacebar-counter/">Spacebar Counter</a> when you want an untimed total plus current, average, and peak CPS.</p>
+            <h2>Use Hyperdrive Reset for permanent production</h2>
+            <p>Read the live Hyperdrive Reset panel. Starting from zero keys, 100 million current points preview 1 Quantum Key, 400 million preview 2, and 900 million preview 3. The game takes the square root of current points divided by 100 million and rounds down, subject to the Key cap. Each Key adds 10 percentage points to the permanent multiplier. The first takes it from 1.00× to 1.10×.</p>
+            <p>Current points and regular upgrades reset. Keys and lifetime records carry over. If you want a copy of your current run, export a save first. For Overdrive and Nova Cores, follow the <a href="/blog/mastering-the-space-bar-clicking-game/">Spacebar Clicker 2 ascension guide</a>. For measuring keyboard speed without upgrade bonuses, use the <a href="/spacebar-clicker-test/">timed CPS test</a>.</p>
         `
     },
     {

@@ -1127,9 +1127,9 @@ const SpacebarGame: React.FC<SpacebarGameProps> = ({ mode = 'standard' }) => {
             <h2 className="text-2xl font-display text-white mb-3">Related Spacebar guides</h2>
             <p>
               {mode === 'unblocked' ? (
-                <>Read <a href="/blog/mastering-the-space-bar-clicking-game/" className="text-neon-blue hover:text-white">Mastering the Space Bar</a> for a broader guide to Spacebar input, upgrades, and automation.</>
+                <>Read the <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Quantum Key guide</a> for upgrades, automation and Hyperdrive Reset.</>
               ) : (
-                <>Read <a href="/blog/mastering-the-space-bar-clicking-game/" className="text-neon-blue hover:text-white">Mastering the Space Bar</a> for input and automation strategy, and <a href="/blog/active-vs-passive-space-click-game-styles/" className="text-neon-blue hover:text-white">Active Clicking vs. Passive Mining</a> for playstyle tradeoffs.</>
+                <>Read the <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Quantum Key guide</a> for upgrades and Hyperdrive Reset, and <a href="/blog/active-vs-passive-space-click-game-styles/" className="text-neon-blue hover:text-white">Active Clicking vs. Passive Mining</a> for playstyle tradeoffs.</>
               )}
             </p>
           </section>
