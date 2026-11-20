@@ -1,6 +1,8 @@
 export const SITE_CONTENT_UPDATED = '2026-10-28';
 export const DEFAULT_SOCIAL_IMAGE = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200';
 
+export const SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION = 'After at least 60 seconds away with automatic production, reopening the game can credit up to 12 hours at the saved base automatic rate. Overdrive is only counted for the time it was active if you switch tabs while the game stays open.';
+
 export const CORE_ROUTE_META = [
   {
     route: '/',

@@ -20,9 +20,9 @@ const SEOContent: React.FC<SEOContentProps> = ({ game }) => {
               'active-vs-passive-space-click-game-styles'
           ],
           mars_colony: [
-              'strategy-guide-clicker-game-space-empire',
-              'educational-value-of-space-clicker-games',
-              'narrative-design-clicker-game-space-adventure'
+              'top-10-space-clicking-games-features-2025',
+              'evolution-of-space-clicker-game-genre',
+              'educational-value-of-space-clicker-games'
           ],
           star_defense: [
               'active-vs-passive-space-click-game-styles',
