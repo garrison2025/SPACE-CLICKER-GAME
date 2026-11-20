@@ -40,7 +40,7 @@ export interface Upgrade {
   name: string;
   description: string;
   baseCost: number;
-  baseProduction: number; // Stardust per second
+  baseProduction: number; // Stardust per click for manual upgrades, per second for automation
   costMultiplier: number;
   count: number;
   icon: string;

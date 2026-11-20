@@ -12,6 +12,7 @@ import RouteErrorBoundary from './components/RouteErrorBoundary';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
+import { getMilestoneMultiplier, getUpgradeBaseOutput, getUpgradeQuote, MAX_GALAXY_UPGRADE_COUNT } from './utils/galaxyUpgrades';
 import { isInteractiveKeyboardTarget } from './utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem, STORAGE_WRITE_FAILED_EVENT } from './utils/projectStorage';
 
@@ -49,7 +50,6 @@ const StarshipConsole = React.lazy(() => import('./components/StarshipConsole'))
 
 const PRESTIGE_THRESHOLD = 1_000_000_000_000;
 const SAVE_VERSION = 3;
-const MAX_SAFE_UPGRADE_COUNT = 1000;
 const MAX_SAFE_RESOURCE_VALUE = 1e300;
 const MAX_SAFE_DARK_MATTER = 1e280;
 const MAX_SAFE_OFFLINE_RATE = 1e295;
@@ -417,22 +417,11 @@ const App: React.FC = () => {
   );
   const canPrestige = prestigeGain >= 1;
 
-  const getMilestoneMultiplier = (count: number) => {
-    let mult = 1;
-    if (count >= 25) mult *= 2;
-    if (count >= 50) mult *= 2;
-    if (count >= 100) mult *= 2;
-    if (count >= 200) mult *= 2;
-    if (count >= 500) mult *= 4;
-    return mult;
-  };
-
   const getProductionRate = useCallback(() => {
     let rate = 0;
     Object.values(upgrades).forEach((u: Upgrade) => {
       if (u.type === 'auto') {
-          const milestoneMult = getMilestoneMultiplier(u.count);
-          rate += u.baseProduction * u.count * milestoneMult;
+          rate += getUpgradeBaseOutput(u);
       }
     });
     const fluxBonus = isFlux ? 2 : 1;
@@ -443,8 +432,7 @@ const App: React.FC = () => {
     let power = 1;
     const clickUpgrade = upgrades['click_booster'];
     if (clickUpgrade) {
-        const milestoneMult = getMilestoneMultiplier(clickUpgrade.count);
-        power += clickUpgrade.baseProduction * clickUpgrade.count * milestoneMult;
+        power += getUpgradeBaseOutput(clickUpgrade);
     }
     return power * currentPlanet.productionMultiplier * prestigeMultiplier;
   }, [upgrades, currentPlanet, prestigeMultiplier]);
@@ -1434,19 +1422,9 @@ const App: React.FC = () => {
     const upgrade = currentSnapshot.upgrades[id];
     if (!upgrade || amountToBuy < 1) return;
 
-    const remainingLevels = Math.max(0, MAX_SAFE_UPGRADE_COUNT - upgrade.count);
-    const purchaseCount = Math.min(Math.floor(amountToBuy), remainingLevels);
-    if (purchaseCount < 1) return;
-
-    let totalCost = 0;
-    let tempCount = upgrade.count;
-    for (let i = 0; i < purchaseCount; i++) {
-        totalCost += Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, tempCount));
-        tempCount++;
-    }
-
+    const { count: purchaseCount, cost: totalCost } = getUpgradeQuote(upgrade, amountToBuy);
     const currentStardust = currentSnapshot.resources[ResourceType.Stardust];
-    if (currentStardust < totalCost) return;
+    if (purchaseCount < 1 || currentStardust < totalCost) return;
 
     const newCount = upgrade.count + purchaseCount;
     const nextResources = {
@@ -1466,13 +1444,9 @@ const App: React.FC = () => {
     setResources(nextResources);
     setUpgrades(nextUpgrades);
 
-    if (
-        (upgrade.count < 25 && newCount >= 25) ||
-        (upgrade.count < 50 && newCount >= 50) ||
-        (upgrade.count < 100 && newCount >= 100) ||
-        (upgrade.count < 200 && newCount >= 200)
-    ) {
-        addLog(`${upgrade.name} MILESTONE: OUTPUT DOUBLED!`, 'success');
+    const milestoneBoost = getMilestoneMultiplier(newCount) / getMilestoneMultiplier(upgrade.count);
+    if (milestoneBoost > 1) {
+        addLog(`${upgrade.name} MILESTONE: TIER MULTIPLIER ×${milestoneBoost}!`, 'success');
     }
   };
 
@@ -1687,14 +1661,7 @@ const App: React.FC = () => {
       Object.values(snapshot.upgrades).forEach((upgrade: Upgrade) => {
           if (upgrade.type !== 'auto') return;
 
-          let milestoneMult = 1;
-          if (upgrade.count >= 25) milestoneMult *= 2;
-          if (upgrade.count >= 50) milestoneMult *= 2;
-          if (upgrade.count >= 100) milestoneMult *= 2;
-          if (upgrade.count >= 200) milestoneMult *= 2;
-          if (upgrade.count >= 500) milestoneMult *= 4;
-
-          baseRate += upgrade.baseProduction * upgrade.count * milestoneMult;
+          baseRate += getUpgradeBaseOutput(upgrade);
       });
 
       const planetMult = PLANETS[snapshot.planetIndex]?.productionMultiplier || 1;
@@ -1771,7 +1738,7 @@ const App: React.FC = () => {
           const savedUpgrade = data.upgrades?.[upgrade.id];
           acc[upgrade.id] = {
               ...upgrade,
-              count: safeNonNegativeInt(savedUpgrade?.count, 0, MAX_SAFE_UPGRADE_COUNT)
+              count: safeNonNegativeInt(savedUpgrade?.count, 0, MAX_GALAXY_UPGRADE_COUNT)
           };
           return acc;
       }, {} as { [id: string]: Upgrade });
@@ -1855,7 +1822,7 @@ const App: React.FC = () => {
 
           const loadedUpgrades = INITIAL_UPGRADES.reduce((acc, upgrade) => {
               const savedUpgrade = data.upgrades?.[upgrade.id];
-              const count = safeNonNegativeInt(savedUpgrade?.count, 0, MAX_SAFE_UPGRADE_COUNT);
+              const count = safeNonNegativeInt(savedUpgrade?.count, 0, MAX_GALAXY_UPGRADE_COUNT);
               acc[upgrade.id] = { ...upgrade, count };
               return acc;
           }, {} as { [id: string]: Upgrade });
@@ -1887,8 +1854,7 @@ const App: React.FC = () => {
               let baseRate = 0;
               Object.values(loadedUpgrades).forEach((upgrade) => {
                   if (upgrade.type !== 'auto') return;
-                  const milestoneMult = getMilestoneMultiplier(upgrade.count);
-                  baseRate += upgrade.baseProduction * upgrade.count * milestoneMult;
+                  baseRate += getUpgradeBaseOutput(upgrade);
               });
 
               const planetMult = PLANETS[nextPlanetIndex]?.productionMultiplier || 1;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Upgrade } from '../types';
 import { formatNumber } from '../utils';
+import { GALAXY_UPGRADE_MILESTONES, getUpgradeBaseOutput, getUpgradeQuote } from '../utils/galaxyUpgrades';
 
 interface UpgradeShopProps {
   upgrades: Upgrade[];
@@ -10,48 +11,10 @@ interface UpgradeShopProps {
 
 type BuyAmount = 1 | 10 | 100 | 'MAX';
 
-const MAX_UPGRADE_COUNT = 1000;
+const MAX_BULK_PURCHASE = 500;
 
 const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) => {
   const [buyAmount, setBuyAmount] = useState<BuyAmount>(1);
-
-  // Helper to calculate cost for N upgrades
-  const calculateCost = (upgrade: Upgrade, n: number): number => {
-    const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
-    const count = Math.min(Math.max(0, n), remaining);
-    let total = 0;
-    let currentBase = upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.count);
-    
-    for (let i = 0; i < count; i++) {
-        total += Math.floor(currentBase);
-        currentBase *= upgrade.costMultiplier;
-    }
-    return total;
-  };
-
-  const calculateMax = (upgrade: Upgrade): { count: number, cost: number } => {
-    let total = 0;
-    let count = 0;
-    let currentBase = upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.count);
-    const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
-    
-    // Safety break at 500 per click while never crossing the runtime/save cap.
-    while (total + currentBase <= currency && count < Math.min(500, remaining)) {
-        total += Math.floor(currentBase);
-        currentBase *= upgrade.costMultiplier;
-        count++;
-    }
-    return { count, cost: total };
-  };
-
-  const getNextMilestone = (current: number): number | null => {
-      if (current < 25) return 25;
-      if (current < 50) return 50;
-      if (current < 100) return 100;
-      if (current < 200) return 200;
-      if (current < 500) return 500;
-      return null;
-  };
 
   return (
     <div className="flex flex-col h-full bg-space-800/90 border-l border-space-700 backdrop-blur-xl overflow-hidden w-full md:w-96 shadow-2xl">
@@ -87,25 +50,16 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
       
       <div className="flex-1 overflow-y-auto p-4 space-y-3 pb-20 custom-scrollbar">
         {upgrades.map((upgrade, index) => {
-          let buyCount = 0;
-          let cost = 0;
-
-          const remaining = Math.max(0, MAX_UPGRADE_COUNT - upgrade.count);
-
-          if (buyAmount === 'MAX') {
-              const res = calculateMax(upgrade);
-              buyCount = res.count;
-              cost = res.cost;
-          } else {
-              buyCount = Math.min(buyAmount, remaining);
-              cost = buyCount > 0 ? calculateCost(upgrade, buyCount) : 0;
-          }
-
+          const { count: buyCount, cost } = buyAmount === 'MAX'
+            ? getUpgradeQuote(upgrade, MAX_BULK_PURCHASE, currency)
+            : getUpgradeQuote(upgrade, buyAmount);
           const canAfford = buyCount > 0 && currency >= cost;
-          const nextMilestone = getNextMilestone(upgrade.count);
+          const nextMilestone = GALAXY_UPGRADE_MILESTONES.find(({ level }) => level > upgrade.count);
           const progressToMilestone = nextMilestone
-            ? Math.min(100, (upgrade.count / nextMilestone) * 100)
+            ? Math.min(100, (upgrade.count / nextMilestone.level) * 100)
             : 100;
+          const outputGain = getUpgradeBaseOutput(upgrade, upgrade.count + buyCount) - getUpgradeBaseOutput(upgrade);
+          const outputUnit = upgrade.type === 'manual' ? 'click' : 's';
 
           return (
             <button
@@ -156,7 +110,7 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
               <div className="flex justify-between text-[9px] text-gray-500 mb-2 font-mono">
                   <span>LEVEL {upgrade.count}</span>
                   <span className={nextMilestone && progressToMilestone > 80 ? 'text-yellow-400 font-bold animate-pulse' : ''}>
-                    {nextMilestone ? `NEXT BOOST: LVL ${nextMilestone} (x2)` : 'ALL BOOSTS UNLOCKED'}
+                    {nextMilestone ? `NEXT BOOST: LVL ${nextMilestone.level} (x${nextMilestone.multiplier})` : 'ALL BOOSTS UNLOCKED'}
                   </span>
               </div>
               
@@ -167,7 +121,7 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
                    {buyAmount !== 1 && <span className="text-[9px] ml-1 opacity-70">({buyCount}x)</span>}
                 </div>
                 <div className="text-neon-blue text-[11px] font-mono font-bold bg-neon-blue/10 border border-neon-blue/20 px-2 py-0.5 rounded">
-                  +{formatNumber(upgrade.baseProduction * buyCount)}/s
+                  +{formatNumber(outputGain)}/{outputUnit}
                 </div>
               </div>
             </button>

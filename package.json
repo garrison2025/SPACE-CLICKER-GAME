@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build && node scripts/prerender.mjs && node scripts/audit-static.mjs && node scripts/audit-bundle.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "verify": "npm run build && node scripts/test-project-storage.mjs && node scripts/test-middleware.mjs"
+    "verify": "npm run build && node scripts/test-project-storage.mjs && node scripts/test-middleware.mjs && node scripts/test-galaxy-upgrades.mjs"
   },
   "dependencies": {
     "react": "18.3.1",
