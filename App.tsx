@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GameState, ResourceType, Upgrade, LogEntry, GameId } from './types';
 import { INITIAL_UPGRADES, AUTO_SAVE_INTERVAL, SAVE_KEY, EVENT_SCAN_COST, PLANETS, PRESTIGE_UPGRADES, GAMES_CATALOG, MAX_PRESTIGE_TECH_LEVEL } from './constants';
 import { BLOG_POST_META } from './content/blogMeta';
-import { CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, GAME_ROUTE_META_BY_ID, SITE_CONTENT_UPDATED, VIEW_ROUTE_PATHS } from './content/routeSeo';
+import { CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, GAME_ROUTE_META_BY_ID, SITE_CONTENT_UPDATED, SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION, VIEW_ROUTE_PATHS } from './content/routeSeo';
 import SiteLayout, { ViewMode } from './components/SiteLayout';
 import LandingPage from './components/LandingPage';
 import NotFoundPage from './components/NotFoundPage';
@@ -982,7 +982,7 @@ const App: React.FC = () => {
                     {
                       "@type": "Question",
                       "name": "How much offline production can Spacebar Clicker 2 recover?",
-                      "acceptedAnswer": { "@type": "Answer", "text": "Supported saved runs can recover up to 12 hours of offline auto-production. Overdrive contributes only for the portion of its actual remaining duration that overlaps the offline window." }
+                      "acceptedAnswer": { "@type": "Answer", "text": SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION }
                     },
                     {
                       "@type": "Question",

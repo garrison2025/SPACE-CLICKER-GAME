@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED } from '../content/routeSeo.js';
+import { CORE_ROUTE_META, CORE_ROUTE_META_BY_PATH, DEFAULT_SOCIAL_IMAGE, SITE_CONTENT_UPDATED, SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION } from '../content/routeSeo.js';
 
 const distDir = path.resolve('dist');
 const basePath = path.join(distDir, 'index.html');
@@ -443,7 +443,7 @@ const buildStaticRouteSchema = (route, description, canonical) => {
           ['Does Spacebar Clicker 2 have auto-clickers?', 'Yes. Micro Bots generate passive points and Reactor Banks multiply automatic production.'],
           ['What does Nova Ascension reset?', 'It resets current points and standard upgrades. Nova Cores, lifetime records and the permanent Nova bonus remain.'],
           ['Does Spacebar Clicker 2 work on mobile?', 'Yes. Mobile players can use the on-screen Space button, while desktop players can use the physical Space key.'],
-          ['How much offline production can Spacebar Clicker 2 recover?', 'Supported saved runs can recover up to 12 hours of offline auto-production. Overdrive contributes only for the portion of its actual remaining duration that overlaps the offline window.'],
+          ['How much offline production can Spacebar Clicker 2 recover?', SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION],
       ['Can I move my Spacebar Clicker 2 save to another browser?', 'Yes. Copy an SCG2 save code or download a .scg backup file, then restore it in another browser or device. Imported values are validated before replacing the local save.']
         ]
       : route === '/spacebar-clicker-unblocked'
@@ -867,6 +867,7 @@ const staticRouteContent = {
       <p>Mars Colony Idle is a browser management simulation built around six linked resources: Minerals, Credits, Colonists, Energy, Food, and Oxygen. Manual excavation starts the economy, while buildings gradually convert the colony into a self-sustaining production network.</p>
       <h2>Energy comes first</h2>
       <p>Solar Panels and later Fusion Reactors supply Energy. Auto-Excavators, Hydroponics, Oxygenators, and Habitat Modules consume part of that capacity, so adding buildings without enough generation reduces how effectively the rest of the colony can operate.</p>
+      <p>If several production rates drop together, use the <a href="/blog/top-10-space-clicking-games-features-2025/">Mars Colony power shortage guide</a> to check your Energy balance and plan your next Solar Panel.</p>
       <h2>Food, oxygen, and population</h2>
       <p>Colonists need both Food and Oxygen. Hydroponics raises Food production, Oxygenators replenish breathable reserves, and Habitat Modules raise housing capacity. Population grows only when life-support reserves remain healthy, while shortages can reverse that growth.</p>
       <h2>Minerals and Credits</h2>
@@ -976,7 +977,7 @@ const staticRouteContent = {
       <h2>Micro Bots and Reactor Banks</h2>
       <p>Micro Bots add passive point generation, while Reactor Banks multiply automatic production. These systems are designed to create a clearer transition from manual pressing into idle accumulation than the classic mode.</p>
       <h2>Offline earnings</h2>
-      <p>Supported saved runs can calculate up to 12 hours of offline auto-production when you return after time away. The reward is based on the saved production state and is stored locally in the current browser; Overdrive contributes only for the portion of its actual remaining duration that overlaps the offline window.</p>
+      <p>${escapeHtml(SPACEBAR_CLICKER_2_OFFLINE_DESCRIPTION)}</p>
       <h2>Portable backup and restore</h2>
       <p>Spacebar Clicker 2 can copy a validated SCG2 save code or download a portable .scg backup file. Either format can be restored in another browser or device, while the Edition 2 save remains separate from the classic Spacebar Clicker save.</p>
       <h2>Nova Core ascension</h2>
