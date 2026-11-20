@@ -33,31 +33,31 @@ export const BLOG_POST_META: BlogPostMeta[] = [
   {
     "id": "3",
     "slug": "mastering-the-space-bar-clicking-game",
-    "title": "Mastering the Space Bar: From Speed Tests to Interstellar Conquest",
-    "seoTitle": "Mastering Space Bar Clicking Games | Space Clicker Blog",
+    "title": "Spacebar Clicker 2 Guide: From Overdrive to Your First Nova Core",
+    "seoTitle": "Spacebar Clicker 2 Guide | First Nova Core",
     "publishedDate": "2025-12-25",
     "readTime": "3 min read",
-    "excerpt": "Learn how deliberate Space-key input, CPS tests, upgrades, and automation fit together in space bar clicking games without relying on unsupported speed claims.",
+    "excerpt": "Learn how to charge Overdrive, compare automation upgrades, and decide when to ascend for your first Nova Core.",
     "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=2000"
   },
   {
     "id": "4",
     "slug": "top-10-space-clicking-games-features-2025",
-    "title": "Beyond the Click: Features Defining Modern Space Clicking Games",
-    "seoTitle": "Modern Space Clicking Game Features | Space Clicker Blog",
+    "title": "Mars Colony Idle Guide: Recover From a Power Shortage",
+    "seoTitle": "Mars Colony Idle Guide | Fix an Energy Shortage",
     "publishedDate": "2026-01-02",
     "readTime": "3 min read",
-    "excerpt": "Explore the progression, automation, offline systems and active choices that define modern space clicking games.",
+    "excerpt": "Read the Energy balance, calculate Solar Panel costs, and recover Minerals, Food, and Oxygen production in Mars Colony Idle.",
     "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000"
   },
   {
     "id": "5",
     "slug": "mechanics-of-space-bar-clicking-game-physics",
-    "title": "The Mechanics of the Space Bar Clicking Game: Physics, Input, and Endurance",
-    "seoTitle": "Space Bar Clicking Game Mechanics | Space Clicker Blog",
+    "title": "Spacebar Clicker Guide: From Manual Presses to Quantum Keys",
+    "seoTitle": "Spacebar Clicker Guide | First Quantum Key",
     "publishedDate": "2026-01-05",
     "readTime": "3 min read",
-    "excerpt": "A technical look at Space-key input, switch and firmware behavior, browser key-repeat rules, CPS measurement, latency, and repeatable speed testing.",
+    "excerpt": "Compare points per press with points per second, choose your first upgrades, and read the original Spacebar Clicker Hyperdrive Reset preview.",
     "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000"
   },
   {

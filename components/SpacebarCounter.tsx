@@ -308,7 +308,7 @@ const SpacebarCounter: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Related keyboard guides</h2>
             <p>
-              Read <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Space Bar Clicking Game Mechanics</a> for CPS and input behavior, or the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/" className="text-neon-blue hover:text-white">CPS troubleshooting guide</a> for repeat keys, timing, and local results.
+              Read the <a href="/blog/ultimate-hardware-guide-space-bar-click-game/" className="text-neon-blue hover:text-white">CPS troubleshooting guide</a> for repeat keys, timing, and local results.
             </p>
           </section>
 

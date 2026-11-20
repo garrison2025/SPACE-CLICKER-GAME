@@ -658,7 +658,7 @@ const DeepSpaceSignal: React.FC = () => {
                 
                 <div className="relative flex justify-between items-end px-2">
                     <div>
-                        <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wide sm:tracking-widest text-glow">DEEP_SIGNAL</h1>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wide sm:tracking-widest text-glow">DEEP_SIGNAL</h2>
                         <div className="text-xs text-green-700 font-bold flex gap-4">
                             <span>ENCRYPTION: {isScanning ? 'BYPASSING...' : 'SECURE'}</span>
                             <span className="hidden md:inline">FREQ: {frequency.toFixed(4)} MHz</span>

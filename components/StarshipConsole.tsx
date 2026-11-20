@@ -30,7 +30,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
   const saveTimersRef = useRef<number[]>([]);
   const systemStatusTimerRef = useRef<number>();
   const activeDockButtonRef = useRef<HTMLButtonElement | null>(null);
-  const activeGameMeta = GAMES_CATALOG.find((game) => game.id === activeGame);
+  const activeGameTitle = GAMES_CATALOG.find((game) => game.id === activeGame)?.title ?? 'Space Game';
 
   useEffect(() => {
       if (window.innerWidth >= 640) return;
@@ -197,7 +197,7 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
                </div>
                <div className="sm:hidden min-w-0 max-w-[5.5rem]">
                   <div className="text-[9px] text-neon-blue font-mono tracking-wider">ACTIVE SIM</div>
-                  <div className="text-xs font-bold text-white truncate">{activeGameMeta?.title || 'Space Game'}</div>
+                  <div className="text-xs font-bold text-white truncate">{activeGameTitle}</div>
                </div>
             </button>
             
@@ -360,7 +360,8 @@ const StarshipConsole: React.FC<StarshipConsoleProps> = ({ activeGame, onSwitchG
       )}
 
       {/* --- MAIN CONTENT AREA --- */}
-      <main id="game-main-content" tabIndex={-1} className="flex-1 relative flex overflow-hidden focus:outline-none">
+      <main id="game-main-content" tabIndex={-1} className="flex-1 relative flex overflow-hidden focus:outline-none" aria-labelledby="active-game-title">
+         <h1 id="active-game-title" className="sr-only">{activeGameTitle}</h1>
          
          {/* Side HUD (Left) */}
          <aside className="hidden lg:flex w-16 xl:w-64 border-r border-white/5 bg-black/20 backdrop-blur flex-col z-40 shrink-0">

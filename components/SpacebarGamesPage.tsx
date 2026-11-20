@@ -140,7 +140,7 @@ const SpacebarGamesPage: React.FC = () => {
           <section>
             <h2 className="text-2xl font-display text-white mb-3">Related Spacebar guides</h2>
             <p>
-              Read <a href="/blog/mastering-the-space-bar-clicking-game/" className="text-neon-blue hover:text-white">Mastering the Space Bar</a> for the transition from manual input to automation, or <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Space Bar Clicking Game Mechanics</a> for CPS and deliberate key input.
+              Read the <a href="/blog/mechanics-of-space-bar-clicking-game-physics/" className="text-neon-blue hover:text-white">Quantum Key guide</a> for the original game, or the <a href="/blog/mastering-the-space-bar-clicking-game/" className="text-neon-blue hover:text-white">Nova Core guide</a> for Spacebar Clicker 2.
             </p>
           </section>
 
