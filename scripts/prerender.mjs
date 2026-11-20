@@ -856,7 +856,7 @@ const staticRouteContent = {
       <h2>Local save and portable backup</h2>
       <p>Galaxy Miner auto-saves to local browser storage. The Telemetry & Backup panel can copy a portable Base64 save code or download a .scg backup file, and either format can be restored manually after validation. These backups are not cloud sync or encryption.</p>
       <h2>Keyboard controls</h2>
-      <p>On desktop, Space fires the mining laser, number keys 1 through 8 quick-buy the eight standard upgrade tiers, P toggles the Dark Matter prestige chamber, S toggles Telemetry & Backup, M toggles game audio, and H or ? toggles the hotkeys reference. When a form control or backup textarea has focus, gameplay shortcuts do not intercept typed input.</p>
+      <p>On desktop, Space fires the mining laser, number keys 1 through 6 quick-buy one unit from the corresponding upgrade tier, P toggles the Dark Matter prestige chamber, S toggles Telemetry & Backup, M toggles game audio, and H or ? toggles the hotkeys reference. When a form control or backup textarea has focus, gameplay shortcuts do not intercept typed input.</p>
       <h2>Galactic Reset and Dark Matter</h2>
       <p>Galactic Reset first awards 1 Dark Matter at 40 billion current Stardust; 1 trillion awards 5. A reset removes current Stardust and standard upgrades but keeps Dark Matter, permanent Void Technology, and lifetime progress. Larger runs can award more Dark Matter, so reset timing becomes a long-term efficiency decision.</p>
       <p>For upgrade planning, see the <a href="/blog/strategy-guide-clicker-game-space-empire/">Space Clicker strategy guide</a> or track thresholds on the <a href="/achievements/">Galaxy Miner milestones page</a>.</p>

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { formatNumber } from '../utils';
+import { INITIAL_UPGRADES } from '../constants';
+import { isGalaxyMinerBackup } from '../utils/galaxySave';
 import { ResourceType, Upgrade, Planet } from '../types';
 import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 import { decodeBase64Utf8, encodeBase64Utf8 } from '../utils/base64Utf8';
@@ -184,18 +186,7 @@ export const StatsAndSaveModal: React.FC<StatsAndSaveModalProps> = ({
     try {
       const decoded = decodeBase64Utf8(code);
       const parsed = JSON.parse(decoded);
-      const validShape =
-        parsed &&
-        typeof parsed === 'object' &&
-        parsed.resources &&
-        typeof parsed.resources === 'object' &&
-        !Array.isArray(parsed.resources) &&
-        parsed.upgrades &&
-        typeof parsed.upgrades === 'object' &&
-        !Array.isArray(parsed.upgrades) &&
-        Object.prototype.hasOwnProperty.call(parsed, 'planetIndex') &&
-        Object.prototype.hasOwnProperty.call(parsed, 'lifetimeEarnings');
-      if (!validShape) {
+      if (!isGalaxyMinerBackup(parsed, INITIAL_UPGRADES)) {
         throw new Error('Wrong game or corrupted format');
       }
       if (!window.confirm('Replace the current Galaxy Miner save with this imported backup?')) {

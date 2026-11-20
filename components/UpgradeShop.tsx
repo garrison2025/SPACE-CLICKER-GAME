@@ -25,7 +25,7 @@ const UpgradeShop: React.FC<UpgradeShopProps> = ({ upgrades, currency, onBuy }) 
               <span className="text-[10px] font-mono text-neon-green bg-neon-green/10 border border-neon-green/30 px-1.5 py-0.5 rounded">V.3.1</span>
             </h2>
             <div className="text-[10px] font-mono text-gray-500">
-              HOTKEYS: [1-8]
+              HOTKEYS: [1-{upgrades.length}]
             </div>
           </div>
           
