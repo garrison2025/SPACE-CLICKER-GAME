@@ -12,6 +12,7 @@ import RouteErrorBoundary from './components/RouteErrorBoundary';
 import { generateSpaceEvent } from './services/eventService';
 import { toggleMute, getMuteState } from './services/audioService';
 import { formatNumber } from './utils';
+import { isGalaxyMinerBackup } from './utils/galaxySave';
 import { getMilestoneMultiplier, getUpgradeBaseOutput, getUpgradeQuote, MAX_GALAXY_UPGRADE_COUNT } from './utils/galaxyUpgrades';
 import { isInteractiveKeyboardTarget } from './utils/keyboard';
 import { safeGetStorageItem, safeSetStorageItem, safeRemoveStorageItem, STORAGE_WRITE_FAILED_EVENT } from './utils/projectStorage';
@@ -1717,19 +1718,7 @@ const App: React.FC = () => {
   }, [viewMode, activeGame]);
 
   const handleImportSave = (data: any) => {
-      const validShape =
-          data &&
-          typeof data === 'object' &&
-          data.resources &&
-          typeof data.resources === 'object' &&
-          !Array.isArray(data.resources) &&
-          data.upgrades &&
-          typeof data.upgrades === 'object' &&
-          !Array.isArray(data.upgrades) &&
-          Object.prototype.hasOwnProperty.call(data, 'planetIndex') &&
-          Object.prototype.hasOwnProperty.call(data, 'lifetimeEarnings');
-
-      if (!validShape) {
+      if (!isGalaxyMinerBackup(data, INITIAL_UPGRADES)) {
           addLog("IMPORT FAILED: INVALID OR WRONG-GAME SAVE DATA", "alert");
           return;
       }
@@ -1980,11 +1969,10 @@ const App: React.FC = () => {
         const cx = window.innerWidth / 2;
         const cy = window.innerHeight / 2;
         handleMineRef.current(cx, cy);
-      } else if (e.key >= '1' && e.key <= '8') {
-        const index = parseInt(e.key) - 1;
-        const upgradeList = Object.values(gameStateRef.current.upgrades);
-        if (upgradeList[index]) {
-          handleBuyUpgradeRef.current(upgradeList[index].id, 1);
+      } else if (/^[1-9]$/.test(e.key)) {
+        const upgrade = INITIAL_UPGRADES[Number(e.key) - 1];
+        if (upgrade) {
+          handleBuyUpgradeRef.current(upgrade.id, 1);
         }
       } else if (e.key === 'm' || e.key === 'M') {
         const nextMute = !getMuteState();

@@ -1,4 +1,5 @@
 import React from 'react';
+import { INITIAL_UPGRADES } from '../constants';
 import { trapDialogFocus, useDialogFocus } from '../utils/dialogFocus';
 
 interface HotkeyOverlayProps {
@@ -12,7 +13,7 @@ export const HotkeyOverlay: React.FC<HotkeyOverlayProps> = ({ isOpen, onClose, o
 
   const HOTKEYS = [
     { key: 'SPACE', desc: 'Pulse Mining Laser (Manual Tap)', color: 'border-neon-blue text-neon-blue' },
-    { key: '1 - 8', desc: 'Quick-Buy Upgrades (Tier 1 to 8)', color: 'border-yellow-400 text-yellow-400' },
+    { key: `1 - ${INITIAL_UPGRADES.length}`, desc: 'Quick-Buy Upgrades (One Unit)', color: 'border-yellow-400 text-yellow-400' },
     { key: 'P', desc: 'Toggle Dark Matter Prestige Chamber', color: 'border-purple-400 text-purple-400' },
     { key: 'S', desc: 'Toggle Fleet Telemetry & Save Backup', color: 'border-neon-green text-neon-green' },
     { key: 'M', desc: 'Toggle Audio Synthesis Sound FX', color: 'border-pink-400 text-pink-400' },
